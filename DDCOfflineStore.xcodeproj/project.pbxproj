@@ -10,10 +10,18 @@
 		8A92DF95E783A538E54E8F8A /* Pods_DDCOfflineStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BEBE9EF557ECB6845068E0 /* Pods_DDCOfflineStore.framework */; };
 		D3F88199215F2A950091C61A /* DDCOfflineStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F88198215F2A950091C61A /* DDCOfflineStoreTests.swift */; };
 		D3F881A4215F2A950091C61A /* DDCOfflineStoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881A3215F2A950091C61A /* DDCOfflineStoreUITests.swift */; };
-		D3F881BD215F2D800091C61A /* DDCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881B5215F2D800091C61A /* DDCAppDelegate.swift */; };
-		D3F881BE215F2D800091C61A /* DDCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881B6215F2D800091C61A /* DDCViewController.swift */; };
 		D3F881BF215F2D800091C61A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3F881B8215F2D800091C61A /* Assets.xcassets */; };
 		D3F881C0215F2D800091C61A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3F881B9215F2D800091C61A /* LaunchScreen.storyboard */; };
+		D3F881C4215F45840091C61A /* DDCUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881C3215F45840091C61A /* DDCUserDefaults.swift */; };
+		D3F881C6215F4B3D0091C61A /* DDCStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881C5215F4B3D0091C61A /* DDCStore.swift */; };
+		D3F881CA215F4EC00091C61A /* DDCOpenUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881C9215F4EC00091C61A /* DDCOpenUUID.swift */; };
+		D3F881D4215F587E0091C61A /* DDCContractListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881D0215F587E0091C61A /* DDCContractListViewController.swift */; };
+		D3F881D5215F587E0091C61A /* DDCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881D1215F587E0091C61A /* DDCAppDelegate.swift */; };
+		D3F881D6215F587E0091C61A /* DDCContractListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881D3215F587E0091C61A /* DDCContractListView.swift */; };
+		D3F881D8215F58B80091C61A /* DDCUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881D7215F58B80091C61A /* DDCUserModel.swift */; };
+		D3F881DA215F58DD0091C61A /* DDCContractDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881D9215F58DD0091C61A /* DDCContractDetailsModel.swift */; };
+		D3F881DC215F58FA0091C61A /* DDCButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881DB215F58FA0091C61A /* DDCButtonView.swift */; };
+		D3F881DE215F59B90091C61A /* DDCContractStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881DD215F59B90091C61A /* DDCContractStatus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,11 +52,19 @@
 		D3F8819F215F2A950091C61A /* DDCOfflineStoreUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDCOfflineStoreUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F881A3215F2A950091C61A /* DDCOfflineStoreUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOfflineStoreUITests.swift; sourceTree = "<group>"; };
 		D3F881A5215F2A950091C61A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D3F881B5215F2D800091C61A /* DDCAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCAppDelegate.swift; sourceTree = "<group>"; };
-		D3F881B6215F2D800091C61A /* DDCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCViewController.swift; sourceTree = "<group>"; };
 		D3F881B8215F2D800091C61A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3F881BA215F2D800091C61A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D3F881BB215F2D800091C61A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3F881C3215F45840091C61A /* DDCUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCUserDefaults.swift; sourceTree = "<group>"; };
+		D3F881C5215F4B3D0091C61A /* DDCStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCStore.swift; sourceTree = "<group>"; };
+		D3F881C9215F4EC00091C61A /* DDCOpenUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCOpenUUID.swift; sourceTree = "<group>"; };
+		D3F881D0215F587E0091C61A /* DDCContractListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractListViewController.swift; sourceTree = "<group>"; };
+		D3F881D1215F587E0091C61A /* DDCAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCAppDelegate.swift; sourceTree = "<group>"; };
+		D3F881D3215F587E0091C61A /* DDCContractListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractListView.swift; sourceTree = "<group>"; };
+		D3F881D7215F58B80091C61A /* DDCUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCUserModel.swift; sourceTree = "<group>"; };
+		D3F881D9215F58DD0091C61A /* DDCContractDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsModel.swift; sourceTree = "<group>"; };
+		D3F881DB215F58FA0091C61A /* DDCButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCButtonView.swift; sourceTree = "<group>"; };
+		D3F881DD215F59B90091C61A /* DDCContractStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,20 +153,11 @@
 		D3F881B3215F2D800091C61A /* DDCOfflineStore */ = {
 			isa = PBXGroup;
 			children = (
-				D3F881B4215F2D800091C61A /* Classes */,
+				D3F881CD215F587E0091C61A /* Classes */,
 				D3F881B7215F2D800091C61A /* Resources */,
 				D3F881BC215F2D800091C61A /* Other Sources */,
 			);
 			path = DDCOfflineStore;
-			sourceTree = "<group>";
-		};
-		D3F881B4215F2D800091C61A /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				D3F881B5215F2D800091C61A /* DDCAppDelegate.swift */,
-				D3F881B6215F2D800091C61A /* DDCViewController.swift */,
-			);
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		D3F881B7215F2D800091C61A /* Resources */ = {
@@ -166,8 +173,49 @@
 		D3F881BC215F2D800091C61A /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				D3F881C5215F4B3D0091C61A /* DDCStore.swift */,
+				D3F881C3215F45840091C61A /* DDCUserDefaults.swift */,
+				D3F881C9215F4EC00091C61A /* DDCOpenUUID.swift */,
+				D3F881DD215F59B90091C61A /* DDCContractStatus.swift */,
 			);
 			path = "Other Sources";
+			sourceTree = "<group>";
+		};
+		D3F881CD215F587E0091C61A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D3F881CE215F587E0091C61A /* Models */,
+				D3F881CF215F587E0091C61A /* ViewControllers */,
+				D3F881D2215F587E0091C61A /* Views */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		D3F881CE215F587E0091C61A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D3F881D7215F58B80091C61A /* DDCUserModel.swift */,
+				D3F881D9215F58DD0091C61A /* DDCContractDetailsModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D3F881CF215F587E0091C61A /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D3F881D1215F587E0091C61A /* DDCAppDelegate.swift */,
+				D3F881D0215F587E0091C61A /* DDCContractListViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		D3F881D2215F587E0091C61A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D3F881D3215F587E0091C61A /* DDCContractListView.swift */,
+				D3F881DB215F58FA0091C61A /* DDCButtonView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -329,12 +377,16 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DDCOfflineStore/Pods-DDCOfflineStore-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,8 +401,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3F881BE215F2D800091C61A /* DDCViewController.swift in Sources */,
-				D3F881BD215F2D800091C61A /* DDCAppDelegate.swift in Sources */,
+				D3F881DA215F58DD0091C61A /* DDCContractDetailsModel.swift in Sources */,
+				D3F881D4215F587E0091C61A /* DDCContractListViewController.swift in Sources */,
+				D3F881C6215F4B3D0091C61A /* DDCStore.swift in Sources */,
+				D3F881D6215F587E0091C61A /* DDCContractListView.swift in Sources */,
+				D3F881C4215F45840091C61A /* DDCUserDefaults.swift in Sources */,
+				D3F881DE215F59B90091C61A /* DDCContractStatus.swift in Sources */,
+				D3F881D5215F587E0091C61A /* DDCAppDelegate.swift in Sources */,
+				D3F881CA215F4EC00091C61A /* DDCOpenUUID.swift in Sources */,
+				D3F881DC215F58FA0091C61A /* DDCButtonView.swift in Sources */,
+				D3F881D8215F58B80091C61A /* DDCUserModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

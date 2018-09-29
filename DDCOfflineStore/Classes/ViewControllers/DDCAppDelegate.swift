@@ -8,6 +8,7 @@
 
 import UIKit
 import Bugly
+import AdSupport
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //Bugly注册
         Bugly.start(withAppId: "000b731ad0")
+        
+        let idfa : String = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        DDCUserDefaults.setObject(object: idfa as AnyObject, key: DDCStore.Keys.DDC_Device_IDFA_Key)
+//        DDC_Share_UUID = DDCOpenUUID.value();
+        
+        // start collecting dates from server
+//        [DDCServerDate sharedInstance];
         
         //初始化主窗口
         window = UIWindow(frame: UIScreen.main.bounds)
