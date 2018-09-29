@@ -1,0 +1,20 @@
+PODS:
+  - Bugly (2.5.0)
+  - SnapKit (4.0.1)
+
+DEPENDENCIES:
+  - Bugly
+  - SnapKit
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Bugly
+    - SnapKit
+
+SPEC CHECKSUMS:
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+
+PODFILE CHECKSUM: 3abde6abc75c9cb94b64f1f2a5c4bb48b6e8e066
+
+COCOAPODS: 1.5.3
