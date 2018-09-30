@@ -76,8 +76,9 @@
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "76x76",
+      "idiom" : "ipad",
+      "filename" : "课程管家启动图标@2x.png",
       "scale" : "2x"
     },
     {

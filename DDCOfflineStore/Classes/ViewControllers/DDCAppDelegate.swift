@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //初始化主窗口
         window = UIWindow(frame: UIScreen.main.bounds)
-        let navigationController = UINavigationController.init(rootViewController: DDCViewController())
+        let navigationController = UINavigationController.init(rootViewController: DDCContractListViewController())
         window?.rootViewController = navigationController
         window?.backgroundColor = UIColor.white
         window?.makeKeyAndVisible()

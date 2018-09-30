@@ -7,11 +7,17 @@
 //
 
 import Foundation
+import UIKit
 
 class DDCStore : NSObject{
     struct AppId {
         static let buglyAppId = "000b731ad0"
 
+    }
+    
+    struct screenSize {
+        static let screenWidth = UIScreen.main.bounds.width
+        static let screenHeight = UIScreen.main.bounds.height
     }
     
     struct Keys {
