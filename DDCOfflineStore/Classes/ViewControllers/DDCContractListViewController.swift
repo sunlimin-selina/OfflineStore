@@ -14,7 +14,11 @@ struct Constants {
 
 class DDCContractListViewController: UIViewController {
     private lazy var bottomBar : DDCBottomBar = {
-        let bottomBar : DDCBottomBar = DDCBottomBar()
+        let bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.zero, handler: {
+            let viewController : DDCCreateContractViewController = DDCCreateContractViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+        })
+
         return bottomBar;
     }()
     
@@ -24,6 +28,7 @@ class DDCContractListViewController: UIViewController {
         tableView.rowHeight = 100.0;
         tableView.delegate = self;
         tableView.dataSource = self;
+        tableView.isUserInteractionEnabled = true
         return tableView
     }()
     
@@ -63,10 +68,13 @@ class DDCContractListViewController: UIViewController {
         
         self.title = "课程管家"
         
-        
     }
-
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.barStyle = .default
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+    }
     
 }
 
@@ -113,6 +121,8 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let viewController : DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: "")
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
         
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -131,14 +141,3 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     }
 }
 
-extension UIImage {
-    class func imageWithColor(color: UIColor,width: CGFloat = 1, height: CGFloat = 1) -> UIImage {
-        UIGraphicsBeginImageContext(CGSize(width: width, height: height))
-        let context = UIGraphicsGetCurrentContext()
-        context?.setFillColor(color.cgColor)
-        context?.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image!
-    }
-}

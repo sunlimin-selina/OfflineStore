@@ -9,32 +9,49 @@
 import UIKit
 
 extension UIColor {
-    class func colorWithHexString(hex:String) ->UIColor {
+
+    public convenience init(hex: String) {
         
-        var cString = hex.trimmingCharacters(in:CharacterSet.whitespacesAndNewlines).uppercased()
+        var red:   CGFloat = 0.0
+        var green: CGFloat = 0.0
+        var blue:  CGFloat = 0.0
+        var alpha: CGFloat = 1.0
+        var hex:   String = hex
         
-        if (cString.hasPrefix("#")) {
-            let index = cString.index(cString.startIndex, offsetBy:1)
-            cString = String(cString[index...])
+        if hex.hasPrefix("#") {
+            let index = hex.index(hex.startIndex, offsetBy: 1)
+            hex = String(hex[index...])
         }
         
-        if (cString.count != 6) {
-            return UIColor.red
+        let scanner = Scanner(string: hex)
+        var hexValue: CUnsignedLongLong = 0
+        if scanner.scanHexInt64(&hexValue) {
+            switch (hex.count) {
+            case 3:
+                red   = CGFloat((hexValue & 0xF00) >> 8)       / 15.0
+                green = CGFloat((hexValue & 0x0F0) >> 4)       / 15.0
+                blue  = CGFloat(hexValue & 0x00F)              / 15.0
+            case 4:
+                red   = CGFloat((hexValue & 0xF000) >> 12)     / 15.0
+                green = CGFloat((hexValue & 0x0F00) >> 8)      / 15.0
+                blue  = CGFloat((hexValue & 0x00F0) >> 4)      / 15.0
+                alpha = CGFloat(hexValue & 0x000F)             / 15.0
+            case 6:
+                red   = CGFloat((hexValue & 0xFF0000) >> 16)   / 255.0
+                green = CGFloat((hexValue & 0x00FF00) >> 8)    / 255.0
+                blue  = CGFloat(hexValue & 0x0000FF)           / 255.0
+            case 8:
+                red   = CGFloat((hexValue & 0xFF000000) >> 24) / 255.0
+                green = CGFloat((hexValue & 0x00FF0000) >> 16) / 255.0
+                blue  = CGFloat((hexValue & 0x0000FF00) >> 8)  / 255.0
+                alpha = CGFloat(hexValue & 0x000000FF)         / 255.0
+            default:
+                print("Invalid RGB string, number of characters after '#' should be either 3, 4, 6 or 8", terminator: "")
+            }
+        } else {
+            print("Scan hex error")
         }
-        
-        let rIndex = cString.index(cString.startIndex, offsetBy: 2)
-        let rString = String(cString[..<rIndex])
-        let otherString = String(cString[rIndex...])
-        let gIndex = otherString.index(otherString.startIndex, offsetBy: 2)
-        let gString = String(cString[..<gIndex])
-        let bIndex = cString.index(cString.endIndex, offsetBy: -2)
-        let bString = String(cString[bIndex...])
-        
-        var r:CUnsignedInt = 0, g:CUnsignedInt = 0, b:CUnsignedInt = 0;
-        Scanner(string: rString).scanHexInt32(&r)
-        Scanner(string: gString).scanHexInt32(&g)
-        Scanner(string: bString).scanHexInt32(&b)
-        
-        return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
+        self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
+    
 }

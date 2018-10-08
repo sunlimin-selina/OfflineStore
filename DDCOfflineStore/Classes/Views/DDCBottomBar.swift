@@ -10,18 +10,24 @@ import UIKit
 
 class DDCBottomBar : UIView {
     
+    var handler = {}
+    
     private lazy var button : UIButton = {
         let button : UIButton = UIButton()
         button.setTitle("创建新合同", for: .normal)
-        button.backgroundColor = UIColor.orange
+        button.backgroundColor = UIColor.init(hex: "#FF5D31")
         button.setTitleColor(UIColor.white, for: .normal)
-        button.layer.cornerRadius = 15
-        return button;
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(clickAction), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
+        return button
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, handler : @escaping ()->Void) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.white
+        self.isUserInteractionEnabled = true
+        self.handler = handler
         self.addSubview(self.button)
         self.setupViewConstraints()
     }
@@ -33,13 +39,17 @@ class DDCBottomBar : UIView {
     func setupViewConstraints() {
         
         self.button.snp.makeConstraints({ (make) in
-            make.width.equalTo(200)
+            make.width.equalTo(400)
             make.height.equalTo(40)
             make.left.equalTo(self).offset(100)
             make.right.equalTo(self.snp_rightMargin).offset(-100)
             make.centerX.centerY.equalTo(self)
         })
         
+    }
+    
+    @objc func clickAction() {
+        self.handler()
     }
     
 }
