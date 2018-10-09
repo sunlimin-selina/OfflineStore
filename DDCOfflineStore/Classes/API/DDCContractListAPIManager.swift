@@ -10,15 +10,14 @@ import Foundation
 import Alamofire
 
 class DDCContractListAPIManager: NSObject {
-    class func downloadContractListForPage() {
-        let url:String = DDCStore.BaseUrl.DDC_CN_Url.appendingFormat("/server/contract/list.do")
+    class func downloadContractListForPage(page : UInt,status:UInt ,successHandler: @escaping (_ result : Any) -> (), failHandler: @escaping (_ result : Any) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/server/contract/list.do")
+        let uid:String = DDC_Current_Url.appendingFormat("/server/contract/list.do")
+
+        let params : NSDictionary = ["uid":uid , "currentPage":page ,"status":status , "pageSize" : 10]
         
-        Alamofire.request(url).responseJSON {
-            response in debugPrint(response)
+        DDCHttpSessionsRequest.requestData(.requestTypePost, url: url, parameters: (params as! [String : Any])) { (Any) in
             
-            if let json = response.result.value {
-                print("JSON: \(json)")
-            }
         }
     }
 }

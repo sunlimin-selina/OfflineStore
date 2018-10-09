@@ -41,7 +41,7 @@ class DDCOpenUUID : NSObject {
     }
     
     class func userDefault () -> String{
-        var kOpenUUIDSessionCache = DDCUserDefaults.objectForKey(key: DDCStore.Keys.DDC_Device_UUID_Key)
+        let kOpenUUIDSessionCache = DDCUserDefaults.objectForKey(key: DDCStore.Keys.DDC_Device_UUID_Key)
 //        if (!kOpenUUIDSessionCache || !kOpenUUIDSessionCache.length) {
 //            kOpenUUIDSessionCache = [DDC_OpenUUID randomUUID];
 //            [DDCUserDefaults setObject:kOpenUUIDSessionCache forKey:DDC_Device_UUID_Key];//kOpenUUID

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class DDCBottomBar : UIView {
     
@@ -37,7 +38,6 @@ class DDCBottomBar : UIView {
     }
     
     func setupViewConstraints() {
-        
         self.button.snp.makeConstraints({ (make) in
             make.width.equalTo(400)
             make.height.equalTo(40)
@@ -45,7 +45,6 @@ class DDCBottomBar : UIView {
             make.right.equalTo(self.snp_rightMargin).offset(-100)
             make.centerX.centerY.equalTo(self)
         })
-        
     }
     
     @objc func clickAction() {

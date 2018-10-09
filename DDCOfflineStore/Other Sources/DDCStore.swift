@@ -16,6 +16,8 @@ class DDCStore : NSObject{
         return instance
     }
     
+    static let kUser : String = "User";
+
     struct AppId {
         static let buglyAppId = "000b731ad0"
 
@@ -32,10 +34,14 @@ class DDCStore : NSObject{
         static let DDC_Device_UUID_Key = "OpenUUID"
     }
     
-    struct BaseUrl {
-        static let DDC_CN_Url = "https://offcourse.daydaycook.com.cn/daydaycook"
-        static let DDC_Base_Staging_Url = "https://offline-course-s.daydaycook.com.cn/daydaycook"
-        static let DDC_Base_Test_Url = "https://offline-course-t.daydaycook.com.cn/daydaycook"
-        static let DDC_Base_Dev_Url = "http://192.168.18.114:8088/daydaycook"
-    }
+    lazy var user : DDCUserModel = {
+        var user = DDCUserModel()
+        var userData : NSData = DDCUserDefaults.objectForKey(key: DDCStore.kUser) as! NSData
+        if userData.length > 0
+        {
+            user = NSKeyedUnarchiver.unarchiveObject(with: userData as Data) as! DDCUserModel
+        }
+        return user
+    }()
+    
 }

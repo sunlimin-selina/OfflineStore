@@ -9,5 +9,8 @@
 import Foundation
 
 class DDCUserModel: NSObject {
-    
+    var ID : String?
+    var userName : String?
+    var name : String?
+    var imageUrl : String?
 }

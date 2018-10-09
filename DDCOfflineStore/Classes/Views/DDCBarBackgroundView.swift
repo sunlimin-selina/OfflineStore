@@ -30,7 +30,10 @@ class DDCBarBackgroundView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: private
+}
+
+// MARK: private
+extension DDCBarBackgroundView {
     //设置上部圆角
     func setRectCornerTop() {
         let width = self.bounds.size.width

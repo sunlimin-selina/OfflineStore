@@ -31,6 +31,12 @@
 		D3F881DA215F58DD0091C61A /* DDCContractDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881D9215F58DD0091C61A /* DDCContractDetailsModel.swift */; };
 		D3F881DE215F59B90091C61A /* DDCContractStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881DD215F59B90091C61A /* DDCContractStatus.swift */; };
 		D3F881E6215F7DE00091C61A /* UIColor+HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881E5215F7DE00091C61A /* UIColor+HexColor.swift */; };
+		D3FDDE55216C8BAB0031BCB2 /* DDCLoginRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FDDE54216C8BAB0031BCB2 /* DDCLoginRegisterViewController.swift */; };
+		D3FDDE59216C8FF00031BCB2 /* DDCInputFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FDDE58216C8FF00031BCB2 /* DDCInputFieldView.swift */; };
+		D3FDDE5B216C90050031BCB2 /* DDCSubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FDDE5A216C90050031BCB2 /* DDCSubmitButton.swift */; };
+		D3FDDE5D216C9FC00031BCB2 /* DDCCircularTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FDDE5C216C9FC00031BCB2 /* DDCCircularTextFieldView.swift */; };
+		D3FDDE5F216CA0970031BCB2 /* DDCCountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FDDE5E216CA0970031BCB2 /* DDCCountButton.swift */; };
+		D3FDDE61216CB9E70031BCB2 /* DDCCircularTextFieldWithExtraButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FDDE60216CB9E70031BCB2 /* DDCCircularTextFieldWithExtraButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +88,12 @@
 		D3F881D9215F58DD0091C61A /* DDCContractDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsModel.swift; sourceTree = "<group>"; };
 		D3F881DD215F59B90091C61A /* DDCContractStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractStatus.swift; sourceTree = "<group>"; };
 		D3F881E5215F7DE00091C61A /* UIColor+HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColor.swift"; sourceTree = "<group>"; };
+		D3FDDE54216C8BAB0031BCB2 /* DDCLoginRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCLoginRegisterViewController.swift; sourceTree = "<group>"; };
+		D3FDDE58216C8FF00031BCB2 /* DDCInputFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCInputFieldView.swift; sourceTree = "<group>"; };
+		D3FDDE5A216C90050031BCB2 /* DDCSubmitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSubmitButton.swift; sourceTree = "<group>"; };
+		D3FDDE5C216C9FC00031BCB2 /* DDCCircularTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCircularTextFieldView.swift; sourceTree = "<group>"; };
+		D3FDDE5E216CA0970031BCB2 /* DDCCountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCountButton.swift; sourceTree = "<group>"; };
+		D3FDDE60216CB9E70031BCB2 /* DDCCircularTextFieldWithExtraButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCircularTextFieldWithExtraButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				D3F881B3215F2D800091C61A /* DDCOfflineStore */,
-				D3F88197215F2A950091C61A /* DDCOfflineStoreTests */,
 				D3F881A2215F2A950091C61A /* DDCOfflineStoreUITests */,
 				D3F88181215F2A930091C61A /* Products */,
 				08AC3D412C23B4CF66A2EFA6 /* Pods */,
@@ -178,6 +189,7 @@
 		D3F881A2215F2A950091C61A /* DDCOfflineStoreUITests */ = {
 			isa = PBXGroup;
 			children = (
+				D3F88197215F2A950091C61A /* DDCOfflineStoreTests */,
 				D3F881A3215F2A950091C61A /* DDCOfflineStoreUITests.swift */,
 				D3F881A5215F2A950091C61A /* Info.plist */,
 			);
@@ -244,6 +256,7 @@
 				D3F881D0215F587E0091C61A /* DDCContractListViewController.swift */,
 				D3538FA5216B2B1500B3D8A0 /* DDCCreateContractViewController.swift */,
 				D3538FA7216B39F000B3D8A0 /* DDCContractDetailsViewController.swift */,
+				D3FDDE54216C8BAB0031BCB2 /* DDCLoginRegisterViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -255,6 +268,11 @@
 				D3F55B9C2160733A0088A72A /* DDCContractListTableHeaderView.swift */,
 				D3F55BA0216097F20088A72A /* DDCBottomBar.swift */,
 				D3538FA9216B4B7E00B3D8A0 /* DDCBarBackgroundView.swift */,
+				D3FDDE58216C8FF00031BCB2 /* DDCInputFieldView.swift */,
+				D3FDDE5A216C90050031BCB2 /* DDCSubmitButton.swift */,
+				D3FDDE5C216C9FC00031BCB2 /* DDCCircularTextFieldView.swift */,
+				D3FDDE5E216CA0970031BCB2 /* DDCCountButton.swift */,
+				D3FDDE60216CB9E70031BCB2 /* DDCCircularTextFieldWithExtraButtonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -442,24 +460,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3FDDE59216C8FF00031BCB2 /* DDCInputFieldView.swift in Sources */,
 				D3F881DA215F58DD0091C61A /* DDCContractDetailsModel.swift in Sources */,
 				D3F881E6215F7DE00091C61A /* UIColor+HexColor.swift in Sources */,
 				D3F55BA1216097F20088A72A /* DDCBottomBar.swift in Sources */,
 				D3538FA4216B259F00B3D8A0 /* DDCContractListAPIManager.swift in Sources */,
+				D3FDDE5F216CA0970031BCB2 /* DDCCountButton.swift in Sources */,
 				D3F881D4215F587E0091C61A /* DDCContractListViewController.swift in Sources */,
 				D3F881C6215F4B3D0091C61A /* DDCStore.swift in Sources */,
+				D3FDDE5B216C90050031BCB2 /* DDCSubmitButton.swift in Sources */,
 				D3538FA6216B2B1500B3D8A0 /* DDCCreateContractViewController.swift in Sources */,
 				D3F881C4215F45840091C61A /* DDCUserDefaults.swift in Sources */,
 				D3F881DE215F59B90091C61A /* DDCContractStatus.swift in Sources */,
+				D3FDDE55216C8BAB0031BCB2 /* DDCLoginRegisterViewController.swift in Sources */,
 				D3F881D5215F587E0091C61A /* DDCAppDelegate.swift in Sources */,
 				D3F55B9D2160733A0088A72A /* DDCContractListTableHeaderView.swift in Sources */,
 				D3F881CA215F4EC00091C61A /* DDCOpenUUID.swift in Sources */,
+				D3FDDE61216CB9E70031BCB2 /* DDCCircularTextFieldWithExtraButtonView.swift in Sources */,
 				D3538FB0216B549C00B3D8A0 /* DDCContractDetailsCell.swift in Sources */,
 				D3538FAE216B548000B3D8A0 /* DDCContractListTableViewCell.swift in Sources */,
 				D3F881D8215F58B80091C61A /* DDCUserModel.swift in Sources */,
 				D3538FAA216B4B7E00B3D8A0 /* DDCBarBackgroundView.swift in Sources */,
 				D3538F9F216B215800B3D8A0 /* DDCAPIManager.swift in Sources */,
 				D3538FA8216B39F000B3D8A0 /* DDCContractDetailsViewController.swift in Sources */,
+				D3FDDE5D216C9FC00031BCB2 /* DDCCircularTextFieldView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class DDCContractDetailsViewController: UIViewController {
     struct Constants {
@@ -51,7 +52,6 @@ class DDCContractDetailsViewController: UIViewController {
         self.view.addSubview(self.barBackgroundView)
         self.setupViewConstraints()
         self.title = "合同详情"
-        
     }
     
     // MARK: Action
@@ -59,7 +59,7 @@ class DDCContractDetailsViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    // MARK: private
+    // MARK: Private
     func setupViewConstraints() {
         self.barBackgroundView.snp.makeConstraints({ (make) in
             make.top.equalTo(self.view).offset(32 + 64);
@@ -68,7 +68,6 @@ class DDCContractDetailsViewController: UIViewController {
             make.bottom.equalTo(self.view);
         })
     }
-    
   
 }
 

@@ -9,6 +9,7 @@
 import UIKit
 import Bugly
 import AdSupport
+import SnapKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

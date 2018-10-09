@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 struct Constants {
     static let kDDCContractListCellIdentifier = "cell"
@@ -38,14 +39,17 @@ class DDCContractListViewController: UIViewController {
         return tableHeaderView
     }()
     
-//    var contractListView : DDCContractListView?
+    private lazy var user : DDCUserModel = {
+        return DDCStore.sharedStore().user
+    }()
     
-//    private var user : DDCUserModel?
+//    var contractListView : DDCContractListView?
+
 //    private var contractArray : Array<DDCContractDetailsModel>?
 //    private var blankView : DDCButtonView?
 ////    private var orderingUpdate : OrderingUpdateCallback?
-//    private var page : UInt?
-//    private var status : DDCContractStatus?
+    private var page : UInt = 0
+    private var status : DDCContractStatus = .DDCContractStatusAll
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -61,11 +65,11 @@ class DDCContractListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.getData()
         self.view.addSubview(self.tableHeaderView)
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
-        
         self.title = "课程管家"
         
     }
@@ -100,6 +104,23 @@ extension DDCContractListViewController {
             make.top.equalTo(self.view.snp_bottomMargin).offset(-50)
         })
         
+    }
+}
+
+// MARK: API
+extension DDCContractListViewController {
+    func getData() {
+        DDCContractListAPIManager.downloadContractListForPage(page: self.page , status: self.status.rawValue , successHandler: { (Any) in
+            
+        }) { (Any) in
+            
+        }
+    }
+    
+    func login() {
+        if self.user != nil {
+            
+        }
     }
 }
 
