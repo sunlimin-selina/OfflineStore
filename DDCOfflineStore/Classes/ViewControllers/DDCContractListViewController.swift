@@ -39,7 +39,7 @@ class DDCContractListViewController: UIViewController {
         return tableHeaderView
     }()
     
-    private lazy var user : DDCUserModel = {
+    private lazy var user : DDCUserModel? = {
         return DDCStore.sharedStore().user
     }()
     
@@ -47,7 +47,7 @@ class DDCContractListViewController: UIViewController {
 
 //    private var contractArray : Array<DDCContractDetailsModel>?
 //    private var blankView : DDCButtonView?
-////    private var orderingUpdate : OrderingUpdateCallback?
+    private var orderingUpdate : ((_ newOrdering: String) -> Void)?
     private var page : UInt = 0
     private var status : DDCContractStatus = .DDCContractStatusAll
 
@@ -57,7 +57,7 @@ class DDCContractListViewController: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
-        let rightItem = UIBarButtonItem.init(title: "退出帐号", style: .plain, target: self, action: nil)
+        let rightItem = UIBarButtonItem.init(title: "退出帐号", style: .plain, target: self, action: #selector(rightNaviBtnPressed))
         rightItem.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = rightItem
         
@@ -105,6 +105,17 @@ extension DDCContractListViewController {
         })
         
     }
+    
+    @objc func rightNaviBtnPressed() {
+        weak var weakSelf = self
+        let alertController : UIAlertController = UIAlertController.init(title: "你确定要登出吗？", message: nil, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
+            DDCStore.sharedStore().user = nil
+            weakSelf?.login()
+        }))
+        alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: API
@@ -118,8 +129,25 @@ extension DDCContractListViewController {
     }
     
     func login() {
+        weak var weakSelf = self
+        var blockStatus = status
+        
         if self.user != nil {
-            
+            DDCLoginRegisterViewController.loginWithTarget(targetController: self) { (success) in
+                if success {
+                    weakSelf?.dismiss(animated: true, completion: {
+                        if ((weakSelf!.orderingUpdate) != nil) {
+                            blockStatus = .DDCContractStatusAll;
+                            // 请求后台
+//
+//                            [weakSelf loadContractListWithStatus:blockStatus completionHandler:^(BOOL success) {
+//                                // 更新UI
+//                                weakSelf.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus]);
+//                                }];
+                        }
+                    })
+                }
+            }
         }
     }
 }
@@ -162,3 +190,13 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     }
 }
 
+// MARK: API
+extension DDCContractListViewController {
+    func loadContractList() {
+        self.loadContractListWithStatus(status: self.status, completionHandler: nil)
+    }
+    
+    func loadContractListWithStatus(status: DDCContractStatus,completionHandler:((_ success: Bool) -> Void)?) {
+        
+    }
+}

@@ -32,7 +32,7 @@ class DDCStore : NSObject{
         static let DDC_Device_UUID_Key = "OpenUUID"
     }
     
-    lazy var user : DDCUserModel = {
+    lazy var user : DDCUserModel? = {
         var user = DDCUserModel()
         var userData : NSData = DDCUserDefaults.objectForKey(key: DDCStore.kUser) as! NSData
         if userData.length > 0

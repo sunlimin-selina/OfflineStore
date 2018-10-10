@@ -26,45 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DDCOfflineStore/Classes/ViewControllers/DDCContractListViewController.swift"
-            timestampString = "560763046.4128489"
+            timestampString = "560855630.616645"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "getData()"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "login()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Any) -&gt; () in DDCOfflineStore.DDCContractListViewController.getData() -&gt; ()"
-                  moduleName = "DDCOfflineStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/DDCContractListViewController.swift"
-                  timestampString = "560832755.00012"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Any) -&gt; () in DDCOfflineStore.DDCContractListViewController.getData() -&gt; ()"
-                  moduleName = "DDCOfflineStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/DDCContractListViewController.swift"
-                  timestampString = "560832755.0026211"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "117"
-                  endingLineNumber = "117"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

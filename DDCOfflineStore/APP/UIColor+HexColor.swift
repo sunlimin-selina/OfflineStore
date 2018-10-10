@@ -12,10 +12,15 @@ extension UIColor {
 
     public convenience init(hex: String) {
         
+        self.init(hex: hex, alpha: 1.0)
+    }
+    
+    public convenience init(hex: String, alpha:CGFloat) {
+        
         var red:   CGFloat = 0.0
         var green: CGFloat = 0.0
         var blue:  CGFloat = 0.0
-        var alpha: CGFloat = 1.0
+        var alpha: CGFloat = alpha
         var hex:   String = hex
         
         if hex.hasPrefix("#") {
@@ -53,5 +58,4 @@ extension UIColor {
         }
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
-    
 }
