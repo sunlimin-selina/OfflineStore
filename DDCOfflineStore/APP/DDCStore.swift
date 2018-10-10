@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+let screenWidth : CGFloat = UIScreen.main.bounds.width
+let screenHeight : CGFloat = UIScreen.main.bounds.height
+
 class DDCStore : NSObject{
     
     static let instance: DDCStore = DDCStore()
@@ -21,11 +24,6 @@ class DDCStore : NSObject{
     struct AppId {
         static let buglyAppId = "000b731ad0"
 
-    }
-    
-    struct screenSize {
-        static let screenWidth = UIScreen.main.bounds.width
-        static let screenHeight = UIScreen.main.bounds.height
     }
     
     struct Keys {
