@@ -34,7 +34,7 @@ class DDCContractListViewController: UIViewController {
     }()
     
     private lazy var tableHeaderView : DDCContractListTableHeaderView = {
-        let tableHeaderView : DDCContractListTableHeaderView = DDCContractListTableHeaderView()
+        let tableHeaderView : DDCContractListTableHeaderView = DDCContractListTableHeaderView.init(frame: CGRect.zero)
         
         return tableHeaderView
     }()
@@ -60,7 +60,7 @@ class DDCContractListViewController: UIViewController {
         rightItem.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = rightItem
         
-        self.reloadPage()
+        //self.reloadPage()
     }
     
     override func viewDidLoad() {
@@ -89,7 +89,6 @@ extension DDCContractListViewController {
             make.left.right.equalTo(self.view)
             make.top.equalTo(self.view)
             make.height.equalTo(250)
-            make.bottom.equalTo(self.tableView.snp_topMargin)
         }
         
         self.tableView.snp.makeConstraints { (make) in

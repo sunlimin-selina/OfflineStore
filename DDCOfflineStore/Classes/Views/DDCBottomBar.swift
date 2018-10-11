@@ -41,8 +41,6 @@ class DDCBottomBar : UIView {
         self.button.snp.makeConstraints({ (make) in
             make.width.equalTo(400)
             make.height.equalTo(40)
-            make.left.equalTo(self).offset(100)
-            make.right.equalTo(self.snp_rightMargin).offset(-100)
             make.centerX.centerY.equalTo(self)
         })
     }
