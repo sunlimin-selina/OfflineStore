@@ -25,15 +25,24 @@ class DDCLoginRegisterViewController: UIViewController {
     }()
     
     public lazy var inputFieldView : DDCInputFieldView? = {
-        var inputFieldView = DDCInputFieldView.init(frame: CGRect.zero, type: .CircularTextFieldViewTypeNormal)
-        return inputFieldView
+        var _inputFieldView = DDCInputFieldView.init(frame: CGRect.zero)
+        _inputFieldView.firstTextFieldView?.button?.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
+        _inputFieldView.firstTextFieldView?.extraButton?.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
+        _inputFieldView.delegate = self
+        _inputFieldView.secondTextFieldView!.textField!.delegate = self;
+        _inputFieldView.firstTextFieldView!.textField!.delegate = self;
+        _inputFieldView.firstTextFieldView!.textField!.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        _inputFieldView.secondTextFieldView?.textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        
+        self.firstTextFieldView = _inputFieldView.firstTextFieldView;
+        return _inputFieldView
     }()
     
     public var successHandler : ((_ success: Bool) -> Void)?
     
     private var loginState : Bool?
-    private var userNameValidated : Bool?
-    private var passwordValidated : Bool?
+    private var userNameValidated : Bool = false
+    private var passwordValidated : Bool = false
     private var padding : Int?
     private var firstTextFieldView : DDCCircularTextFieldWithExtraButtonView?
     private lazy var contentView : UIView? = {
@@ -60,13 +69,13 @@ class DDCLoginRegisterViewController: UIViewController {
         
         NotificationCenter.default.addObserver(
             self,
-            selector:Selector(("keyboardWillShow:")),
+            selector:#selector(keyboardWillShow(notification:)),
             name:UIResponder.keyboardWillShowNotification,
             object: nil)
         
         NotificationCenter.default.addObserver(
             self,
-            selector:Selector(("keyboardWillHide:")),
+            selector:#selector(keyboardWillHide(notification:)),
             name:UIResponder.keyboardWillHideNotification,
             object: nil)
         
@@ -198,8 +207,8 @@ extension DDCLoginRegisterViewController : UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidChange(textField: UITextField) {
-        if (textField == self.inputFieldView?.firstTextFieldView!.textField) {
+    @objc func textFieldDidChange(textField: UITextField) {
+        if (textField == self.inputFieldView!.firstTextFieldView!.textField) {
             self.userNameValidated = textField.text!.count > 0
         } else {
             self.passwordValidated = false
@@ -208,8 +217,8 @@ extension DDCLoginRegisterViewController : UITextFieldDelegate {
             }
         }
         
-        if self.userNameValidated! ,
-            self.passwordValidated! {
+        if self.userNameValidated,
+            self.passwordValidated {
             self.submitButton?.enableButtonWithType(type: .SubmitButtonTypeNext)
         } else {
             self.submitButton?.enableButtonWithType(type: .SubmitButtonTypeDefault)
@@ -225,7 +234,7 @@ extension DDCLoginRegisterViewController : InputFieldViewDelegate {
         self.submitButton?.enableButtonWithType(type: .SubmitButtonTypeDefault)
     }
     
-    func getVerificationCodeClick(sender: CountButton) {
+    @objc func getVerificationCodeClick(sender: CountButton) {
         self.view.endEditing(true)
 
         if self.loginState! {

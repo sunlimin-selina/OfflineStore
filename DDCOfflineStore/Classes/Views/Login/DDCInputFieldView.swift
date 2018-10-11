@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SnapKit
 
-class DDCInputFieldView: DDCCircularTextFieldView, CountButtonDelegate {
+class DDCInputFieldView: UIView, CountButtonDelegate {
     
     lazy var firstTextFieldView : DDCCircularTextFieldWithExtraButtonView? = {
         var _firstTextFieldView = DDCCircularTextFieldWithExtraButtonView()
@@ -29,13 +30,13 @@ class DDCInputFieldView: DDCCircularTextFieldView, CountButtonDelegate {
     var bottomHidden : Bool?
     var delegate : InputFieldViewDelegate?
     
-    override init(frame: CGRect, type: CircularTextFieldViewType) {
-        super.init(frame: frame, type: .CircularTextFieldViewTypeNormal)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.addSubview(self.firstTextFieldView!)
         self.addSubview(self.secondTextFieldView!)
-        
+        self.updateViewConstraints()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -53,9 +54,34 @@ class DDCInputFieldView: DDCCircularTextFieldView, CountButtonDelegate {
         sender.isSelected = !sender.isSelected
         self.secondTextFieldView!.textField!.isSecureTextEntry = !sender.isSelected
     }
+    
+    func updateViewConstraints() {
+        let kWidth : CGFloat = 424.0
+        let kHeight : CGFloat = 145.0 * 0.3
+        let kTextFieldMargin = (screenWidth - kWidth) / 2
+        
+        self.firstTextFieldView!.snp.makeConstraints { (make) in
+            make.top.equalTo(self).offset(10.0)
+            make.height.equalTo(self).multipliedBy(0.3)
+            make.left.equalTo(self).offset(kTextFieldMargin)
+            make.right.equalTo(self).offset(-kTextFieldMargin)
+            make.centerX.equalTo(self)
+        }
+        
+        self.secondTextFieldView!.snp.makeConstraints { (make) in
+            make.top.equalTo(self.firstTextFieldView!.snp_bottomMargin).offset(10.0)
+            make.height.equalTo(self).multipliedBy(0.3)
+            make.left.equalTo(self).offset(kTextFieldMargin)
+            make.right.equalTo(self).offset(-kTextFieldMargin)
+            make.centerX.equalTo(self);
+        }
+        
+        self.firstTextFieldView!.cornerRadius = kHeight / 2
+        self.secondTextFieldView!.cornerRadius = kHeight / 2
+    }
 }
 
 protocol InputFieldViewDelegate {
-    
+    func inputFieldView(view: DDCInputFieldView, quickLogin: Bool)
 }
 
