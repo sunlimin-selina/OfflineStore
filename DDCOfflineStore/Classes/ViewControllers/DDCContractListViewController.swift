@@ -44,7 +44,6 @@ class DDCContractListViewController: UIViewController {
     }()
     
 //    var contractListView : DDCContractListView?
-
 //    private var contractArray : Array<DDCContractDetailsModel>?
 //    private var blankView : DDCButtonView?
     private var orderingUpdate : ((_ newOrdering: String) -> Void)?
@@ -61,6 +60,7 @@ class DDCContractListViewController: UIViewController {
         rightItem.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = rightItem
         
+        self.reloadPage()
     }
     
     override func viewDidLoad() {
@@ -116,6 +116,16 @@ extension DDCContractListViewController {
         alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
+    
+    func reloadPage() {
+        if self.user != nil {
+//            self.view.profileView.name = self.user.name;
+//            self.view.profileView.imgUrlStr = self.user.imgUrlStr;
+//            [self loadContractList];
+        } else {
+            self.login()
+        }
+    }
 }
 
 // MARK: API
@@ -132,7 +142,7 @@ extension DDCContractListViewController {
         weak var weakSelf = self
         var blockStatus = status
         
-        if self.user != nil {
+        guard self.user != nil else {
             DDCLoginRegisterViewController.loginWithTarget(targetController: self) { (success) in
                 if success {
                     weakSelf?.dismiss(animated: true, completion: {
@@ -148,6 +158,7 @@ extension DDCContractListViewController {
                     })
                 }
             }
+            return
         }
     }
 }
@@ -197,6 +208,11 @@ extension DDCContractListViewController {
     }
     
     func loadContractListWithStatus(status: DDCContractStatus,completionHandler:((_ success: Bool) -> Void)?) {
+        DDCTools.showHUD(view: self.view, animated: true)
+        if status != self.status {
+            self.page = 0
+        }
+        
         
     }
 }

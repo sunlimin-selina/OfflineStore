@@ -80,6 +80,7 @@ class DDCLoginRegisterViewController: UIViewController {
         self.contentView?.addSubview(self.submitButton!)
         self.contentView?.addSubview(self.contentLabel!)
         
+        self.setupViewConstraints()
     }
 
     class func loginWithTarget(targetController: UIViewController, successHandler:@escaping ((_ success: Bool) -> Void)){

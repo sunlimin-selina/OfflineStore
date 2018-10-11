@@ -19,7 +19,7 @@ class DDCStore : NSObject{
         return instance
     }
     
-    static let kUser : String = "User";
+    static let kUser : String = "User"
 
     struct AppId {
         static let buglyAppId = "000b731ad0"
@@ -33,13 +33,12 @@ class DDCStore : NSObject{
     }
     
     lazy var user : DDCUserModel? = {
-        var user = DDCUserModel()
-        var userData : NSData = DDCUserDefaults.objectForKey(key: DDCStore.kUser) as! NSData
-        if userData.length > 0
-        {
-            user = NSKeyedUnarchiver.unarchiveObject(with: userData as Data) as! DDCUserModel
+        var _user: DDCUserModel?
+        var userData : Any? = DDCUserDefaults.objectForKey(key: DDCStore.kUser)
+        if let _userData = userData as? Data {
+            _user = NSKeyedUnarchiver.unarchiveObject(with: _userData) as? DDCUserModel
         }
-        return user
+        return _user
     }()
     
 }
