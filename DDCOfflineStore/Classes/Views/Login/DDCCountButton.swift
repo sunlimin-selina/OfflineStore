@@ -32,14 +32,14 @@ class CountButton: UIButton {
         self.countDownTimer = nil
         self.countDown = CountButton.countTime
         self.isEnabled = false
-        self.setTitleColor(UIColor.init(hex: "#A5A4A4"), for: .normal)
+        self.setTitleColor(DDCColor.mainColor.orange, for: .normal)
         self.countDownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(countDownTime), userInfo: nil, repeats: true)
     }
     
     func stopCountDown() {
-        self.counting = false;
+        self.counting = false
         self.countDownTimer?.invalidate()
-        self.countDownTimer = nil;
+        self.countDownTimer = nil
         self.isEnabled = true
         self.setTitle("重新发送", for: .normal)
     }

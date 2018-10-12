@@ -7,11 +7,11 @@
 //
 
 enum DDCContractStatus : UInt{
-    case DDCContractStatusAll
-    case DDCContractStatusEffective//生效中
-    case DDCContractStatusIneffective//未生效
-    case DDCContractStatusInComplete//未完成
-    case DDCContractStatusCompleted//已结束
-    case DDCContractStatusRevoked//已解除
-    case DDCContractStatusUsed//已核销
+    case all
+    case effective//生效中
+    case ineffective//未生效
+    case inComplete//未完成
+    case completed//已结束
+    case revoked//已解除
+    case used//已核销
 }

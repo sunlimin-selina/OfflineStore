@@ -26,9 +26,9 @@ class DDCContractListViewController: UIViewController {
     private lazy var tableView : UITableView = {
         let tableView : UITableView = UITableView()
         tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: Constants.kDDCContractListCellIdentifier)
-        tableView.rowHeight = 100.0;
-        tableView.delegate = self;
-        tableView.dataSource = self;
+        tableView.rowHeight = 100.0
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.isUserInteractionEnabled = true
         return tableView
     }()
@@ -43,12 +43,11 @@ class DDCContractListViewController: UIViewController {
         return DDCStore.sharedStore().user
     }()
     
-//    var contractListView : DDCContractListView?
 //    private var contractArray : Array<DDCContractDetailsModel>?
 //    private var blankView : DDCButtonView?
     private var orderingUpdate : ((_ newOrdering: String) -> Void)?
     private var page : UInt = 0
-    private var status : DDCContractStatus = .DDCContractStatusAll
+    private var status : DDCContractStatus = .all
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -119,9 +118,9 @@ extension DDCContractListViewController {
     
     func reloadPage() {
         if self.user != nil {
-//            self.view.profileView.name = self.user.name;
-//            self.view.profileView.imgUrlStr = self.user.imgUrlStr;
-//            [self loadContractList];
+//            self.view.profileView.name = self.user.name
+//            self.view.profileView.imgUrlStr = self.user.imgUrlStr
+//            [self loadContractList]
         } else {
             self.login()
         }
@@ -147,13 +146,13 @@ extension DDCContractListViewController {
                 if success {
                     weakSelf?.dismiss(animated: true, completion: {
                         if ((weakSelf!.orderingUpdate) != nil) {
-                            blockStatus = .DDCContractStatusAll;
+                            blockStatus = .all
                             // 请求后台
 //
 //                            [weakSelf loadContractListWithStatus:blockStatus completionHandler:^(BOOL success) {
 //                                // 更新UI
-//                                weakSelf.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus]);
-//                                }];
+//                                weakSelf.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus])
+//                                }]
                         }
                     })
                 }
@@ -167,15 +166,15 @@ extension DDCContractListViewController {
 extension DDCContractListViewController : UITableViewDataSource , UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1;
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1;
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = (self.tableView.dequeueReusableCell(withIdentifier: Constants.kDDCContractListCellIdentifier, for: indexPath)) as! DDCContractListTableViewCell;
+        let cell = (self.tableView.dequeueReusableCell(withIdentifier: Constants.kDDCContractListCellIdentifier, for: indexPath)) as! DDCContractListTableViewCell
         
         return cell
     }

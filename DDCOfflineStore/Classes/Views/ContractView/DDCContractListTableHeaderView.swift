@@ -15,7 +15,7 @@ class DDCContractListTableHeaderView: UIView {
         let backgroundView : UIImageView = UIImageView.init(image: UIImage.init(named: "background"))
         backgroundView.contentMode = .scaleAspectFill
         backgroundView.clipsToBounds = true
-        return backgroundView;
+        return backgroundView
     }()
     
     private lazy var portraitView : UIImageView = {
@@ -23,7 +23,7 @@ class DDCContractListTableHeaderView: UIView {
         portraitView.frame = CGRect.init(x: 0, y: 0, width: 50, height: 50)
         portraitView.contentMode = .scaleAspectFill
         portraitView.clipsToBounds = true
-        return portraitView;
+        return portraitView
     }()
     
     private lazy var userName : UILabel = {
@@ -31,7 +31,7 @@ class DDCContractListTableHeaderView: UIView {
         userName.text = "测试销售"
         userName.textColor = UIColor.white
         userName.font = UIFont.boldSystemFont(ofSize: 18)
-        return userName;
+        return userName
     }()
     
     override init(frame: CGRect) {

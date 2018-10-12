@@ -45,7 +45,7 @@ class DDCInputFieldView: UIView, CountButtonDelegate {
         if isFinished,
             self.firstTextFieldView!.textField!.text != nil,
             DDCTools.isPhoneNumber(number: self.firstTextFieldView!.textField!.text!) {
-            button.setTitleColor(UIColor.init(hex: "#FF5D31"), for: .normal)
+            button.setTitleColor(DDCColor.mainColor.orange, for: .normal)
             button.isEnabled = true
         }
     }
@@ -73,7 +73,7 @@ class DDCInputFieldView: UIView, CountButtonDelegate {
             make.height.equalTo(self).multipliedBy(0.3)
             make.left.equalTo(self).offset(kTextFieldMargin)
             make.right.equalTo(self).offset(-kTextFieldMargin)
-            make.centerX.equalTo(self);
+            make.centerX.equalTo(self)
         }
         
         self.firstTextFieldView!.cornerRadius = kHeight / 2

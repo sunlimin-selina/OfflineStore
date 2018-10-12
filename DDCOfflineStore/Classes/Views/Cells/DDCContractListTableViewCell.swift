@@ -15,14 +15,14 @@ class DDCContractListTableViewCell: UITableViewCell {
         let icon : UIImageView = UIImageView.init(image: UIImage.init(named: "icon_contractdetails_shengxiaozhong"))
         icon.contentMode = .scaleAspectFill
         icon.clipsToBounds = true
-        return icon;
+        return icon
     }()
     
     private lazy var titleLabel : UILabel = {
         let titleLabel : UILabel = UILabel()
         titleLabel.text = "selina 15921519009"
         titleLabel.font = UIFont.systemFont(ofSize: 18)
-        return titleLabel;
+        return titleLabel
     }()
     
     private lazy var datetime : UILabel = {
@@ -30,14 +30,14 @@ class DDCContractListTableViewCell: UITableViewCell {
         datetime.text = "2018/08/30"
         datetime.textColor = UIColor.gray
         datetime.font = UIFont.systemFont(ofSize: 16)
-        return datetime;
+        return datetime
     }()
     
     private lazy var subtitleLabel : UILabel = {
         let subtitleLabel : UILabel = UILabel()
         subtitleLabel.text = "生效中"
         subtitleLabel.font = UIFont.systemFont(ofSize: 18)
-        return subtitleLabel;
+        return subtitleLabel
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

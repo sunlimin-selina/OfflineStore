@@ -20,9 +20,9 @@ class DDCSubmitButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.init(hex: "#A5A4A4")
+        self.backgroundColor = DDCColor.fontColor.gray
         self.layer.cornerRadius = 22.5
-        self.layer.shadowColor = UIColor.init(hex: "#A5A4A4").cgColor
+        self.layer.shadowColor = DDCColor.fontColor.gray.cgColor
         self.layer.shadowRadius = 6.0
         self.layer.shadowOffset = CGSize.init(width: 0.0, height: 2.0)
         self.layer.shadowOpacity = 0.6
@@ -39,28 +39,28 @@ class DDCSubmitButton: UIButton {
         switch type {
         case .SubmitButtonTypeCommit:
             do {
-                self.backgroundColor = UIColor.init(hex: "#FF5D31")
-                self.layer.shadowColor = UIColor.init(hex: "#FF5D31").cgColor;
+                self.backgroundColor = DDCColor.mainColor.orange
+                self.layer.shadowColor = DDCColor.mainColor.orange.cgColor
                 self.setImage(UIImage.init(named: "sign_btn_finish"), for: .normal)
             }
         case .SubmitButtonTypeNext:
             do {
-                self.backgroundColor = UIColor.init(hex: "#FF5D31")
-                self.layer.shadowColor = UIColor.init(hex: "#FF5D31").cgColor
+                self.backgroundColor = DDCColor.mainColor.orange
+                self.layer.shadowColor = DDCColor.mainColor.orange.cgColor
                 self.setImage(UIImage.init(named: "sign_btn_next"), for: .normal)
 
             }
         case .SubmitButtonTypeUnCommittable:
             do {
-                self.backgroundColor = UIColor.init(hex: "#A5A4A4")
-                self.layer.shadowColor = UIColor.init(hex: "#A5A4A4").cgColor
+                self.backgroundColor = DDCColor.fontColor.gray
+                self.layer.shadowColor = DDCColor.fontColor.gray.cgColor
                 self.setImage(UIImage.init(named: "sign_btn_finish"), for: .normal)
 
             }
         default:
             do {
-                self.backgroundColor = UIColor.init(hex: "#A5A4A4")
-                self.layer.shadowColor = UIColor.init(hex: "#A5A4A4").cgColor
+                self.backgroundColor = DDCColor.fontColor.gray
+                self.layer.shadowColor = DDCColor.fontColor.gray.cgColor
                 self.setImage(UIImage.init(named: "sign_btn_next"), for: .normal)
             }
         }

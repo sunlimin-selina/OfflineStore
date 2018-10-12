@@ -43,16 +43,16 @@ extension DDCBarBackgroundView {
         
         let maskPath : UIBezierPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft , .topRight], cornerRadii: CGSize.init(width: 20.0, height: 20.0))
         let maskLayer : CAShapeLayer = CAShapeLayer.init()
-        maskLayer.frame = self.bounds;
-        maskLayer.path = maskPath.cgPath;
-        self.layer.mask = maskLayer;
+        maskLayer.frame = self.bounds
+        maskLayer.path = maskPath.cgPath
+        self.layer.mask = maskLayer
     }
     
     //设置黑色阴影
     func setBlackShadow() {
-        self.layer.masksToBounds = true;
-        self.layer.shadowRadius = 5.0;
-        self.layer.shadowOffset = CGSize.init(width: 20.0, height: 20.0);
+        self.layer.masksToBounds = true
+        self.layer.shadowRadius = 5.0
+        self.layer.shadowOffset = CGSize.init(width: 20.0, height: 20.0)
         self.layer.shadowColor = UIColor.white.cgColor
     }
     

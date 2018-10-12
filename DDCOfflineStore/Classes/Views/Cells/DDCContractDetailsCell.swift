@@ -16,7 +16,7 @@ class DDCContractDetailsCell: UITableViewCell {
         titleLabel.text = "合同状态"
         titleLabel.font = UIFont.systemFont(ofSize: 18)
         titleLabel.textColor = UIColor.gray
-        return titleLabel;
+        return titleLabel
     }()
     
     private lazy var subtitleLabel : UILabel = {
@@ -24,7 +24,7 @@ class DDCContractDetailsCell: UITableViewCell {
         subtitleLabel.text = "已解除"
         subtitleLabel.font = UIFont.systemFont(ofSize: 18)
         subtitleLabel.textColor = UIColor.gray
-        return subtitleLabel;
+        return subtitleLabel
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

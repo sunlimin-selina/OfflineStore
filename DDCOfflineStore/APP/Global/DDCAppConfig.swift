@@ -7,4 +7,11 @@
 //
 
 import Foundation
+import UIKit
 
+let screenWidth : CGFloat = UIScreen.main.bounds.width
+let screenHeight : CGFloat = UIScreen.main.bounds.height
+
+class DDCAppConfig: NSObject {
+    
+}

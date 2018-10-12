@@ -14,7 +14,7 @@
 		D3CC64FE216F2C7C00383DD5 /* DDCAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64D5216F2C7C00383DD5 /* DDCAPIManager.swift */; };
 		D3CC64FF216F2C7C00383DD5 /* DDCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64D6216F2C7C00383DD5 /* DDCAppDelegate.swift */; };
 		D3CC6500216F2C7C00383DD5 /* UIView+DDCToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64D8216F2C7C00383DD5 /* UIView+DDCToast.swift */; };
-		D3CC6501216F2C7C00383DD5 /* UIColor+HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64D9216F2C7C00383DD5 /* UIColor+HexColor.swift */; };
+		D3CC6501216F2C7C00383DD5 /* DDCColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64D9216F2C7C00383DD5 /* DDCColor.swift */; };
 		D3CC6502216F2C7C00383DD5 /* DDCOpenUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64DB216F2C7C00383DD5 /* DDCOpenUUID.swift */; };
 		D3CC6503216F2C7C00383DD5 /* DDCTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64DC216F2C7C00383DD5 /* DDCTools.swift */; };
 		D3CC6504216F2C7C00383DD5 /* DDCContractStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64DD216F2C7C00383DD5 /* DDCContractStatus.swift */; };
@@ -72,7 +72,7 @@
 		D3CC64D5216F2C7C00383DD5 /* DDCAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCAPIManager.swift; sourceTree = "<group>"; };
 		D3CC64D6216F2C7C00383DD5 /* DDCAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCAppDelegate.swift; sourceTree = "<group>"; };
 		D3CC64D8216F2C7C00383DD5 /* UIView+DDCToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+DDCToast.swift"; sourceTree = "<group>"; };
-		D3CC64D9216F2C7C00383DD5 /* UIColor+HexColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+HexColor.swift"; sourceTree = "<group>"; };
+		D3CC64D9216F2C7C00383DD5 /* DDCColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCColor.swift; sourceTree = "<group>"; };
 		D3CC64DB216F2C7C00383DD5 /* DDCOpenUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCOpenUUID.swift; sourceTree = "<group>"; };
 		D3CC64DC216F2C7C00383DD5 /* DDCTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCTools.swift; sourceTree = "<group>"; };
 		D3CC64DD216F2C7C00383DD5 /* DDCContractStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractStatus.swift; sourceTree = "<group>"; };
@@ -184,7 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				D3CC64D8216F2C7C00383DD5 /* UIView+DDCToast.swift */,
-				D3CC64D9216F2C7C00383DD5 /* UIColor+HexColor.swift */,
+				D3CC64D9216F2C7C00383DD5 /* DDCColor.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -543,7 +543,7 @@
 				D3CC650C216F2C7C00383DD5 /* DDCLoginRegisterViewController.swift in Sources */,
 				D3F50A6321704F09000C773A /* DDCLoadingView.swift in Sources */,
 				D3F50A6D21704F09000C773A /* DDCCircularTextFieldView.swift in Sources */,
-				D3CC6501216F2C7C00383DD5 /* UIColor+HexColor.swift in Sources */,
+				D3CC6501216F2C7C00383DD5 /* DDCColor.swift in Sources */,
 				D3CC6505216F2C7C00383DD5 /* DDCAppConfig.swift in Sources */,
 				D3CC6507216F2C7C00383DD5 /* DDCUserDefaults.swift in Sources */,
 				D3F50A6821704F09000C773A /* DDCBarBackgroundView.swift in Sources */,

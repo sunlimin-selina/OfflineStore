@@ -27,7 +27,7 @@ class DDCTools : NSObject{
                 view.addSubview(DDCLoadingView.sharedLoading())
                 DDCLoadingView.sharedLoading().runAnimation()
                 DDCLoadingView.sharedLoading().snp.makeConstraints { (make) in
-                    make.edges.equalTo(view);
+                    make.edges.equalTo(view)
                 }
             }
         }

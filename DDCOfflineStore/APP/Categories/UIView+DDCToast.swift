@@ -28,7 +28,7 @@ extension UIView {
         let backgroundView = UIView()
         backgroundView.layer.masksToBounds = true
         backgroundView.layer.cornerRadius = 8.0
-        backgroundView.backgroundColor = UIColor.init(hex: "#000000", alpha: 0.70)
+        backgroundView.backgroundColor = DDCColor.colorWithHex(RGB: 0x000000, alpha: 0.7)
         backgroundView.alpha = 0.0
         
         let titleLabel = UILabel()
@@ -54,8 +54,8 @@ extension UIView {
             } else {
                 make.centerY.equalTo(self)
             }
-            make.width.equalTo(kViewWidth);
-            make.height.equalTo(height);
+            make.width.equalTo(kViewWidth)
+            make.height.equalTo(height)
         }
         
         switch position {
@@ -63,9 +63,9 @@ extension UIView {
             do{
                 imageView.snp.makeConstraints { (make) in
                     make.top.equalTo(backgroundView).offset(kVerticalPadding)
-                    make.centerX.equalTo(backgroundView);
-                    make.width.equalTo(image.size.width);
-                    make.height.equalTo(image.size.height);
+                    make.centerX.equalTo(backgroundView)
+                    make.width.equalTo(image.size.width)
+                    make.height.equalTo(image.size.height)
                 }
                 
                 titleLabel.snp.makeConstraints { (make) in

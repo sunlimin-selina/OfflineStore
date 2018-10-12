@@ -11,8 +11,8 @@ import Foundation
 class DDCOpenUUID : NSObject {
     struct identifier {
         var kOpenUUIDSessionCache : String?
-        static let kUUIDInSerice = "app.daydaycook.uuid.service";
-        static let kOpenUUIDDomain = "app.daydaycook.OpenUDID";
+        static let kUUIDInSerice = "app.daydaycook.uuid.service"
+        static let kOpenUUIDDomain = "app.daydaycook.OpenUDID"
     }
     
     class func randomUUID () -> String {
@@ -21,7 +21,7 @@ class DDCOpenUUID : NSObject {
         }
         let uuidRef : CFUUID = CFUUIDCreate(kCFAllocatorDefault)
         let cfuuid : CFString = CFUUIDCreateString(kCFAllocatorDefault, uuidRef)
-        return cfuuid as String;
+        return cfuuid as String
     }
     
     class func value () -> String{
@@ -33,25 +33,25 @@ class DDCOpenUUID : NSObject {
 //            if (error!=nil)
 //            *error = [NSError errorWithDomain:kOpenUUIDDomain
 //            code:kOpenUUIDErrorNone
-//            userInfo:@{@"description": @"OpenUUID in cache from first call"}];
-//            return kOpenUUIDSessionCache;
+//            userInfo:@{@"description": @"OpenUUID in cache from first call"}]
+//            return kOpenUUIDSessionCache
 //        }
 //
-        return DDCOpenUUID.userDefault();
+        return DDCOpenUUID.userDefault()
     }
     
     class func userDefault () -> String{
         let kOpenUUIDSessionCache = DDCUserDefaults.objectForKey(key: DDCStore.Keys.DDC_Device_UUID_Key)
 //        if (!kOpenUUIDSessionCache || !kOpenUUIDSessionCache.length) {
-//            kOpenUUIDSessionCache = [DDC_OpenUUID randomUUID];
-//            [DDCUserDefaults setObject:kOpenUUIDSessionCache forKey:DDC_Device_UUID_Key];//kOpenUUID
-//            DDC_Share_UUID = kOpenUUIDSessionCache;
+//            kOpenUUIDSessionCache = [DDC_OpenUUID randomUUID]
+//            [DDCUserDefaults setObject:kOpenUUIDSessionCache forKey:DDC_Device_UUID_Key]//kOpenUUID
+//            DDC_Share_UUID = kOpenUUIDSessionCache
 //
-//            [DDC_OpenUUID uploadDeviceInfoData];
+//            [DDC_OpenUUID uploadDeviceInfoData]
 //        }else if(![DDCUserDefaults objectForKey:kUUIDInSerice]) {
-//            [DDC_OpenUUID uploadDeviceInfoData];
+//            [DDC_OpenUUID uploadDeviceInfoData]
 //        }
-        return kOpenUUIDSessionCache as! String;
+        return kOpenUUIDSessionCache as! String
     }
     
 

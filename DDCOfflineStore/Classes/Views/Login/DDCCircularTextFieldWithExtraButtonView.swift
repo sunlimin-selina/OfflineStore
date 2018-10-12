@@ -15,8 +15,8 @@ class DDCCircularTextFieldWithExtraButtonView : DDCCircularTextFieldView {
         _extraButton.contentHorizontalAlignment = .right
         _extraButton.titleLabel!.font = UIFont.systemFont(ofSize: 10.0)
         _extraButton.setTitle("获取验证码", for: .normal)
-        _extraButton.setTitleColor((UIColor.init(hex: "#A5A4A4")), for: .normal)
-        _extraButton.isHidden = true;
+        _extraButton.setTitleColor(DDCColor.fontColor.gray, for: .normal)
+        _extraButton.isHidden = true
         return _extraButton
     }()
     var showExtraButton : Bool? {
@@ -54,7 +54,7 @@ class DDCCircularTextFieldWithExtraButtonView : DDCCircularTextFieldView {
     // MARK: Private
     func updateViewConstraints() {
         self.extraButton?.snp.makeConstraints({ (make) in
-            make.top.bottom.equalTo(self.contentView!);
+            make.top.bottom.equalTo(self.contentView!)
             make.right.equalTo((self.contentView?.snp_rightMargin)!).offset(-14.0)
             make.width.equalTo(70.0)
         })

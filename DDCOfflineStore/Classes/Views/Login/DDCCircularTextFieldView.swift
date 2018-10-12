@@ -21,9 +21,9 @@ class DDCCircularTextFieldView: UIView {
     
     lazy var contentView : UIView? = {
         var _contentView = UIView.init()
-        _contentView.layer.shadowColor = (UIColor.init(hex: "#A5A4A4")).cgColor;
-        _contentView.layer.shadowRadius = 5.0;
-        _contentView.layer.shadowOpacity = 0.4;
+        _contentView.layer.shadowColor = DDCColor.fontColor.gray.cgColor
+        _contentView.layer.shadowRadius = 5.0
+        _contentView.layer.shadowOpacity = 0.4
         _contentView.layer.shadowOffset = CGSize.init(width: 0.0, height: 2.0)
         _contentView.backgroundColor = UIColor.white
         return _contentView
@@ -46,7 +46,7 @@ class DDCCircularTextFieldView: UIView {
         _button.contentHorizontalAlignment = .right
         _button.titleLabel?.font = UIFont.systemFont(ofSize: 10.0)
         _button.setTitle("获取验证码", for: .normal)
-        _button.setTitleColor((UIColor.init(hex: "#A5A4A4")), for: .normal)
+        _button.setTitleColor(DDCColor.mainColor.orange, for: .normal)
         return _button
     }()
     
@@ -109,8 +109,8 @@ class DDCCircularTextFieldView: UIView {
     // MARK: Private
     func setupViewConstraints() {
         self.contentView?.snp.makeConstraints({ (make) in
-            make.top.left.equalTo(self);
-            make.bottom.right.equalTo(self);
+            make.top.left.equalTo(self)
+            make.bottom.right.equalTo(self)
         })
         
         self.textField?.snp.makeConstraints({ (make) in

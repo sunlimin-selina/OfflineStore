@@ -25,7 +25,7 @@ class DDCBarButton : UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.init(hex: "#FF5D31")
+        self.backgroundColor = DDCColor.mainColor.orange
         self.setTitleColor(UIColor.white, for: .normal)
         self.layer.cornerRadius = 20
         self.addTarget(self, action: #selector(clickAction(sender:)), for: .touchUpInside)

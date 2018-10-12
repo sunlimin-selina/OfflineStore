@@ -29,12 +29,12 @@ class DDCLoginRegisterViewController: UIViewController {
         _inputFieldView.firstTextFieldView?.button?.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
         _inputFieldView.firstTextFieldView?.extraButton?.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
         _inputFieldView.delegate = self
-        _inputFieldView.secondTextFieldView!.textField!.delegate = self;
-        _inputFieldView.firstTextFieldView!.textField!.delegate = self;
+        _inputFieldView.secondTextFieldView!.textField!.delegate = self
+        _inputFieldView.firstTextFieldView!.textField!.delegate = self
         _inputFieldView.firstTextFieldView!.textField!.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         _inputFieldView.secondTextFieldView?.textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         
-        self.firstTextFieldView = _inputFieldView.firstTextFieldView;
+        self.firstTextFieldView = _inputFieldView.firstTextFieldView
         return _inputFieldView
     }()
     
@@ -107,7 +107,7 @@ extension DDCLoginRegisterViewController {
     
     @objc func keyboardWillShow(notification : NSNotification) {
         UIView.animate(withDuration: 0.23) {
-            self.icon!.alpha = 0;
+            self.icon!.alpha = 0
             self.contentView!.frame = CGRect.init(x: 0.0, y: -kOffsetHeight, width: screenWidth, height: screenHeight)
         }
         DDCKeyboardStateListener.sharedStore().isVisible = true
@@ -115,7 +115,7 @@ extension DDCLoginRegisterViewController {
     
     @objc func keyboardWillHide(notification : NSNotification) {
         UIView.animate(withDuration: 0.23) {
-            self.icon!.alpha = 1;
+            self.icon!.alpha = 1
             self.contentView!.frame = CGRect.init(x: 0, y: 0, width: screenWidth, height: screenHeight)
         }
         DDCKeyboardStateListener.sharedStore().isVisible = false
@@ -156,7 +156,7 @@ extension DDCLoginRegisterViewController {
         
         self.submitButton?.snp.makeConstraints({ (make) in                 make.top.equalTo(self.inputFieldView!.snp_bottomMargin).offset(kTopMargin)
             make.width.height.equalTo(45.0)
-            make.centerX.equalTo(self.contentView!);
+            make.centerX.equalTo(self.contentView!)
         })
     }
     
@@ -169,21 +169,21 @@ extension DDCLoginRegisterViewController {
     }
     
     func loginActionWithUserName(userName: String, password: String) {
-        //    [Tools showHUDAddedTo:self.view animated:YES];
+        //    [Tools showHUDAddedTo:self.view animated:YES]
         //        self.submitButton?.isEnabled = false
         //        [DDCSystemUserLoginAPIManager loginWithUsername:userName password:password successHandler:^(DDCUserModel *user) {
-        //            [DDCStore sharedStore].user = user;
-        //            [Tools showHUDAddedTo:self.view animated: NO];
+        //            [DDCStore sharedStore].user = user
+        //            [Tools showHUDAddedTo:self.view animated: NO]
         //            if (self.successHandler)
         //            {
-        //            self.successHandler(YES);
+        //            self.successHandler(YES)
         //            }
         //            } failHandler:^(NSError *err) {
-        //            self.submitButton.enabled = YES;
-        //            [Tools showHUDAddedTo:self.view animated: NO];
-        //            NSString * errStr = err.userInfo[NSLocalizedDescriptionKey];
-        //            [self.view makeDDCToast:errStr image:[UIImage imageNamed:@"addCar_icon_fail"]];
-        //            }];
+        //            self.submitButton.enabled = YES
+        //            [Tools showHUDAddedTo:self.view animated: NO]
+        //            NSString * errStr = err.userInfo[NSLocalizedDescriptionKey]
+        //            [self.view makeDDCToast:errStr image:[UIImage imageNamed:@"addCar_icon_fail"]]
+        //            }]
     }
 }
 
