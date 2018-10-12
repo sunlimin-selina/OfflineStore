@@ -15,12 +15,12 @@ struct Constants {
 
 class DDCContractListViewController: UIViewController {
     private lazy var bottomBar : DDCBottomBar = {
-        let bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.zero, handler: {
+        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        _bottomBar.addButton(button:DDCBarButton.init(title: "创建新合同", style: .normal, handler: {
             let viewController : DDCCreateContractViewController = DDCCreateContractViewController()
-        self.navigationController?.pushViewController(viewController, animated: true)
-        })
-
-        return bottomBar;
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }))
+        return _bottomBar
     }()
     
     private lazy var tableView : UITableView = {
@@ -71,7 +71,6 @@ class DDCContractListViewController: UIViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.title = "课程管家"
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -85,6 +84,7 @@ class DDCContractListViewController: UIViewController {
 // MARK: private
 extension DDCContractListViewController {
     private func setupViewConstraints() {
+        
         self.tableHeaderView.snp.makeConstraints { (make) in
             make.left.right.equalTo(self.view)
             make.top.equalTo(self.view)
@@ -96,11 +96,12 @@ extension DDCContractListViewController {
             make.left.right.bottom.equalTo(self.view)
         }
         
+        let kBarHeight : CGFloat = 60.0
         self.bottomBar.snp.makeConstraints({ (make) in
             make.width.equalTo(UIScreen.main.bounds.width)
-            make.height.equalTo(50)
+            make.height.equalTo(kBarHeight)
             make.left.right.equalTo(self.view)
-            make.top.equalTo(self.view.snp_bottomMargin).offset(-50)
+            make.top.equalTo(self.view.snp_bottomMargin).offset(-kBarHeight)
         })
         
     }
