@@ -37,7 +37,7 @@ class DDCContractDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.barTintColor = DDCColor.mainColor.orange
+        self.navigationController?.navigationBar.barTintColor = UIColor.white
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         let leftItem = UIBarButtonItem.init(image: UIImage.init(named: "icon_back"), style: .plain, target: self, action: #selector(goBack))

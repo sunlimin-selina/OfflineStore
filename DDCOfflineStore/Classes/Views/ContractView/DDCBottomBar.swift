@@ -15,7 +15,7 @@ class DDCBottomBar : UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.white
-        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.borderColor = DDCColor.complementaryColor.separatorColor.cgColor
         self.layer.borderWidth = 1.0
         self.isUserInteractionEnabled = true
     }

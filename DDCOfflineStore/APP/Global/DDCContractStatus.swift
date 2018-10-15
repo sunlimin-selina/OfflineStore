@@ -15,3 +15,9 @@ enum DDCContractStatus : UInt{
     case revoked//已解除
     case used//已核销
 }
+
+enum DDCCourseType {
+    case none
+    case regular // 正式课程
+    case sample  // 体验课程
+}
