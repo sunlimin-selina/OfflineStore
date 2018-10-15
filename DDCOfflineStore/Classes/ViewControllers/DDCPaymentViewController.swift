@@ -8,6 +8,6 @@
 
 import UIKit
 
-class DDCPaymentViewController: UIViewController {
+class DDCPaymentViewController: DDCChildContractViewController {
     
 }

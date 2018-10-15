@@ -8,6 +8,6 @@
 
 import UIKit
 
-class DDCAddContractInfoViewController: UIViewController {
+class DDCAddContractInfoViewController: DDCChildContractViewController {
     
 }

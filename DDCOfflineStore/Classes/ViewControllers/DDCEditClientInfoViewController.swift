@@ -8,6 +8,6 @@
 
 import UIKit
 
-class DDCEditClientInfoViewController: UIViewController {
+class DDCEditClientInfoViewController: DDCChildContractViewController {
    
 }

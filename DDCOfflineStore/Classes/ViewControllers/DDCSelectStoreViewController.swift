@@ -8,6 +8,6 @@
 
 import UIKit
 
-class DDCSelectStoreViewController: UIViewController {
+class DDCSelectStoreViewController: DDCChildContractViewController {
     
 }

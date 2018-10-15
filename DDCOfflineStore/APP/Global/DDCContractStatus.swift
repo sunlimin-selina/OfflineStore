@@ -21,3 +21,9 @@ enum DDCCourseType {
     case regular // 正式课程
     case sample  // 体验课程
 }
+
+enum DDCContractState {
+    case done
+    case doing
+    case todo
+}

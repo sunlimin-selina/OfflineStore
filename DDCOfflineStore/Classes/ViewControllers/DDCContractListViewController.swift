@@ -17,7 +17,7 @@ class DDCContractListViewController: UIViewController {
     private lazy var bottomBar : DDCBottomBar = {
         let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "创建新合同", style: .normal, handler: {
-            let viewController : DDCCreateContractViewController = DDCCreateContractViewController()
+            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .DDCContractProgressAddPhoneNumber, model: nil)
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar
