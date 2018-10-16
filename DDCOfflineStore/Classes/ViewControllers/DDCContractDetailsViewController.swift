@@ -21,7 +21,7 @@ class DDCContractDetailsViewController: UIViewController {
         barBackgroundView.tableView.delegate = self as? UITableViewDelegate
         barBackgroundView.tableView.dataSource = self as? UITableViewDataSource
         barBackgroundView.tableView.separatorStyle = .none
-        barBackgroundView.tableView.register(DDCContractDetailsCell.self, forCellReuseIdentifier: Constants.kDDCContractDetailCellIdentifier)
+        barBackgroundView.tableView.register(DDCContractDetailsCell.self, forCellReuseIdentifier: String(describing: DDCContractDetailsCell.self))
         return barBackgroundView
     }()
     
@@ -83,7 +83,7 @@ extension DDCContractDetailsViewController : UITableViewDataSource , UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = (self.barBackgroundView.tableView.dequeueReusableCell(withIdentifier: Constants.kDDCContractDetailCellIdentifier, for: indexPath)) as! DDCContractDetailsCell
+        let cell = (self.barBackgroundView.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractDetailsCell.self), for: indexPath)) as! DDCContractDetailsCell
         
         return cell
     }

@@ -25,7 +25,7 @@ class DDCContractListViewController: UIViewController {
     
     private lazy var tableView : UITableView = {
         let tableView : UITableView = UITableView()
-        tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: Constants.kDDCContractListCellIdentifier)
+        tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListTableViewCell.self))
         tableView.rowHeight = 100.0
         tableView.delegate = self
         tableView.dataSource = self
@@ -174,7 +174,7 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = (self.tableView.dequeueReusableCell(withIdentifier: Constants.kDDCContractListCellIdentifier, for: indexPath)) as! DDCContractListTableViewCell
+        let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListTableViewCell.self), for: indexPath)) as! DDCContractListTableViewCell
         
         return cell
     }

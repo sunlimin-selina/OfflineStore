@@ -29,7 +29,7 @@ class DDCCreateContractViewController: UIViewController{
         var _categorys = Array<Any>()
         var interval : UInt = self.progress.rawValue - DDCContractProgress.DDCContractProgressAddPhoneNumber.rawValue
         
-        for index in 0...titles.count{
+        for index in 0...(titles.count - 1){
             var model : DDCContractStateInfoViewModel = DDCContractStateInfoViewModel()
             model.title = titles[index]
             
