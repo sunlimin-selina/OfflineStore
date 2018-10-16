@@ -92,7 +92,7 @@ class DDCLoginRegisterViewController: UIViewController {
         self.setupViewConstraints()
     }
 
-    class func loginWithTarget(targetController: UIViewController, successHandler:@escaping ((_ success: Bool) -> Void)){
+    class func login(targetController: UIViewController, successHandler:@escaping ((_ success: Bool) -> Void)){
         let loginViewController : DDCLoginRegisterViewController = DDCLoginRegisterViewController()
         loginViewController.successHandler = successHandler
         
@@ -168,22 +168,18 @@ extension DDCLoginRegisterViewController {
         return true
     }
     
-    func loginActionWithUserName(userName: String, password: String) {
-        //    [Tools showHUDAddedTo:self.view animated:YES]
-        //        self.submitButton?.isEnabled = false
-        //        [DDCSystemUserLoginAPIManager loginWithUsername:userName password:password successHandler:^(DDCUserModel *user) {
-        //            [DDCStore sharedStore].user = user
-        //            [Tools showHUDAddedTo:self.view animated: NO]
-        //            if (self.successHandler)
-        //            {
-        //            self.successHandler(YES)
-        //            }
-        //            } failHandler:^(NSError *err) {
-        //            self.submitButton.enabled = YES
-        //            [Tools showHUDAddedTo:self.view animated: NO]
-        //            NSString * errStr = err.userInfo[NSLocalizedDescriptionKey]
-        //            [self.view makeDDCToast:errStr image:[UIImage imageNamed:@"addCar_icon_fail"]]
-        //            }]
+    func login(username: String, password: String) {
+//        DDCTools.showHUD(view: self.view, animated: true)
+        self.submitButton?.isEnabled = false
+        DDCSystemUserLoginAPIManager.login(username: username, password: password, successHandler: { (user) in
+            DDCStore.sharedStore().user = user
+//            DDCTools.showHUD(view: self.view, animated: false)
+            self.successHandler!(true)
+        }) { (error) in
+            self.submitButton?.isEnabled = true
+            //            DDCTools.showHUD(view: self.view, animated: false)
+            self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
+        }
     }
 }
 
@@ -267,21 +263,20 @@ extension DDCLoginRegisterViewController : InputFieldViewDelegate {
     
     @objc func submitForm() {
         self.view.endEditing(true)
-        let userName = self.inputFieldView!.firstTextFieldView!.textField!.text
+        
+        let username = self.inputFieldView!.firstTextFieldView!.textField!.text
         let password = self.inputFieldView!.secondTextFieldView!.textField!.text
         
-        if !self.checkPhoneNumberOrEmail(string: userName!) {
+        guard username != nil else{
             return
         }
         
-        if !(password != nil),
-            password!.count <= 0
-        {
+        guard password != nil else {
             self.view.makeDDCToast(message: "请输入密码!", image: UIImage.init(named: "addCar_icon_fail")!)
             return
         }
-        
-        self.loginActionWithUserName(userName: userName!, password: password!)
+
+        self.login(username: username!, password: password!)
     }
     
 }

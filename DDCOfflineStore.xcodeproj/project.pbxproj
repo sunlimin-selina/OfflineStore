@@ -58,6 +58,7 @@
 		D3DAA4A521758997003B0289 /* DDCContractStateInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4A421758997003B0289 /* DDCContractStateInfoCell.swift */; };
 		D3DAA4A72175A911003B0289 /* DDCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4A62175A911003B0289 /* DDCButton.swift */; };
 		D3DAA4A92175C061003B0289 /* DDCContractStateLineCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4A82175C061003B0289 /* DDCContractStateLineCollectionViewCell.swift */; };
+		D3DAA4AB2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */; };
 		D3F88199215F2A950091C61A /* DDCOfflineStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F88198215F2A950091C61A /* DDCOfflineStoreTests.swift */; };
 		D3F881A4215F2A950091C61A /* DDCOfflineStoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881A3215F2A950091C61A /* DDCOfflineStoreUITests.swift */; };
 /* End PBXBuildFile section */
@@ -134,6 +135,7 @@
 		D3DAA4A421758997003B0289 /* DDCContractStateInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractStateInfoCell.swift; sourceTree = "<group>"; };
 		D3DAA4A62175A911003B0289 /* DDCButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCButton.swift; sourceTree = "<group>"; };
 		D3DAA4A82175C061003B0289 /* DDCContractStateLineCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractStateLineCollectionViewCell.swift; sourceTree = "<group>"; };
+		D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSystemUserLoginAPIManager.swift; sourceTree = "<group>"; };
 		D3F88180215F2A930091C61A /* DDCOfflineStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDCOfflineStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F88194215F2A950091C61A /* DDCOfflineStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDCOfflineStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F88198215F2A950091C61A /* DDCOfflineStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOfflineStoreTests.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 			children = (
 				D3CC64D4216F2C7C00383DD5 /* DDCContractListAPIManager.swift */,
 				D3CC64D5216F2C7C00383DD5 /* DDCAPIManager.swift */,
+				D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -645,6 +648,7 @@
 				D3B60800217499C20086387B /* DDCCircularTextFieldView.swift in Sources */,
 				D3B607DD21748AB40086387B /* DDCContractStateInfoViewModel.swift in Sources */,
 				D3B607FA217499C20086387B /* DDCBarButton.swift in Sources */,
+				D3DAA4AB2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift in Sources */,
 				D3B607CD21745A5F0086387B /* DDCContractPackageCategoryModel.swift in Sources */,
 				D3B607C721745A440086387B /* DDCStoreModel.swift in Sources */,
 				D3CC6501216F2C7C00383DD5 /* DDCColor.swift in Sources */,

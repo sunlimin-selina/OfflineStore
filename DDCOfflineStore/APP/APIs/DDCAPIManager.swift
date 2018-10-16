@@ -15,8 +15,8 @@ class DDCAPIManager: NSObject {
     
     //创建请求类枚举
     enum RequestType: Int {
-        case requestTypeGet
-        case requestTypePost
+        case get
+        case post
     }
     
     typealias sendVlesClosure = (AnyObject?, NSError?)->Void
@@ -105,7 +105,7 @@ class DDCHttpSessionsRequest: NSObject {
     class func requestData(_ type : DDCAPIManager.RequestType, url : String, parameters : [String : Any]? = nil, finishedCallback :  @escaping (_ result : Any) -> ()) {
         
         // 1.获取类型
-        let method = (type == .requestTypeGet) ? HTTPMethod.get : HTTPMethod.post
+        let method = (type == .get) ? HTTPMethod.get : HTTPMethod.post
         
         // 2.发送网络请求
         Alamofire.request(url, method: method, parameters: parameters).responseJSON { (response) in
@@ -148,7 +148,7 @@ class DDCHttpSessionsRequest: NSObject {
             } else {
                 var responseInfo = String(data: response.data!, encoding: String.Encoding.utf8) ?? "Empty Response String!!!"
                 if let error = response.error {
-                    responseInfo = responseInfo + "\n " + error.localizedDescription
+                    responseInfo = url + "\n " + responseInfo + "\n " + error.localizedDescription
                 }
                 fail(responseInfo)
             }

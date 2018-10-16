@@ -59,12 +59,12 @@ class DDCContractListViewController: UIViewController {
         rightItem.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = rightItem
         
-        //self.reloadPage()
+        self.reloadPage()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.getData()
+//        self.getData()
         self.view.addSubview(self.tableHeaderView)
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.bottomBar)
@@ -130,9 +130,9 @@ extension DDCContractListViewController {
 // MARK: API
 extension DDCContractListViewController {
     func getData() {
-        DDCContractListAPIManager.downloadContractListForPage(page: self.page , status: self.status.rawValue , successHandler: { (Any) in
+        DDCContractListAPIManager.getContractList(page: 0, status: 0, successHandler: { (Any) in
             
-        }) { (Any) in
+        }) { (error) in
             
         }
     }
@@ -142,17 +142,15 @@ extension DDCContractListViewController {
         var blockStatus = status
         
         guard self.user != nil else {
-            DDCLoginRegisterViewController.loginWithTarget(targetController: self) { (success) in
+            DDCLoginRegisterViewController.login(targetController: self) { (success) in
                 if success {
                     weakSelf?.dismiss(animated: true, completion: {
                         if ((weakSelf!.orderingUpdate) != nil) {
                             blockStatus = .all
                             // 请求后台
-//
-//                            [weakSelf loadContractListWithStatus:blockStatus completionHandler:^(BOOL success) {
-//                                // 更新UI
-//                                weakSelf.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus])
-//                                }]
+//                            weakSelf?.loadContractList(status: blockStatus, completionHandler: { (success) in
+//                                weakSelf?.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus])
+//                            })
                         }
                     })
                 }
@@ -203,10 +201,10 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
 // MARK: API
 extension DDCContractListViewController {
     func loadContractList() {
-        self.loadContractListWithStatus(status: self.status, completionHandler: nil)
+        self.loadContractList(status: self.status, completionHandler: nil)
     }
     
-    func loadContractListWithStatus(status: DDCContractStatus,completionHandler:((_ success: Bool) -> Void)?) {
+    func loadContractList(status: DDCContractStatus,completionHandler:((_ success: Bool) -> Void)?) {
         DDCTools.showHUD(view: self.view, animated: true)
         if status != self.status {
             self.page = 0

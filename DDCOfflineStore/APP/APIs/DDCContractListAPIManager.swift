@@ -10,13 +10,15 @@ import Foundation
 import Alamofire
 
 class DDCContractListAPIManager: NSObject {
-    class func downloadContractListForPage(page : UInt,status:UInt ,successHandler: @escaping (_ result : Any) -> (), failHandler: @escaping (_ result : Any) -> ()) {
+    class func getContractList(page : UInt,status:UInt ,successHandler: @escaping (_ result : Any) -> (), failHandler: @escaping (_ result : Any) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/server/contract/list.do")
         let uid:String = DDC_Current_Url.appendingFormat("/server/contract/list.do")
 
-        let params : NSDictionary = ["uid":uid , "currentPage":page ,"status":status , "pageSize" : 10]
+        let params : Dictionary<String, Any> = ["uid":uid , "currentPage":page ,"status":status , "pageSize" : 10]
         
-        DDCHttpSessionsRequest.requestData(.requestTypePost, url: url, parameters: (params as! [String : Any])) { (Any) in
+        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+            
+        }) { (error) in
             
         }
     }
