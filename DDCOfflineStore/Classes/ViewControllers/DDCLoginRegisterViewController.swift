@@ -330,3 +330,50 @@ extension DDCLoginRegisterViewController {
     }
     
 }
+
+
+// MARK: - 切换环境
+extension DDCLoginRegisterViewController {
+    
+    func addSwitchEnvBtn() {
+        let btn = UIButton(type: .custom);
+        btn.titleLabel?.adjustsFontSizeToFitWidth = true
+        btn.tag = 678
+        self.view.addSubview(btn)
+        btn.frame = CGRect(x: screenWidth - 80, y: screenHeight - 100, width: 60, height: 60)
+        btn.backgroundColor = UIColor(red: 236.0/255.0, green: 90.0/255.0, blue: 46.0/255.0, alpha: 1.0)
+        btn.layer.masksToBounds = true
+        btn.layer.cornerRadius = 30
+        
+        btn.addTarget(self, action: #selector(envSwitchAction), for: .touchUpInside)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(envChange), name: NSNotification.Name(rawValue: "EnvChange"), object: nil)
+        
+        self.envChange()
+    }
+    
+    @objc func envChange() {
+        let env = DDCAPIManager.shared().currentNetWork
+        var envString = ""
+        switch env {
+        case .Development:
+            envString = "开发"
+        case .Test:
+            envString = "测试"
+        case .Staging:
+            envString = "Staging"
+        default:
+            envString = "线上"
+        }
+        let btn = self.view.viewWithTag(678) as! UIButton
+        btn.setTitle(envString, for: .normal)
+    }
+    
+    @objc func envSwitchAction() {
+        
+        let env = EnviromentSwitchViewController()
+        self.navigationController?.pushViewController(env, animated: true)
+        
+    }
+    
+}
