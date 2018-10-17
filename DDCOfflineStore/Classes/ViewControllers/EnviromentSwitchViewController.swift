@@ -25,6 +25,24 @@ class EnviromentSwitchViewController: UIViewController {
         return label
     }()
     
+    private let inputTF: UITextField = {
+        let inputTF = UITextField()
+        inputTF.textColor = UIColor.darkGray
+        inputTF.placeholder = " 请输入地址"
+        inputTF.layer.borderColor = UIColor.gray.cgColor
+        inputTF.layer.borderWidth = 1.0
+        return inputTF
+    }()
+    
+    private let confirmBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setTitle("确定", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.backgroundColor = UIColor.red
+        btn.addTarget(self, action: #selector(switchDevHost), for: .touchUpInside)
+        return btn
+    }()
+    
     private let segment: UISegmentedControl = {
         let items = ["测试环境", "开发环境", "Staging环境", "线上环境"]
         let seg = UISegmentedControl(items: items)
@@ -42,8 +60,12 @@ class EnviromentSwitchViewController: UIViewController {
         self.view.addSubview(self.hostLabel)
         self.hostString = DDC_Current_Url
         
+        self.view.addSubview(self.inputTF)
+        self.view.addSubview(self.confirmBtn)
+        
         self.addSegConstraints()
         self.addHostConstraints()
+        self.addInputConstraints()
         
     }
     
@@ -74,12 +96,46 @@ class EnviromentSwitchViewController: UIViewController {
         
     }
     
+    func addInputConstraints() {
+        self.inputTF.snp.makeConstraints { (make) in
+            make.left.equalTo(hostLabel)
+            //make.right.equalTo(hostLabel)
+            make.top.equalTo(hostLabel.snp.bottom).offset(20)
+            make.height.equalTo(35)
+        }
+        self.confirmBtn.snp.makeConstraints { (make) in
+            make.left.equalTo(inputTF.snp.right).offset(20)
+            make.right.equalTo(hostLabel.snp.right)
+            make.top.equalTo(inputTF)
+            make.height.equalTo(inputTF)
+            make.width.equalTo(120)
+        }
+    }
+    
+    /// 切换环境
     @objc func switchAction() {
         //print(String(self.segment.selectedSegmentIndex))
         let env = DDCAPIManager.NetworkEnvironment(rawValue: self.segment.selectedSegmentIndex)!
         DDCAPIManager.shared().switchEnv(env: env)
         self.hostString = DDC_Current_Url
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "EnvChange"), object: nil)
+        if env == DDCAPIManager.NetworkEnvironment.Development {
+            self.inputTF.isHidden = false
+            self.confirmBtn.isHidden = false
+        } else {
+            self.inputTF.isHidden = true
+            self.confirmBtn.isHidden = true
+        }
+    }
+    
+    /// 开发环境切换地址
+    @objc func switchDevHost() {
+        let host = inputTF.text!
+        self.hostString = host
+        let ud = UserDefaults.standard
+        ud.set(host, forKey: "devHost")
+        ud.synchronize()
+        DDCAPIManager.shared().switchEnv(env: .Development)
     }
     
 }
