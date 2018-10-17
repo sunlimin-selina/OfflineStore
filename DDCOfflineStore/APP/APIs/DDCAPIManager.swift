@@ -48,6 +48,11 @@ class DDCAPIManager: NSObject {
             case .Release:
                 return DDC_Base_Url
             case .Development:
+                let ud = UserDefaults.standard
+                let host = ud.string(forKey: "devHost")
+                if let url = host {
+                    return url
+                }
                 return DDC_Base_Dev_Url
             case .Test:
                 return DDC_Base_Test_Url
@@ -97,8 +102,6 @@ typealias successClosure = (_ result: Dictionary<String, Any>?) -> ()
 /// 失败回调
 typealias failClosure = (_ errorInfo: String) -> ()
 
-/// 解析返回的数据结果
-typealias serverTuple = (code: Int, data: Dictionary<String, Any>, message: String)
 
 class DDCHttpSessionsRequest: NSObject {
     
@@ -159,20 +162,34 @@ class DDCHttpSessionsRequest: NSObject {
     /// 拆分服务端返回的数据
     ///
     /// - Parameter response: 服务端返回的数据
-    /// - Returns: 拆分后的数据，返回一个tuple，第一个是业务码，第二个是data数据，第三个是错误信息
-    static func filterResponseServerData(response: Dictionary<String, Any>?) -> serverTuple {
-        var result: serverTuple
+    /// - Returns: 拆分后的数据，返回一个tuple，第一个是业务码，第二个是data数据可转化为Model，第三个是错误信息
+    static func filterResponseServerData<T>(_ type: T.Type, response: Dictionary<String, Any>?) -> (code: Int, model: T?, message: String) where T: Codable {
+        var result: (code: Int, model: T?, message: String)
         if let res = response {
+            //获取业务码
             let code = Int(res["code"] as! String)!
-            let data = (res["data"] as? Dictionary<String, Any>) ?? [:]
+            
+            //获取数据字典
+            let dictData = (res["data"] as? Dictionary<String, Any>)
+            
+            //dict -> data
+            var model: T? = nil
+            var data: Data? = nil
+            if let dict = dictData {
+                data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+            }
+            //data -> model
+            if let d = data {
+                model = try? JSONDecoder().decode(type, from: d)
+            }
+            
+            
             let message = (res["msg"] as? String) ?? ""
-            result = (code, data, message)
+            result = (code, model, message)
         } else {
-            result = (-10000, [:], "服务端返回数据为空")
+            result = (-10000, nil, "服务端返回数据为空")
         }
-        if result.message.count > 0 {
-            print("{code:" + String(result.code) + ", msg:" + String(result.message) + "}")
-        }
+        print("{code:" + String(result.code) + ", msg:" + String(result.message) + "}")
         return result
     }
     
