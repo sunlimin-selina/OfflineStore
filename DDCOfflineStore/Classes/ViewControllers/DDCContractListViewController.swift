@@ -39,9 +39,11 @@ class DDCContractListViewController: UIViewController {
         return tableHeaderView
     }()
     
-    private lazy var user : DDCUserModel? = {
-        return DDCStore.sharedStore().user
-    }()
+    private var user : DDCUserModel? {
+        get {
+            return DDCStore.sharedStore().user
+        }
+    }
     
 //    private var contractArray : Array<DDCContractDetailsModel>?
 //    private var blankView : DDCButtonView?
@@ -120,7 +122,7 @@ extension DDCContractListViewController {
         if self.user != nil {
 //            self.view.profileView.name = self.user.name
 //            self.view.profileView.imgUrlStr = self.user.imgUrlStr
-//            [self loadContractList]
+            self.loadContractList()
         } else {
             self.login()
         }
@@ -145,13 +147,11 @@ extension DDCContractListViewController {
             DDCLoginRegisterViewController.login(targetController: self) { (success) in
                 if success {
                     weakSelf?.dismiss(animated: true, completion: {
-                        if ((weakSelf!.orderingUpdate) != nil) {
                             blockStatus = .all
                             // 请求后台
-//                            weakSelf?.loadContractList(status: blockStatus, completionHandler: { (success) in
+                            weakSelf?.loadContractList(status: blockStatus, completionHandler: { (success) in
 //                                weakSelf?.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus])
-//                            })
-                        }
+                            })
                     })
                 }
             }
@@ -205,11 +205,10 @@ extension DDCContractListViewController {
     }
     
     func loadContractList(status: DDCContractStatus,completionHandler:((_ success: Bool) -> Void)?) {
-        DDCTools.showHUD(view: self.view, animated: true)
+        DDCTools.showHUD(view: self.view)
         if status != self.status {
             self.page = 0
         }
-        
         
     }
 }

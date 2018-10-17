@@ -69,7 +69,7 @@ class DDCInputFieldView: UIView, CountButtonDelegate {
         }
         
         self.secondTextFieldView!.snp.makeConstraints { (make) in
-            make.top.equalTo(self.firstTextFieldView!.snp_bottomMargin).offset(10.0)
+            make.top.equalTo(self.firstTextFieldView!.snp_bottomMargin).offset(20.0)
             make.height.equalTo(self).multipliedBy(0.3)
             make.left.equalTo(self).offset(kTextFieldMargin)
             make.right.equalTo(self).offset(-kTextFieldMargin)

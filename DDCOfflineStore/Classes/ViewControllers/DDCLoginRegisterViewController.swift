@@ -169,15 +169,15 @@ extension DDCLoginRegisterViewController {
     }
     
     func login(username: String, password: String) {
-//        DDCTools.showHUD(view: self.view, animated: true)
+        DDCTools.showHUD(view: self.view)
         self.submitButton?.isEnabled = false
         DDCSystemUserLoginAPIManager.login(username: username, password: password, successHandler: { (user) in
             DDCStore.sharedStore().user = user
-//            DDCTools.showHUD(view: self.view, animated: false)
+            DDCTools.hideHUD()
             self.successHandler!(true)
         }) { (error) in
             self.submitButton?.isEnabled = true
-            //            DDCTools.showHUD(view: self.view, animated: false)
+            DDCTools.hideHUD()
             self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
         }
     }
@@ -220,7 +220,6 @@ extension DDCLoginRegisterViewController : UITextFieldDelegate {
             self.submitButton?.enableButtonWithType(type: .SubmitButtonTypeDefault)
         }
     }
-    
 }
 
 // MARK:InputFieldViewDelegate
