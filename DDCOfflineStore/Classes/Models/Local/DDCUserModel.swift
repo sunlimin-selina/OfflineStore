@@ -7,23 +7,43 @@
 //
 
 import Foundation
+import ObjectMapper
 
-class DDCUserModel: NSObject {
-    var ID : String?
+class DDCUserModel: NSObject, Mappable ,NSCoding {
+    
+    var id : Int?
     var userName : String?
     var name : String?
     var imageUrl : String?
+    var recommendType : String?
     
-    let kIdentifier : String = "id"
-    let kUserName : String = "userName"
-    let kName : String = "name"
-    let kImageUrl : String = "imageUrl"
-
-    init(dictionary : Dictionary<String, Any>) {
-        print(dictionary)
-        self.ID = (dictionary[kIdentifier] as? String) ?? ""
-        self.userName = (dictionary[kUserName] as? String) ?? ""
-        self.name = (dictionary[kName] as? String) ?? ""
-        self.imageUrl = dictionary[kImageUrl] as? String
+    required init?(map: Map) {
     }
+    
+    // Mappable
+    func mapping(map: Map) {
+        id <- map["id"]
+        userName <- map["userName"]
+        name <- map["name"]
+        imageUrl <- map["imageUrl"]
+        recommendType <- map["recommendType"]
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey:"id")
+        aCoder.encode(userName, forKey:"userName")
+        aCoder.encode(name, forKey:"name")
+        aCoder.encode(imageUrl, forKey:"imageUrl")
+        aCoder.encode(recommendType, forKey:"recommendType")
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        self.id = aDecoder.decodeObject(forKey: "id") as? Int
+        self.userName = aDecoder.decodeObject(forKey: "userName") as? String ?? ""
+        self.name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
+        self.imageUrl = aDecoder.decodeObject(forKey: "imageUrl") as? String ?? ""
+        self.recommendType = aDecoder.decodeObject(forKey: "recommendType") as? String ?? ""
+    }
+
+    
 }

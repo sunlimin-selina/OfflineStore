@@ -2,12 +2,14 @@ PODS:
   - Alamofire (4.7.3)
   - Bugly (2.5.0)
   - Kingfisher (4.10.0)
+  - ObjectMapper (3.3.0)
   - SnapKit (4.0.1)
 
 DEPENDENCIES:
   - Alamofire
   - Bugly
   - Kingfisher
+  - ObjectMapper
   - SnapKit
 
 SPEC REPOS:
@@ -15,14 +17,16 @@ SPEC REPOS:
     - Alamofire
     - Bugly
     - Kingfisher
+    - ObjectMapper
     - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   Kingfisher: 43c4b802d8b5256cf1f4379e9cd10b329be6d3e2
+  ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
 
-PODFILE CHECKSUM: d6b6da9bb38388d47b6e4ca9089b8cd959771fe9
+PODFILE CHECKSUM: b9cac452950d6f899d91c1fdbe47b23324ddbb72
 
 COCOAPODS: 1.5.3

@@ -10,4 +10,5 @@ target 'DDCOfflineStore’ do
   pod 'SnapKit'
   pod 'Bugly'
   pod 'Kingfisher'
+  pod 'ObjectMapper'
 end

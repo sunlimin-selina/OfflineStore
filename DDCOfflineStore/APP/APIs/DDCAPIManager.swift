@@ -171,7 +171,7 @@ class DDCHttpSessionsRequest: NSObject {
             
             //获取数据字典
             let dictData = (res["data"] as? Dictionary<String, Any>)
-            
+
             //dict -> data
             var model: T? = nil
             var data: Data? = nil
@@ -183,7 +183,6 @@ class DDCHttpSessionsRequest: NSObject {
                 model = try? JSONDecoder().decode(type, from: d)
             }
             
-            
             let message = (res["msg"] as? String) ?? ""
             result = (code, model, message)
         } else {
@@ -193,6 +192,23 @@ class DDCHttpSessionsRequest: NSObject {
         return result
     }
     
+    static func filterResponseData(response: Dictionary<String, Any>?) -> (code: Int, data:Dictionary<String, Any>? , message: String){
+        var result: (code: Int, data: Dictionary<String, Any>?, message: String)
+        if let res = response {
+            //获取业务码
+            let code = Int(res["code"] as! String)!
+            
+            //获取数据字典
+            let dictData = (res["data"] as? Dictionary<String, Any>)
+            
+            let message = (res["msg"] as? String) ?? ""
+            result = (code, dictData, message)
+        } else {
+            result = (-10000, nil, "服务端返回数据为空")
+        }
+        print("{code:" + String(result.code) + ", msg:" + String(result.message) + "}")
+        return result
+    }
 }
 
 

@@ -6,7 +6,7 @@
 //  Copyright © 2018 DayDayCook. All rights reserved.
 //
 
-enum DDCContractStatus : UInt{
+enum DDCContractStatus : UInt , Codable{
     case all
     case effective//生效中
     case ineffective//未生效

@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Bugly注册
         Bugly.start(withAppId: "000b731ad0")
         
-        let idfa : String = ASIdentifierManager.shared().advertisingIdentifier.uuidString
-        DDCUserDefaults.setObject(object: idfa as AnyObject, key: DDCStore.Keys.DDC_Device_IDFA_Key)
+//        let idfa : String = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+//        DDCUserDefaults.setObject(object: idfa as AnyObject, key: DDCStore.Keys.DDC_Device_IDFA_Key)
 //        DDC_Share_UUID = DDCOpenUUID.value()
         
         // start collecting dates from server

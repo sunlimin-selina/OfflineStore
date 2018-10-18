@@ -24,7 +24,7 @@ class DDCContractListViewController: UIViewController {
     }()
     
     private lazy var tableView : UITableView = {
-        let tableView : UITableView = UITableView()
+        let tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
         tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListTableViewCell.self))
         tableView.rowHeight = 100.0
         tableView.delegate = self
@@ -33,10 +33,10 @@ class DDCContractListViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var tableHeaderView : DDCContractListTableHeaderView = {
-        let tableHeaderView : DDCContractListTableHeaderView = DDCContractListTableHeaderView.init(frame: CGRect.zero)
+    private lazy var contractTableHeaderView : DDCContractListTableHeaderView = {
+        let _contractTableHeaderView : DDCContractListTableHeaderView = DDCContractListTableHeaderView.init(frame: CGRect.zero)
         
-        return tableHeaderView
+        return _contractTableHeaderView
     }()
     
     private var user : DDCUserModel? {
@@ -45,8 +45,7 @@ class DDCContractListViewController: UIViewController {
         }
     }
     
-//    private var contractArray : Array<DDCContractDetailsModel>?
-//    private var blankView : DDCButtonView?
+    private var contractArray : NSMutableArray? = NSMutableArray()
     private var orderingUpdate : ((_ newOrdering: String) -> Void)?
     private var page : UInt = 0
     private var status : DDCContractStatus = .all
@@ -67,7 +66,7 @@ class DDCContractListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.getData()
-        self.view.addSubview(self.tableHeaderView)
+        self.view.addSubview(self.contractTableHeaderView)
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
@@ -86,14 +85,14 @@ class DDCContractListViewController: UIViewController {
 extension DDCContractListViewController {
     private func setupViewConstraints() {
         
-        self.tableHeaderView.snp.makeConstraints { (make) in
+        self.contractTableHeaderView.snp.makeConstraints { (make) in
             make.left.right.equalTo(self.view)
             make.top.equalTo(self.view)
             make.height.equalTo(250)
         }
         
         self.tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.tableHeaderView.snp_bottomMargin)
+            make.top.equalTo(self.contractTableHeaderView.snp_bottomMargin)
             make.left.right.bottom.equalTo(self.view)
         }
         
@@ -120,8 +119,10 @@ extension DDCContractListViewController {
     
     func reloadPage() {
         if self.user != nil {
-//            self.view.profileView.name = self.user.name
-//            self.view.profileView.imgUrlStr = self.user.imgUrlStr
+            self.contractTableHeaderView.userName.text = self.user!.name
+            print(self.user!.imageUrl!)
+            self.contractTableHeaderView.portraitView.image = (self.user!.imageUrl != "") ? UIImage.init(named: self.user!.imageUrl!) : UIImage.init(named: "Personal_head")
+            
             self.loadContractList()
         } else {
             self.login()
@@ -168,12 +169,13 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.contractArray!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListTableViewCell.self), for: indexPath)) as! DDCContractListTableViewCell
-        
+//        cell.contentView.backgroundColor = (indexPath.row % 2) ? UIColor.white : DDCColor.colorWithHex(RGB: 0xF8F8F8)
+        cell.configureCell(model: self.contractArray![indexPath.row] as! DDCContractDetailsModel)
         return cell
     }
     
@@ -183,7 +185,7 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     }
         
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 50
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -194,6 +196,7 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.frame = CGRect.init(x: 20, y: 10, width: 400, height: 40)
         headerView.addSubview(label)
+        headerView.backgroundColor = UIColor.white
         return headerView
     }
 }
@@ -209,6 +212,42 @@ extension DDCContractListViewController {
         if status != self.status {
             self.page = 0
         }
-        
+        DDCContractListAPIManager.getContractList(page: self.page, status: status.rawValue, successHandler: { (contractList : [DDCContractDetailsModel]) in
+            if (status != self.status) {
+                self.contractArray = []
+                self.status = status
+            }
+            
+            if (self.page == 0)  {
+                self.contractArray = []
+            }
+
+            if (contractList.count < 10)
+            {
+//                self.view.collectionHolderView.collectionView.footerHidden = YES;
+            } else {
+                self.page += 1
+            }
+            self.contractArray?.addObjects(from: contractList)
+            DDCTools.hideHUD()
+//            [self.view.collectionHolderView.collectionView footerEndRefreshing];
+            self.tableView.reloadData()
+            if (completionHandler != nil) {
+                completionHandler! (true)
+            }
+        }) { (error) in
+            DDCTools.hideHUD()
+            
+//            [self.view.collectionHolderView.collectionView footerEndRefreshing];
+            if error.count != 0 {
+                self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
+            }
+            if (self.page == 0) {
+//                [self networkReloadView];
+            }
+            if (completionHandler != nil) {
+                completionHandler! (false)
+            }
+        }
     }
 }

@@ -18,17 +18,15 @@ class DDCContractListTableHeaderView: UIView {
         return backgroundView
     }()
     
-    private lazy var portraitView : UIImageView = {
-        let portraitView : UIImageView = UIImageView.init(image: UIImage.init(named: "Personal_head"))
-        portraitView.frame = CGRect.init(x: 0, y: 0, width: 50, height: 50)
+    lazy var portraitView : UIImageView = {
+        let portraitView : UIImageView = UIImageView()
         portraitView.contentMode = .scaleAspectFill
         portraitView.clipsToBounds = true
         return portraitView
     }()
     
-    private lazy var userName : UILabel = {
+    lazy var userName : UILabel = {
         let userName : UILabel = UILabel()
-        userName.text = "测试销售"
         userName.textColor = UIColor.white
         userName.font = UIFont.boldSystemFont(ofSize: 18)
         return userName
@@ -53,13 +51,13 @@ class DDCContractListTableHeaderView: UIView {
         })
         
         self.portraitView.snp.makeConstraints({ (make) in
-            make.width.height.equalTo(80)
-            make.centerY.equalTo(self)
+            make.width.height.equalTo(86)
+            make.centerY.equalTo(self).offset(15.0)
             make.left.equalTo(50)
         })
         self.userName.snp.makeConstraints({ (make) in
             make.width.equalTo(100)
-            make.left.equalTo(self.portraitView.snp_rightMargin).offset(20)
+            make.left.equalTo(self.portraitView.snp_rightMargin).offset(30.0)
             make.centerY.equalTo(self.portraitView)
         })
     }

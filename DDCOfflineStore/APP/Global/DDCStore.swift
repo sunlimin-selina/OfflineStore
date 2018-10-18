@@ -29,13 +29,24 @@ class DDCStore : NSObject{
         static let DDC_Device_UUID_Key = "OpenUUID"
     }
     
-    lazy var user : DDCUserModel? = {
-        var _user: DDCUserModel?
-        var userData : Any? = DDCUserDefaults.objectForKey(key: DDCStore.kUser)
-        if let _userData = userData as? Data {
-            _user = NSKeyedUnarchiver.unarchiveObject(with: _userData) as? DDCUserModel
+    var user : DDCUserModel? {
+        get {
+            var _user: DDCUserModel?
+            let userData = UserDefaults.standard.data(forKey: "DDCUser")
+            if let _userData = userData {
+                _user = (NSKeyedUnarchiver.unarchiveObject(with: _userData) as! DDCUserModel)
+            }
+            return _user
         }
-        return _user
-    }()
+        set {
+            if let data = newValue {
+               print (data.id)
+                let userData : AnyObject = NSKeyedArchiver.archivedData(withRootObject: data as Any) as AnyObject
+                UserDefaults.standard.set(userData, forKey: "DDCUser")
+                UserDefaults.standard.synchronize()
+            }
+
+        }
+    }
     
 }

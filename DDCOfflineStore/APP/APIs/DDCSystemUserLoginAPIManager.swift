@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import ObjectMapper
 
 class DDCSystemUserLoginAPIManager: NSObject {
     class func login(username : String,password:String ,successHandler: @escaping((_ user: DDCUserModel?) -> ()), failHandler: @escaping (_ error: String) -> ()) {
@@ -15,11 +16,12 @@ class DDCSystemUserLoginAPIManager: NSObject {
         let params : Dictionary<String, Any>? = ["username":username, "password":password]
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
-            let tuple = DDCHttpSessionsRequest.filterResponseServerData(response: response)
-            let data : Dictionary<String,Any> = tuple.data
-            var user : DDCUserModel = DDCUserModel.init(dictionary: data)
-            
-            successHandler(user)
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            if let data = tuple.data {
+                print(data)
+                let user : DDCUserModel = DDCUserModel(JSON: data)!
+                successHandler(user)
+            }
         }) { (code) in
             failHandler(code)
         }

@@ -7,7 +7,32 @@
 //
 
 import Foundation
+import ObjectMapper
 
-class DDCCustomerModel: NSObject {
+class DDCCustomerModel: Mappable {
+    var id : Int?
+    var userName : String?
+    var nickName : String?
+    var age : String?
+    var email : String?
+    var sex : DDCGender?
+    var birthday : NSDate?
+    var career : DDCOccupation?
+    var channel : NSNumber?
+
+    required init?(map: Map) {
+    }
     
+    // Mappable
+    func mapping(map: Map) {
+        id <- map["id"]
+        userName <- map["userName"]
+        nickName <- map["lineUserName"]
+        age <- map["age"]
+        email <- map["lineUserEmail"]
+        sex <- map["sex"]
+        birthday <- map["birthday"]
+        career <- map["lineUserCareer"]
+        channel <- map["channel"]
+    }
 }

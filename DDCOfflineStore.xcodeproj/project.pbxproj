@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		52C6CB6D2175EA8F0008DAE3 /* EnviromentSwitchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C6CB6C2175EA8F0008DAE3 /* EnviromentSwitchViewController.swift */; };
 		8A92DF95E783A538E54E8F8A /* Pods_DDCOfflineStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BEBE9EF557ECB6845068E0 /* Pods_DDCOfflineStore.framework */; };
+		D32D2FE821786A0600CA3E42 /* DDCOffLineStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */; };
+		D3597CFA2178518B00C4A2F2 /* DDCUserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */; };
 		D3B607C3217458E80086387B /* DDCContractModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607C2217458E80086387B /* DDCContractModel.swift */; };
 		D3B607C521745A3A0086387B /* DDCContractTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607C421745A3A0086387B /* DDCContractTypeModel.swift */; };
 		D3B607C721745A440086387B /* DDCStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607C621745A440086387B /* DDCStoreModel.swift */; };
@@ -36,6 +38,8 @@
 		D3B607FF217499C20086387B /* DDCCircularTextFieldWithExtraButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F1217499C10086387B /* DDCCircularTextFieldWithExtraButtonView.swift */; };
 		D3B60800217499C20086387B /* DDCCircularTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F2217499C10086387B /* DDCCircularTextFieldView.swift */; };
 		D3B60801217499C20086387B /* DDCBarBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F4217499C10086387B /* DDCBarBackgroundView.swift */; };
+		D3BBBBF0217710B600FC5E23 /* DDCContractInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */; };
+		D3BBBBF2217711E700FC5E23 /* DDCPayMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BBBBF1217711E700FC5E23 /* DDCPayMethod.swift */; };
 		D3CC64FA216F2C7C00383DD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3CC64CE216F2C7C00383DD5 /* Assets.xcassets */; };
 		D3CC64FB216F2C7C00383DD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3CC64CF216F2C7C00383DD5 /* LaunchScreen.storyboard */; };
 		D3CC64FD216F2C7C00383DD5 /* DDCContractListAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64D4216F2C7C00383DD5 /* DDCContractListAPIManager.swift */; };
@@ -86,6 +90,8 @@
 		35BEBE9EF557ECB6845068E0 /* Pods_DDCOfflineStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DDCOfflineStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C6CB6C2175EA8F0008DAE3 /* EnviromentSwitchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnviromentSwitchViewController.swift; sourceTree = "<group>"; };
 		A2B332B78859CC027A746591 /* Pods-DDCOfflineStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDCOfflineStore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DDCOfflineStore/Pods-DDCOfflineStore.debug.xcconfig"; sourceTree = "<group>"; };
+		D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOffLineStoreModel.swift; sourceTree = "<group>"; };
+		D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCUserStatus.swift; sourceTree = "<group>"; };
 		D3B607C2217458E80086387B /* DDCContractModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractModel.swift; sourceTree = "<group>"; };
 		D3B607C421745A3A0086387B /* DDCContractTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractTypeModel.swift; sourceTree = "<group>"; };
 		D3B607C621745A440086387B /* DDCStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCStoreModel.swift; sourceTree = "<group>"; };
@@ -113,6 +119,8 @@
 		D3B607F1217499C10086387B /* DDCCircularTextFieldWithExtraButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCCircularTextFieldWithExtraButtonView.swift; sourceTree = "<group>"; };
 		D3B607F2217499C10086387B /* DDCCircularTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCCircularTextFieldView.swift; sourceTree = "<group>"; };
 		D3B607F4217499C10086387B /* DDCBarBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCBarBackgroundView.swift; sourceTree = "<group>"; };
+		D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractInfoModel.swift; sourceTree = "<group>"; };
+		D3BBBBF1217711E700FC5E23 /* DDCPayMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCPayMethod.swift; sourceTree = "<group>"; };
 		D3CC64CE216F2C7C00383DD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3CC64D0216F2C7C00383DD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D3CC64D1216F2C7C00383DD5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -200,6 +208,8 @@
 				D3B607CC21745A5F0086387B /* DDCContractPackageCategoryModel.swift */,
 				D3B607CA21745A560086387B /* DDCContractPackageModel.swift */,
 				D3B607DC21748AB40086387B /* DDCContractStateInfoViewModel.swift */,
+				D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */,
+				D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */,
 			);
 			path = ContractModel;
 			sourceTree = "<group>";
@@ -329,10 +339,12 @@
 				D3CC64DB216F2C7C00383DD5 /* DDCOpenUUID.swift */,
 				D3CC64DC216F2C7C00383DD5 /* DDCTools.swift */,
 				D3CC64DD216F2C7C00383DD5 /* DDCContractStatus.swift */,
+				D3BBBBF1217711E700FC5E23 /* DDCPayMethod.swift */,
 				D3CC64DE216F2C7C00383DD5 /* DDCAppConfig.swift */,
 				D3CC64DF216F2C7C00383DD5 /* DDCKeyboardStateListener.swift */,
 				D3CC64E0216F2C7C00383DD5 /* DDCUserDefaults.swift */,
 				D3CC64E1216F2C7C00383DD5 /* DDCStore.swift */,
+				D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -603,6 +615,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-DDCOfflineStore/Pods-DDCOfflineStore-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -611,6 +624,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -638,7 +652,9 @@
 				D3CC6500216F2C7C00383DD5 /* UIView+DDCToast.swift in Sources */,
 				D3B607DB217481050086387B /* DDCProgressViewController.swift in Sources */,
 				D3B607D52174771D0086387B /* DDCAddContractInfoViewController.swift in Sources */,
+				D32D2FE821786A0600CA3E42 /* DDCOffLineStoreModel.swift in Sources */,
 				D3CC650A216F2C7C00383DD5 /* DDCContractDetailsModel.swift in Sources */,
+				D3BBBBF0217710B600FC5E23 /* DDCContractInfoModel.swift in Sources */,
 				D3B607F5217499C20086387B /* DDCLoadingView.swift in Sources */,
 				D3CC650E216F2C7C00383DD5 /* DDCContractDetailsViewController.swift in Sources */,
 				D3DAA4A92175C061003B0289 /* DDCContractStateLineCollectionViewCell.swift in Sources */,
@@ -662,7 +678,9 @@
 				D3B60801217499C20086387B /* DDCBarBackgroundView.swift in Sources */,
 				D3CC6502216F2C7C00383DD5 /* DDCOpenUUID.swift in Sources */,
 				D3CC650D216F2C7C00383DD5 /* DDCCreateContractViewController.swift in Sources */,
+				D3597CFA2178518B00C4A2F2 /* DDCUserStatus.swift in Sources */,
 				52C6CB6D2175EA8F0008DAE3 /* EnviromentSwitchViewController.swift in Sources */,
+				D3BBBBF2217711E700FC5E23 /* DDCPayMethod.swift in Sources */,
 				D3CC64FF216F2C7C00383DD5 /* DDCAppDelegate.swift in Sources */,
 				D3CC6506216F2C7C00383DD5 /* DDCKeyboardStateListener.swift in Sources */,
 				D3B607F8217499C20086387B /* DDCContractDetailsCell.swift in Sources */,
