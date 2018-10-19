@@ -27,3 +27,10 @@ enum DDCContractState {
     case doing
     case todo
 }
+
+enum DDCRegularCoursePurchaseType {
+    case none
+    case category
+    case numberOfCourse
+    case timeRestriction
+}

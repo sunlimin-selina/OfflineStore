@@ -17,8 +17,7 @@ class DDCSystemUserLoginAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
-            if let data = tuple.data {
-                print(data)
+            if case let data as Dictionary<String, Any> = tuple.data {
                 let user : DDCUserModel = DDCUserModel(JSON: data)!
                 successHandler(user)
             }

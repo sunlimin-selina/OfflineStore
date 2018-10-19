@@ -7,10 +7,20 @@
 //
 
 import Foundation
+import ObjectMapper
 
-class DDCStoreModel: NSObject {
-    var ID: String?
+class DDCStoreModel: Mappable {
+    
+    var id: Int?
     var title: String?
+    
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        id <- map["id"]
+        title <- map["title"]
+    }
     
     class func model(with title: String, ID: String) -> DDCContractTypeModel {
         let model: DDCContractTypeModel = DDCContractTypeModel()
@@ -18,4 +28,5 @@ class DDCStoreModel: NSObject {
         model.title = title
         return model
     }
+    
 }

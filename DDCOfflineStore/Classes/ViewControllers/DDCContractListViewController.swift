@@ -24,13 +24,14 @@ class DDCContractListViewController: UIViewController {
     }()
     
     private lazy var tableView : UITableView = {
-        let tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
-        tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListTableViewCell.self))
-        tableView.rowHeight = 100.0
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.isUserInteractionEnabled = true
-        return tableView
+        let _tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
+        _tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListTableViewCell.self))
+        _tableView.rowHeight = 80.0
+        _tableView.delegate = self
+        _tableView.dataSource = self
+        _tableView.isUserInteractionEnabled = true
+        _tableView.separatorColor = UIColor.white
+        return _tableView
     }()
     
     private lazy var contractTableHeaderView : DDCContractListTableHeaderView = {
@@ -174,13 +175,14 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListTableViewCell.self), for: indexPath)) as! DDCContractListTableViewCell
-//        cell.contentView.backgroundColor = (indexPath.row % 2) ? UIColor.white : DDCColor.colorWithHex(RGB: 0xF8F8F8)
+        cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.colorWithHex(RGB: 0xF8F8F8) : UIColor.white
         cell.configureCell(model: self.contractArray![indexPath.row] as! DDCContractDetailsModel)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewController : DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: "")
+        let model : DDCContractDetailsModel = self.contractArray![indexPath.item] as! DDCContractDetailsModel
+        let viewController : DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: (model.info?.id)!)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
         

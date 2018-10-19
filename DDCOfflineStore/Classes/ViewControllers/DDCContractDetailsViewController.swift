@@ -14,7 +14,7 @@ class DDCContractDetailsViewController: UIViewController {
         static let kDDCContractDetailCellIdentifier = "detailCell"
     }
     
-    public var detailsID: String?
+    public var detailsID: Int?
     
     private lazy var barBackgroundView : DDCBarBackgroundView = {
         let barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width - 54 * 2, height: UIScreen.main.bounds.height - 64 - 32))
@@ -25,7 +25,7 @@ class DDCContractDetailsViewController: UIViewController {
         return barBackgroundView
     }()
     
-    init(detailsID: String) {
+    init(detailsID: Int) {
         super.init(nibName: nil, bundle: nil)
         self.detailsID = detailsID
     }
@@ -43,6 +43,7 @@ class DDCContractDetailsViewController: UIViewController {
         let leftItem = UIBarButtonItem.init(image: UIImage.init(named: "icon_back"), style: .plain, target: self, action: #selector(goBack))
         leftItem.tintColor = UIColor.black
         self.navigationItem.leftBarButtonItem = leftItem
+        
     }
     
     override func viewDidLoad() {
@@ -52,15 +53,20 @@ class DDCContractDetailsViewController: UIViewController {
         self.view.addSubview(self.barBackgroundView)
         self.setupViewConstraints()
         self.title = "合同详情"
+        self.getData()
     }
     
     // MARK: Action
     @objc func goBack() {
         self.navigationController?.popViewController(animated: true)
     }
+  
+}
+
+// MARK: Private
+extension DDCContractDetailsViewController {
     
-    // MARK: Private
-    func setupViewConstraints() {
+    private func setupViewConstraints() {
         self.barBackgroundView.snp.makeConstraints({ (make) in
             make.top.equalTo(self.view).offset(32 + 64)
             make.left.equalTo(self.view).offset(54)
@@ -68,7 +74,24 @@ class DDCContractDetailsViewController: UIViewController {
             make.bottom.equalTo(self.view)
         })
     }
-  
+    
+    func reloadData() {
+        
+    }
+    
+    func getData() {
+        DDCTools.showHUD(view: self.view)
+        
+        weak var weakSelf = self
+        if let detailId = self.detailsID {
+            DDCContractDetailsAPIManager.fetchContractDetails(detailId: detailId, successHandler: { (dictionary) in
+                
+            }) { (error) in
+                
+            }
+        }
+
+    }
 }
 
 // MARK: UITableViewDataSource & UITableViewDelegate

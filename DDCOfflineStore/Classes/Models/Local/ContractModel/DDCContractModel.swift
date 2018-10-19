@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import ObjectMapper
 
-class DDCContractModel: NSObject {
-    var ID : String?
+class DDCContractModel: Mappable {
+
+    var id : Int?
     var code : String?
     
     var customer : DDCCustomerModel?
@@ -25,29 +27,50 @@ class DDCContractModel: NSObject {
     var signedUsername : String?
     var responsibleUsername : String?
     
-    func contract(with customer:DDCCustomerModel, model: DDCContractModel) -> DDCContractModel {
-        var _model: DDCContractModel?
-        _model = model
-        _model!.customer = customer
-        return _model!
+    required init?(map: Map) {
     }
     
-    func contract(with ID:String, model: DDCContractModel) -> DDCContractModel {
-        var _model: DDCContractModel?
-        _model = model
-        _model!.customer = customer
-        _model!.ID = ID
-        return _model!
+    func mapping(map: Map) {
+        id <- map["id"]
+        code <- map["code"]
+        customer <- map["customer"]
+        contractType <- map["contractType"]
+        currentStore <- map["currentStore"]
+        
+        subContract <- map["subContract"]
+        packageModel <- map["packageModel"]
+        packageCategoryModel <- map["packageCategoryModel"]
+        courseType <- map["courseType"]
+        contractPrice <- map["contractPrice"]
+        
+        createdUsername <- map["createdUsername"]
+        signedUsername <- map["signedUsername"]
+        responsibleUsername <- map["responsibleUsername"]
     }
     
-    func contract(with ID:String, model: DDCContractModel, contractType: DDCContractTypeModel, currentStore: DDCStoreModel) -> DDCContractModel {
-        var _model: DDCContractModel?
-        _model = model
-        _model!.customer = customer
-        _model!.ID = ID
-        _model!.contractType = contractType
-        _model!.currentStore = currentStore
-        return _model!
-    }
+//    func contract(with customer:DDCCustomerModel, model: DDCContractModel) -> DDCContractModel {
+//        var _model: DDCContractModel?
+//        _model = model
+//        _model!.customer = customer
+//        return _model!
+//    }
+//
+//    func contract(with ID:String, model: DDCContractModel) -> DDCContractModel {
+//        var _model: DDCContractModel?
+//        _model = model
+//        _model!.customer = customer
+//        _model!.ID = ID
+//        return _model!
+//    }
+//
+//    func contract(with ID:String, model: DDCContractModel, contractType: DDCContractTypeModel, currentStore: DDCStoreModel) -> DDCContractModel {
+//        var _model: DDCContractModel?
+//        _model = model
+//        _model!.customer = customer
+//        _model!.ID = ID
+//        _model!.contractType = contractType
+//        _model!.currentStore = currentStore
+//        return _model!
+//    }
     
 }

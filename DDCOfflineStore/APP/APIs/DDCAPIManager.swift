@@ -105,25 +105,6 @@ typealias failClosure = (_ errorInfo: String) -> ()
 
 class DDCHttpSessionsRequest: NSObject {
     
-    class func requestData(_ type : DDCAPIManager.RequestType, url : String, parameters : [String : Any]? = nil, finishedCallback :  @escaping (_ result : Any) -> ()) {
-        
-        // 1.获取类型
-        let method = (type == .get) ? HTTPMethod.get : HTTPMethod.post
-        
-        // 2.发送网络请求
-        Alamofire.request(url, method: method, parameters: parameters).responseJSON { (response) in
-            
-            // 3.获取结果
-            guard let result = response.result.value else {
-                print(response.result.error!)
-                return
-            }
-            
-            // 4.将结果回调出去
-            finishedCallback(result)
-        }
-    }
-    
     public static func callGetRequest(url: String, parameters: [String: Any]? = nil, success:@escaping successClosure, fail: @escaping failClosure) -> Void {
         
         callRequest(url: url, method: .get, parameters: parameters, success: success, fail: fail)
@@ -192,8 +173,8 @@ class DDCHttpSessionsRequest: NSObject {
         return result
     }
     
-    static func filterResponseData(response: Dictionary<String, Any>?) -> (code: Int, data:Dictionary<String, Any>? , message: String){
-        var result: (code: Int, data: Dictionary<String, Any>?, message: String)
+    static func filterResponseData(response: Dictionary<String, Any>?) -> (code: Int, data: AnyObject? , message: String){
+        var result: (code: Int, data: AnyObject?, message: String)
         if let res = response {
             //获取业务码
             let code = Int(res["code"] as! String)!
@@ -202,7 +183,7 @@ class DDCHttpSessionsRequest: NSObject {
             let dictData = (res["data"] as? Dictionary<String, Any>)
             
             let message = (res["msg"] as? String) ?? ""
-            result = (code, dictData, message)
+            result = (code, dictData as AnyObject, message)
         } else {
             result = (-10000, nil, "服务端返回数据为空")
         }
