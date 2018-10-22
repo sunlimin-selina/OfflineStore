@@ -11,4 +11,5 @@ target 'DDCOfflineStore’ do
   pod 'Bugly'
   pod 'Kingfisher'
   pod 'ObjectMapper'
+  pod 'MJRefresh'
 end

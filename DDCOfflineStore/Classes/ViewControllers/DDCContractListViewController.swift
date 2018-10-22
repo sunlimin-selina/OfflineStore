@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import MJRefresh
 
 struct Constants {
     static let kDDCContractListCellIdentifier = "cell"
@@ -33,6 +34,13 @@ class DDCContractListViewController: UIViewController {
         _tableView.dataSource = self
         _tableView.isUserInteractionEnabled = true
         _tableView.separatorColor = UIColor.white
+        //设置上拉加载的footer动画
+        let footer = MJRefreshAutoGifFooter {
+            self.getContractList()
+        }
+        footer?.setImages([UIImage.init(named: "load1") as Any,UIImage.init(named: "load2") as Any,UIImage.init(named: "load3") as Any,UIImage.init(named: "load4") as Any,UIImage.init(named: "load5") as Any,UIImage.init(named: "load6") as Any], for: .refreshing)
+        footer?.isRefreshingTitleHidden = true
+        _tableView.mj_footer = footer
         return _tableView
     }()
     
@@ -120,13 +128,13 @@ extension DDCContractListViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func reloadPage() {
+    @objc func reloadPage() {
         if self.user != nil {
             self.contractTableHeaderView.userName.text = self.user!.name
             print(self.user!.imageUrl!)
             self.contractTableHeaderView.portraitView.image = (self.user!.imageUrl != "") ? UIImage.init(named: self.user!.imageUrl!) : UIImage.init(named: "Personal_head")
             
-            self.loadContractList()
+            self.getContractList()
         } else {
             self.login()
         }
@@ -214,7 +222,7 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
 
 // MARK: API
 extension DDCContractListViewController {
-    func loadContractList() {
+    @objc func getContractList() {
         self.loadContractList(status: self.status, completionHandler: nil)
     }
     
@@ -241,7 +249,6 @@ extension DDCContractListViewController {
             }
             self.contractArray?.addObjects(from: contractList)
             DDCTools.hideHUD()
-            //            [self.view.collectionHolderView.collectionView footerEndRefreshing];
             self.tableView.reloadData()
             if (completionHandler != nil) {
                 completionHandler! (true)
