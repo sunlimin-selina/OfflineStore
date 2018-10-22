@@ -26,7 +26,6 @@ class DDCLoadingView : UIView{
         _loadingImage2.image = UIImage.init(named: "loadingIcon2")
         _loadingImage2.backgroundColor = UIColor.clear
         _loadingImage2.contentMode = .center
-        _loadingImage2.backgroundColor = UIColor.init(white: 0, alpha: 0.6)
         return _loadingImage2
     }()
     
