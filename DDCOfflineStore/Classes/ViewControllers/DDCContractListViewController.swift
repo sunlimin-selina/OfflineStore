@@ -102,12 +102,13 @@ extension DDCContractListViewController {
             make.height.equalTo(250)
         }
         
+        let kBarHeight : CGFloat = 60.0
         self.tableView.snp.makeConstraints { (make) in
             make.top.equalTo(self.contractTableHeaderView.snp_bottomMargin)
-            make.left.right.bottom.equalTo(self.view)
+            make.left.right.equalTo(self.view)
+            make.bottom.equalTo(self.view).offset(-kBarHeight)
         }
         
-        let kBarHeight : CGFloat = 60.0
         self.bottomBar.snp.makeConstraints({ (make) in
             make.width.equalTo(UIScreen.main.bounds.width)
             make.height.equalTo(kBarHeight)
@@ -243,20 +244,20 @@ extension DDCContractListViewController {
             
             if (contractList.count < 10)
             {
-                //                self.view.collectionHolderView.collectionView.footerHidden = YES;
+                self.tableView.mj_footer.isHidden = true
             } else {
                 self.page += 1
             }
             self.contractArray?.addObjects(from: contractList)
             DDCTools.hideHUD()
+            self.tableView.mj_footer.endRefreshing()
             self.tableView.reloadData()
             if (completionHandler != nil) {
                 completionHandler! (true)
             }
         }) { (error) in
             DDCTools.hideHUD()
-            
-            //            [self.view.collectionHolderView.collectionView footerEndRefreshing];
+            self.tableView.mj_footer.endRefreshing()
             if error.count != 0 {
                 self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
             }
