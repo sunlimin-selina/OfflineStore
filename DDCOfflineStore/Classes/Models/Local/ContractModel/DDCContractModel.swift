@@ -32,7 +32,7 @@ class DDCContractModel: Mappable {
     
     func mapping(map: Map) {
         id <- map["id"]
-        code <- map["code"]
+        code <- map["contractNo"]
         customer <- map["customer"]
         contractType <- map["contractType"]
         currentStore <- map["currentStore"]
@@ -43,9 +43,9 @@ class DDCContractModel: Mappable {
         courseType <- map["courseType"]
         contractPrice <- map["contractPrice"]
         
-        createdUsername <- map["createdUsername"]
-        signedUsername <- map["signedUsername"]
-        responsibleUsername <- map["responsibleUsername"]
+        createdUsername <- map["realCreateUserName"]
+        signedUsername <- map["belongCreateUserName"]
+        responsibleUsername <- map["createUser.name"]
     }
     
 //    func contract(with customer:DDCCustomerModel, model: DDCContractModel) -> DDCContractModel {

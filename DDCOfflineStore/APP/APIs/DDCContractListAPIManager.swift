@@ -19,8 +19,6 @@ class DDCContractListAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             if let res = response {
-//                var modelArray : Array<Any> = Array()
-//                array = res["data"] as! Array<Any>
                 let modelArray: [DDCContractDetailsModel] = DDCContractListAPIManager.parseDictionary((res["data"] as! [Dictionary<String, Any>]))!
                 successHandler(modelArray)
             }

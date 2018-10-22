@@ -14,6 +14,7 @@ struct Constants {
 }
 
 class DDCContractListViewController: UIViewController {
+    
     private lazy var bottomBar : DDCBottomBar = {
         let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "创建新合同", style: .normal, handler: {
@@ -26,6 +27,7 @@ class DDCContractListViewController: UIViewController {
     private lazy var tableView : UITableView = {
         let _tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
         _tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListTableViewCell.self))
+        _tableView.register(DDCOrderingHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCOrderingHeaderView.self))
         _tableView.rowHeight = 80.0
         _tableView.delegate = self
         _tableView.dataSource = self
@@ -50,7 +52,7 @@ class DDCContractListViewController: UIViewController {
     private var orderingUpdate : ((_ newOrdering: String) -> Void)?
     private var page : UInt = 0
     private var status : DDCContractStatus = .all
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.barStyle = .black
@@ -66,7 +68,7 @@ class DDCContractListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.getData()
+        //        self.getData()
         self.view.addSubview(self.contractTableHeaderView)
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.bottomBar)
@@ -134,10 +136,23 @@ extension DDCContractListViewController {
 // MARK: API
 extension DDCContractListViewController {
     func getData() {
-        DDCContractListAPIManager.getContractList(page: 0, status: 0, successHandler: { (Any) in
-            
+        DDCContractListAPIManager.getContractList(page: 0, status: 0, successHandler: { (contractList) in
+            if (contractList.count < 10)
+            {
+                //                self.view.collectionHolderView.collectionView.footerHidden = YES;
+            } else {
+                self.page += 1
+            }
+            self.contractArray?.addObjects(from: contractList)
+            DDCTools.hideHUD()
+            //            [self.view.collectionHolderView.collectionView footerEndRefreshing];
+            self.tableView.reloadData()
         }) { (error) in
+            DDCTools.hideHUD()
             
+            if error.count != 0 {
+                self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
+            }
         }
     }
     
@@ -149,11 +164,11 @@ extension DDCContractListViewController {
             DDCLoginRegisterViewController.login(targetController: self) { (success) in
                 if success {
                     weakSelf?.dismiss(animated: true, completion: {
-                            blockStatus = .all
-                            // 请求后台
-                            weakSelf?.loadContractList(status: blockStatus, completionHandler: { (success) in
-//                                weakSelf?.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus])
-                            })
+                        blockStatus = .all
+                        // 请求后台
+                        weakSelf?.loadContractList(status: blockStatus, completionHandler: { (success) in
+                            //                                weakSelf?.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus])
+                        })
                     })
                 }
             }
@@ -185,20 +200,14 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
         let viewController : DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: (model.info?.id)!)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-        
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return 60
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        let label : UILabel = UILabel()
-        label.text = "我创建的合同"
-        label.textColor = UIColor.black
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.frame = CGRect.init(x: 20, y: 10, width: 400, height: 40)
-        headerView.addSubview(label)
-        headerView.backgroundColor = UIColor.white
+        let headerView = (self.tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCOrderingHeaderView.self))) as! DDCOrderingHeaderView
+        headerView.delegate = self
         return headerView
     }
 }
@@ -223,16 +232,16 @@ extension DDCContractListViewController {
             if (self.page == 0)  {
                 self.contractArray = []
             }
-
+            
             if (contractList.count < 10)
             {
-//                self.view.collectionHolderView.collectionView.footerHidden = YES;
+                //                self.view.collectionHolderView.collectionView.footerHidden = YES;
             } else {
                 self.page += 1
             }
             self.contractArray?.addObjects(from: contractList)
             DDCTools.hideHUD()
-//            [self.view.collectionHolderView.collectionView footerEndRefreshing];
+            //            [self.view.collectionHolderView.collectionView footerEndRefreshing];
             self.tableView.reloadData()
             if (completionHandler != nil) {
                 completionHandler! (true)
@@ -240,16 +249,54 @@ extension DDCContractListViewController {
         }) { (error) in
             DDCTools.hideHUD()
             
-//            [self.view.collectionHolderView.collectionView footerEndRefreshing];
+            //            [self.view.collectionHolderView.collectionView footerEndRefreshing];
             if error.count != 0 {
                 self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
             }
             if (self.page == 0) {
-//                [self networkReloadView];
+                //                [self networkReloadView];
             }
             if (completionHandler != nil) {
                 completionHandler! (false)
             }
         }
+    }
+}
+
+extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
+
+    func headerView(_ headerView: DDCOrderingHeaderView, callback: @escaping (String?) -> Void) {
+        var popRect: CGRect = self.tableView .convert(headerView.frame, to: self.view)
+        popRect.origin.x = screenWidth - 120
+        popRect.size.width = 100
+
+        self.popOrderingMenu(rect: popRect, callback: callback)
+    }
+    
+    func popOrderingMenu(rect: CGRect, callback: @escaping OrderingUpdateCallback) {
+        weak var weakSelf = self
+        
+        // 弹窗让用户选择筛选
+        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(style: .plain, array: DDCContract.displayStatusArray) { (selected) in
+            if let _selected = selected {
+                //                // 获取status值
+                let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
+                let status: DDCContractStatus = DDCContractStatus(rawValue: UInt(statusArray.index(of: _selected as Any)))!
+                // 关掉弹窗
+                weakSelf?.dismiss(animated: true, completion: {
+                    weakSelf?.loadContractList(status: status, completionHandler: { (success) in
+                        callback(selected)
+                    })
+                })
+            }
+            
+        }
+        
+        if let popover = viewController.popoverPresentationController {
+            popover.sourceView = self.view
+            popover.sourceRect = rect
+            popover.permittedArrowDirections = .up
+        }
+        self.present(viewController, animated: true, completion: nil)
     }
 }

@@ -1,10 +1,11 @@
 //
-//  DDCContractStatus.swift
+//  DDCContract.swift
 //  DDCOfflineStore
 //
 //  Created by sunlimin on 2018/9/29.
 //  Copyright © 2018 DayDayCook. All rights reserved.
 //
+import Foundation
 
 enum DDCContractStatus : UInt , Codable{
     case all
@@ -33,4 +34,24 @@ enum DDCRegularCoursePurchaseType {
     case category
     case numberOfCourse
     case timeRestriction
+}
+
+class DDCContract : NSObject {
+    static var displayStatusArray: Array<String> {
+        get {
+            return ["全部","生效中","未完成","已核销","已结束","已解除"]
+        }
+    }
+    
+    static var backendStatusArray: Array<String> {
+        get {
+            return ["全部","生效中","未生效","未完成","已核销","已结束","已解除"]
+        }
+    }
+    
+    static var payMethodArray: Array<String> {
+        get {
+            return ["","支付宝支付","微信支付","线下支付"]
+        }
+    }
 }

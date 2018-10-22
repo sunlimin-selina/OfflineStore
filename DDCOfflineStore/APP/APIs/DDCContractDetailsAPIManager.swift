@@ -11,7 +11,7 @@ import Alamofire
 import ObjectMapper
 
 class DDCContractDetailsAPIManager: NSObject {
-    class func fetchContractDetails(detailId : Int ,successHandler: @escaping (_ result : Dictionary<String, Any>) -> (), failHandler: @escaping (_ error : String) -> ()) {
+    class func fetchContractDetails(detailId : Int ,successHandler: @escaping (_ result : Dictionary<String, Any>?) -> (), failHandler: @escaping (_ error : String) -> ()) {
         let workingGroup = DispatchGroup()
         let workingQueue = DispatchQueue(label: "request_queue")
         var data : Dictionary<String , Any> = Dictionary()
@@ -44,22 +44,21 @@ class DDCContractDetailsAPIManager: NSObject {
             DDCEditClientInfoAPIManager.availableChannels(successHandler: { (model) in
                 data["availableChannels"] = model
                 workingGroup.leave()
-
             }, failHandler: { (error) in
                 workingGroup.leave()
-
             })
         }
         
         workingGroup.notify(queue: workingQueue) {
             let model : DDCContractModel = data["contractModel"] as! DDCContractModel
+            DDCTools.hideHUD()
+
             if let modelId = model.currentStore?.id {
                 DDCStoreOptionsAPIManager.getStoreOptions(currentStoreId: modelId, successHandler: { (array) in
-                    DDCTools.hideHUD()
                     data["storeOptions"] = array
-                    
+                    successHandler(data)
                 }, failHandler: { (error) in
-                    
+                    successHandler(nil)
                 })
             }
         }
@@ -70,12 +69,17 @@ class DDCContractDetailsAPIManager: NSObject {
         let param : Dictionary = ["id":detailId]
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: param, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
-            if case let data as Dictionary<String, Any> = tuple.data {
+            if case let data as Dictionary<String, Any> = tuple.data!["userContract"] {
                 let contractDetail : DDCContractModel = DDCContractModel(JSON: data)!
+                let user: Dictionary<String, Any> = (data["user"] as? Dictionary<String, Any>)!
+                let store: Dictionary<String, Any> = (data["currentCourseAddress"] as? Dictionary<String, Any>)!
+
+                contractDetail.customer = DDCCustomerModel(JSON: user)
+                contractDetail.currentStore = DDCStoreModel(JSON: store)
                 successHandler(contractDetail)
             }
         }) { (error) in
-            
+            failHandler(error)
         }
     }
     
@@ -91,7 +95,7 @@ class DDCContractDetailsAPIManager: NSObject {
                 successHandler(packageName, packageCategoryName, singleStore);
             }
         }) { (error) in
-            
+            failHandler(error)
         }
     }
    

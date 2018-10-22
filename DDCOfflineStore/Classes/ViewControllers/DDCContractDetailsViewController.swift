@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 
 class DDCContractDetailsViewController: UIViewController {
-    struct Constants {
-        static let kDDCContractDetailCellIdentifier = "detailCell"
-    }
-    
+
     public var detailsID: Int?
+    var contractModel : DDCContractModel?
+    var categorys : [DDCContractModel]? = Array()
+    
     
     private lazy var barBackgroundView : DDCBarBackgroundView = {
         let barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width - 54 * 2, height: UIScreen.main.bounds.height - 64 - 32))
@@ -85,7 +85,12 @@ extension DDCContractDetailsViewController {
         weak var weakSelf = self
         if let detailId = self.detailsID {
             DDCContractDetailsAPIManager.fetchContractDetails(detailId: detailId, successHandler: { (dictionary) in
-                
+                if let _dictionary = dictionary {
+                    weakSelf!.contractModel = (_dictionary["contractModel"] as! DDCContractModel)
+                    //                weakSelf.status = status;
+                    //                weakSelf.payMethod = payMethod;
+                    //                weakSelf.availableChannels = availableChannels;
+                }
             }) { (error) in
                 
             }
@@ -102,7 +107,7 @@ extension DDCContractDetailsViewController : UITableViewDataSource , UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.categorys!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
