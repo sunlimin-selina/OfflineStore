@@ -39,7 +39,9 @@ class DDCContractListViewController: UIViewController {
             self.getContractList()
         }
         footer?.setImages([UIImage.init(named: "load1") as Any,UIImage.init(named: "load2") as Any,UIImage.init(named: "load3") as Any,UIImage.init(named: "load4") as Any,UIImage.init(named: "load5") as Any,UIImage.init(named: "load6") as Any], for: .refreshing)
-        footer?.isRefreshingTitleHidden = true
+        footer?.setTitle("正在帮你加载数据...", for: .refreshing)
+        footer?.setTitle("松开立即加载更多数据", for: .pulling)
+        footer?.setTitle("上拉可以加载更多数据", for: .idle)
         _tableView.mj_footer = footer
         return _tableView
     }()
@@ -70,7 +72,8 @@ class DDCContractListViewController: UIViewController {
         let rightItem = UIBarButtonItem.init(title: "退出帐号", style: .plain, target: self, action: #selector(rightNaviBtnPressed))
         rightItem.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = rightItem
-        
+        self.page = 0
+
         self.reloadPage()
     }
     
@@ -236,6 +239,7 @@ extension DDCContractListViewController {
             if (status != self.status) {
                 self.contractArray = []
                 self.status = status
+                self.tableView.mj_footer.isHidden = false
             }
             
             if (self.page == 0)  {
@@ -246,6 +250,7 @@ extension DDCContractListViewController {
             {
                 self.tableView.mj_footer.isHidden = true
             } else {
+                self.tableView.mj_footer.isHidden = false
                 self.page += 1
             }
             self.contractArray?.addObjects(from: contractList)

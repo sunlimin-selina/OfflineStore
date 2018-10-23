@@ -18,8 +18,8 @@ class DDCContractDetailsViewController: UIViewController {
     
     private lazy var barBackgroundView : DDCBarBackgroundView = {
         let barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width - 54 * 2, height: UIScreen.main.bounds.height - 64 - 32))
-        barBackgroundView.tableView.delegate = self as? UITableViewDelegate
-        barBackgroundView.tableView.dataSource = self as? UITableViewDataSource
+        barBackgroundView.tableView.delegate = self
+        barBackgroundView.tableView.dataSource = self
         barBackgroundView.tableView.separatorStyle = .none
         barBackgroundView.tableView.register(DDCContractDetailsCell.self, forCellReuseIdentifier: String(describing: DDCContractDetailsCell.self))
         return barBackgroundView
@@ -85,14 +85,17 @@ extension DDCContractDetailsViewController {
         weak var weakSelf = self
         if let detailId = self.detailsID {
             DDCContractDetailsAPIManager.fetchContractDetails(detailId: detailId, successHandler: { (dictionary) in
-                if let _dictionary = dictionary {
-                    weakSelf!.contractModel = (_dictionary["contractModel"] as! DDCContractModel)
-                    //                weakSelf.status = status;
-                    //                weakSelf.payMethod = payMethod;
-                    //                weakSelf.availableChannels = availableChannels;
-                }
+                DDCTools.hideHUD()
+
+//                if let _dictionary = dictionary {
+//                    weakSelf!.contractModel = (_dictionary["contractModel"] as! DDCContractModel)
+//                    //                weakSelf.status = status;
+//                    //                weakSelf.payMethod = payMethod;
+//                    //                weakSelf.availableChannels = availableChannels;
+//                }
             }) { (error) in
-                
+                DDCTools.hideHUD()
+
             }
         }
 

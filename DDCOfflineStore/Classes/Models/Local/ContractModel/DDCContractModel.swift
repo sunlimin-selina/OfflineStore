@@ -14,6 +14,9 @@ class DDCContractModel: Mappable {
     var id : Int?
     var code : String?
     
+    var status : DDCContractStatus?
+    var payMethod : DDCPayMethod?
+    
     var customer : DDCCustomerModel?
     var contractType : DDCContractTypeModel?
     var currentStore : DDCStoreModel?
@@ -33,6 +36,9 @@ class DDCContractModel: Mappable {
     func mapping(map: Map) {
         id <- map["id"]
         code <- map["contractNo"]
+        
+        status <- map["status"]
+        payMethod <- map["payMethod"]
         customer <- map["customer"]
         contractType <- map["contractType"]
         currentStore <- map["currentStore"]
@@ -47,30 +53,5 @@ class DDCContractModel: Mappable {
         signedUsername <- map["belongCreateUserName"]
         responsibleUsername <- map["createUser.name"]
     }
-    
-//    func contract(with customer:DDCCustomerModel, model: DDCContractModel) -> DDCContractModel {
-//        var _model: DDCContractModel?
-//        _model = model
-//        _model!.customer = customer
-//        return _model!
-//    }
-//
-//    func contract(with ID:String, model: DDCContractModel) -> DDCContractModel {
-//        var _model: DDCContractModel?
-//        _model = model
-//        _model!.customer = customer
-//        _model!.ID = ID
-//        return _model!
-//    }
-//
-//    func contract(with ID:String, model: DDCContractModel, contractType: DDCContractTypeModel, currentStore: DDCStoreModel) -> DDCContractModel {
-//        var _model: DDCContractModel?
-//        _model = model
-//        _model!.customer = customer
-//        _model!.ID = ID
-//        _model!.contractType = contractType
-//        _model!.currentStore = currentStore
-//        return _model!
-//    }
     
 }
