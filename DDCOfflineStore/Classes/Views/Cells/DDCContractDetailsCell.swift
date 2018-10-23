@@ -11,7 +11,7 @@ import SnapKit
 
 class DDCContractDetailsCell: UITableViewCell {
     
-    private lazy var titleLabel : UILabel = {
+    public lazy var titleLabel : UILabel = {
         let titleLabel : UILabel = UILabel()
         titleLabel.text = "合同状态"
         titleLabel.font = UIFont.systemFont(ofSize: 18)
@@ -19,7 +19,7 @@ class DDCContractDetailsCell: UITableViewCell {
         return titleLabel
     }()
     
-    private lazy var subtitleLabel : UILabel = {
+    public lazy var subtitleLabel : UILabel = {
         let subtitleLabel : UILabel = UILabel()
         subtitleLabel.text = "已解除"
         subtitleLabel.font = UIFont.systemFont(ofSize: 18)

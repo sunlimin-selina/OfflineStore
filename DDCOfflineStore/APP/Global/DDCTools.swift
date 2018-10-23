@@ -30,4 +30,13 @@ class DDCTools : NSObject{
     class func hideHUD() {
         DDCLoadingView.sharedLoading().removeFromSuperview()
     }
+    
+    class func date(from timeInterval:Int) -> String {
+        let _dateFormatter : DateFormatter = DateFormatter()
+        _dateFormatter.dateFormat = "yyyy/MM/dd"
+        
+        let timeInterval : TimeInterval = TimeInterval.init(Double(timeInterval))
+        let date : NSDate = NSDate.init(timeIntervalSince1970: timeInterval / 1000)
+        return _dateFormatter.string(from: date as Date)
+    }
 }

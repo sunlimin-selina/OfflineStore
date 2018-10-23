@@ -8,13 +8,13 @@
 
 import Foundation
 
-enum DDCGender {
-    case unknown
-    case male
-    case female
+enum DDCGender : String{
+    case unknown = ""
+    case male = "男"
+    case female = "女"
 }
 
-enum DDCOccupation {
+enum DDCOccupation: String {
     case none
     case employee
     case mother

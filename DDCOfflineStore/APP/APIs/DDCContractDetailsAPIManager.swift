@@ -13,7 +13,7 @@ import ObjectMapper
 typealias Package = (packageName: String, packageCategoryName: String, singleStore: Bool)?
 
 class DDCContractDetailsAPIManager: NSObject {
-    class func fetchContractDetails(detailId : Int ,successHandler: @escaping (_ result : (model: DDCContractModel?, channels: [DDCChannelModel]?, stores: [DDCStoreModel]?, package: Package)) -> (), failHandler: @escaping (_ error : String) -> ()) {
+    class func fetchContractDetails(detailId : Int ,successHandler: @escaping (_ result : (model: DDCContractModel?, channels: [DDCChannelModel]?, stores: [DDCStoreModel]?, package: Package)?) -> (), failHandler: @escaping (_ error : String) -> ()) {
         
         let workingGroup = DispatchGroup()
         let workingQueue = DispatchQueue(label: "request_queue")
@@ -74,11 +74,14 @@ class DDCContractDetailsAPIManager: NSObject {
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             if case let data as Dictionary<String, Any> = tuple.data!["userContract"] {
                 let contractDetail : DDCContractModel = DDCContractModel(JSON: data)!
-                let user: Dictionary<String, Any> = (data["user"] as? Dictionary<String, Any>)!
-                let store: Dictionary<String, Any> = (data["currentCourseAddress"] as? Dictionary<String, Any>)!
-
-                contractDetail.customer = DDCCustomerModel(JSON: user)
-                contractDetail.currentStore = DDCStoreModel(JSON: store)
+                if let userData = data["user"],
+                    let user = userData as? Dictionary<String, Any>{
+                    contractDetail.customer = DDCCustomerModel(JSON: user)
+                }
+                if let storeData = data["currentCourseAddress"],
+                    let store = storeData as? Dictionary<String, Any>{
+                    contractDetail.currentStore = DDCStoreModel(JSON: store)
+                }
                 contractDetail.status = DDCContractStatus(rawValue: UInt(data["status"] as! String)!)
                 contractDetail.payMethod = DDCPayMethod(rawValue: UInt(data["payMethod"] as! String)!)
                 successHandler(contractDetail)

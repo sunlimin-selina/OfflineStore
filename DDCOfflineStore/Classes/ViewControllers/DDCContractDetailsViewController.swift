@@ -9,12 +9,13 @@
 import UIKit
 import SnapKit
 
+typealias Categorys = (model: DDCContractModel?, channels: [DDCChannelModel]?, stores: [DDCStoreModel]?, package: Package)
+
 class DDCContractDetailsViewController: UIViewController {
 
     public var detailsID: Int?
-    var contractModel : DDCContractModel?
-    var categorys : [DDCContractModel]? = Array()
-    
+    var modelArray : [DDCContractDetailsViewModel]? = Array()
+    var categorys : Categorys
     
     private lazy var barBackgroundView : DDCBarBackgroundView = {
         let barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width - 54 * 2, height: UIScreen.main.bounds.height - 64 - 32))
@@ -84,15 +85,14 @@ extension DDCContractDetailsViewController {
         
         weak var weakSelf = self
         if let detailId = self.detailsID {
-            DDCContractDetailsAPIManager.fetchContractDetails(detailId: detailId, successHandler: { (dictionary) in
+            DDCContractDetailsAPIManager.fetchContractDetails(detailId: detailId, successHandler: { (response) in
                 DDCTools.hideHUD()
 
-//                if let _dictionary = dictionary {
-//                    weakSelf!.contractModel = (_dictionary["contractModel"] as! DDCContractModel)
-//                    //                weakSelf.status = status;
-//                    //                weakSelf.payMethod = payMethod;
-//                    //                weakSelf.availableChannels = availableChannels;
-//                }
+                if let _response = response {
+                    weakSelf!.categorys = _response
+                    weakSelf!.modelArray = DDCContractDetailsViewModelFactory.integrateData(category: _response)
+                }
+                weakSelf!.barBackgroundView.tableView.reloadData()
             }) { (error) in
                 DDCTools.hideHUD()
 
@@ -110,12 +110,15 @@ extension DDCContractDetailsViewController : UITableViewDataSource , UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.categorys!.count
+        return self.modelArray!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (self.barBackgroundView.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractDetailsCell.self), for: indexPath)) as! DDCContractDetailsCell
-        
+        cell.selectionStyle = .none
+        let model: DDCContractDetailsViewModel = self.modelArray![indexPath.row]
+        cell.titleLabel.text = model.title
+        cell.subtitleLabel.text = model.describe
         return cell
     }
     
