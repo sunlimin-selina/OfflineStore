@@ -74,16 +74,8 @@ class DDCContractDetailsAPIManager: NSObject {
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             if case let data as Dictionary<String, Any> = tuple.data!["userContract"] {
                 let contractDetail : DDCContractModel = DDCContractModel(JSON: data)!
-                if let userData = data["user"],
-                    let user = userData as? Dictionary<String, Any>{
-                    contractDetail.customer = DDCCustomerModel(JSON: user)
-                }
-                if let storeData = data["currentCourseAddress"],
-                    let store = storeData as? Dictionary<String, Any>{
-                    contractDetail.currentStore = DDCStoreModel(JSON: store)
-                }
-                contractDetail.status = DDCContractStatus(rawValue: UInt(data["status"] as! String)!)
-                contractDetail.payMethod = DDCPayMethod(rawValue: UInt(data["payMethod"] as! String)!)
+                let subContract : DDCSubContractModel = DDCSubContractModel(JSON: data)!
+                contractDetail.subContract = subContract
                 successHandler(contractDetail)
             }
         }) { (error) in

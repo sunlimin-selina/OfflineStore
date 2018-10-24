@@ -17,7 +17,7 @@ class DDCCustomerModel: Mappable {
     var email : String?
     var sex : DDCGender?
     var birthday : Int?
-    var career : DDCOccupation?
+    var career : String?
     var channel : NSNumber?
     
     var formattedBirthday: String?
@@ -27,6 +27,7 @@ class DDCCustomerModel: Mappable {
     
     // Mappable
     func mapping(map: Map) {
+        
         id <- map["id"]
         userName <- map["userName"]
         nickName <- map["lineUserName"]
@@ -37,7 +38,9 @@ class DDCCustomerModel: Mappable {
         career <- map["lineUserCareer"]
         channel <- map["channel"]
         
-//        self.formattedBirthday = DDCTools.date(from: birthday!)
-
+        if let _birthday = birthday {
+            self.formattedBirthday = DDCTools.date(from: _birthday)
+        }
     }
+
 }

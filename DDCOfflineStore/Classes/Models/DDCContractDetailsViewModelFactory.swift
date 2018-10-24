@@ -35,7 +35,9 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //姓名
         let name: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "姓名", describe: category.model?.customer?.nickName)
         //性别
-        let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: category.model?.customer?.sex?.rawValue)
+        let sex: Int = (category.model?.customer?.sex?.rawValue)!
+        let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: DDCContract.genderArray[sex])//
+        
         //年龄
         let age: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "年龄", describe: category.model!.customer!.age != nil ? category.model!.customer!.age!.appendingFormat("岁") : "")
         //生日
@@ -43,33 +45,72 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //手机号码
         let phoneNumber: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "手机号码", describe: category.model!.customer!.userName)
         //职业
-        let career: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "职业", describe:"")//category.model!.customer!.career!.rawValue
+        let careerIndex: Int = Int(category.model!.customer!.career!)!
+        let career: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "职业", describe:DDCContract.occupationArray[careerIndex])
         //邮箱
         let email: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "邮箱", describe:category.model!.customer!.email)
         //渠道
-//            [self channelViewModel],
-//            [self packageViewModel],//产品套餐
-//            [self courseViewModel],//产品规格
+        let channel: DDCContractDetailsViewModel = DDCContractDetailsViewModelFactory.channelViewModel(category: category)
+        //产品套餐
+        let package: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品套餐", describe: category.package?.packageName ?? "")
+        //产品规格
+        let course: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品规格", describe: category.package?.packageCategoryName ?? "")
         //生效期限
-        let startTime: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生效期限", describe:"")//(self.contractModel.subContract.startTime && self.contractModel.subContract.endTime) ? [NSString stringWithFormat:@"%@-%@",self.contractModel.subContract.startTime,self.contractModel.subContract.endTime] : @""
+        let term: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生效期限", describe:"\(category.model!.subContract!.startTime!) -\(category.model!.subContract!.endTime!)")
         //有效时间
         let effectiveTime: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "有效时间", describe:category.model!.subContract?.effectiveTime)
-        
-//            [self effectiveStoresViewModel],
+        //有效门店
+        let store: DDCContractDetailsViewModel = DDCContractDetailsViewModelFactory.effectiveStoresViewModel(stores: category.stores)
         //支付方式
-        let payMethod: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付方式", describe:"")//[DDCContractDetailsModel payMethodArr][_payMethod]
+        let payIndex: Int = category.model!.payMethod!.rawValue
+        let payMethod: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付方式", describe:DDCContract.payMethodArray[payIndex])
         //当前门店
         let currentStore: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前门店", describe:category.model!.currentStore!.title)
         //支付金额
-        let contractPrice: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付金额", describe:"")//self.contractModel.contractPrice ? [NSString stringWithFormat:@"¥%@", [self.numberFormatter stringFromNumber:self.contractModel.contractPrice]] : @""]
+        let price : String = "¥\(category.model!.contractPrice ?? "")"
+        let contractPrice: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付金额", describe:price)
         //签单员工
         let signedUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付金额", describe:category.model!.signedUsername)
         //责任销售
         let responsibleUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "责任销售", describe:category.model!.responsibleUsername)
         //业绩归属
         let createdUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "业绩归属", describe:category.model!.createdUsername)
-        array = [code, status, name, gender, age, birthday, phoneNumber, career, email, startTime, effectiveTime, payMethod, currentStore, contractPrice, signedUsername, responsibleUsername, createdUsername]
+        array = [code, status, name, gender, age, birthday, phoneNumber, career, email, channel, package, course, term, effectiveTime, store, payMethod, currentStore, contractPrice, signedUsername, responsibleUsername, createdUsername]
         return array
     }
+ 
+    class func channelViewModel(category: Categorys) -> DDCContractDetailsViewModel{
+        if let array = category.channels{
+            let channels : NSArray = array as NSArray
+            let idx : Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
+                if let object = channelModel as? DDCChannelModel{
+                    return object.id == category.model?.customer?.channel?.intValue
+                }
+                return false
+            }
+            let channel: DDCChannelModel? = (idx != NSNotFound) ? (channels[idx] as! DDCChannelModel) : nil
+            
+            return DDCContractDetailsViewModel.init(title: "渠道", describe: channel != nil ? channel!.name : "")
+        }
+        return DDCContractDetailsViewModel.init(title: "渠道", describe:"")
+    }
     
+    class func effectiveStoresViewModel(stores: [DDCStoreModel]?) -> DDCContractDetailsViewModel {
+        if let _stores = stores {
+            var storeName : String = ""
+            for index in 0...(_stores.count - 1) {
+                let store: DDCStoreModel = _stores[index]
+                if index != 0 ,
+                    index % 3 == 0 {
+                    storeName = storeName + "\(store.title ?? "") \n"
+                } else {
+                    storeName = storeName + "\(store.title ?? ""), "
+                }
+            }
+//            storeName.replacingCharacters(in: NSMakeRange(storeName.count - 2, 2), with: "")
+            return DDCContractDetailsViewModel.init(title: "有效门店", describe: storeName)
+        }
+ 
+        return DDCContractDetailsViewModel.init(title: "有效门店", describe: "")
+    }
 }

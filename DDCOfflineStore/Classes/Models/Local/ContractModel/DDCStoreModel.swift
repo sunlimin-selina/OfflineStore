@@ -19,14 +19,7 @@ class DDCStoreModel: Mappable {
     
     func mapping(map: Map) {
         id <- map["id"]
-        title <- map["title"]
+        title <- map["name"]
     }
-    
-    class func model(with title: String, ID: String) -> DDCContractTypeModel {
-        let model: DDCContractTypeModel = DDCContractTypeModel()
-        model.ID = ID
-        model.title = title
-        return model
-    }
-    
+
 }

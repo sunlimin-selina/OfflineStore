@@ -23,6 +23,7 @@ class DDCContractDetailsViewController: UIViewController {
         barBackgroundView.tableView.dataSource = self
         barBackgroundView.tableView.separatorStyle = .none
         barBackgroundView.tableView.register(DDCContractDetailsCell.self, forCellReuseIdentifier: String(describing: DDCContractDetailsCell.self))
+        barBackgroundView.tableView.register(DDCContractDetailsHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCContractDetailsHeaderView.self))
         return barBackgroundView
     }()
     
@@ -87,7 +88,6 @@ extension DDCContractDetailsViewController {
         if let detailId = self.detailsID {
             DDCContractDetailsAPIManager.fetchContractDetails(detailId: detailId, successHandler: { (response) in
                 DDCTools.hideHUD()
-
                 if let _response = response {
                     weakSelf!.categorys = _response
                     weakSelf!.modelArray = DDCContractDetailsViewModelFactory.integrateData(category: _response)
@@ -127,12 +127,12 @@ extension DDCContractDetailsViewController : UITableViewDataSource , UITableView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 156
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        
+        let headerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCContractDetailsHeaderView.self))) as! DDCContractDetailsHeaderView
+
         return headerView
     }
 }

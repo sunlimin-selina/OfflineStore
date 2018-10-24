@@ -54,4 +54,17 @@ class DDCContract : NSObject {
             return ["","支付宝支付","微信支付","线下支付"]
         }
     }
+    
+    static var genderArray: Array<String> {
+        get {
+            return ["","男","女"]
+        }
+    }
+    
+    static var occupationArray: Array<String> {
+        get {
+            return ["","公司职员","家庭主妇", "自由职业者", "私营企业主", "企业高管", "学生", "其他"]
+        }
+    }
+
 }

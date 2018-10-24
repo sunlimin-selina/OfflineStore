@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import ObjectMapper
 
-class DDCContractPackageModel: NSObject {
+class DDCContractPackageModel: Mappable {
     
     enum DDCRegularCoursePurchaseType {
         case none
@@ -28,4 +29,22 @@ class DDCContractPackageModel: NSObject {
     var upgradeLimit: Int?
     var courseType: DDCCourseType?//课程类型，正式课程1，体验课程2
 
+    required init?(map: Map) {
+    }
+    
+    func mapping(map: Map) {
+        packageType <- map["packageType"]
+        customSkuConfig <- map["customSkuConfig"]
+        modifySkuPrice <- map["modifySkuPrice"]
+        addressUseType <- map["addressUseType"]
+        
+        virtualSkuList <- map["virtualSkuList"]
+        startUseTime <- map["startUseTime"]
+        beginDate <- map["beginDate"]
+        upgradeLimit <- map["upgradeLimit"]
+        
+        courseType <- map["courseType"]
+
+    }
+    
 }

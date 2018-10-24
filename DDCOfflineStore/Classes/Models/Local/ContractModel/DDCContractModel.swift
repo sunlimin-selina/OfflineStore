@@ -25,23 +25,51 @@ class DDCContractModel: Mappable {
     var packageCategoryModel : DDCContractPackageCategoryModel?
 
     var courseType : DDCCourseType?
-    var contractPrice : NSDecimalNumber?
+    var contractPrice : String?
     var createdUsername : String?
     var signedUsername : String?
     var responsibleUsername : String?
     
+    let statusTransform = TransformOf<DDCContractStatus, String>(fromJSON: { (value: String?) -> DDCContractStatus? in
+        if let _value = value {
+            let intValue = UInt(value!)
+            return DDCContractStatus(rawValue: intValue!)
+        }
+        return nil
+    }, toJSON: { (value: DDCContractStatus?) -> String? in
+        // transform value from Int? to String?
+        if let value = value?.rawValue {
+            return String(value)
+        }
+        return nil
+    })
+    
+    let payMethodTransform = TransformOf<DDCPayMethod, String>(fromJSON: { (value: String?) -> DDCPayMethod? in
+        if let _value = value {
+            let intValue = Int(value!)
+            return DDCPayMethod(rawValue: intValue!)
+        }
+        return nil
+    }, toJSON: { (value: DDCPayMethod?) -> String? in
+        if let value = value?.rawValue {
+            return String(value)
+        }
+        return nil
+    })
+
     required init?(map: Map) {
     }
     
     func mapping(map: Map) {
+
         id <- map["id"]
         code <- map["contractNo"]
         
-        status <- map["status"]
-        payMethod <- map["payMethod"]
-        customer <- map["customer"]
+        status <- (map["status"], statusTransform)
+        payMethod <- (map["payMethod"], payMethodTransform)
+        customer <- map["user"]
         contractType <- map["contractType"]
-        currentStore <- map["currentStore"]
+        currentStore <- map["currentCourseAddress"]
         
         subContract <- map["subContract"]
         packageModel <- map["packageModel"]

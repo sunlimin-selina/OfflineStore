@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum DDCPayMethod: UInt , Codable{
+enum DDCPayMethod: Int{
     case none
     case zhifubao
     case weixin
