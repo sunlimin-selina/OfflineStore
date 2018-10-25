@@ -40,7 +40,6 @@ class DDCStore : NSObject{
         }
         set {
             if let data = newValue {
-               print (data.id)
                 let userData : AnyObject = NSKeyedArchiver.archivedData(withRootObject: data as Any) as AnyObject
                 UserDefaults.standard.set(userData, forKey: "DDCUser")
                 UserDefaults.standard.synchronize()

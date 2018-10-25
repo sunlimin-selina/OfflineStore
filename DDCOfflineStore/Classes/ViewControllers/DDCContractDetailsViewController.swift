@@ -119,6 +119,7 @@ extension DDCContractDetailsViewController : UITableViewDataSource , UITableView
         let model: DDCContractDetailsViewModel = self.modelArray![indexPath.row]
         cell.titleLabel.text = model.title
         cell.subtitleLabel.text = model.describe
+        cell.subtitleLabel.textColor = model.color
         return cell
     }
     

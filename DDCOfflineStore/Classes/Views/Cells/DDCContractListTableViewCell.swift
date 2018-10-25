@@ -51,11 +51,6 @@ class DDCContractListTableViewCell: UITableViewCell {
         return subtitleLabel
     }()
     
-    private lazy var statusPairings : Dictionary<UInt, DDCStatusViewModel> = {
-        var _statusPairings = [DDCContractStatus.ineffective.rawValue : DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xFF9C27), title: "未生效", imageName: "icon_contractdetails_weishengxiao"),DDCContractStatus.used.rawValue : DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xF7B761), title: "已核销", imageName: "icon_contractdetails_yixiaohe"),DDCContractStatus.inComplete.rawValue : DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xFF5D31), title: "未完成", imageName: "icon_contractdetails_weiwancheng"),DDCContractStatus.effective.rawValue : DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x3AC09F), title: "生效中", imageName: "icon_contractdetails_shengxiaozhong"),DDCContractStatus.completed.rawValue : DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x474747), title: "已结束", imageName: "icon_contractdetails_yijieshu"),DDCContractStatus.revoked.rawValue : DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xC4C4C4), title: "已解除", imageName: "icon_contractdetails_yijiechu")]
-        return _statusPairings
-    }()
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.addSubview(self.icon)
@@ -105,7 +100,7 @@ class DDCContractListTableViewCell: UITableViewCell {
         self.titleLabel.text = title
         self.datetime.text = model.info!.createDateString
         
-        let status : DDCStatusViewModel = self.statusPairings[(model.showStatus?.rawValue)!]!
+        let status : DDCStatusViewModel = DDCContract.statusPairings[(model.showStatus?.rawValue)!]!
         self.subtitleLabel.text = status.title
         self.subtitleLabel.textColor = status.color
         self.icon.image = UIImage.init(named: status.imageName!)

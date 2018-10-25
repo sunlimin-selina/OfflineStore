@@ -12,14 +12,21 @@ import UIKit
 class DDCContractDetailsViewModel: NSObject {
     var title: String?
     var describe: String?
-    var paragraph: NSParagraphStyle?
-    
+    var color : UIColor?
+
     init(title: String?, describe: String?) {
         super.init()
         self.title = title
         self.describe = describe
+        self.color = DDCColor.fontColor.black
     }
     
+    init(title: String?, describe: String?, color: UIColor?) {
+        super.init()
+        self.title = title
+        self.describe = describe
+        self.color = color
+    }
 }
 
 class DDCContractDetailsViewModelFactory: NSObject {
@@ -30,8 +37,9 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //合同编号
         let code: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "合同编号", describe: category.model?.code)
         //合同状态
-        let modelStatus: Int = Int((category.model?.status)!.rawValue)
-        let status: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "合同状态", describe: ((category.model?.status != .all) ? DDCContract.backendStatusArray[modelStatus] : ""))
+        let modelStatus: UInt = UInt((category.model?.status)!.rawValue)
+        let statusModel: DDCStatusViewModel = DDCContract.statusPairings[modelStatus]!
+        let status: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "合同状态", describe: ((category.model?.status != .all) ? statusModel.title : ""), color: statusModel.color)
         //姓名
         let name: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "姓名", describe: category.model?.customer?.nickName)
         //性别

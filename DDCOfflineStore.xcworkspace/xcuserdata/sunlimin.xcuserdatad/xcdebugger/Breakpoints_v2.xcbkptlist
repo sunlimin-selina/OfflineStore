@@ -35,13 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/APP/APIs/DDCSystemUserLoginAPIManager.swift"
-            timestampString = "562043122.177025"
+            filePath = "DDCOfflineStore/Classes/Models/DDCContractDetailsViewModelFactory.swift"
+            timestampString = "562141212.813494"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
-            landmarkName = "login(username:password:successHandler:failHandler:)"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "integrateData(category:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,14 +51,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/APP/APIs/DDCContractDetailsAPIManager.swift"
-            timestampString = "562132568.905068"
+            filePath = "DDCOfflineStore/Classes/ViewControllers/DDCContractDetailsViewController.swift"
+            timestampString = "562141212.813562"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
-            landmarkName = "getContractDetails(detailId:successHandler:failHandler:)"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "tableView(_:viewForHeaderInSection:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/Classes/ViewControllers/DDCContractListViewController.swift"
+            timestampString = "562141212.8136131"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "rightNaviBtnPressed()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/APP/Global/DDCStore.swift"
+            timestampString = "562141212.814469"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "user"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
