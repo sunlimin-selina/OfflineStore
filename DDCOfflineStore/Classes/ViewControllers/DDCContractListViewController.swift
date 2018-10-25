@@ -126,6 +126,8 @@ extension DDCContractListViewController {
         let alertController : UIAlertController = UIAlertController.init(title: "你确定要登出吗？", message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
             DDCStore.sharedStore().user = nil
+            UserDefaults.standard.set(nil, forKey: "DDCUser")
+            UserDefaults.standard.synchronize()
             weakSelf?.login()
         }))
         alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))

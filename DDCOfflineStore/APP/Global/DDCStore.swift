@@ -44,7 +44,6 @@ class DDCStore : NSObject{
                 UserDefaults.standard.set(userData, forKey: "DDCUser")
                 UserDefaults.standard.synchronize()
             }
-
         }
     }
     
