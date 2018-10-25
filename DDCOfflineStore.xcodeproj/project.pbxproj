@@ -490,6 +490,7 @@
 				D3F8817D215F2A930091C61A /* Frameworks */,
 				D3F8817E215F2A930091C61A /* Resources */,
 				8B3D7E11A79F150BA838949F /* [CP] Embed Pods Frameworks */,
+				D3AE10F82181721300E61E08 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -657,6 +658,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DDCOfflineStore/Pods-DDCOfflineStore-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		D3AE10F82181721300E61E08 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ngit=`sh /etc/profile; which git`\nappBuild=`\"$git\" rev-list --all --max-count=1 --abbrev-commit`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

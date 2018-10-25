@@ -132,7 +132,7 @@ extension DDCContractDetailsViewController : UITableViewDataSource , UITableView
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCContractDetailsHeaderView.self))) as! DDCContractDetailsHeaderView
-
+        headerView.status = self.categorys.model?.status
         return headerView
     }
 }

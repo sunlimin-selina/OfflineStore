@@ -20,11 +20,15 @@ class DDCTools : NSObject{
     }
 
     class func showHUD(view: UIView){
-        view.addSubview(DDCLoadingView.sharedLoading())
-        DDCLoadingView.sharedLoading().runAnimation()
-        DDCLoadingView.sharedLoading().snp.makeConstraints { (make) in
+        let loadingView = DDCLoadingView.sharedLoading()
+        if loadingView.constraints.count > 0{
+            loadingView.removeFromSuperview()
+        }
+        view.addSubview(loadingView)
+        loadingView.snp.makeConstraints { (make) in
             make.edges.equalTo(view)
         }
+        loadingView.runAnimation()
     }
     
     class func hideHUD() {

@@ -18,8 +18,9 @@ class DDCContractListAPIManager: NSObject {
         let params : Dictionary<String, Any> = ["uid":uid , "currentPage":page ,"status":status , "pageSize" : 10]
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
-            if let res = response {
-                let modelArray: [DDCContractDetailsModel] = DDCContractListAPIManager.parseDictionary((res["data"] as! [Dictionary<String, Any>]))!
+            if let res = response,
+                let data = res["data"]{
+                let modelArray: [DDCContractDetailsModel] = DDCContractListAPIManager.parseDictionary((data as! [Dictionary<String, Any>]))!
                 successHandler(modelArray)
             }
         }) { (error) in
