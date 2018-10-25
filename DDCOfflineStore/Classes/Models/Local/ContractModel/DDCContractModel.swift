@@ -30,20 +30,6 @@ class DDCContractModel: Mappable {
     var signedUsername : String?
     var responsibleUsername : String?
     
-    let statusTransform = TransformOf<DDCContractStatus, String>(fromJSON: { (value: String?) -> DDCContractStatus? in
-        if let _value = value {
-            let intValue = UInt(value!)
-            return DDCContractStatus(rawValue: intValue!)
-        }
-        return nil
-    }, toJSON: { (value: DDCContractStatus?) -> String? in
-        // transform value from Int? to String?
-        if let value = value?.rawValue {
-            return String(value)
-        }
-        return nil
-    })
-    
     let payMethodTransform = TransformOf<DDCPayMethod, String>(fromJSON: { (value: String?) -> DDCPayMethod? in
         if let _value = value {
             let intValue = Int(value!)
@@ -65,7 +51,7 @@ class DDCContractModel: Mappable {
         id <- map["id"]
         code <- map["contractNo"]
         
-        status <- (map["status"], statusTransform)
+        status <- map["showStatus"]
         payMethod <- (map["payMethod"], payMethodTransform)
         customer <- map["user"]
         contractType <- map["contractType"]

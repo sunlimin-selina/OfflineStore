@@ -35,12 +35,13 @@ class DDCContractDetailsAPIManager: NSObject {
                         stores = array
                         workingGroup.leave()
                     }, failHandler: { (error) in
+                        errorMessage = error
                         workingGroup.leave()
                     })
                 }
             }, failHandler: { (error) in
-                workingGroup.leave()
                 errorMessage = error
+                workingGroup.leave()
             })
         }
         
@@ -50,8 +51,8 @@ class DDCContractDetailsAPIManager: NSObject {
                 package = response
                 workingGroup.leave()
             }, failHandler: { (error) in
-                workingGroup.leave()
                 errorMessage = error
+                workingGroup.leave()
             })
         }
         
@@ -61,19 +62,21 @@ class DDCContractDetailsAPIManager: NSObject {
                 channels = array
                 workingGroup.leave()
             }, failHandler: { (error) in
-                workingGroup.leave()
                 errorMessage = error
+                workingGroup.leave()
             })
         }
         
         workingGroup.notify(queue: workingQueue) {
-            if let _model = model {
-                result = (_model, channels, stores, package)
-                successHandler(result)
-            } else {
-                failHandler(errorMessage ?? "")
+            DispatchQueue.main.async {
+                // 主线程中
+                if let _model = model {
+                    result = (_model, channels, stores, package)
+                    successHandler(result)
+                } else {
+                    failHandler(errorMessage ?? "")
+                }
             }
-
         }
     }
     
