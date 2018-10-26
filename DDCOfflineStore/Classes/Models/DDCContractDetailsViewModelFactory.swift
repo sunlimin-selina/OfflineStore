@@ -44,7 +44,7 @@ class DDCContractDetailsViewModelFactory: NSObject {
         let name: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "姓名", describe: category.model?.customer?.nickName)
         //性别
         let sex: Int = (category.model?.customer?.sex?.rawValue)!
-        let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: DDCContract.genderArray[sex])//
+        let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: DDCContract.genderArray[sex + 1])//
         
         //年龄
         let age: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "年龄", describe: category.model!.customer!.age != nil ? category.model!.customer!.age!.appendingFormat("岁") : "")
@@ -90,15 +90,17 @@ class DDCContractDetailsViewModelFactory: NSObject {
     class func channelViewModel(category: Categorys) -> DDCContractDetailsViewModel{
         if let array = category.channels{
             let channels : NSArray = array as NSArray
-            let idx : Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
-                if let object = channelModel as? DDCChannelModel{
-                    return object.id == category.model?.customer?.channel?.intValue
-                }
-                return false
-            }
-            let channel: DDCChannelModel? = (idx != NSNotFound) ? (channels[idx] as! DDCChannelModel) : nil
             
-            return DDCContractDetailsViewModel.init(title: "渠道", describe: channel != nil ? channel!.name : "")
+            if let channelId = category.model?.customer?.channel{
+                let idx : Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
+                    if let object = channelModel as? DDCChannelModel{
+                        return object.id == Int(channelId)
+                    }
+                    return false
+                }
+                let channel: DDCChannelModel? = (channels[idx] as! DDCChannelModel)
+                return DDCContractDetailsViewModel.init(title: "渠道", describe: channel != nil ? channel!.name : "")
+            }
         }
         return DDCContractDetailsViewModel.init(title: "渠道", describe:"")
     }

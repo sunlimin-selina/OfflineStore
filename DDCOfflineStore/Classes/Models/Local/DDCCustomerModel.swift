@@ -18,7 +18,7 @@ class DDCCustomerModel: Mappable {
     var sex : DDCGender?
     var birthday : Int?
     var career : String?
-    var channel : NSNumber?
+    var channel : String?
     
     var formattedBirthday: String?
     

@@ -9,9 +9,14 @@
 import Foundation
 import UIKit
 
-let screenWidth : CGFloat = UIScreen.main.bounds.width
-let screenHeight : CGFloat = UIScreen.main.bounds.height
+struct screen {
+    static let width : CGFloat = UIScreen.main.bounds.width
+    static let height : CGFloat = UIScreen.main.bounds.height
+    static let statusBarHeight : CGFloat = 20.0
+    static let tabbarHeight : CGFloat = 49.0
+    static let navigationBarHeight : CGFloat = 44.0
+}
 
 class DDCAppConfig: NSObject {
-    
+
 }

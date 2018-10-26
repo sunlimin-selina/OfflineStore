@@ -27,8 +27,8 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
 
     init(stages : Int, yOffset : CGFloat) {
         super.init()
-        self.stages = stages;
-        self.yOffset = yOffset;
+        self.stages = stages
+        self.yOffset = yOffset
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -49,7 +49,7 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
         var xOffset : CGFloat = startingOffset
         let lineWidth : CGFloat = (self.collectionView!.bounds.size.width - (1.5 * lastItemWidth)) / CGFloat((self.stages - 1))
 
-        let numberOfItem : Int = (self.collectionView?.numberOfItems(inSection: 0))!
+        let numberOfItem : Int = (self.collectionView?.numberOfItems(inSection: 0))! - 1
         
         for index in 0...numberOfItem {
             var frame : CGRect?
@@ -65,20 +65,20 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
                 
                 if (index == 0) {
                     xOffset += itemWidth / 2
-                } else {
-                    frame = CGRect.init(x: xOffset, y: self.yOffset!, width: lineWidth, height: 10)
-                    xOffset += lineWidth
                 }
                 
-                let indexPath : NSIndexPath = NSIndexPath.init(item: index, section: 0)
-                let attributes : UICollectionViewLayoutAttributes = UICollectionViewLayoutAttributes.init(forCellWith: indexPath as IndexPath)
-                attributes.frame = frame!;
-                attributes.zIndex = (index % 2 == 0) ? 0 : 2
-                self.cache.append(attributes)
-
-                self.contentWidth = max(self.contentWidth, (frame!.origin.x + frame!.size.width))
+            } else { //line
+                frame = CGRect.init(x: xOffset, y: self.yOffset!, width: lineWidth, height: 10)
+                xOffset = xOffset + lineWidth
             }
             
+            let indexPath : NSIndexPath = NSIndexPath.init(item: index, section: 0)
+            let attributes : UICollectionViewLayoutAttributes = UICollectionViewLayoutAttributes.init(forCellWith: indexPath as IndexPath)
+            attributes.frame = frame!
+            attributes.zIndex = (index % 2 == 0) ? 0 : 2
+            self.cache.append(attributes)
+            
+            self.contentWidth = max(self.contentWidth, (frame!.origin.x + frame!.size.width))
         }
 
     }
@@ -91,7 +91,7 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
                 visibleAttributes.append(attribute)
             }
         }
-        return visibleAttributes;
+        return visibleAttributes 
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {

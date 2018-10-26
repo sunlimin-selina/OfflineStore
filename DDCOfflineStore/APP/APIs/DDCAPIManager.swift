@@ -180,7 +180,7 @@ class DDCHttpSessionsRequest: NSObject {
             let code = Int(res["code"] as! String)!
             
             //获取数据字典
-            let dictData = (res["data"] as? Dictionary<String, Any>)
+            let dictData = res["data"]
             
             let message = (res["msg"] as? String) ?? ""
             result = (code, dictData as AnyObject, message)

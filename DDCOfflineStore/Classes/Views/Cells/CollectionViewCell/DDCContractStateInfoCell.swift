@@ -1,5 +1,5 @@
 //
-//  DDCContractStateLineCollectionViewCell.swift
+//  DDCContractStateInfoCell.swift
 //  DDCOfflineStore
 //
 //  Created by sunlimin on 2018/10/16.
@@ -9,15 +9,15 @@
 import UIKit
 import SnapKit
 
-class DDCContractStateLineCollectionViewCell: UICollectionViewCell {
+class DDCContractStateInfoCell: UICollectionViewCell {
     let kIndicatorImgDiameter : CGFloat = 16.0
     let kIndicatorTopOffset : CGFloat = 5.0
     var line_left : UIButton?
     var line_right : UIButton?
-    
+
     private lazy var dot : UIButton = {
         let _dot : UIButton = UIButton.init(type: .custom)
-        _dot.backgroundColor = UIColor.red
+        _dot.backgroundColor = UIColor.white
         _dot.setImage(UIImage.init(named: "icon_state_node_done"), for: .normal)
         _dot.setImage(UIImage.init(named: "icon_state_node_doing"), for: .selected)
         _dot.setImage(UIImage.init(named: "icon_state_node_todo"), for: .disabled)
@@ -31,12 +31,18 @@ class DDCContractStateLineCollectionViewCell: UICollectionViewCell {
         let _titleButton : UIButton = UIButton.init(type: .custom)
         _titleButton.titleLabel!.numberOfLines = 0
         _titleButton.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
+        _titleButton.setTitleColor(DDCColor.mainColor.orange, for: .normal)
+        _titleButton.setTitleColor(DDCColor.mainColor.orange, for: .selected)
+        _titleButton.setTitleColor(DDCColor.fontColor.gray, for: .disabled)
+        //        [titleBtn setFont:[UIFont systemFontOfSize:16.0f weight:UIFontWeightRegular] forState:UIControlStateNormal] 
+        //        [titleBtn setFont:[UIFont systemFontOfSize:16.0f weight:UIFontWeightRegular] forState:UIControlStateSelected] 
+        //        [titleBtn setFont:[UIFont systemFontOfSize:16.0f weight:UIFontWeightLight] forState:UIControlStateDisabled] 
+
         return _titleButton
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.red
         self.contentView.addSubview(self.dot)
         self.contentView.addSubview(self.titleButton)
         self.setupViewConstraints()
@@ -52,9 +58,23 @@ class DDCContractStateLineCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(self.contentView).offset(kIndicatorTopOffset)
         })
         
-        self.dot.snp.makeConstraints({ (make) in
+        self.titleButton.snp.makeConstraints({ (make) in
             make.top.equalTo(dot.snp.bottomMargin).offset(10)
             make.centerX.equalTo(dot)
         })
+    }
+    
+    func configureCell(model: DDCContractStateInfoViewModel) {
+        self.titleButton.setTitle(model.title, for: .normal)
+        self.dot.isSelected = (model.state == DDCContractState.doing)
+        self.dot.isEnabled = (model.state == DDCContractState.todo)
+    }
+    
+    class func size(data: DDCContractStateInfoViewModel) -> CGSize {
+        var width: CGFloat = 0.0
+        if let title = data.title {
+            width = DDCString.width(string: title, font: UIFont.systemFont(ofSize: 16.0, weight: (data.state == DDCContractState.todo) ? UIFont.Weight.light:UIFont.Weight.regular), height: 20.0)
+        }
+        return CGSize.init(width: width, height: 60.0)
     }
 }

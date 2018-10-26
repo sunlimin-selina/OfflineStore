@@ -151,8 +151,8 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         self.view.addSubview(self.progressViewController.view)
         
         self.progressViewController.view.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.view).offset(0.05*screenHeight)
-            make.width.equalTo(screenWidth - 74)
+            make.top.equalTo(self.view).offset(0.05*screen.height + screen.statusBarHeight + screen.navigationBarHeight)
+            make.width.equalTo(screen.width - 74)
             make.centerX.equalTo(self.view)
             make.height.equalTo(60.0)
         })
@@ -161,7 +161,7 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         
         self.view.addSubview(self.pageViewController.view)
         self.pageViewController.view.snp.makeConstraints { (make) in
-            make.top.equalTo(self.progressViewController.view.snp_bottomMargin).offset(0.05*screenHeight)
+            make.top.equalTo(self.progressViewController.view.snp_bottomMargin).offset(0.05*screen.height)
             make.left.right.bottom.equalTo(self.view)
         }
         self.addChild(self.pageViewController)

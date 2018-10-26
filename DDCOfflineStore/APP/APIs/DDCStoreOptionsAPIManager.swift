@@ -17,12 +17,17 @@ class DDCStoreOptionsAPIManager: NSObject {
 
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
-            var array : Array<DDCStoreModel> = Array()
+            var array: Array<DDCStoreModel> = Array()
             
-            if case let data as Dictionary<String, Any> = tuple.data {
-                let channelModel : DDCStoreModel = DDCStoreModel(JSON: data)!
-                array.append(channelModel)
+            if case let stores as Array<Any> = tuple.data {
+                for data in stores {
+                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
+                        let storeModel : DDCStoreModel = DDCStoreModel(JSON: _data)!
+                        array.append(storeModel)
+                    }
+                }
                 successHandler(array)
+                return
             }
             successHandler(nil)
         }) { (error) in

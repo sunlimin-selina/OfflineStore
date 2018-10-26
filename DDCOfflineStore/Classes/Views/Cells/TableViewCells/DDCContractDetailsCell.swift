@@ -14,16 +14,17 @@ class DDCContractDetailsCell: UITableViewCell {
     public lazy var titleLabel : UILabel = {
         let titleLabel : UILabel = UILabel()
         titleLabel.text = "合同状态"
-        titleLabel.font = UIFont.systemFont(ofSize: 18)
-        titleLabel.textColor = UIColor.gray
+        titleLabel.font = UIFont.systemFont(ofSize: 16)
+        titleLabel.textColor = DDCColor.fontColor.gray
+        titleLabel.textAlignment = .right
         return titleLabel
     }()
     
     public lazy var subtitleLabel : UILabel = {
         let subtitleLabel : UILabel = UILabel()
         subtitleLabel.text = "已解除"
-        subtitleLabel.font = UIFont.systemFont(ofSize: 18)
-        subtitleLabel.textColor = UIColor.gray
+        subtitleLabel.font = UIFont.systemFont(ofSize: 16)
+        subtitleLabel.textColor = DDCColor.fontColor.black
         return subtitleLabel
     }()
     
@@ -42,12 +43,12 @@ class DDCContractDetailsCell: UITableViewCell {
         self.titleLabel.snp.makeConstraints({ (make) in
             make.width.equalTo(100)
             make.left.equalTo(self.snp_leftMargin).offset(20)
-            make.right.equalTo(self.subtitleLabel.snp_leftMargin).offset(-20)
+            make.right.equalTo(self.subtitleLabel.snp_leftMargin).offset(-30)
             make.centerY.equalTo(self)
         })
         
         self.subtitleLabel.snp.makeConstraints({ (make) in
-            make.left.equalTo(self.titleLabel.snp_rightMargin).offset(20)
+            make.left.equalTo(self.contentView).offset(164)
             make.centerY.right.equalTo(self)
         })
     }

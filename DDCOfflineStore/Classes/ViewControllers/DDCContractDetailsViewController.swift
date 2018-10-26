@@ -18,7 +18,7 @@ class DDCContractDetailsViewController: UIViewController {
     var categorys : Categorys
     
     private lazy var barBackgroundView : DDCBarBackgroundView = {
-        let barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width - 54 * 2, height: UIScreen.main.bounds.height - 64 - 32))
+        let barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: 0.0, y: 0.0, width: screen.width - 54 * 2, height: screen.height - 64 - 32))
         barBackgroundView.tableView.delegate = self
         barBackgroundView.tableView.dataSource = self
         barBackgroundView.tableView.separatorStyle = .none
@@ -121,10 +121,6 @@ extension DDCContractDetailsViewController : UITableViewDataSource , UITableView
         cell.subtitleLabel.text = model.describe
         cell.subtitleLabel.textColor = model.color
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

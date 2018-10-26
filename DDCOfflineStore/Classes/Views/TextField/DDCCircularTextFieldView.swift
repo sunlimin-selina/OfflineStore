@@ -12,9 +12,9 @@ import SnapKit
 import Darwin
 
 enum CircularTextFieldViewType : UInt{
-    case CircularTextFieldViewTypeNormal
-    case CircularTextFieldViewTypeLabelButton
-    case CircularTextFieldViewTypeImageButton
+    case normal
+    case labelButton
+    case imageButton
 }
 
 class DDCCircularTextFieldView: UIView {
@@ -59,18 +59,18 @@ class DDCCircularTextFieldView: UIView {
     
     var type : CircularTextFieldViewType {
         get {
-            return .CircularTextFieldViewTypeNormal
+            return .normal
         }
         set
         {
             switch type {
-            case .CircularTextFieldViewTypeNormal:
+            case .normal:
                 do{
                     self.button?.snp.updateConstraints({ (make) in
                         make.width.equalTo(Double.leastNormalMagnitude)
                     })
                 }
-            case .CircularTextFieldViewTypeImageButton:
+            case .imageButton:
                 do {
                     self.button?.snp.updateConstraints({ (make) in
                         make.width.equalTo(30.0)
@@ -80,7 +80,7 @@ class DDCCircularTextFieldView: UIView {
                     self.button?.setImage(UIImage.init(named: "btn_password_nodisplay"), for: .normal)
                     self.button?.setImage(UIImage.init(named: "btn_password_display"), for: .selected)
                 }
-            case .CircularTextFieldViewTypeLabelButton:
+            case .labelButton:
                 do {
                     self.button?.snp.updateConstraints({ (make) in
                         make.width.equalTo(70.0)

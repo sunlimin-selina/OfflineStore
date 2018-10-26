@@ -46,7 +46,7 @@ class DDCLoginRegisterViewController: UIViewController {
     private var padding: Int?
     private var firstTextFieldView: DDCCircularTextFieldWithExtraButtonView?
     private lazy var contentView: UIView = {
-        var _contentView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: screenWidth, height: screenHeight))
+        var _contentView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: screen.width, height: screen.height))
         _contentView.backgroundColor = UIColor.white
         return _contentView
     }()
@@ -125,7 +125,7 @@ extension DDCLoginRegisterViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         UIView.animate(withDuration: 0.23) {
             self.icon!.alpha = 0
-            self.contentView.frame = CGRect.init(x: 0.0, y: -kOffsetHeight, width: screenWidth, height: screenHeight)
+            self.contentView.frame = CGRect.init(x: 0.0, y: -kOffsetHeight, width: screen.width, height: screen.height)
         }
         DDCKeyboardStateListener.sharedStore().isVisible = true
     }
@@ -133,7 +133,7 @@ extension DDCLoginRegisterViewController {
     @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.23) {
             self.icon!.alpha = 1
-            self.contentView.frame = CGRect.init(x: 0, y: 0, width: screenWidth, height: screenHeight)
+            self.contentView.frame = CGRect.init(x: 0, y: 0, width: screen.width, height: screen.height)
         }
         DDCKeyboardStateListener.sharedStore().isVisible = false
     }
@@ -246,7 +246,7 @@ extension DDCLoginRegisterViewController: UITextFieldDelegate {
 // MARK:InputFieldViewDelegate
 extension DDCLoginRegisterViewController: InputFieldViewDelegate {
     func inputFieldView(view: DDCInputFieldView, quickLogin: Bool) {
-        self.firstTextFieldView!.type = .CircularTextFieldViewTypeNormal
+        self.firstTextFieldView!.type = .normal
         self.submitButton.enableButtonWithType(type: .SubmitButtonTypeDefault)
     }
     
@@ -307,11 +307,11 @@ extension DDCLoginRegisterViewController: InputFieldViewDelegate {
 extension DDCLoginRegisterViewController {
 
     func addSwitchEnvBtn() {
-        let btn = UIButton(type: .custom);
+        let btn = UIButton(type: .custom)
         btn.titleLabel?.adjustsFontSizeToFitWidth = true
         btn.tag = 678
         self.view.addSubview(btn)
-        btn.frame = CGRect(x: screenWidth - 80, y: screenHeight - 100, width: 60, height: 60)
+        btn.frame = CGRect(x: screen.width - 80, y: screen.height - 100, width: 60, height: 60)
         btn.backgroundColor = UIColor(red: 236.0/255.0, green: 90.0/255.0, blue: 46.0/255.0, alpha: 1.0)
         btn.layer.masksToBounds = true
         btn.layer.cornerRadius = 30

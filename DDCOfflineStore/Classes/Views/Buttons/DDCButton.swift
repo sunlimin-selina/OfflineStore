@@ -13,12 +13,12 @@ class DDCButton: UIButton {
     var fonts : Dictionary<NSNumber,UIFont> = Dictionary()
 
 //    func setBackgroundColor(backgroundColor : UIColor, state : UIControl.State) {
-////        if (!backgroundColor) return;
+////        if (!backgroundColor) return 
 //
 //        self.backgroundColor
-//        [self.bgColors setObject:backgroundColor forKey:[NSNumber numberWithUnsignedInteger:state]];
+//        [self.bgColors setObject:backgroundColor forKey:[NSNumber numberWithUnsignedInteger:state]] 
 //        if (state == UIControlStateNormal) {
-//            self.backgroundColor = backgroundColor;
+//            self.backgroundColor = backgroundColor 
 //        }
 //    }
     

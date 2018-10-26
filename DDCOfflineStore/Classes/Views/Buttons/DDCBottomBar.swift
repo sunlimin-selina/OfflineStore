@@ -46,7 +46,7 @@ class DDCBottomBar : UIView {
                 make.height.equalTo(kButtonHeight)
             })
         } else {
-            let buttonWidth : CGFloat = (screenWidth - edgeSpace.left - edgeSpace.right - CGFloat((self.buttonArray?.count)!) * kLineSpace) / CGFloat(self.buttonArray!.count)
+            let buttonWidth : CGFloat = (screen.width - edgeSpace.left - edgeSpace.right - CGFloat((self.buttonArray?.count)!) * kLineSpace) / CGFloat(self.buttonArray!.count)
             let count = (self.buttonArray?.count)! - 1
             
             for index in 0...count{

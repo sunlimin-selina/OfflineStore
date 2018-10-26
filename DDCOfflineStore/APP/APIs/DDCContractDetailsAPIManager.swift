@@ -25,7 +25,6 @@ class DDCContractDetailsAPIManager: NSObject {
         var channels: [DDCChannelModel]?
         var errorMessage : String?
         
-        
         workingGroup.enter()
         workingQueue.async {
             DDCContractDetailsAPIManager.getContractDetails(detailId: detailId, successHandler: { (response)  in
@@ -106,7 +105,7 @@ class DDCContractDetailsAPIManager: NSObject {
                 let packageCategoryName : String = data["skuName"] as! String
                 let singleStore : Bool = data["addressUseType"] as! Int == 1 ? true : false
                 let response = (packageName, packageCategoryName, singleStore)
-                successHandler(response);
+                successHandler(response) 
             }
         }) { (error) in
             failHandler(error)

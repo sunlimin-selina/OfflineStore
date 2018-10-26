@@ -20,7 +20,7 @@ class DDCInputFieldView: UIView, CountButtonDelegate {
     }()
     
     var secondTextFieldView : DDCCircularTextFieldView? = {
-        var _secondTextFieldView = DDCCircularTextFieldView.init(frame: CGRect.zero, type: .CircularTextFieldViewTypeImageButton)
+        var _secondTextFieldView = DDCCircularTextFieldView.init(frame: CGRect.zero, type: .imageButton)
         _secondTextFieldView.textField!.placeholder = "请输入密码"
         _secondTextFieldView.textField!.isSecureTextEntry = true
         _secondTextFieldView.button?.addTarget(_secondTextFieldView, action: #selector(needSecureText(sender:)), for: .touchUpInside)
@@ -58,7 +58,7 @@ class DDCInputFieldView: UIView, CountButtonDelegate {
     func updateViewConstraints() {
         let kWidth : CGFloat = 424.0
         let kHeight : CGFloat = 145.0 * 0.3
-        let kTextFieldMargin = (screenWidth - kWidth) / 2
+        let kTextFieldMargin = (screen.width - kWidth) / 2
         
         self.firstTextFieldView!.snp.makeConstraints { (make) in
             make.top.equalTo(self).offset(10.0)

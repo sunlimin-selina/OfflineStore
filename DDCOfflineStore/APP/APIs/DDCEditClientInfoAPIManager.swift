@@ -16,12 +16,16 @@ class DDCEditClientInfoAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: nil, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
-            var array : Array<Any> = Array()
-            
-            if case let data as Dictionary<String, Any> = tuple.data {
-                let channelModel : DDCChannelModel = DDCChannelModel(JSON: data)!
-                array.append(channelModel)
-                successHandler(array as! [DDCChannelModel])
+            var array: [DDCChannelModel] = Array()
+            if case let channels as Array<Any> = tuple.data {
+                for data in channels {
+                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
+                        let channelModel : DDCChannelModel = DDCChannelModel(JSON: _data)!
+                        array.append(channelModel)
+                    }
+                }
+                successHandler(array)
+                return
             }
             successHandler(nil)
         }) { (error) in

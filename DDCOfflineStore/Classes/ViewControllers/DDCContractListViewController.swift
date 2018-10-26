@@ -153,13 +153,13 @@ extension DDCContractListViewController {
         DDCContractListAPIManager.getContractList(page: 0, status: 0, successHandler: { (contractList) in
             if (contractList.count < 10)
             {
-                //                self.view.collectionHolderView.collectionView.footerHidden = YES;
+                //                self.view.collectionHolderView.collectionView.footerHidden = YES 
             } else {
                 self.page += 1
             }
             self.contractArray?.addObjects(from: contractList)
             DDCTools.hideHUD()
-            //            [self.view.collectionHolderView.collectionView footerEndRefreshing];
+            //            [self.view.collectionHolderView.collectionView footerEndRefreshing] 
             self.tableView.reloadData()
         }) { (error) in
             DDCTools.hideHUD()
@@ -269,7 +269,7 @@ extension DDCContractListViewController {
                 self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
             }
             if (self.page == 0) {
-                //                [self networkReloadView];
+                //                [self networkReloadView] 
             }
             if (completionHandler != nil) {
                 completionHandler! (false)
@@ -282,7 +282,7 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
 
     func headerView(_ headerView: DDCOrderingHeaderView, callback: @escaping (String?) -> Void) {
         var popRect: CGRect = self.tableView .convert(headerView.frame, to: self.view)
-        popRect.origin.x = screenWidth - 120
+        popRect.origin.x = screen.width - 120
         popRect.size.width = 100
 
         self.popOrderingMenu(rect: popRect, callback: callback)
