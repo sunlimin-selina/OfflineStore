@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 
 class DDCEditClientInfoViewController: DDCChildContractViewController {
+    var models: [DDCContractInfoViewModel] = DDCEditClientInfoModelFactory.integrateData(model:  nil)
+    
     private lazy var tableView : UITableView = {
         let _tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
         _tableView.register(DDCTitleTextFieldCell.self, forCellReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
@@ -61,16 +63,19 @@ extension DDCEditClientInfoViewController {
 
 extension DDCEditClientInfoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.models.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath)) as! DDCTitleTextFieldCell
-
+        let model: DDCContractInfoViewModel = self.models[indexPath.item]
+        cell.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.placeholder!, isShowTips:false)// (model.isRequired && !model.isFill && _showHints)
+        cell.textFieldView.textField!.placeholder = model.placeholder
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60.0
+        return 126.0
     }
 }
