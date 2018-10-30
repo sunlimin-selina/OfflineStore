@@ -67,7 +67,7 @@ class DDCContractStateInfoCell: UICollectionViewCell {
     func configureCell(model: DDCContractStateInfoViewModel) {
         self.titleButton.setTitle(model.title, for: .normal)
         self.dot.isSelected = (model.state == DDCContractState.doing)
-        self.dot.isEnabled = (model.state == DDCContractState.todo)
+        self.dot.isEnabled = (model.state != DDCContractState.todo)
     }
     
     class func size(data: DDCContractStateInfoViewModel) -> CGSize {

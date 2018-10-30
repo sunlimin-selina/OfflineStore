@@ -45,7 +45,6 @@ class DDCCircularTextFieldView: UIView {
         var _button = CountButton.init(frame: CGRect.zero)
         _button.contentHorizontalAlignment = .right
         _button.titleLabel?.font = UIFont.systemFont(ofSize: 10.0)
-        _button.setTitle("获取验证码", for: .normal)
         _button.setTitleColor(DDCColor.mainColor.orange, for: .normal)
         return _button
     }()
@@ -57,20 +56,16 @@ class DDCCircularTextFieldView: UIView {
         }
     }
     
-    var type : CircularTextFieldViewType {
-        get {
-            return .normal
-        }
-        set
-        {
+    var type : CircularTextFieldViewType? {
+        didSet{
             switch type {
-            case .normal:
+            case .normal?:
                 do{
                     self.button?.snp.updateConstraints({ (make) in
                         make.width.equalTo(Double.leastNormalMagnitude)
                     })
                 }
-            case .imageButton:
+            case .imageButton?:
                 do {
                     self.button?.snp.updateConstraints({ (make) in
                         make.width.equalTo(30.0)
@@ -80,7 +75,7 @@ class DDCCircularTextFieldView: UIView {
                     self.button?.setImage(UIImage.init(named: "btn_password_nodisplay"), for: .normal)
                     self.button?.setImage(UIImage.init(named: "btn_password_display"), for: .selected)
                 }
-            case .labelButton:
+            case .labelButton?:
                 do {
                     self.button?.snp.updateConstraints({ (make) in
                         make.width.equalTo(70.0)
@@ -90,15 +85,26 @@ class DDCCircularTextFieldView: UIView {
                 break
             }
         }
+//        get {
+//            return .normal
+//        }
+//        set
+//        {
+//
+//        }
     }
     
-    init(frame: CGRect , type: CircularTextFieldViewType) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.contentView!)
         self.addSubview(self.textField!)
         self.addSubview(self.button!)
         self.setupViewConstraints()
-        
+        self.type = .normal
+    }
+    
+    convenience init(frame: CGRect , type: CircularTextFieldViewType) {
+        self.init(frame: frame)
         self.type = type
     }
     

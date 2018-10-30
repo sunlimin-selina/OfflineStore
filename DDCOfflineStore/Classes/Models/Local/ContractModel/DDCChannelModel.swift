@@ -13,6 +13,9 @@ class DDCChannelModel: Mappable {
     var id: Int?
     var name: String?
     
+    init() {
+    }
+    
     required init?(map: Map) {
     }
     

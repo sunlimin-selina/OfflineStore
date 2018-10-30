@@ -42,7 +42,7 @@ class DDCCircularTextFieldWithExtraButtonView : DDCCircularTextFieldView {
     }
 
     init() {
-        super.init(frame: CGRect.zero, type: .labelButton)
+        super.init(frame: CGRect.zero)
         self.addSubview(self.extraButton!)
         self.updateViewConstraints()
     }

@@ -9,24 +9,29 @@
 import Foundation
 
 class DDCEditClientInfoModelFactory: NSObject {
-    class func integrateData(model: DDCContractModel?) -> [DDCContractInfoViewModel] {
+    class func integrateData(model: DDCCustomerModel, channels:[DDCChannelModel]?) -> [DDCContractInfoViewModel] {
         var array: [DDCContractInfoViewModel] = Array()
         //手机号码
-        let phoneNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "手机号码", placeholder: "请输入手机号码", text: "", isRequired: true, tag: 0)
+        let phoneNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "手机号码", placeholder: "请输入手机号码", text: model.userName ?? "", isRequired: true, tag: 0)
         //姓名
-        let name: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "姓名", placeholder: "请输入姓名", text: "", isRequired: true, tag: 0)
+        let name: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "姓名", placeholder: "请输入姓名", text: model.nickName ?? "", isRequired: true, tag: 0)
         //性别
-        let gender: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "性别", placeholder: "请选择性别", text:"", isRequired: true, tag: 0)
+        let sexIndex: Int = (model.sex != nil) ? (model.sex!.rawValue) + 1 : 0
+        let gender: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "性别", placeholder: "请选择性别", text: DDCContract.genderArray[sexIndex], isRequired: true, tag: 0)
         //生日
-        let birthday: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生日", placeholder: "请输入生日", text: "", isRequired: true, tag: 0)
+        let birthday: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生日", placeholder: "请输入生日", text: model.formattedBirthday ?? "", isRequired: true, tag: 0)
         //年龄
-        let age: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "年龄", placeholder: "年龄", text:"", isRequired: true, tag: 0)
+        let age: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "年龄", placeholder: "年龄", text: model.age ?? "", isRequired: true, tag: 0)
         //邮箱
-        let email: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "邮箱", placeholder: "邮箱", text: "", isRequired: true, tag: 0)
+        let email: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "邮箱", placeholder: "邮箱", text: model.email ?? "", isRequired: true, tag: 0)
+        //职业
+        let careerIndex: Int = (model.career != nil) ? (model.career!.hashValue) + 1 : 0
+        let career: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "职业", placeholder: "请选择职业", text:DDCContract.occupationArray[careerIndex] , isRequired: true, tag: 0)
         //渠道
         let channel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text:"", isRequired: true, tag: 0)
-
-        array = [phoneNumber, name, gender, birthday, age, email, channel]
+        
+        array = [phoneNumber, name, gender, birthday, age, email, career, channel]
+        
         return array
     }
 }

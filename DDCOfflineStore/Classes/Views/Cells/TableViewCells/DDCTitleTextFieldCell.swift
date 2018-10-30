@@ -21,9 +21,8 @@ class DDCTitleTextFieldCell: UITableViewCell {
     }()
     
     public lazy var textFieldView: DDCCircularTextFieldView = {
-        let _textFieldView = DDCCircularTextFieldView.init(frame: CGRect.zero, type: .normal)
+        let _textFieldView = DDCCircularTextFieldView.init(frame: CGRect.zero)
         _textFieldView.cornerRadius = DDCTitleTextFieldCell.kTextFieldViewHeight / 2
-        _textFieldView.textField?.placeholder = "请输入"
         return _textFieldView
     }()
     
@@ -52,5 +51,18 @@ class DDCTitleTextFieldCell: UITableViewCell {
             make.bottom.equalTo(self.contentView).offset(-5)
         })
         
+    }
+    
+    func configureCell(model : DDCContractInfoViewModel, indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            self.textFieldView.type = .labelButton
+            self.textFieldView.button!.setTitle("获取用户信息", for: .normal)
+        } else {
+            self.textFieldView.type = .normal
+        }
+        self.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.placeholder!, isShowTips:false)// (model.isRequired && !model.isFill && _showHints)
+        self.textFieldView.textField!.placeholder = model.placeholder
+        self.textFieldView.textField?.text = model.text
+        self.textFieldView.textField?.tag = indexPath.row
     }
 }

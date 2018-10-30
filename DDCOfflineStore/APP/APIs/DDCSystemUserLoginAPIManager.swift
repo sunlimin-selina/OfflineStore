@@ -25,4 +25,19 @@ class DDCSystemUserLoginAPIManager: NSObject {
             failHandler(code)
         }
     }
+    
+    class func getUserInfo(phoneNumber : String, successHandler: @escaping((_ user: DDCCustomerModel?) -> ()), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/server/user/queryByUserName.do")
+        let params : Dictionary<String, Any>? = ["username":phoneNumber]
+        
+        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            if case let data as Dictionary<String, Any> = tuple.data {
+                let user : DDCCustomerModel = DDCCustomerModel(JSON: data)!
+                successHandler(user)
+            }
+        }) { (code) in
+            failHandler(code)
+        }
+    }
 }

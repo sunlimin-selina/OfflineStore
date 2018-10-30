@@ -22,6 +22,9 @@ class DDCCustomerModel: Mappable {
     
     var formattedBirthday: String?
     
+    init() {
+    }
+    
     required init?(map: Map) {
     }
     

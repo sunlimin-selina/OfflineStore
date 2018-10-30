@@ -17,7 +17,7 @@ enum DDCLineStyle: Int {
 class DDCLineView: UIView {
     var style: DDCLineStyle {
         get {
-            return .none
+            return .dotted
         }
     }
     //{
@@ -58,7 +58,6 @@ class DDCLineView: UIView {
     {
         didSet{
             super.bounds = bounds
-            self.setStyle(style: self.style)
 
             self.solidLayer.bounds = self.bounds
             self.solidLayer.position = CGPoint.init(x: self.bounds.size.width / 2, y: self.bounds.size.height / 2)
@@ -83,6 +82,8 @@ class DDCLineView: UIView {
     }
     
     func drawLine(style: DDCLineStyle, color: UIColor) {
+        self.setStyle(style: self.style)
+
         self.solidLayer.strokeColor = color.cgColor
         self.dotterLayer.strokeColor = color.cgColor
     }
