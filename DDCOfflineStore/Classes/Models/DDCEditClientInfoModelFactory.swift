@@ -25,8 +25,8 @@ class DDCEditClientInfoModelFactory: NSObject {
         //邮箱
         let email: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "邮箱", placeholder: "邮箱", text: model.email ?? "", isRequired: true, tag: 0)
         //职业
-        let careerIndex: Int = (model.career != nil) ? (model.career!.hashValue) + 1 : 0
-        let career: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "职业", placeholder: "请选择职业", text:DDCContract.occupationArray[careerIndex] , isRequired: true, tag: 0)
+        let careerText: String = model.career != nil ? DDCContract.occupationArray[Int(model.career!)!] : ""
+        let career: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "职业", placeholder: "请选择职业", text: careerText, isRequired: true, tag: 0)
         //渠道
         let channel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text:"", isRequired: true, tag: 0)
         

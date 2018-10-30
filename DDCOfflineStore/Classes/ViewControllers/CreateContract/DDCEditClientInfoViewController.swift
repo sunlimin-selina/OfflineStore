@@ -65,8 +65,8 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        _isFirstBlood = YES;
-
+        //        _isFirstBlood = YES;
+        
         self.getChannels()
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.tableView)
@@ -155,31 +155,31 @@ extension DDCEditClientInfoViewController {
         switch self.currentTextField?.tag {
         case DDCClientTextFieldType.birthday.rawValue:
             do {
-//                NSDate * birthday = self.datePickerView.date;
-//                self.viewModelArray[DDCClientTextFieldBirthday].text = [self.dateFormatter stringFromDate:birthday];
-//                NSCalendarUnit unitFlags = NSCalendarUnitYear;
-//                NSDateComponents *breakdownInfo = [[NSCalendar currentCalendar] components:unitFlags fromDate:birthday  toDate:[DDCServerDate sharedInstance].today  options:0];
-//
-//                self.viewModelArray[DDCClientTextFieldAge].text = @(breakdownInfo.year).stringValue;
+                //                NSDate * birthday = self.datePickerView.date;
+                //                self.viewModelArray[DDCClientTextFieldBirthday].text = [self.dateFormatter stringFromDate:birthday];
+                //                NSCalendarUnit unitFlags = NSCalendarUnitYear;
+                //                NSDateComponents *breakdownInfo = [[NSCalendar currentCalendar] components:unitFlags fromDate:birthday  toDate:[DDCServerDate sharedInstance].today  options:0];
+                //
+                //                self.viewModelArray[DDCClientTextFieldAge].text = @(breakdownInfo.year).stringValue;
             }
             break
         case DDCClientTextFieldType.sex.rawValue:
-//            self.viewModelArray[DDCClientTextFieldSex].text = DDCCustomerModel.genderArray[[self.pickerView selectedRowInComponent:0]];
+            //            self.viewModelArray[DDCClientTextFieldSex].text = DDCCustomerModel.genderArray[[self.pickerView selectedRowInComponent:0]];
             break
         case DDCClientTextFieldType.career.rawValue:
-//            self.viewModelArray[DDCClientTextFieldCareer].text = DDCCustomerModel.occupationArray[[self.pickerView selectedRowInComponent:0]];
+            //            self.viewModelArray[DDCClientTextFieldCareer].text = DDCCustomerModel.occupationArray[[self.pickerView selectedRowInComponent:0]];
             break
         case DDCClientTextFieldType.channel.rawValue:
-//            self.viewModelArray[DDCClientTextFieldChannel].text = self.availableChannels[[self.pickerView selectedRowInComponent:0]].name;
+            //            self.viewModelArray[DDCClientTextFieldChannel].text = self.availableChannels[[self.pickerView selectedRowInComponent:0]].name;
             break
         default:
             break
         }
-//        NSArray * refreshIndexes = @[[NSIndexPath indexPathForItem:_currentTextField.tag inSection:0]];
-//        if (_currentTextField.tag == DDCClientTextFieldBirthday)
-//        {
-//            refreshIndexes = [refreshIndexes arrayByAddingObjectsFromArray:@[[NSIndexPath indexPathForItem:DDCClientTextFieldAge inSection:0]]];
-//        }
+        //        NSArray * refreshIndexes = @[[NSIndexPath indexPathForItem:_currentTextField.tag inSection:0]];
+        //        if (_currentTextField.tag == DDCClientTextFieldBirthday)
+        //        {
+        //            refreshIndexes = [refreshIndexes arrayByAddingObjectsFromArray:@[[NSIndexPath indexPathForItem:DDCClientTextFieldAge inSection:0]]];
+        //        }
         self.tableView.reloadData()
         self.resignFirstResponder()
     }
@@ -193,24 +193,30 @@ extension DDCEditClientInfoViewController {
 extension DDCEditClientInfoViewController {
     @objc func getVerificationCode(button: CountButton) {
         DDCTools.showHUD(view: self.view)
-//        if (!_phoneValidated)
-//        {
-//            [self.view makeDDCToast:NSLocalizedString(@"手机号有误，请检查后重试", @"") image:[UIImage imageNamed:@"addCar_icon_fail"]];
-//            [Tools hiddenHUDFromSuperview];
-//            return;
-//        }
-        DDCSystemUserLoginAPIManager.getUserInfo(phoneNumber: "15921516376", successHandler: { (model) in
-            DDCTools.hideHUD()
-            if let _model = model {
-                self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
-                self.models = DDCEditClientInfoModelFactory.integrateData(model:  _model, channels: self.channels)
-                self.tableView.reloadData()
-            } else {
+        
+        if let textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
+            let phoneNumber: String = textFieldView.textField?.text ?? ""
+            
+            guard DDCTools.isPhoneNumber(number: phoneNumber) else {
+                self.view.makeDDCToast(message: "手机号有误，请检查后重试", image: UIImage.init(named: "addCar_icon_fail")!)
+                DDCTools.hideHUD()
+                return
+            }
+            
+            DDCSystemUserLoginAPIManager.getUserInfo(phoneNumber: phoneNumber, successHandler: { (model) in
+                DDCTools.hideHUD()
+                if let _model = model {
+                    self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
+                    self.models = DDCEditClientInfoModelFactory.integrateData(model:  _model, channels: self.channels)
+                    self.tableView.reloadData()
+                } else {
+                    self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
+                }
+            }) { (error) in
                 self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
             }
-        }) { (error) in
-            self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
         }
+       
     }
     
     func getChannels() {
