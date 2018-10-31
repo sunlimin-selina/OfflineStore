@@ -43,18 +43,19 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //姓名
         let name: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "姓名", describe: category.model?.customer?.nickName)
         //性别
-        let sex: Int = (category.model?.customer?.sex?.rawValue)!
-        let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: DDCContract.genderArray[sex + 1])//
-        
+        let sex: String = (category.model?.customer?.sex != nil) ? DDCContract.genderArray[((category.model?.customer?.sex!.rawValue)!)] : ""
+        let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: sex)
         //年龄
-        let age: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "年龄", describe: category.model!.customer!.age != nil ? category.model!.customer!.age!.appendingFormat("岁") : "")
+        let birthdayD = DDCTools.datetime(from: category.model!.customer!.birthday!)
+        let components = Calendar.current.dateComponents([.year], from: birthdayD, to: Date())
+        let age: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "年龄", describe: (components.year != nil) ? "\(components.year!)岁" : "")
         //生日
         let birthday: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生日", describe: category.model!.customer!.formattedBirthday)
         //手机号码
         let phoneNumber: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "手机号码", describe: category.model!.customer!.userName)
         //职业
-        let careerIndex: Int = Int(category.model!.customer!.career!)!
-        let career: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "职业", describe:DDCContract.occupationArray[careerIndex])
+        let userCareer: String = (category.model?.customer?.career != nil) ? DDCContract.occupationArray[(Int(category.model!.customer!.career!)!)] : ""
+        let career: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "职业", describe:userCareer)
         //邮箱
         let email: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "邮箱", describe:category.model!.customer!.email)
         //渠道

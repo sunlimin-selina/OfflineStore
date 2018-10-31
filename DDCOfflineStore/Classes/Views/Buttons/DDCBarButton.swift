@@ -16,17 +16,19 @@ class DDCBarButton : UIButton {
     }
     
     var handler : (()->Void)?
+    var style: DDCBarButtonStatus?
     
     convenience init(title: String, style: DDCBarButtonStatus, handler : (()->Void)?) {
         self.init(frame: CGRect.zero)
         self.setTitle(title, for: .normal)
         self.handler = handler
+        self.setStyle(style: style)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = DDCColor.mainColor.orange
         self.setTitleColor(UIColor.white, for: .normal)
+        self.backgroundColor = DDCColor.mainColor.orange
         self.layer.cornerRadius = 20
         self.addTarget(self, action: #selector(clickAction(sender:)), for: .touchUpInside)
         self.isUserInteractionEnabled = true
@@ -40,4 +42,14 @@ class DDCBarButton : UIButton {
         self.handler!()
     }
     
+    func setStyle(style: DDCBarButtonStatus) {
+        switch style {
+        case .normal:
+            self.backgroundColor = DDCColor.mainColor.orange
+            break
+        case .forbidden:
+            self.backgroundColor = DDCColor.fontColor.gray
+            break
+        }
+    }
 }

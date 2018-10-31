@@ -85,13 +85,6 @@ class DDCCircularTextFieldView: UIView {
                 break
             }
         }
-//        get {
-//            return .normal
-//        }
-//        set
-//        {
-//
-//        }
     }
     
     override init(frame: CGRect) {

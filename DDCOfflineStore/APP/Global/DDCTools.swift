@@ -43,4 +43,13 @@ class DDCTools : NSObject{
         let date : NSDate = NSDate.init(timeIntervalSince1970: timeInterval / 1000)
         return _dateFormatter.string(from: date as Date)
     }
+    
+    class func datetime(from timeInterval:Int) -> Date {
+        let _dateFormatter : DateFormatter = DateFormatter()
+        _dateFormatter.dateFormat = "yyyy/MM/dd"
+        
+        let timeInterval : TimeInterval = TimeInterval.init(Double(timeInterval))
+        let date : NSDate = NSDate.init(timeIntervalSince1970: timeInterval / 1000)
+        return date as Date
+    }
 }

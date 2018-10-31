@@ -9,9 +9,8 @@
 import UIKit
 import SnapKit
 
-class DDCTitleTextFieldCell: UITableViewCell {
+class DDCTitleTextFieldCell: UICollectionViewCell {
     static let kTextFieldViewHeight: CGFloat = 45.0
-    static let kCellWidth: CGFloat = 500.0
 
     public lazy var titleLabel: DDCContractLabel = {
         let titleLabel : DDCContractLabel = DDCContractLabel()
@@ -26,29 +25,25 @@ class DDCTitleTextFieldCell: UITableViewCell {
         return _textFieldView
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.textFieldView)
         self.setupViewConstraints()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func setupViewConstraints() {
         self.titleLabel.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.contentView)
-            make.left.equalTo(self.textFieldView)
-            make.bottom.equalTo(self.textFieldView.snp_topMargin)
+            make.top.left.equalTo(self.contentView)
         })
         
         self.textFieldView.snp.makeConstraints({ (make) in
-            make.centerX.equalTo(self.contentView)
+            make.bottom.left.right.equalTo(self.contentView)
             make.height.equalTo(DDCTitleTextFieldCell.kTextFieldViewHeight)
-            make.width.equalTo(DDCTitleTextFieldCell.kCellWidth)
-            make.bottom.equalTo(self.contentView).offset(-5)
         })
         
     }
@@ -60,7 +55,7 @@ class DDCTitleTextFieldCell: UITableViewCell {
         } else {
             self.textFieldView.type = .normal
         }
-        self.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.placeholder!, isShowTips:false)// (model.isRequired && !model.isFill && _showHints)
+        self.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.placeholder!, isShowTips:model.isRequired!)
         self.textFieldView.textField!.placeholder = model.placeholder
         self.textFieldView.textField?.text = model.text
         self.textFieldView.textField?.tag = indexPath.row

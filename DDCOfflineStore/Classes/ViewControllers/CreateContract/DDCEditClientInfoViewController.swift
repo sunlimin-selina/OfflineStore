@@ -13,6 +13,7 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     enum DDCClientTextFieldType : Int{
         case sex = 2
         case birthday = 3
+        case age = 4
         case email = 5
         case career = 6
         case channel = 7
@@ -24,8 +25,8 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     
     private lazy var toolbar: DDCToolbar = {
         let _toolbar = DDCToolbar.init(frame: CGRect.init(x: 0, y: 0, width: screen.width, height: 40.0))
-        _toolbar.cancelButton.addTarget(self, action: #selector(done), for: .touchUpInside)
-        _toolbar.doneButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        _toolbar.doneButton.addTarget(self, action: #selector(done), for: .touchUpInside)
+        _toolbar.cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         return _toolbar
     }()
     
@@ -43,15 +44,17 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
         return _pickerView
     }()
     
-    private lazy var tableView: UITableView = {
-        let _tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
-        _tableView.register(DDCTitleTextFieldCell.self, forCellReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
-        _tableView.rowHeight = 80.0
-        _tableView.delegate = self
-        _tableView.dataSource = self
-        _tableView.isUserInteractionEnabled = true
-        _tableView.separatorColor = UIColor.white
-        return _tableView
+    lazy var collectionView: UICollectionView! = {
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
+        
+        var _collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
+        _collectionView.showsHorizontalScrollIndicator = false
+        _collectionView.isScrollEnabled = false
+        _collectionView.register(DDCTitleTextFieldCell.self, forCellWithReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
+        _collectionView.backgroundColor = UIColor.white
+        _collectionView.delegate = self
+        _collectionView.dataSource = self
+        return _collectionView
     }()
     
     private lazy var bottomBar : DDCBottomBar = {
@@ -69,7 +72,7 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
         
         self.getChannels()
         self.view.backgroundColor = UIColor.white
-        self.view.addSubview(self.tableView)
+        self.view.addSubview(self.collectionView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
     }
@@ -79,7 +82,7 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
 extension DDCEditClientInfoViewController {
     private func setupViewConstraints() {
         let kBarHeight : CGFloat = 60.0
-        self.tableView.snp.makeConstraints { (make) in
+        self.collectionView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(self.view)
             make.bottom.equalTo(self.view).offset(-kBarHeight)
         }
@@ -93,25 +96,50 @@ extension DDCEditClientInfoViewController {
     }
 }
 
-// MARK: UITableViewDelegate
-extension DDCEditClientInfoViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+// MARK: UICollectionViewDelegate
+extension DDCEditClientInfoViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.models.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath)) as! DDCTitleTextFieldCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell
         let model: DDCContractInfoViewModel = self.models[indexPath.item]
         cell.configureCell(model: model, indexPath: indexPath)
         cell.textFieldView.textField?.delegate = self
         cell.textFieldView.button?.addTarget(self, action: #selector(getVerificationCode(button:)), for: .touchUpInside)
         self.configureInputView(textField: cell.textFieldView.textField!, indexPath: indexPath)
+        
+        // 不让用户手动改年龄
+        cell.textFieldView.textField?.isUserInteractionEnabled = indexPath.item != DDCClientTextFieldType.age.rawValue
+        cell.textFieldView.textField?.clearButtonMode = (indexPath.item == DDCClientTextFieldType.age.rawValue) ? .never : .always
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 126.0
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.item != DDCClientTextFieldType.birthday.rawValue,
+            indexPath.item != DDCClientTextFieldType.age.rawValue
+        {
+            return CGSize.init(width: 500, height: 75)
+        } else if  indexPath.item == DDCClientTextFieldType.age.rawValue{
+            return CGSize.init(width: 100, height: 75)
+        } else {
+            return CGSize.init(width: 340, height: 75)
+        }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.init(top: 0, left: (screen.width - 500)/2, bottom: 0, right: (screen.width - 500)/2)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 60.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 35.0
+    }
+    
 }
 
 // MARK: Private
@@ -144,6 +172,7 @@ extension DDCEditClientInfoViewController {
         default:
             do {
                 textField.inputView = nil
+                textField.inputAccessoryView = nil
                 textField.keyboardType = .phonePad
             }
             break
@@ -155,32 +184,27 @@ extension DDCEditClientInfoViewController {
         switch self.currentTextField?.tag {
         case DDCClientTextFieldType.birthday.rawValue:
             do {
-                //                NSDate * birthday = self.datePickerView.date;
-                //                self.viewModelArray[DDCClientTextFieldBirthday].text = [self.dateFormatter stringFromDate:birthday];
-                //                NSCalendarUnit unitFlags = NSCalendarUnitYear;
-                //                NSDateComponents *breakdownInfo = [[NSCalendar currentCalendar] components:unitFlags fromDate:birthday  toDate:[DDCServerDate sharedInstance].today  options:0];
-                //
-                //                self.viewModelArray[DDCClientTextFieldAge].text = @(breakdownInfo.year).stringValue;
+                let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")
+                let birthday: Date = self.datePickerView.date
+                self.models[DDCClientTextFieldType.birthday.rawValue].text = dateFormatter.string(from: birthday)
+                let components = Calendar.current.dateComponents([.year], from: birthday, to: Date())
+                self.models[DDCClientTextFieldType.age.rawValue].text = "\(components.year ?? 0)"
             }
             break
         case DDCClientTextFieldType.sex.rawValue:
-            //            self.viewModelArray[DDCClientTextFieldSex].text = DDCCustomerModel.genderArray[[self.pickerView selectedRowInComponent:0]];
+            self.models[DDCClientTextFieldType.sex.rawValue].text = DDCContract.genderArray[self.pickerView.selectedRow(inComponent: 0)]
             break
         case DDCClientTextFieldType.career.rawValue:
-            //            self.viewModelArray[DDCClientTextFieldCareer].text = DDCCustomerModel.occupationArray[[self.pickerView selectedRowInComponent:0]];
+            self.models[DDCClientTextFieldType.career.rawValue].text = DDCContract.occupationArray[self.pickerView.selectedRow(inComponent: 0)]
             break
         case DDCClientTextFieldType.channel.rawValue:
-            //            self.viewModelArray[DDCClientTextFieldChannel].text = self.availableChannels[[self.pickerView selectedRowInComponent:0]].name;
+            self.models[DDCClientTextFieldType.channel.rawValue].text = self.channels![self.pickerView.selectedRow(inComponent: 0)].name
             break
         default:
             break
         }
-        //        NSArray * refreshIndexes = @[[NSIndexPath indexPathForItem:_currentTextField.tag inSection:0]];
-        //        if (_currentTextField.tag == DDCClientTextFieldBirthday)
-        //        {
-        //            refreshIndexes = [refreshIndexes arrayByAddingObjectsFromArray:@[[NSIndexPath indexPathForItem:DDCClientTextFieldAge inSection:0]]];
-        //        }
-        self.tableView.reloadData()
+
+        self.collectionView.reloadData()
         self.resignFirstResponder()
     }
     
@@ -195,7 +219,7 @@ extension DDCEditClientInfoViewController {
         DDCTools.showHUD(view: self.view)
         
         if let textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
-            let phoneNumber: String = textFieldView.textField?.text ?? ""
+            let phoneNumber: String = (textFieldView.textField?.text)!
             
             guard DDCTools.isPhoneNumber(number: phoneNumber) else {
                 self.view.makeDDCToast(message: "手机号有误，请检查后重试", image: UIImage.init(named: "addCar_icon_fail")!)
@@ -208,7 +232,7 @@ extension DDCEditClientInfoViewController {
                 if let _model = model {
                     self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
                     self.models = DDCEditClientInfoModelFactory.integrateData(model:  _model, channels: self.channels)
-                    self.tableView.reloadData()
+                    self.collectionView.reloadData()
                 } else {
                     self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
                 }
@@ -216,7 +240,7 @@ extension DDCEditClientInfoViewController {
                 self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
             }
         }
-       
+        
     }
     
     func getChannels() {
