@@ -139,7 +139,7 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         
         if self.model != nil {
             let viewController : DDCChildContractViewController = self.subviewControllers![Int(self.progress.rawValue)]
-            viewController.model = model
+            viewController.model = self.model
         }
     }
     
@@ -176,8 +176,6 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
                 self.navigationController?.popViewController(animated: true)
             }))
             alertController.addAction(UIAlertAction.init(title: "否", style: .cancel, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-
             self.present(alertController, animated: true, completion: nil)
         }else{
             self.navigationController?.popViewController(animated: true)

@@ -10,13 +10,16 @@ import UIKit
 import SnapKit
 
 class DDCEditClientInfoViewController: DDCChildContractViewController {
+
     enum DDCClientTextFieldType : Int{
-        case sex = 2
-        case birthday = 3
-        case age = 4
-        case email = 5
-        case career = 6
-        case channel = 7
+        case phone
+        case name
+        case sex
+        case birthday
+        case age
+        case email
+        case career
+        case channel
     }
     
     var models: [DDCContractInfoViewModel] = DDCEditClientInfoModelFactory.integrateData(model:  DDCCustomerModel(), channels: [DDCChannelModel()])
@@ -59,9 +62,8 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     
     private lazy var bottomBar : DDCBottomBar = {
         let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .forbidden, handler: {
-            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .DDCContractProgressAddPhoneNumber, model: nil)
-            self.navigationController?.pushViewController(viewController, animated: true)
+        _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .highlighted, handler: {
+        
         }))
         return _bottomBar
     }()
@@ -93,6 +95,25 @@ extension DDCEditClientInfoViewController {
             make.left.right.equalTo(self.view)
             make.top.equalTo(self.view.snp_bottomMargin).offset(-kBarHeight)
         })
+    }
+    
+    func update() {
+        var customerModel: DDCCustomerModel = DDCCustomerModel.init()
+        //        self.model = [DDCContractModel contractWithCustomer:customerModel existingModel:self.model];
+        
+        self.model?.customer?.userName = self.models[DDCClientTextFieldType.phone.rawValue].text
+        self.model?.customer?.nickName = self.models[DDCClientTextFieldType.name.rawValue].text
+//        self.model?.customer?.sex = self.models[DDCClientTextFieldType.sex.rawValue].text
+//        self.model?.customer?.birthday = self.models[DDCClientTextFieldType.birthday.rawValue].text
+
+        self.model?.customer?.age = self.models[DDCClientTextFieldType.age.rawValue].text
+        self.model?.customer?.email = self.models[DDCClientTextFieldType.email.rawValue].text
+        self.model?.customer?.career = self.models[DDCClientTextFieldType.career.rawValue].text
+
+//        NSUInteger idx = [self.availableChannels indexOfObjectPassingTest:^BOOL(DDCChannel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        return [obj.name isEqualToString:self.viewModelArray[DDCClientTextFieldChannel].text];
+//        }];
+//        self.model.customer.channel = idx != NSNotFound ? @(self.availableChannels[idx].ID.integerValue) : nil;
     }
 }
 

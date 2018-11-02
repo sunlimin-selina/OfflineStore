@@ -12,6 +12,7 @@ import SnapKit
 class DDCBarButton : UIButton {
     enum DDCBarButtonStatus : UInt{
         case normal
+        case highlighted
         case forbidden
     }
     
@@ -27,11 +28,11 @@ class DDCBarButton : UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setTitleColor(UIColor.white, for: .normal)
-        self.backgroundColor = DDCColor.mainColor.orange
+        self.backgroundColor = DDCColor.fontColor.black
         self.layer.cornerRadius = 20
         self.addTarget(self, action: #selector(clickAction(sender:)), for: .touchUpInside)
         self.isUserInteractionEnabled = true
+        self.layer.borderWidth = 1
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -45,10 +46,19 @@ class DDCBarButton : UIButton {
     func setStyle(style: DDCBarButtonStatus) {
         switch style {
         case .normal:
-            self.backgroundColor = DDCColor.mainColor.orange
+            self.backgroundColor = DDCColor.fontColor.gray
+            self.layer.borderColor = DDCColor.fontColor.gray.cgColor
+            self.setTitleColor(UIColor.white, for: .normal)
+            break
+        case .highlighted:
+            self.backgroundColor = DDCColor.fontColor.black
+            self.layer.borderColor = DDCColor.fontColor.black.cgColor
+            self.setTitleColor(UIColor.white, for: .normal)
             break
         case .forbidden:
-            self.backgroundColor = DDCColor.fontColor.gray
+            self.backgroundColor = UIColor.white
+            self.layer.borderColor = DDCColor.complementaryColor.separatorColor.cgColor
+            self.setTitleColor(DDCColor.fontColor.black, for: .normal)
             break
         }
     }

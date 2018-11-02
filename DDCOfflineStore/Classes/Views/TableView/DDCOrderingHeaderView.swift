@@ -19,7 +19,7 @@ class DDCOrderingHeaderView: UITableViewHeaderFooterView {
         var _titleLabel = UILabel()
         _titleLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .medium)
         _titleLabel.textColor = UIColor.black
-        _titleLabel.text = "我创建的合同"
+        _titleLabel.text = "我创建的订单"
         return _titleLabel
     }()
     
@@ -27,7 +27,7 @@ class DDCOrderingHeaderView: UITableViewHeaderFooterView {
         var _orderingButton = UIButton.init(type: .custom)
         _orderingButton.setTitleColor(UIColor.black, for: .normal)
         _orderingButton.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .medium)
-        _orderingButton.setTitle("全部", for: .normal)
+        _orderingButton.setTitle("筛选", for: .normal)
         _orderingButton.setImage(UIImage.init(named: "arrowIconDown"), for: .normal)
         _orderingButton.setImage(UIImage.init(named: "arrowIconUp"), for: .selected)
         _orderingButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
