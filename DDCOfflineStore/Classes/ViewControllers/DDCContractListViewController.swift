@@ -19,7 +19,7 @@ class DDCContractListViewController: UIViewController {
     private lazy var bottomBar : DDCBottomBar = {
         let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "创建新订单", style: .highlighted, handler: {
-            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .DDCContractProgressAddPhoneNumber, model: nil)
+            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .addPhoneNumber, model: nil)
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar
@@ -34,6 +34,7 @@ class DDCContractListViewController: UIViewController {
         _tableView.dataSource = self
         _tableView.isUserInteractionEnabled = true
         _tableView.separatorColor = UIColor.white
+        _tableView.layer.cornerRadius = 5
         //设置上拉加载的footer动画
         let footer = MJRefreshAutoGifFooter {
             self.getContractList()
@@ -85,6 +86,7 @@ class DDCContractListViewController: UIViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.title = "课程管家"
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

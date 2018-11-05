@@ -43,6 +43,9 @@ class DDCContractModel: Mappable {
         return nil
     })
 
+    init() {
+    }
+    
     required init?(map: Map) {
     }
     

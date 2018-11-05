@@ -12,22 +12,51 @@ import SnapKit
 class DDCCreateContractViewController: UIViewController{
     
     enum DDCContractProgress : UInt {
-        case DDCContractProgressAddPhoneNumber//添加手机号
-        case DDCContractProgressEditClientInformation//客户信息
-        case DDCContractProgressAddContractInformation//创建新合同
-        case DDCContractProgressFinishContract//创建成功
+        case addPhoneNumber//添加手机号
+        case editClientInformation//客户信息
+        case addContractInformation//创建新合同
+        case finishContract//创建成功
     }
     
-    var progress : DDCContractProgress = .DDCContractProgressAddPhoneNumber
+    var progress : DDCContractProgress {
+        get {
+            return .addPhoneNumber
+        }
+        set {
+            let interval: UInt = newValue.rawValue - DDCContractProgress.addPhoneNumber.rawValue
+            
+            for index in 0...(self.categorys.count - 1) {
+                let model: DDCContractStateInfoViewModel = self.categorys[index]
+                
+                if index < interval {
+                    model.state = DDCContractState.done
+                }else if index == interval {
+                    model.state = DDCContractState.doing
+                }else{
+                    model.state = DDCContractState.todo
+                }
+            }
+            
+            self.progressViewController.stages = self.categorys
+        }
+    }
     var model : DDCContractModel?
     
     var subviewControllers : Array<DDCChildContractViewController>? = Array()
-
+    
+    private lazy var bottomBar : DDCBottomBar = {
+        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .highlighted, handler: {
+            self.nextPage(model: NSObject.init())
+        }))
+        return _bottomBar
+    }()
+    
     lazy var categorys : Array<DDCContractStateInfoViewModel> = {
-        var titles : Array = ["客户信息", "门店及类型", "合同信息", "创建成功"]
+        var titles : Array = ["客户信息", "门店及类型", "订单信息", "订单确认", "创建成功"]
         
         var _categorys = Array<Any>()
-        var interval : UInt = self.progress.rawValue - DDCContractProgress.DDCContractProgressAddPhoneNumber.rawValue
+        var interval : UInt = self.progress.rawValue - DDCContractProgress.addPhoneNumber.rawValue
         
         for index in 0...(titles.count - 1){
             var model : DDCContractStateInfoViewModel = DDCContractStateInfoViewModel()
@@ -79,6 +108,7 @@ class DDCCreateContractViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.createChildViewControllers()
+        self.view.addSubview(self.bottomBar)
         self.setupViewConstraint()
         self.title = "创建新合同"
     }
@@ -100,9 +130,10 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         if self.progress.rawValue >= self.subviewControllers!.count {return}
         var selectedIndex : Int = Int(self.progress.rawValue)
         selectedIndex += 1
+        self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
         
         let viewController : DDCChildContractViewController = self.subviewControllers![selectedIndex]
-        viewController.model = (model as! DDCContractModel)
+//        viewController.model = (model as! DDCContractModel)
         self.pageViewController.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
     }
     
@@ -110,7 +141,8 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         if self.progress.rawValue == 0 {return}
         var selectedIndex : Int = Int(self.progress.rawValue)
         selectedIndex -= 1
-        
+        self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
+
         let viewController : DDCChildContractViewController = self.subviewControllers![selectedIndex]
         viewController.model = (model as! DDCContractModel)
         self.pageViewController.setViewControllers([viewController], direction: .reverse, animated: true, completion: nil)
@@ -167,6 +199,16 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         self.addChild(self.pageViewController)
         
         self.pageViewController.setViewControllers([self.subviewControllers![Int(self.progress.rawValue)]], direction: .forward, animated: true, completion: nil)
+        
+        let kBarHeight : CGFloat = 60.0
+        self.bottomBar.snp.makeConstraints({ (make) in
+            make.width.equalTo(UIScreen.main.bounds.width)
+            make.height.equalTo(kBarHeight)
+            make.left.right.equalTo(self.view)
+            make.top.equalTo(self.view.snp_bottomMargin).offset(-kBarHeight)
+        })
+        
+        self.view.bringSubviewToFront(self.bottomBar)
     }
     
     @objc func goBack() {
@@ -181,6 +223,7 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
             self.navigationController?.popViewController(animated: true)
         }
     }
+    
 }
 
 extension DDCCreateContractViewController :UIPageViewControllerDelegate, UIPageViewControllerDataSource {

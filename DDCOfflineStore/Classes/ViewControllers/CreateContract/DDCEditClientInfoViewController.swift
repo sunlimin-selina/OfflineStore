@@ -60,14 +60,6 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
         return _collectionView
     }()
     
-    private lazy var bottomBar : DDCBottomBar = {
-        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .highlighted, handler: {
-        
-        }))
-        return _bottomBar
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         //        _isFirstBlood = YES;
@@ -75,7 +67,6 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
         self.getChannels()
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.collectionView)
-        self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
     }
 }
@@ -89,12 +80,6 @@ extension DDCEditClientInfoViewController {
             make.bottom.equalTo(self.view).offset(-kBarHeight)
         }
         
-        self.bottomBar.snp.makeConstraints({ (make) in
-            make.width.equalTo(UIScreen.main.bounds.width)
-            make.height.equalTo(kBarHeight)
-            make.left.right.equalTo(self.view)
-            make.top.equalTo(self.view.snp_bottomMargin).offset(-kBarHeight)
-        })
     }
     
     func update() {

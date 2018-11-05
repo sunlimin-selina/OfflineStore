@@ -20,9 +20,12 @@ class DDCChildContractViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
 }
 
 protocol DDCChildContractViewControllerDelegate {
     func nextPage(model: NSObject)
     func previousPage(model: NSObject)
+    
+    
 }

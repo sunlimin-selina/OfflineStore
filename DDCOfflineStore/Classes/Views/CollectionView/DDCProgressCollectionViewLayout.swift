@@ -45,7 +45,7 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
             self.collectionView == nil { return }
 
         let lastItemWidth : CGFloat = (self.delegate?.widthForStageAtIndex(index: self.stages - 1))!
-        let startingOffset : CGFloat = lastItemWidth / 4
+        let startingOffset : CGFloat = lastItemWidth / 5
         var xOffset : CGFloat = startingOffset
         let lineWidth : CGFloat = (self.collectionView!.bounds.size.width - (1.5 * lastItemWidth)) / CGFloat((self.stages - 1))
 
@@ -68,7 +68,7 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
                 }
                 
             } else { //line
-                frame = CGRect.init(x: xOffset, y: self.yOffset!, width: lineWidth, height: 10)
+                frame = CGRect.init(x: xOffset + 5, y: self.yOffset!, width: lineWidth - 10, height: 10)
                 xOffset = xOffset + lineWidth
             }
             
