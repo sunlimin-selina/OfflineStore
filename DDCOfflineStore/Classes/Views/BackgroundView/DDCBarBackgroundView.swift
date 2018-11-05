@@ -12,8 +12,8 @@ import SnapKit
 class DDCBarBackgroundView: UIView {
     
     public lazy var tableView : UITableView = {
-        let tableView : UITableView = UITableView()
-        
+        let tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .grouped)
+        tableView.backgroundColor = UIColor.white
         return tableView
     }()
     

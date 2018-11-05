@@ -53,7 +53,7 @@ class DDCCreateContractViewController: UIViewController{
     }()
     
     lazy var categorys : Array<DDCContractStateInfoViewModel> = {
-        var titles : Array = ["客户信息", "门店及类型", "订单信息", "订单确认", "创建成功"]
+        var titles : Array = ["客户信息", "门店及类型", "订单信息", "创建成功"]
         
         var _categorys = Array<Any>()
         var interval : UInt = self.progress.rawValue - DDCContractProgress.addPhoneNumber.rawValue

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		8A92DF95E783A538E54E8F8A /* Pods_DDCOfflineStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BEBE9EF557ECB6845068E0 /* Pods_DDCOfflineStore.framework */; };
 		D3184D1F218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D1E218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift */; };
+		D3184D2121901767006AAC2D /* DDCCheckBoxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */; };
+		D3184D2421901843006AAC2D /* DDCCheckBoxWithImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2321901843006AAC2D /* DDCCheckBoxWithImageView.swift */; };
+		D3184D2621903606006AAC2D /* DDCCheckBoxTableViewCellControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2521903606006AAC2D /* DDCCheckBoxTableViewCellControl.swift */; };
 		D3276D812188425700D04E9F /* DDCToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3276D802188425700D04E9F /* DDCToolbar.swift */; };
 		D32D2FE821786A0600CA3E42 /* DDCOffLineStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */; };
 		D3597CFA2178518B00C4A2F2 /* DDCUserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */; };
@@ -109,6 +112,9 @@
 		35BEBE9EF557ECB6845068E0 /* Pods_DDCOfflineStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DDCOfflineStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2B332B78859CC027A746591 /* Pods-DDCOfflineStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDCOfflineStore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DDCOfflineStore/Pods-DDCOfflineStore.debug.xcconfig"; sourceTree = "<group>"; };
 		D3184D1E218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCStoreAndContractTypeAPIManager.swift; sourceTree = "<group>"; };
+		D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxTableViewCell.swift; sourceTree = "<group>"; };
+		D3184D2321901843006AAC2D /* DDCCheckBoxWithImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxWithImageView.swift; sourceTree = "<group>"; };
+		D3184D2521903606006AAC2D /* DDCCheckBoxTableViewCellControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxTableViewCellControl.swift; sourceTree = "<group>"; };
 		D3276D802188425700D04E9F /* DDCToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCToolbar.swift; sourceTree = "<group>"; };
 		D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOffLineStoreModel.swift; sourceTree = "<group>"; };
 		D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCUserStatus.swift; sourceTree = "<group>"; };
@@ -236,6 +242,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D3184D2221901838006AAC2D /* CheckBox */ = {
+			isa = PBXGroup;
+			children = (
+				D3184D2321901843006AAC2D /* DDCCheckBoxWithImageView.swift */,
+			);
+			path = CheckBox;
+			sourceTree = "<group>";
+		};
 		D3ABC4F8218BF84700B1B2A8 /* SignatureView */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,6 +317,7 @@
 		D3B607E0217499C10086387B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D3184D2221901838006AAC2D /* CheckBox */,
 				D3FDEB992186B34100856581 /* Label */,
 				D3B607E1217499C10086387B /* LoadingView */,
 				D3B607E3217499C10086387B /* TableView */,
@@ -452,6 +467,7 @@
 				D3FDEBA02186DEDD00856581 /* DDCEditClientInfoModelFactory.swift */,
 				D3CC64E4216F2C7C00383DD5 /* Local */,
 				D3CC64E6216F2C7C00383DD5 /* Remote */,
+				D3184D2521903606006AAC2D /* DDCCheckBoxTableViewCellControl.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -489,6 +505,7 @@
 				D3E73D31218302CD00A5073A /* DDCTitleTextFieldCell.swift */,
 				D3E73D28218302C000A5073A /* DDCContractStateLineCollectionViewCell.swift */,
 				D3E73D29218302C000A5073A /* DDCContractStateInfoCell.swift */,
+				D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */,
 			);
 			path = CollectionViewCell;
 			sourceTree = "<group>";
@@ -772,6 +789,7 @@
 				D3EEAE40217D7B8A0078737A /* DDCOrderingHeaderView.swift in Sources */,
 				D3AE110F2181A13100E61E08 /* DDCLoginRegisterViewController.swift in Sources */,
 				D3CC6509216F2C7C00383DD5 /* DDCUserModel.swift in Sources */,
+				D3184D2121901767006AAC2D /* DDCCheckBoxTableViewCell.swift in Sources */,
 				D3AE11102181A13100E61E08 /* DDCProgressViewController.swift in Sources */,
 				D3E73D2F218302C100A5073A /* DDCContractListTableViewCell.swift in Sources */,
 				D3CC6508216F2C7C00383DD5 /* DDCStore.swift in Sources */,
@@ -825,6 +843,7 @@
 				D3AE11142181A13100E61E08 /* DDCEditClientInfoViewController.swift in Sources */,
 				D3CC6506216F2C7C00383DD5 /* DDCKeyboardStateListener.swift in Sources */,
 				D3FDEB9F2186DC0500856581 /* DDCOffLineCourseModel.swift in Sources */,
+				D3184D2621903606006AAC2D /* DDCCheckBoxTableViewCellControl.swift in Sources */,
 				D3CC6504216F2C7C00383DD5 /* DDCContract.swift in Sources */,
 				D3DAA4A72175A911003B0289 /* DDCButton.swift in Sources */,
 				D3B607FE217499C20086387B /* DDCInputFieldView.swift in Sources */,
@@ -834,6 +853,7 @@
 				D3AE11152181A13100E61E08 /* DDCChildContractViewController.swift in Sources */,
 				D3ABC4FC218BFCFE00B1B2A8 /* DDCEditSignatureView.swift in Sources */,
 				D3FDEBA12186DEDD00856581 /* DDCEditClientInfoModelFactory.swift in Sources */,
+				D3184D2421901843006AAC2D /* DDCCheckBoxWithImageView.swift in Sources */,
 				D3B607FF217499C20086387B /* DDCCircularTextFieldWithExtraButtonView.swift in Sources */,
 				D3DE3089217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift in Sources */,
 				D3276D812188425700D04E9F /* DDCToolbar.swift in Sources */,

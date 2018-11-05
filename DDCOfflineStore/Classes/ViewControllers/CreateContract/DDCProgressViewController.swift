@@ -29,7 +29,7 @@ class DDCProgressViewController: UIViewController {
     }()
     
     lazy var layout : DDCProgressCollectionViewLayout! = {
-        var _layout : DDCProgressCollectionViewLayout = DDCProgressCollectionViewLayout.init(stages: self.stages!.count, yOffset: 13.0)
+        var _layout : DDCProgressCollectionViewLayout = DDCProgressCollectionViewLayout.init(stages: self.stages!.count, yOffset: 10.0)
         _layout.delegate = self
         return _layout
     }()
