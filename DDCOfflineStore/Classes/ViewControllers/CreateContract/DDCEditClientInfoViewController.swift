@@ -74,10 +74,9 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
 // MARK: private
 extension DDCEditClientInfoViewController {
     private func setupViewConstraints() {
-        let kBarHeight : CGFloat = 60.0
         self.collectionView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(self.view)
-            make.bottom.equalTo(self.view).offset(-kBarHeight)
+            make.bottom.equalTo(self.view).offset(-DDCAppConfig.kBarHeight)
         }
         
     }

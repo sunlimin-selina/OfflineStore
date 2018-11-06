@@ -12,6 +12,7 @@
 		D3184D2121901767006AAC2D /* DDCCheckBoxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */; };
 		D3184D2421901843006AAC2D /* DDCCheckBoxWithImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2321901843006AAC2D /* DDCCheckBoxWithImageView.swift */; };
 		D3184D2621903606006AAC2D /* DDCCheckBoxTableViewCellControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2521903606006AAC2D /* DDCCheckBoxTableViewCellControl.swift */; };
+		D3184D28219050BF006AAC2D /* DDCCheckBoxModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D27219050BF006AAC2D /* DDCCheckBoxModel.swift */; };
 		D3276D812188425700D04E9F /* DDCToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3276D802188425700D04E9F /* DDCToolbar.swift */; };
 		D32D2FE821786A0600CA3E42 /* DDCOffLineStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */; };
 		D3597CFA2178518B00C4A2F2 /* DDCUserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */; };
@@ -115,6 +116,7 @@
 		D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxTableViewCell.swift; sourceTree = "<group>"; };
 		D3184D2321901843006AAC2D /* DDCCheckBoxWithImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxWithImageView.swift; sourceTree = "<group>"; };
 		D3184D2521903606006AAC2D /* DDCCheckBoxTableViewCellControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxTableViewCellControl.swift; sourceTree = "<group>"; };
+		D3184D27219050BF006AAC2D /* DDCCheckBoxModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxModel.swift; sourceTree = "<group>"; };
 		D3276D802188425700D04E9F /* DDCToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCToolbar.swift; sourceTree = "<group>"; };
 		D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOffLineStoreModel.swift; sourceTree = "<group>"; };
 		D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCUserStatus.swift; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 				D3B607C1217458E80086387B /* ContractModel */,
 				D3CC64E5216F2C7C00383DD5 /* DDCUserModel.swift */,
 				D3B607CE21745A6D0086387B /* DDCCustomerModel.swift */,
+				D3184D27219050BF006AAC2D /* DDCCheckBoxModel.swift */,
 			);
 			path = Local;
 			sourceTree = "<group>";
@@ -807,6 +810,7 @@
 				D3B607F5217499C20086387B /* DDCLoadingView.swift in Sources */,
 				D3B607FD217499C20086387B /* DDCProgressCollectionViewLayout.swift in Sources */,
 				D3B607C521745A3A0086387B /* DDCContractTypeModel.swift in Sources */,
+				D3184D28219050BF006AAC2D /* DDCCheckBoxModel.swift in Sources */,
 				D3AE11162181A13100E61E08 /* DDCSelectStoreViewController.swift in Sources */,
 				D3E73D30218302C100A5073A /* DDCContractDetailsCell.swift in Sources */,
 				D3D6718921806F8E0080B22B /* DDCContractDetailsHeaderView.swift in Sources */,

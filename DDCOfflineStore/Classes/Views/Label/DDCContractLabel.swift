@@ -14,7 +14,7 @@ class DDCContractLabel: UILabel {
         if isRequired {
             let dotString: String = title + " • "
             let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: dotString, attributes: [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0)])
-            attributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.red, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0)], range: NSRange.init(title)!)
+            attributedString.addAttributes([NSAttributedString.Key.foregroundColor: UIColor.red, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0)], range: NSRange.init(location: title.count, length: 2))
             self.attributedText = attributedString
         } else {
             self.text = title

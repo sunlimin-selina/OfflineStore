@@ -107,7 +107,6 @@ class DDCCreateContractViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.createChildViewControllers()
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraint()
         self.title = "创建新合同"
@@ -117,6 +116,7 @@ class DDCCreateContractViewController: UIViewController{
         super.init(nibName: nil, bundle: nil)
         self.progress = progress
         self.model = model
+        self.createChildViewControllers()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -200,12 +200,11 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         
         self.pageViewController.setViewControllers([self.subviewControllers![Int(self.progress.rawValue)]], direction: .forward, animated: true, completion: nil)
         
-        let kBarHeight : CGFloat = 60.0
         self.bottomBar.snp.makeConstraints({ (make) in
             make.width.equalTo(UIScreen.main.bounds.width)
-            make.height.equalTo(kBarHeight)
+            make.height.equalTo(DDCAppConfig.kBarHeight)
             make.left.right.equalTo(self.view)
-            make.top.equalTo(self.view.snp_bottomMargin).offset(-kBarHeight)
+            make.top.equalTo(self.view.snp_bottomMargin).offset(-DDCAppConfig.kBarHeight)
         })
         
         self.view.bringSubviewToFront(self.bottomBar)

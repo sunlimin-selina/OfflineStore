@@ -39,9 +39,9 @@ extension DDCBarBackgroundView {
         let width = self.bounds.size.width
         let height = self.bounds.size.height
         
-        if(width==0||height==0) {return}
+        if(width==0||height==0) { return }
         
-        let maskPath : UIBezierPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft , .topRight], cornerRadii: CGSize.init(width: 20.0, height: 20.0))
+        let maskPath : UIBezierPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft , .topRight], cornerRadii: CGSize.init(width: 10.0, height: 10.0))
         let maskLayer : CAShapeLayer = CAShapeLayer.init()
         maskLayer.frame = self.bounds
         maskLayer.path = maskPath.cgPath
@@ -52,14 +52,14 @@ extension DDCBarBackgroundView {
     func setBlackShadow() {
         self.layer.masksToBounds = true
         self.layer.shadowRadius = 5.0
-        self.layer.shadowOffset = CGSize.init(width: 20.0, height: 20.0)
+        self.layer.shadowOffset = CGSize.init(width: 10.0, height: 10.0)
         self.layer.shadowColor = UIColor.white.cgColor
     }
     
     func setupViewConstraints() {
         self.tableView.snp.makeConstraints({ (make) in
             make.top.left.right.equalTo(self)
-            make.bottom.equalTo(self)
+            make.bottom.equalTo(self).offset(-DDCAppConfig.kBarHeight)
         })
     }
 }

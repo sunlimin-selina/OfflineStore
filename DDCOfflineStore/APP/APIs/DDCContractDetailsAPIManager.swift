@@ -37,6 +37,8 @@ class DDCContractDetailsAPIManager: NSObject {
                         errorMessage = error
                         workingGroup.leave()
                     })
+                } else {
+                    workingGroup.leave()
                 }
             }, failHandler: { (error) in
                 errorMessage = error
@@ -101,9 +103,9 @@ class DDCContractDetailsAPIManager: NSObject {
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: param, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             if case let data as Dictionary<String, Any> = tuple.data {
-                let packageName : String = data["packageName"] as! String
-                let packageCategoryName : String = data["skuName"] as! String
-                let singleStore : Bool = data["addressUseType"] as! Int == 1 ? true : false
+                let packageName : String = (data["packageName"] is NSNull) || (data["packageName"] != nil) ? "" : data["packageName"] as! String
+                let packageCategoryName : String = (data["skuName"] is NSNull) || (data["skuName"] != nil) ? "" : data["skuName"] as! String
+                let singleStore : Bool = (data["addressUseType"] is NSNull) || (data["addressUseType"] != nil || data["addressUseType"] as! Int != 1) ? false : true
                 let response = (packageName, packageCategoryName, singleStore)
                 successHandler(response) 
             }

@@ -19,7 +19,8 @@ class DDCCustomerModel: Mappable {
     var birthday : Int?
     var career : String?
     var channel : String?
-    
+    var channelDesc : String?
+
     var formattedBirthday: String?
     
     init() {
@@ -40,7 +41,7 @@ class DDCCustomerModel: Mappable {
         birthday <- map["birthday"]
         career <- map["lineUserCareer"]
         channel <- map["channel"]
-        
+        channelDesc <- map["channelDesc"]
         if let _birthday = birthday {
             self.formattedBirthday = DDCTools.date(from: _birthday)
         }

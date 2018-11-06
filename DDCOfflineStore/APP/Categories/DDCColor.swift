@@ -17,6 +17,8 @@ class DDCColor: UIColor {
     struct fontColor {
         static let gray : UIColor = colorWithHex(RGB: 0xA5A4A4)//字体灰
         static let black : UIColor = colorWithHex(RGB: 0x474747)//字体黑
+        static let thickBlack : UIColor = colorWithHex(RGB: 0x1A1A1A)//字体粗黑
+        static let lightGray : UIColor = colorWithHex(RGB: 0x7F7F7F)//字体浅灰
     }
     
     struct complementaryColor {

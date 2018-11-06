@@ -20,12 +20,12 @@ class DDCCheckBoxWithImageView: UIControl {
     
     lazy var button: UIButton = {
         var _button = UIButton.init()
-        _button.titleLabel!.font = UIFont.systemFont(ofSize: 12.0)
-        _button.setTitleColor(UIColor.black, for: .normal)
-        _button.setTitleColor(UIColor.black, for: .selected)
+        _button.titleLabel!.font = UIFont.systemFont(ofSize: 18.0)
+        _button.setTitleColor(DDCColor.fontColor.gray, for: .normal)
+        _button.setTitleColor(DDCColor.fontColor.black, for: .selected)
 
-        _button.setImage(UIImage.init(named: "hdxq_btn_normal"), for: .normal)
-        _button.setImage(UIImage.init(named: "hdxq_btn_normal"), for: .selected)
+        _button.setImage(UIImage.init(named: "icon_selection_desselected"), for: .normal)
+        _button.setImage(UIImage.init(named: "icon_selection_selected"), for: .selected)
 
         _button.titleLabel!.lineBreakMode = .byCharWrapping
         _button.titleLabel!.numberOfLines = 2

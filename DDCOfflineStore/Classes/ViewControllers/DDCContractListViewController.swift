@@ -19,7 +19,7 @@ class DDCContractListViewController: UIViewController {
     private lazy var bottomBar : DDCBottomBar = {
         let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "创建新订单", style: .highlighted, handler: {
-            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .addPhoneNumber, model: nil)
+            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .editClientInformation, model: nil)
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar
@@ -29,7 +29,7 @@ class DDCContractListViewController: UIViewController {
         let _tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
         _tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListTableViewCell.self))
         _tableView.register(DDCOrderingHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCOrderingHeaderView.self))
-        _tableView.rowHeight = 80.0
+        _tableView.rowHeight = 112.0
         _tableView.delegate = self
         _tableView.dataSource = self
         _tableView.isUserInteractionEnabled = true
@@ -69,8 +69,9 @@ class DDCContractListViewController: UIViewController {
         self.navigationController?.navigationBar.barStyle = .black
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 22.0, weight: .medium)]
         
-        let rightItem = UIBarButtonItem.init(title: "退出帐号", style: .plain, target: self, action: #selector(rightNaviBtnPressed))
+        let rightItem = UIBarButtonItem.init(title: "登出帐号", style: .plain, target: self, action: #selector(rightNaviBtnPressed))
         rightItem.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = rightItem
         self.page = 0
@@ -107,32 +108,31 @@ extension DDCContractListViewController {
             make.height.equalTo(250)
         }
         
-        let kBarHeight : CGFloat = 60.0
         self.tableView.snp.makeConstraints { (make) in
             make.top.equalTo(self.contractTableHeaderView.snp_bottomMargin)
             make.left.right.equalTo(self.view)
-            make.bottom.equalTo(self.view).offset(-kBarHeight)
+            make.bottom.equalTo(self.view).offset(-DDCAppConfig.kBarHeight)
         }
         
         self.bottomBar.snp.makeConstraints({ (make) in
             make.width.equalTo(UIScreen.main.bounds.width)
-            make.height.equalTo(kBarHeight)
+            make.height.equalTo(DDCAppConfig.kBarHeight)
             make.left.right.equalTo(self.view)
-            make.top.equalTo(self.view.snp_bottomMargin).offset(-kBarHeight)
+            make.top.equalTo(self.view.snp_bottomMargin).offset(-DDCAppConfig.kBarHeight)
         })
         
     }
     
     @objc func rightNaviBtnPressed() {
         weak var weakSelf = self
-        let alertController : UIAlertController = UIAlertController.init(title: "你确定要登出吗？", message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
+        let alertController : UIAlertController = UIAlertController.init(title: "您确定要登出当前账号吗？", message: nil, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: { (action) in
             DDCStore.sharedStore().user = nil
             UserDefaults.standard.set(nil, forKey: "DDCUser")
             UserDefaults.standard.synchronize()
             weakSelf?.login()
         }))
-        alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
+        alertController.addAction(UIAlertAction.init(title: "否", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -206,7 +206,7 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListTableViewCell.self), for: indexPath)) as! DDCContractListTableViewCell
-        cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.colorWithHex(RGB: 0xF8F8F8) : UIColor.white
+        cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.complementaryColor.backgroundColor : UIColor.white
         cell.configureCell(model: self.contractArray![indexPath.row] as! DDCContractDetailsModel)
         return cell
     }

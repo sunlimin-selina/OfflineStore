@@ -10,31 +10,45 @@ import UIKit
 import SnapKit
 
 class DDCContractListTableHeaderView: UIView {
+    static let kImgBorderWidth: CGFloat = 15
+    static let kImgDiameter: CGFloat = 80
     
     private lazy var backgroundView : UIImageView = {
-        let backgroundView : UIImageView = UIImageView.init(image: UIImage.init(named: "background"))
-        backgroundView.contentMode = .scaleAspectFill
-        backgroundView.clipsToBounds = true
-        return backgroundView
+        let _backgroundView : UIImageView = UIImageView.init()
+        _backgroundView.backgroundColor = DDCColor.colorWithHex(RGB: 0x202932)
+        _backgroundView.contentMode = .scaleAspectFill
+        _backgroundView.clipsToBounds = true
+        return _backgroundView
     }()
     
     lazy var portraitView : UIImageView = {
-        let portraitView : UIImageView = UIImageView()
-        portraitView.contentMode = .scaleAspectFill
-        portraitView.clipsToBounds = true
-        return portraitView
+        let _portraitView : UIImageView = UIImageView()
+        _portraitView.contentMode = .scaleAspectFill
+        _portraitView.clipsToBounds = true
+        _portraitView.layer.masksToBounds = true
+        return _portraitView
+    }()
+    
+    lazy var portraitViewHolder : UIView = {
+        let _portraitViewHolder : UIView = UIView()
+        _portraitViewHolder.layer.cornerRadius = (DDCContractListTableHeaderView.kImgDiameter + DDCContractListTableHeaderView.kImgBorderWidth) / 2
+        _portraitViewHolder.layer.masksToBounds = true
+        _portraitViewHolder.layer.borderColor = UIColor.init(white: 1, alpha: 0.05).cgColor
+        _portraitViewHolder.layer.borderWidth = DDCContractListTableHeaderView.kImgBorderWidth
+        return _portraitViewHolder
     }()
     
     lazy var userName : UILabel = {
-        let userName : UILabel = UILabel()
-        userName.textColor = UIColor.white
-        userName.font = UIFont.boldSystemFont(ofSize: 18)
-        return userName
+        let _userName : UILabel = UILabel()
+        _userName.textColor = UIColor.white
+        _userName.font = UIFont.systemFont(ofSize: 22.0, weight: .medium)
+        return _userName
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.backgroundView)
+        self.addSubview(self.portraitViewHolder)
         self.addSubview(self.portraitView)
         self.addSubview(self.userName)
         self.setupViewConstraints()
@@ -50,11 +64,17 @@ class DDCContractListTableHeaderView: UIView {
             make.edges.equalToSuperview()
         })
         
-        self.portraitView.snp.makeConstraints({ (make) in
-            make.width.height.equalTo(86)
+        self.portraitViewHolder.snp.makeConstraints({ (make) in
             make.centerY.equalTo(self).offset(15.0)
             make.left.equalTo(50)
+            make.width.height.equalTo(DDCContractListTableHeaderView.kImgBorderWidth + DDCContractListTableHeaderView.kImgDiameter)
         })
+        
+        self.portraitView.snp.makeConstraints({ (make) in
+            make.width.height.equalTo(DDCContractListTableHeaderView.kImgDiameter)
+            make.center.equalTo(self.portraitViewHolder)
+        })
+        
         self.userName.snp.makeConstraints({ (make) in
             make.width.equalTo(100)
             make.left.equalTo(self.portraitView.snp_rightMargin).offset(30.0)

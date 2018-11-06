@@ -13,8 +13,7 @@ class DDCContractDetailsCell: UITableViewCell {
     
     public lazy var titleLabel : UILabel = {
         let titleLabel : UILabel = UILabel()
-        titleLabel.text = "合同状态"
-        titleLabel.font = UIFont.systemFont(ofSize: 16)
+        titleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
         titleLabel.textColor = DDCColor.fontColor.gray
         titleLabel.textAlignment = .right
         return titleLabel
@@ -22,8 +21,7 @@ class DDCContractDetailsCell: UITableViewCell {
     
     public lazy var subtitleLabel : UILabel = {
         let subtitleLabel : UILabel = UILabel()
-        subtitleLabel.text = "已解除"
-        subtitleLabel.font = UIFont.systemFont(ofSize: 16)
+        subtitleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
         subtitleLabel.textColor = DDCColor.fontColor.black
         return subtitleLabel
     }()

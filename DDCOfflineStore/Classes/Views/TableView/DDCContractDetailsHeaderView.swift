@@ -15,7 +15,7 @@ class DDCContractDetailsHeaderView: UITableViewHeaderFooterView {
             case .effective?:
                 self.imageView.image = UIImage.init(named: "icon_contractdetails_shengxiaozhong")
             case .ineffective?:
-                self.imageView.image = UIImage.init(named: "icon_contractdetails_weishengxiao")
+                self.imageView.image = UIImage.init(named: "icon_contractdetails_daishengxiao")
             case .inComplete?:
                 self.imageView.image = UIImage.init(named: "icon_contractdetails_weiwancheng")
             case .used?:
@@ -27,6 +27,8 @@ class DDCContractDetailsHeaderView: UITableViewHeaderFooterView {
                     self.imageView.image = UIImage.init(named: "icon_contractdetails_yijiechu")
                     self.titleLabel.textColor = DDCColor.fontColor.gray
                 }
+            case .unpaid?:
+                self.imageView.image = UIImage.init(named: "icon_contractdetails_daizhifu")
             default:
                 break
             }
@@ -46,8 +48,8 @@ class DDCContractDetailsHeaderView: UITableViewHeaderFooterView {
         _titleLabel.textAlignment = .center
         _titleLabel.textColor = DDCColor.fontColor.black
         _titleLabel.numberOfLines = 1
-        _titleLabel.font = UIFont.systemFont(ofSize: 18.0)
-        _titleLabel.text = "课程合同书"
+        _titleLabel.font = UIFont.systemFont(ofSize: 22.0)
+        _titleLabel.text = "课程订单"
         return _titleLabel
     }()
     
@@ -73,7 +75,7 @@ class DDCContractDetailsHeaderView: UITableViewHeaderFooterView {
         }
         
         self.titleLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.imageView.snp_bottomMargin).offset(15.0)
+            make.top.equalTo(self.imageView.snp_bottomMargin).offset(20.0)
             make.centerX.equalTo(self.contentView)
         }
     }

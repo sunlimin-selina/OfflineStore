@@ -9,34 +9,25 @@
 import UIKit
 import SnapKit
 
-class DDCCheckBoxTableViewCell: UICollectionViewCell {
+class DDCCheckBoxTableViewCell: UITableViewCell {
     var buttons: [DDCCheckBoxWithImageView] = Array()
     var buttonCount: Int {
         get {
             return 0
         }
         set {
-            if buttonCount > 0 {
-                self.updateButtons()
+            if newValue > 0 {
+                self.updateButtons(count: newValue)
                 self.setupViewConstraints()
             }
         }
     }
-    
-    lazy var titleLabel: UILabel = {
-        let _titleLabel : UILabel = UILabel()
-        _titleLabel.font = UIFont.systemFont(ofSize: 12.0)
-        _titleLabel.textAlignment = .left
-        _titleLabel.numberOfLines = 0
-        _titleLabel.textColor = UIColor.black
-        return _titleLabel
-    }()
-    
-    lazy var anchorPoint: UIImageView = {
-        let _anchorPoint : UIImageView = UIImageView()
-        _anchorPoint.backgroundColor = DDCColor.mainColor.orange
-        _anchorPoint.layer.cornerRadius = 2.0
-        return _anchorPoint
+
+    public lazy var titleLabel: DDCContractLabel = {
+        let titleLabel : DDCContractLabel = DDCContractLabel()
+        titleLabel.font = UIFont.systemFont(ofSize: 18)
+        titleLabel.textColor = DDCColor.fontColor.black
+        return titleLabel
     }()
     
     lazy var subContentView: UIView = {
@@ -44,13 +35,13 @@ class DDCCheckBoxTableViewCell: UICollectionViewCell {
         return _subContentView
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.contentView.addSubview(self.titleLabel)
-        self.contentView.addSubview(self.anchorPoint)
         self.contentView.addSubview(self.subContentView)
         self.clipsToBounds = true
-        self.setupViewConstraints()
+        self.selectedBackgroundView = UIView()
+        self.selectedBackgroundView?.backgroundColor = UIColor.white
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,8 +49,9 @@ class DDCCheckBoxTableViewCell: UICollectionViewCell {
     }
     
     func setupViewConstraints() {
-        let kHorizontalMargin: CGFloat = 15.0
-        
+        let kHorizontalMargin: CGFloat = 140.0
+        let kPadding: CGFloat = 20.0
+
         self.titleLabel.snp.makeConstraints({ (make) in
             make.top.equalTo(self.contentView)
             make.left.equalTo(self.contentView).offset(kHorizontalMargin)
@@ -67,19 +59,13 @@ class DDCCheckBoxTableViewCell: UICollectionViewCell {
             make.bottom.equalTo(self.subContentView.snp_bottomMargin).offset(-kHorizontalMargin / 2)
         })
         
-        self.anchorPoint.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.titleLabel).offset(kHorizontalMargin / 3)
-            make.left.equalTo(self.contentView).offset(kHorizontalMargin / 2)
-            make.height.width.equalTo(4)
-        })
-        
         self.subContentView.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.titleLabel.snp_bottomMargin).offset(kHorizontalMargin / 2)
+            make.top.equalTo(self.titleLabel.snp_bottomMargin).offset(kPadding / 2)
             make.left.right.equalTo(self.titleLabel)
             make.height.equalTo(self.contentView)
         })
         
-        let moduleHeight: Int = 25
+        let moduleHeight: Int = 40
         
         for idx in 0...(self.buttons.count - 1) {
             let topMargin: CGFloat = CGFloat(5 * idx + moduleHeight * idx)
@@ -93,14 +79,16 @@ class DDCCheckBoxTableViewCell: UICollectionViewCell {
         
     }
     
-    func updateButtons() {
-        for idx in 0...(self.buttons.count - 1) {
-            let button: DDCCheckBoxWithImageView = self.buttons[idx]
-            button.removeFromSuperview()
+    func updateButtons(count: Int) {
+        if self.buttons.count > 0 {
+            for idx in 0...(self.buttons.count - 1) {
+                let button: DDCCheckBoxWithImageView = self.buttons[idx]
+                button.removeFromSuperview()
+            }
+            self.buttons.removeAll()
         }
-        self.buttons.removeAll()
         
-        for _ in 0...(self.buttonCount - 1) {
+        for _ in 0...(count - 1) {
             let button: DDCCheckBoxWithImageView = DDCCheckBoxWithImageView.init(frame: CGRect.zero)
             self.buttons.append(button)
         }

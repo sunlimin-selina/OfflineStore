@@ -37,10 +37,9 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
 // MARK: Private
 extension DDCAddContractInfoViewController {
     func setupViewConstraints() {
-        let kBarHeight : CGFloat = 60.0
         self.collectionView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(self.view)
-            make.bottom.equalTo(self.view).offset(-kBarHeight)
+            make.bottom.equalTo(self.view).offset(-DDCAppConfig.kBarHeight)
         }
     }
     
@@ -92,7 +91,6 @@ extension DDCAddContractInfoViewController {
     func getStoresAndContractTypes() {
         DDCTools.showHUD(view: self.view)
         DDCStoreAndContractTypeAPIManager.getStoresAndContractTypes(successHandler: { (array) in
-            
             DDCTools.hideHUD()
         }) { (error) in
             

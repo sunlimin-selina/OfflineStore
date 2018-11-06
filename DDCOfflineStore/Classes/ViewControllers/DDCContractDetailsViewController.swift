@@ -12,19 +12,31 @@ import SnapKit
 typealias Categorys = (model: DDCContractModel?, channels: [DDCChannelModel]?, stores: [DDCStoreModel]?, package: Package)
 
 class DDCContractDetailsViewController: UIViewController {
-
+    struct constant{
+        static let kMargin: CGFloat = 54.0
+    }
+    
     public var detailsID: Int?
     var modelArray : [DDCContractDetailsViewModel]? = Array()
     var categorys : Categorys
     
     private lazy var barBackgroundView : DDCBarBackgroundView = {
-        let barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: 0.0, y: 0.0, width: screen.width - 54 * 2, height: screen.height - 64 - 32))
-        barBackgroundView.tableView.delegate = self
-        barBackgroundView.tableView.dataSource = self
-        barBackgroundView.tableView.separatorStyle = .none
-        barBackgroundView.tableView.register(DDCContractDetailsCell.self, forCellReuseIdentifier: String(describing: DDCContractDetailsCell.self))
-        barBackgroundView.tableView.register(DDCContractDetailsHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCContractDetailsHeaderView.self))
-        return barBackgroundView
+        let _barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: constant.kMargin, y: screen.navigationBarHeight + screen.statusBarHeight + 32, width: screen.width - constant.kMargin * 2, height: screen.height - constant.kMargin - 32))
+        _barBackgroundView.tableView.delegate = self
+        _barBackgroundView.tableView.dataSource = self
+        _barBackgroundView.tableView.separatorStyle = .none
+        _barBackgroundView.tableView.register(DDCContractDetailsCell.self, forCellReuseIdentifier: String(describing: DDCContractDetailsCell.self))
+        _barBackgroundView.tableView.register(DDCContractDetailsHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCContractDetailsHeaderView.self))
+        return _barBackgroundView
+    }()
+    
+    private lazy var bottomBar : DDCBottomBar = {
+        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
+        _bottomBar.addButton(button:DDCBarButton.init(title: "继续编辑", style: .highlighted, handler: {
+            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .addPhoneNumber, model: self.categorys.model)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }))
+        return _bottomBar
     }()
     
     init(detailsID: Int) {
@@ -51,10 +63,9 @@ class DDCContractDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = DDCColor.complementaryColor.backgroundColor
-
+        self.automaticallyAdjustsScrollViewInsets = false
         self.view.addSubview(self.barBackgroundView)
-        self.setupViewConstraints()
-        self.title = "合同详情"
+        self.title = "订单详情"
         self.getData()
     }
     
@@ -67,15 +78,6 @@ class DDCContractDetailsViewController: UIViewController {
 
 // MARK: Private
 extension DDCContractDetailsViewController {
-    
-    private func setupViewConstraints() {
-        self.barBackgroundView.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.view).offset(32 + 64)
-            make.left.equalTo(self.view).offset(54)
-            make.right.equalTo(self.view).offset(-54)
-            make.bottom.equalTo(self.view)
-        })
-    }
     
     func reloadData() {
         
@@ -93,6 +95,9 @@ extension DDCContractDetailsViewController {
                     weakSelf!.modelArray = DDCContractDetailsViewModelFactory.integrateData(category: _response)
                 }
                 weakSelf!.barBackgroundView.tableView.reloadData()
+                if weakSelf!.categorys.model?.status == DDCContractStatus.inComplete {
+                    weakSelf!.view.addSubview(weakSelf!.bottomBar)
+                }
             }) { (error) in
                 DDCTools.hideHUD()
 

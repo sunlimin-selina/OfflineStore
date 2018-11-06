@@ -12,22 +12,21 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
     var models: [DDCContractModel]?  = Array()
     var stores: [DDCStoreModel]?  = Array()
 
-    lazy var collectionView: UICollectionView! = {
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
-        
-        var _collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
-        _collectionView.showsHorizontalScrollIndicator = false
-        _collectionView.isScrollEnabled = false
-        _collectionView.register(DDCTitleTextFieldCell.self, forCellWithReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
-        _collectionView.backgroundColor = UIColor.white
-        _collectionView.delegate = self
-        _collectionView.dataSource = self
-        return _collectionView
+    lazy var tableView: UITableView! = {        
+        let _tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
+        _tableView.register(DDCCheckBoxTableViewCell.self, forCellReuseIdentifier: String(describing: DDCCheckBoxTableViewCell.self))
+//        _tableView.register(DDCOrderingHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCOrderingHeaderView.self))
+        _tableView.rowHeight = 80.0
+        _tableView.delegate = self
+        _tableView.dataSource = self
+        _tableView.isUserInteractionEnabled = true
+        _tableView.separatorColor = UIColor.white
+        return _tableView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(self.collectionView)
+        self.view.addSubview(self.tableView)
         self.setupViewConstraints()
         self.getStoresAndContractTypes()
     }
@@ -37,52 +36,44 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
 // MARK: Private
 extension DDCSelectStoreViewController {
     func setupViewConstraints() {
-        let kBarHeight : CGFloat = 60.0
-        self.collectionView.snp.makeConstraints { (make) in
+        self.tableView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(self.view)
-            make.bottom.equalTo(self.view).offset(-kBarHeight)
+            make.bottom.equalTo(self.view).offset(-DDCAppConfig.kBarHeight)
         }
     }
     
 }
 
 // MARK: UICollectionViewDelegate
-extension DDCSelectStoreViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.models!.count
+extension DDCSelectStoreViewController: UITableViewDelegate, UITableViewDataSource{
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell
-//        let model: DDCContractInfoViewModel = self.models[indexPath.item]
-//        cell.configureCell(model: model, indexPath: indexPath)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCCheckBoxTableViewCell.self), for: indexPath)) as! DDCCheckBoxTableViewCell
+        let cellControl = DDCCheckBoxTableViewCellControl.init(cell: cell)
+        cellControl.setData(data: self.stores!, cell: cell, indexPath: indexPath)
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        if indexPath.item != DDCClientTextFieldType.birthday.rawValue,
-//            indexPath.item != DDCClientTextFieldType.age.rawValue
-//        {
-//            return CGSize.init(width: 500, height: 75)
-//        } else if  indexPath.item == DDCClientTextFieldType.age.rawValue{
-//            return CGSize.init(width: 100, height: 75)
-//        } else {
-//            return CGSize.init(width: 340, height: 75)
-//        }
-        return CGSize.zero
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return DDCCheckBoxTableViewCellControl.cellHeight()
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.init(top: 0, left: (screen.width - 500)/2, bottom: 0, right: (screen.width - 500)/2)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 60.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 35.0
-    }
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return DDCCheckBoxTableViewCellControl.cellHeight()
+//    }
+//
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let headerView = (self.tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCOrderingHeaderView.self))) as! DDCOrderingHeaderView
+//        return headerView
+//    }
 
 }
 
@@ -94,6 +85,7 @@ extension DDCSelectStoreViewController {
         DDCStoreAndContractTypeAPIManager.getStoresAndContractTypes(successHandler: { (array) in
             DDCTools.hideHUD()
             self.stores = array
+            self.tableView.reloadData()
         }) { (error) in
             
         }
