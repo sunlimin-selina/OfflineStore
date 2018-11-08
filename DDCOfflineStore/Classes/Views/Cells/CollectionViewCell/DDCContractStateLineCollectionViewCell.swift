@@ -29,7 +29,7 @@ class DDCContractStateLineCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(style: DDCLineStyle) {
-        self.lineView.drawLine(style: style, color: (style == DDCLineStyle.solid) ? DDCColor.mainColor.orange : DDCColor.colorWithHex(RGB: 0x979797))
+        self.lineView.drawLine(style: style, color: (style == DDCLineStyle.solid) ? DDCColor.mainColor.red : DDCColor.colorWithHex(RGB: 0x979797))
     }
     
     class func height() -> CGFloat {

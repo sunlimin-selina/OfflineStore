@@ -10,11 +10,10 @@ import UIKit
 import SnapKit
 
 class DDCTitleTextFieldCell: UICollectionViewCell {
-    static let kTextFieldViewHeight: CGFloat = 45.0
+    static let kTextFieldViewHeight: CGFloat = 50.0
 
     public lazy var titleLabel: DDCContractLabel = {
         let titleLabel : DDCContractLabel = DDCContractLabel()
-        titleLabel.font = UIFont.systemFont(ofSize: 18)
         titleLabel.textColor = DDCColor.fontColor.black
         return titleLabel
     }()
@@ -48,16 +47,20 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
         
     }
     
-    func configureCell(model : DDCContractInfoViewModel, indexPath: IndexPath) {
+    func configureCell(model : DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
+
         if indexPath.row == 0 {
             self.textFieldView.type = .labelButton
-            self.textFieldView.button!.setTitle("获取用户信息", for: .normal)
+            self.textFieldView.button.setTitle("获取用户信息", for: .normal)
+        } else if (indexPath.row == 10 && model.title == "介绍会员电话") {
+            self.textFieldView.type = .labelButton
+            self.textFieldView.button.setTitle("会员验证", for: .normal)
         } else {
             self.textFieldView.type = .normal
         }
-        self.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.placeholder!, isShowTips:model.isRequired!)
-        self.textFieldView.textField!.placeholder = model.placeholder
-        self.textFieldView.textField?.text = model.text
-        self.textFieldView.textField?.tag = indexPath.row
+        self.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.tips!, isShowTips:showHint)
+        self.textFieldView.textField.attributedPlaceholder = NSAttributedString.init(string:model.placeholder!, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18.0)])
+        self.textFieldView.textField.text = model.text
+        self.textFieldView.textField.tag = indexPath.row
     }
 }

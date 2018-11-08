@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import SnapKit
 
 class DDCProgressViewController: UIViewController {
+    static let height: CGFloat = 170.0
     
     var stages: Array<DDCContractStateInfoViewModel>? {
         didSet {
@@ -19,7 +21,10 @@ class DDCProgressViewController: UIViewController {
     }
     
     lazy var collectionView: UICollectionView! = {
-        var _collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: self.layout!)
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
+
+        var _collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: self.layout)
+        _collectionView.setCollectionViewLayout(self.layout, animated: true)
         _collectionView.showsHorizontalScrollIndicator = false 
         _collectionView.isScrollEnabled = false 
         _collectionView.register(DDCContractStateInfoCell.self, forCellWithReuseIdentifier: String(describing: DDCContractStateInfoCell.self))
@@ -29,7 +34,7 @@ class DDCProgressViewController: UIViewController {
     }()
     
     lazy var layout : DDCProgressCollectionViewLayout! = {
-        var _layout : DDCProgressCollectionViewLayout = DDCProgressCollectionViewLayout.init(stages: self.stages!.count, yOffset: 10.0)
+        var _layout : DDCProgressCollectionViewLayout = DDCProgressCollectionViewLayout.init(stages: self.stages!.count, yOffset: DDCProgressViewController.height / 2)
         _layout.delegate = self
         return _layout
     }()
@@ -60,7 +65,7 @@ extension DDCProgressViewController : DDCProgressCollectionViewLayoutDelegate {
     }
 }
 
-extension DDCProgressViewController: UICollectionViewDelegate,UICollectionViewDataSource {
+extension DDCProgressViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -86,4 +91,5 @@ extension DDCProgressViewController: UICollectionViewDelegate,UICollectionViewDa
             return cell
         }
     }
+
 }

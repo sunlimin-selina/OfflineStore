@@ -12,18 +12,18 @@ import SnapKit
 class DDCCreateContractViewController: UIViewController{
     
     enum DDCContractProgress : UInt {
-        case addPhoneNumber//添加手机号
         case editClientInformation//客户信息
-        case addContractInformation//创建新合同
+        case storeAndContractType//门店及类型
+        case addContractInformation//订单信息
         case finishContract//创建成功
     }
     
     var progress : DDCContractProgress {
         get {
-            return .addPhoneNumber
+            return .editClientInformation
         }
         set {
-            let interval: UInt = newValue.rawValue - DDCContractProgress.addPhoneNumber.rawValue
+            let interval: UInt = newValue.rawValue - DDCContractProgress.editClientInformation.rawValue
             
             for index in 0...(self.categorys.count - 1) {
                 let model: DDCContractStateInfoViewModel = self.categorys[index]
@@ -44,19 +44,11 @@ class DDCCreateContractViewController: UIViewController{
     
     var subviewControllers : Array<DDCChildContractViewController>? = Array()
     
-    private lazy var bottomBar : DDCBottomBar = {
-        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .highlighted, handler: {
-            self.nextPage(model: NSObject.init())
-        }))
-        return _bottomBar
-    }()
-    
     lazy var categorys : Array<DDCContractStateInfoViewModel> = {
         var titles : Array = ["客户信息", "门店及类型", "订单信息", "创建成功"]
         
         var _categorys = Array<Any>()
-        var interval : UInt = self.progress.rawValue - DDCContractProgress.addPhoneNumber.rawValue
+        var interval : UInt = self.progress.rawValue - DDCContractProgress.editClientInformation.rawValue
         
         for index in 0...(titles.count - 1){
             var model : DDCContractStateInfoViewModel = DDCContractStateInfoViewModel()
@@ -99,7 +91,8 @@ class DDCCreateContractViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 20.0, weight: .medium)]
+
         let leftItem = UIBarButtonItem.init(image: UIImage.init(named: "icon_back"), style: .plain, target: self, action: #selector(goBack))
         leftItem.tintColor = UIColor.black
         self.navigationItem.leftBarButtonItem = leftItem
@@ -107,9 +100,8 @@ class DDCCreateContractViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(self.bottomBar)
         self.setupViewConstraint()
-        self.title = "创建新合同"
+        self.title = "创建新订单"
     }
 
     init(progress: DDCContractProgress, model: DDCContractModel?) {
@@ -126,25 +118,26 @@ class DDCCreateContractViewController: UIViewController{
 
 // MARK: Private
 extension DDCCreateContractViewController : DDCChildContractViewControllerDelegate{
-    func nextPage(model: NSObject) {
+    
+    func nextPage(model: DDCContractModel) {
         if self.progress.rawValue >= self.subviewControllers!.count {return}
         var selectedIndex : Int = Int(self.progress.rawValue)
         selectedIndex += 1
         self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
         
         let viewController : DDCChildContractViewController = self.subviewControllers![selectedIndex]
-//        viewController.model = (model as! DDCContractModel)
+        viewController.model = model
         self.pageViewController.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
     }
     
-    func previousPage(model: NSObject) {
+    func previousPage(model: DDCContractModel) {
         if self.progress.rawValue == 0 {return}
         var selectedIndex : Int = Int(self.progress.rawValue)
         selectedIndex -= 1
         self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
 
         let viewController : DDCChildContractViewController = self.subviewControllers![selectedIndex]
-        viewController.model = (model as! DDCContractModel)
+        viewController.model = model
         self.pageViewController.setViewControllers([viewController], direction: .reverse, animated: true, completion: nil)
     }
     
@@ -183,31 +176,23 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         self.view.addSubview(self.progressViewController.view)
         
         self.progressViewController.view.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.view).offset(0.05*screen.height + screen.statusBarHeight + screen.navigationBarHeight)
+            make.top.equalTo(self.view).offset(screen.statusBarHeight + screen.navigationBarHeight)
             make.width.equalTo(screen.width - 74)
             make.centerX.equalTo(self.view)
-            make.height.equalTo(60.0)
+            make.height.equalTo(DDCProgressViewController.height)
         })
         
         self.progressViewController.didMove(toParent: self)
         
         self.view.addSubview(self.pageViewController.view)
         self.pageViewController.view.snp.makeConstraints { (make) in
-            make.top.equalTo(self.progressViewController.view.snp_bottomMargin).offset(0.05*screen.height)
+            make.top.equalTo(self.progressViewController.view.snp_bottomMargin)
             make.left.right.bottom.equalTo(self.view)
         }
         self.addChild(self.pageViewController)
         
         self.pageViewController.setViewControllers([self.subviewControllers![Int(self.progress.rawValue)]], direction: .forward, animated: true, completion: nil)
         
-        self.bottomBar.snp.makeConstraints({ (make) in
-            make.width.equalTo(UIScreen.main.bounds.width)
-            make.height.equalTo(DDCAppConfig.kBarHeight)
-            make.left.right.equalTo(self.view)
-            make.top.equalTo(self.view.snp_bottomMargin).offset(-DDCAppConfig.kBarHeight)
-        })
-        
-        self.view.bringSubviewToFront(self.bottomBar)
     }
     
     @objc func goBack() {

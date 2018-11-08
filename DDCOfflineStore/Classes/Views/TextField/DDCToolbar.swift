@@ -17,7 +17,7 @@ class DDCToolbar: UIView {
     lazy var cancelButton: UIButton = {
        var _cancelButton = UIButton.init(type: .custom)
         _cancelButton.setTitle("取消", for: .normal)
-        _cancelButton.setTitleColor(DDCColor.mainColor.orange, for: .normal)
+        _cancelButton.setTitleColor(DDCColor.mainColor.red, for: .normal)
         _cancelButton.contentHorizontalAlignment = .left
         return _cancelButton
     }()
@@ -26,7 +26,7 @@ class DDCToolbar: UIView {
         var _doneButton = UIButton.init(type: .custom)
         _doneButton.contentHorizontalAlignment = .right
         _doneButton.setTitle("完成", for: .normal)
-        _doneButton.setTitleColor(DDCColor.mainColor.orange, for: .normal)
+        _doneButton.setTitleColor(DDCColor.mainColor.red, for: .normal)
         return _doneButton
     }()
     

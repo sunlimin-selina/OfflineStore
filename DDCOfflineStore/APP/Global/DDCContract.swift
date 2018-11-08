@@ -46,7 +46,7 @@ class DDCContract : NSObject {
     
     static var backendStatusArray: Array<String> {
         get {
-            return ["全部","生效中","未生效","未完成","已核销","已结束","已解除"]
+            return ["全部","生效中","未生效","未完成","已结束","已解除","已核销"]
         }
     }
     

@@ -28,7 +28,7 @@ class DDCBarButton : UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = DDCColor.fontColor.black
+        self.backgroundColor = DDCColor.mainColor.black
         self.layer.cornerRadius = 20
         self.addTarget(self, action: #selector(clickAction(sender:)), for: .touchUpInside)
         self.isUserInteractionEnabled = true
@@ -46,18 +46,18 @@ class DDCBarButton : UIButton {
     func setStyle(style: DDCBarButtonStatus) {
         switch style {
         case .normal:
-            self.backgroundColor = DDCColor.fontColor.gray
-            self.layer.borderColor = DDCColor.fontColor.gray.cgColor
+            self.backgroundColor = DDCColor.complementaryColor.borderColor
+            self.layer.borderColor = DDCColor.complementaryColor.borderColor.cgColor
             self.setTitleColor(UIColor.white, for: .normal)
             break
         case .highlighted:
-            self.backgroundColor = DDCColor.fontColor.black
-            self.layer.borderColor = DDCColor.fontColor.black.cgColor
+            self.backgroundColor = DDCColor.mainColor.black
+            self.layer.borderColor = DDCColor.mainColor.black.cgColor
             self.setTitleColor(UIColor.white, for: .normal)
             break
         case .forbidden:
             self.backgroundColor = UIColor.white
-            self.layer.borderColor = DDCColor.complementaryColor.separatorColor.cgColor
+            self.layer.borderColor = DDCColor.complementaryColor.borderColor.cgColor
             self.setTitleColor(DDCColor.fontColor.black, for: .normal)
             break
         }

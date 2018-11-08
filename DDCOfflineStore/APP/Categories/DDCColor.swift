@@ -11,7 +11,8 @@ import UIKit
 class DDCColor: UIColor {
     struct mainColor {
         static let orange : UIColor = colorWithHex(RGB: 0xFF5D31)//主色调
-        static let alphaOrange : UIColor = colorWithHex(RGB: 0xFF5D31, alpha: 0.66)
+        static let black : UIColor = colorWithHex(RGB: 0x2F2F2F)
+        static let red : UIColor = colorWithHex(RGB: 0xFF5269)
     }
 
     struct fontColor {
@@ -22,6 +23,7 @@ class DDCColor: UIColor {
     }
     
     struct complementaryColor {
+        static let borderColor : UIColor = colorWithHex(RGB: 0xC4C4C4) //边框色
         static let separatorColor : UIColor = colorWithHex(RGB: 0xEEEEEE) //分割线
         static let backgroundColor : UIColor = colorWithHex(RGB: 0xF8F8F8)
     }

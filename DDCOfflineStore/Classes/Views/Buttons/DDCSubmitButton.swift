@@ -39,14 +39,14 @@ class DDCSubmitButton: UIButton {
         switch type {
         case .SubmitButtonTypeCommit:
             do {
-                self.backgroundColor = DDCColor.mainColor.orange
-                self.layer.shadowColor = DDCColor.mainColor.orange.cgColor
+                self.backgroundColor = DDCColor.mainColor.red
+                self.layer.shadowColor = DDCColor.mainColor.red.cgColor
                 self.setImage(UIImage.init(named: "sign_btn_finish"), for: .normal)
             }
         case .SubmitButtonTypeNext:
             do {
-                self.backgroundColor = DDCColor.mainColor.orange
-                self.layer.shadowColor = DDCColor.mainColor.orange.cgColor
+                self.backgroundColor = DDCColor.mainColor.red
+                self.layer.shadowColor = DDCColor.mainColor.red.cgColor
                 self.setImage(UIImage.init(named: "sign_btn_next"), for: .normal)
 
             }

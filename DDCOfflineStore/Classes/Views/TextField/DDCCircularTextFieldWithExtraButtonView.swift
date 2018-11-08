@@ -21,21 +21,21 @@ class DDCCircularTextFieldWithExtraButtonView : DDCCircularTextFieldView {
     }()
     var showExtraButton : Bool? {
         didSet {
-            self.button?.isHidden = showExtraButton!
+            self.button.isHidden = showExtraButton!
             self.extraButton?.isHidden = !showExtraButton!
         }
     }
     var enabled : Bool? {
         didSet {
             if (self.showExtraButton!) {
-                self.button?.isHidden = enabled!
+                self.button.isHidden = enabled!
                 self.extraButton?.isHidden = enabled!
-                self.button!.isEnabled = enabled!
+                self.button.isEnabled = enabled!
                 self.extraButton!.isEnabled = enabled!
             } else {
-                self.button?.isHidden = enabled!
+                self.button.isHidden = enabled!
                 self.extraButton?.isHidden = enabled!
-                self.button?.isEnabled = enabled!
+                self.button.isEnabled = enabled!
                 self.extraButton?.isEnabled = enabled!
             }
         }
@@ -54,8 +54,8 @@ class DDCCircularTextFieldWithExtraButtonView : DDCCircularTextFieldView {
     // MARK: Private
     func updateViewConstraints() {
         self.extraButton?.snp.makeConstraints({ (make) in
-            make.top.bottom.equalTo(self.contentView!)
-            make.right.equalTo((self.contentView?.snp_rightMargin)!).offset(-14.0)
+            make.top.bottom.equalTo(self.contentView)
+            make.right.equalTo(self.contentView.snp_rightMargin).offset(-14.0)
             make.width.equalTo(70.0)
         })
         

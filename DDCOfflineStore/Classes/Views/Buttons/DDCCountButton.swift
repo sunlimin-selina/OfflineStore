@@ -32,7 +32,7 @@ class CountButton: UIButton {
         self.countDownTimer = nil
         self.countDown = CountButton.countTime
         self.isEnabled = false
-        self.setTitleColor(DDCColor.mainColor.orange, for: .normal)
+        self.setTitleColor(DDCColor.mainColor.red, for: .normal)
         self.countDownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(countDownTime), userInfo: nil, repeats: true)
     }
     

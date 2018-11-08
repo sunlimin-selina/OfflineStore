@@ -19,7 +19,7 @@ enum CircularTextFieldViewType : UInt{
 
 class DDCCircularTextFieldView: UIView {
     
-    lazy var contentView : UIView? = {
+    lazy var contentView : UIView = {
         var _contentView = UIView.init()
         _contentView.layer.shadowColor = DDCColor.fontColor.gray.cgColor
         _contentView.layer.shadowRadius = 5.0
@@ -29,7 +29,7 @@ class DDCCircularTextFieldView: UIView {
         return _contentView
     }()
     
-    lazy var textField : UITextField? = {
+    lazy var textField : UITextField = {
         var _textField : UITextField = UITextField.init()
         _textField.autocorrectionType = .no
         _textField.autocapitalizationType = .none
@@ -37,22 +37,22 @@ class DDCCircularTextFieldView: UIView {
         _textField.adjustsFontSizeToFitWidth = true
         _textField.keyboardType = .default
         _textField.keyboardAppearance = .default
-        _textField.font = UIFont.systemFont(ofSize: 12.0)
+        _textField.font = UIFont.systemFont(ofSize: 20.0)
         return _textField
     }()
     
-    lazy var button : CountButton? = {
+    lazy var button : CountButton = {
         var _button = CountButton.init(frame: CGRect.zero)
         _button.contentHorizontalAlignment = .right
-        _button.titleLabel?.font = UIFont.systemFont(ofSize: 10.0)
-        _button.setTitleColor(DDCColor.mainColor.orange, for: .normal)
+        _button.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: .medium)
+        _button.setTitleColor(DDCColor.mainColor.red, for: .normal)
         return _button
     }()
     
     var cornerRadius : CGFloat? {
         didSet
         {
-            self.contentView!.layer.cornerRadius = cornerRadius!
+            self.contentView.layer.cornerRadius = cornerRadius!
         }
     }
     
@@ -61,24 +61,24 @@ class DDCCircularTextFieldView: UIView {
             switch type {
             case .normal?:
                 do{
-                    self.button?.snp.updateConstraints({ (make) in
+                    self.button.snp.updateConstraints({ (make) in
                         make.width.equalTo(Double.leastNormalMagnitude)
                     })
                 }
             case .imageButton?:
                 do {
-                    self.button?.snp.updateConstraints({ (make) in
+                    self.button.snp.updateConstraints({ (make) in
                         make.width.equalTo(30.0)
                     })
                     
-                    self.button?.setTitle("", for: .normal)
-                    self.button?.setImage(UIImage.init(named: "btn_password_nodisplay"), for: .normal)
-                    self.button?.setImage(UIImage.init(named: "btn_password_display"), for: .selected)
+                    self.button.setTitle("", for: .normal)
+                    self.button.setImage(UIImage.init(named: "btn_password_nodisplay"), for: .normal)
+                    self.button.setImage(UIImage.init(named: "btn_password_display"), for: .selected)
                 }
             case .labelButton?:
                 do {
-                    self.button?.snp.updateConstraints({ (make) in
-                        make.width.equalTo(70.0)
+                    self.button.snp.updateConstraints({ (make) in
+                        make.width.equalTo(150.0)
                     })
                 }
             default:
@@ -89,9 +89,9 @@ class DDCCircularTextFieldView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubview(self.contentView!)
-        self.addSubview(self.textField!)
-        self.addSubview(self.button!)
+        self.addSubview(self.contentView)
+        self.addSubview(self.textField)
+        self.addSubview(self.button)
         self.setupViewConstraints()
         self.type = .normal
     }
@@ -107,30 +107,30 @@ class DDCCircularTextFieldView: UIView {
     
     // MARK: Private
     func setupViewConstraints() {
-        self.contentView?.snp.makeConstraints({ (make) in
+        self.contentView.snp.makeConstraints({ (make) in
             make.top.left.equalTo(self)
             make.bottom.right.equalTo(self)
         })
         
-        self.textField?.snp.makeConstraints({ (make) in
-            make.top.bottom.equalTo(self.contentView!)
-            make.left.equalTo(self.contentView!).offset(14.0)
-            make.right.equalTo((self.button?.snp_leftMargin)!)
+        self.textField.snp.makeConstraints({ (make) in
+            make.top.bottom.equalTo(self.contentView)
+            make.left.equalTo(self.contentView).offset(14.0)
+            make.right.equalTo(self.button.snp_leftMargin)
         })
         
-        self.button?.snp.makeConstraints({ (make) in
-            make.top.bottom.equalTo(self.contentView!)
-            make.right.equalTo((self.contentView?.snp_rightMargin)!).offset(-14.0)
+        self.button.snp.makeConstraints({ (make) in
+            make.top.bottom.equalTo(self.contentView)
+            make.right.equalTo(self.contentView.snp_rightMargin).offset(-14.0)
             make.width.equalTo(Double.leastNormalMagnitude)
         })
     }
     
-    func setPlaceholderWithColor(color:UIColor?,font:UIFont?) {
-        if let _ : UIColor = color {
-            self.textField?.setValue(color, forKey: "_placeholderLabel.textColor")
+    @objc func setPlaceholderWithColor(color:UIColor?,font:UIFont?) {
+        if let _color = color {
+            self.textField.setValue(_color, forKey: "_placeholderLabel.textColor")
         }
-        if let _ : UIFont = font {
-            self.textField?.setValue(font, forKey: "_placeholderLabel.font")
+        if let _font = font {
+            self.textField.setValue(_font, forKey: "_placeholderLabel.font")
         }
     }
 }

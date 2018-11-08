@@ -33,7 +33,7 @@ class DDCContractDetailsViewController: UIViewController {
     private lazy var bottomBar : DDCBottomBar = {
         let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "继续编辑", style: .highlighted, handler: {
-            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .addPhoneNumber, model: self.categorys.model)
+            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .storeAndContractType, model: self.categorys.model)
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar

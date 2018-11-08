@@ -18,11 +18,15 @@ class DDCContractListAPIManager: NSObject {
         let params : Dictionary<String, Any> = ["uid":uid , "currentPage":page ,"status":status , "pageSize" : 10]
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
-            if let res = response,
-                let data = res["data"]{
-                let modelArray: [DDCContractDetailsModel] = DDCContractListAPIManager.parseDictionary((data as! [Dictionary<String, Any>]))!
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            
+            if case let data as [Dictionary<String, Any>] = tuple.data,
+                data.count > 0 {
+                let modelArray: [DDCContractDetailsModel] = DDCContractListAPIManager.parseDictionary(data)!//Mapper<DDCContractDetailsModel>().mapArray(JSONString: data as! String)!
                 successHandler(modelArray)
+                return
             }
+            successHandler([])
         }) { (error) in
             failHandler(error)
         }

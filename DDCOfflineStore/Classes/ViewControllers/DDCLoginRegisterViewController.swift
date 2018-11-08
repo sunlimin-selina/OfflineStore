@@ -26,13 +26,13 @@ class DDCLoginRegisterViewController: UIViewController {
     
     public lazy var inputFieldView: DDCInputFieldView = {
         var _inputFieldView = DDCInputFieldView.init(frame: CGRect.zero)
-        _inputFieldView.firstTextFieldView?.button?.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
-        _inputFieldView.firstTextFieldView?.extraButton?.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
+        _inputFieldView.firstTextFieldView!.button.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
+        _inputFieldView.firstTextFieldView!.extraButton!.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
         _inputFieldView.delegate = self
-        _inputFieldView.secondTextFieldView!.textField!.delegate = self
-        _inputFieldView.firstTextFieldView!.textField!.delegate = self
-        _inputFieldView.firstTextFieldView!.textField!.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        _inputFieldView.secondTextFieldView?.textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        _inputFieldView.secondTextFieldView!.textField.delegate = self
+        _inputFieldView.firstTextFieldView!.textField.delegate = self
+        _inputFieldView.firstTextFieldView!.textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        _inputFieldView.secondTextFieldView!.textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         
         self.firstTextFieldView = _inputFieldView.firstTextFieldView
         return _inputFieldView
@@ -52,9 +52,9 @@ class DDCLoginRegisterViewController: UIViewController {
     }()
     private lazy var contentLabel: UILabel = {
         var _contentLabel = UILabel()
-        _contentLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .medium)
+        _contentLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .medium)
         _contentLabel.textColor = UIColor.black
-        _contentLabel.text = "登录账号"
+        _contentLabel.text = "登录账户"
         return _contentLabel
     }()
     
@@ -254,12 +254,12 @@ extension DDCLoginRegisterViewController: InputFieldViewDelegate {
         self.view.endEditing(true)
 
         if self.loginState! {
-            self.firstTextFieldView!.button!.isEnabled = false
+            self.firstTextFieldView!.button.isEnabled = false
         } else {
             self.firstTextFieldView!.extraButton!.isEnabled = false
         }
         
-        let phoneNumber: String = self.inputFieldView.firstTextFieldView!.textField!.text!
+        let phoneNumber: String = self.inputFieldView.firstTextFieldView!.textField.text!
         
         if phoneNumber.count > 0 {
             self.view.makeDDCToast(message: "请输入手机号", image: UIImage.init(named: "addCar_icon_fail")!)
@@ -284,8 +284,8 @@ extension DDCLoginRegisterViewController: InputFieldViewDelegate {
     @objc func submitForm() {
         self.view.endEditing(true)
         
-        let username = self.inputFieldView.firstTextFieldView!.textField!.text
-        let password = self.inputFieldView.secondTextFieldView!.textField!.text
+        let username = self.inputFieldView.firstTextFieldView!.textField.text
+        let password = self.inputFieldView.secondTextFieldView!.textField.text
         
         guard username != nil else{
             return

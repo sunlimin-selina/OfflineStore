@@ -12,6 +12,7 @@ import MJRefresh
 
 struct Constants {
     static let kDDCContractListCellIdentifier = "cell"
+    static let kDefault: String = "contractArray"
 }
 
 class DDCContractListViewController: UIViewController {
@@ -81,13 +82,11 @@ class DDCContractListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        self.getData()
         self.view.addSubview(self.contractTableHeaderView)
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.title = "课程管家"
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -95,7 +94,6 @@ class DDCContractListViewController: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
     }
-    
 }
 
 // MARK: private
@@ -128,7 +126,7 @@ extension DDCContractListViewController {
         let alertController : UIAlertController = UIAlertController.init(title: "您确定要登出当前账号吗？", message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: { (action) in
             DDCStore.sharedStore().user = nil
-            UserDefaults.standard.set(nil, forKey: "DDCUser")
+            UserDefaults.standard.removeObject(forKey: "DDCUser")
             UserDefaults.standard.synchronize()
             weakSelf?.login()
         }))
@@ -239,7 +237,10 @@ extension DDCContractListViewController {
         if status != self.status {
             self.page = 0
         }
-        DDCContractListAPIManager.getContractList(page: self.page, status: status.rawValue, successHandler: { (contractList : [DDCContractDetailsModel]) in
+        
+        DDCDefaultView.sharedView().clear()
+
+        DDCContractListAPIManager.getContractList(page: self.page, status: status.rawValue, successHandler: { (contractList) in
             if (status != self.status) {
                 self.contractArray = []
                 self.status = status
@@ -257,10 +258,14 @@ extension DDCContractListViewController {
                 self.tableView.mj_footer.isHidden = false
                 self.page += 1
             }
-            self.contractArray?.addObjects(from: contractList)
             DDCTools.hideHUD()
+            self.contractArray?.addObjects(from: contractList)
             self.tableView.mj_footer.endRefreshing()
             self.tableView.reloadData()
+            if self.contractArray?.count == 0 {
+                self.tableView.backgroundView = UIView()
+                DDCDefaultView.sharedView().showDefaultView(view: self.tableView.backgroundView!, title: "还没有创建过订单哟！", image: UIImage.init(named: "homepage_queshengtu")!)
+            }
             if (completionHandler != nil) {
                 completionHandler! (true)
             }
@@ -296,7 +301,7 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
         // 弹窗让用户选择筛选
         let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(style: .plain, array: DDCContract.displayStatusArray) { (selected) in
             if let _selected = selected {
-                //                // 获取status值
+                // 获取status值
                 let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
                 let status: DDCContractStatus = DDCContractStatus(rawValue: UInt(statusArray.index(of: _selected as Any)))!
                 // 关掉弹窗
@@ -317,3 +322,4 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
         self.present(viewController, animated: true, completion: nil)
     }
 }
+

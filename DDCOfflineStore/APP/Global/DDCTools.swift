@@ -44,12 +44,32 @@ class DDCTools : NSObject{
         return _dateFormatter.string(from: date as Date)
     }
     
-    class func datetime(from timeInterval:Int) -> Date {
+    class func datetime(from timeInterval: Int) -> Date {
         let _dateFormatter : DateFormatter = DateFormatter()
         _dateFormatter.dateFormat = "yyyy/MM/dd"
         
         let timeInterval : TimeInterval = TimeInterval.init(Double(timeInterval))
         let date : NSDate = NSDate.init(timeIntervalSince1970: timeInterval / 1000)
         return date as Date
+    }
+    
+    class func date(from dateString: String) -> Int {
+        let _dateFormatter : DateFormatter = DateFormatter()
+        _dateFormatter.dateFormat = "yyyy/MM/dd"
+        
+        let date : Date = _dateFormatter.date(from: dateString)!
+        let timeInterval: TimeInterval = date.timeIntervalSince1970
+        let timeStamp: Int = Int(timeInterval)
+        return timeStamp
+    }
+    
+    class func validateString(string: String) -> Bool {
+        let rule: String = "[\\u4e00-\\u9fa5a-zA-Z]+[\\u4e00-\\u9fa5a-zA-Z\\s]*[\\u4e00-\\u9fa5a-zA-Z]+"
+        return NSPredicate.init(format: "SELF MATCHES %@", rule).evaluate(with: string)
+    }
+    
+    class func validateEmail(email: String) -> Bool {
+        let rule: String = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        return NSPredicate.init(format: "SELF MATCHES %@", rule).evaluate(with: email)
     }
 }

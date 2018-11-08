@@ -24,8 +24,6 @@ class DDCChildContractViewController: UIViewController {
 }
 
 protocol DDCChildContractViewControllerDelegate {
-    func nextPage(model: NSObject)
-    func previousPage(model: NSObject)
-    
-    
+    func nextPage(model: DDCContractModel)
+    func previousPage(model: DDCContractModel)
 }

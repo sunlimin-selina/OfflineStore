@@ -31,8 +31,8 @@ class DDCContractStateInfoCell: UICollectionViewCell {
         let _titleButton : DDCButton = DDCButton.init(type: .custom)
         _titleButton.titleLabel!.numberOfLines = 0
         _titleButton.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
-        _titleButton.setTitleColor(DDCColor.mainColor.orange, for: .normal)
-        _titleButton.setTitleColor(DDCColor.mainColor.orange, for: .selected)
+        _titleButton.setTitleColor(DDCColor.mainColor.red, for: .normal)
+        _titleButton.setTitleColor(DDCColor.mainColor.red, for: .selected)
         _titleButton.setTitleColor(DDCColor.fontColor.gray, for: .disabled)
         _titleButton.setFont(UIFont.systemFont(ofSize: 16.0, weight: .regular), for: .normal)
         _titleButton.setFont(UIFont.systemFont(ofSize: 16.0, weight: .regular), for: .selected)
@@ -56,6 +56,7 @@ class DDCContractStateInfoCell: UICollectionViewCell {
         self.dot.snp.makeConstraints({ (make) in
             make.centerX.equalTo(self.contentView)
             make.top.equalTo(self.contentView).offset(kIndicatorTopOffset)
+            make.height.width.equalTo(32.0)
         })
         
         self.titleButton.snp.makeConstraints({ (make) in
