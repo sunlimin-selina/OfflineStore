@@ -72,4 +72,17 @@ class DDCTools : NSObject{
         let rule: String = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         return NSPredicate.init(format: "SELF MATCHES %@", rule).evaluate(with: email)
     }
+    
+    class func splitPhoneNumber(string: String, length: Int) -> String {
+        var noBlankString: String = string.replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
+        // 插入空格
+        if length >= 4,
+            length <= 8 {
+            noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 3))
+        } else if(length > 8) {
+            noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 3))
+            noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 8))
+        }
+        return noBlankString
+    }
 }

@@ -14,7 +14,8 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
 
     public lazy var titleLabel: DDCContractLabel = {
         let titleLabel : DDCContractLabel = DDCContractLabel()
-        titleLabel.textColor = DDCColor.fontColor.black
+        titleLabel.textColor = UIColor.black
+        titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         return titleLabel
     }()
     

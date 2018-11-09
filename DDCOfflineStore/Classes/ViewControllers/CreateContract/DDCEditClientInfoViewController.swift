@@ -429,11 +429,15 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         let existedLength: Int = (textField.text?.count)!
         let selectedLength: Int = range.length
         let replaceLength: Int = string.count
+        let totalLength: Int = existedLength - selectedLength + replaceLength
         
         if textField.tag == DDCClientTextFieldType.phone.rawValue {
-            if (existedLength - selectedLength + replaceLength > 11) {//手机号输入长度不超过11个字符
+
+            if (totalLength > 13) {//手机号输入长度不超过11个字符 多两个字符为分割号码用的空格
                 return false
             }
+            textField.text = DDCTools.splitPhoneNumber(string: textField.text!, length: totalLength)
+
         }
         return true
     }

@@ -142,10 +142,6 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
     }
     
     func createChildViewControllers() {
-        let storeViewController1 : DDCSelectStoreViewController = DDCSelectStoreViewController()
-        storeViewController1.index = 1
-        storeViewController1.delegate = self
-        self.subviewControllers?.append(storeViewController1)
         
         let customerViewController: DDCEditClientInfoViewController  = DDCEditClientInfoViewController()
         customerViewController.index = 0
