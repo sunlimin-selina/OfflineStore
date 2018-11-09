@@ -20,9 +20,14 @@ class DDCCustomerModel: Mappable {
     var career : String?
     var channel : String?
     var channelDesc : String?
+    
+    var isReferral: Int?
+    var memberPhone: String?
+    var memberName: String?
+    var responsibleUsername : String?
 
     var formattedBirthday: String?
-    
+
     init() {
     }
     

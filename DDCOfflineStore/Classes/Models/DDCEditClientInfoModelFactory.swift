@@ -12,7 +12,7 @@ class DDCEditClientInfoModelFactory: NSObject {
     class func integrateData(model: DDCCustomerModel, channels:[DDCChannelModel]?) -> [DDCContractInfoViewModel] {
         var array: [DDCContractInfoViewModel] = Array()
         //手机号码
-        let phoneNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "手机号码", placeholder: "请输入手机号码", text: model.userName ?? "", isRequired: true, tips: "")
+        let phoneNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "手机号码", placeholder: "请输入手机号码", text: model.userName ?? "", isRequired: true, tips: "创建后无法修改，请谨慎录入")
         //姓名
         let name: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "姓名", placeholder: "请输入姓名", text: model.nickName ?? "", isRequired: true, tips: "")
         //性别
@@ -35,7 +35,9 @@ class DDCEditClientInfoModelFactory: NSObject {
         let memberReferral: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "是否会员介绍", placeholder: "请选择", text:"", isRequired: true, tips: "")
         
         //责任销售
-        let sales: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "责任销售", placeholder: "责任销售", text:"", isRequired: false, tips: "")
+        let responsibleUsername: String = (model.responsibleUsername != nil ? model.responsibleUsername : DDCStore.sharedStore().user?.name)!
+        
+        let sales: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "责任销售", placeholder: "责任销售", text:responsibleUsername, isRequired: false, tips: "")
         
         array = [phoneNumber, name, gender, birthday, age, email, career, channel, channelDetail, memberReferral, sales]
         

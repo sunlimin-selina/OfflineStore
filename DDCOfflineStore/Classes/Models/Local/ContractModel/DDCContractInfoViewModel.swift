@@ -19,13 +19,13 @@ class DDCContractInfoViewModel: NSObject {
     var placeholder: String?
     var text: String?
     var tips: String?
+    var descriptions: String?
 
     var isFill: Bool?
     var isRequired: Bool?
 
     var type: DDCContractInfoModelType?
     var courseArr: [DDCOffLineCourseModel]?
-    
     
     init(title: String, placeholder: String, text: String, isRequired: Bool, tips: String) {
         super.init()

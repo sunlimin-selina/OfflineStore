@@ -85,4 +85,9 @@ class DDCTools : NSObject{
         }
         return noBlankString
     }
+    
+    class func removeWhiteSpace(string: String) -> String {
+        let noBlankString: String = string.replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
+        return noBlankString
+    }
 }

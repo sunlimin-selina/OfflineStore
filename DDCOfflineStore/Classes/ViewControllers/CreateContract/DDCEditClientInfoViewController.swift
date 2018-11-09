@@ -22,6 +22,8 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
         case channel
         case channelDetail
         case memberReferral
+        case memberPhone
+        case memberName
         case sales
     }
     
@@ -118,11 +120,12 @@ extension DDCEditClientInfoViewController {
     }
     
     func update() {
-        self.model?.customer?.userName = self.models[DDCClientTextFieldType.phone.rawValue].text
-        self.model?.customer?.nickName = self.models[DDCClientTextFieldType.name.rawValue].text
+        self.model = DDCContractModel()
+        self.model!.customer?.userName = self.models[DDCClientTextFieldType.phone.rawValue].text
+        self.model!.customer?.nickName = self.models[DDCClientTextFieldType.name.rawValue].text
         //性别
         let genderArray: NSArray = DDCContract.genderArray as NSArray
-        self.model?.customer?.sex = DDCGender(rawValue: genderArray.index(of: self.models[DDCClientTextFieldType.sex.rawValue].text as Any))
+        self.model!.customer?.sex = DDCGender(rawValue: genderArray.index(of: self.models[DDCClientTextFieldType.sex.rawValue].text as Any))
         //生日
         if let birthdayText: String = self.models[DDCClientTextFieldType.birthday.rawValue].text!,
             self.models[DDCClientTextFieldType.birthday.rawValue].text!.count > 0{
@@ -130,27 +133,35 @@ extension DDCEditClientInfoViewController {
             self.model?.customer?.birthday = birthday
         }
         //年龄
-        self.model?.customer?.age = self.models[DDCClientTextFieldType.age.rawValue].text
+        self.model!.customer?.age = self.models[DDCClientTextFieldType.age.rawValue].text
         //邮箱
-        self.model?.customer?.email = self.models[DDCClientTextFieldType.email.rawValue].text
+        self.model!.customer?.email = self.models[DDCClientTextFieldType.email.rawValue].text
         //职业
         let occupationArray: NSArray = DDCContract.occupationArray as NSArray
         self.model?.customer?.career = String(occupationArray.index(of: self.models[DDCClientTextFieldType.career.rawValue].text as Any))
         //渠道
-        if let channels : NSArray = self.channels as! NSArray {
+        if let channels : NSArray = (self.channels! as NSArray) {
             let idx : Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
                 if let object = channelModel as? DDCChannelModel{
                     return object.name == self.models[DDCClientTextFieldType.channel.rawValue].text
                 }
                 return false
             }
-            self.model?.customer!.channel = idx != NSNotFound ? (channels[idx] as! String) : nil
+            if idx != NSNotFound {
+                self.model?.customer!.channel = "\(self.channels![idx].name!)"
+            }
         }
         
         //渠道详情
-        self.model?.customer?.channelDesc = self.models[DDCClientTextFieldType.channelDetail.rawValue].text
+        self.model!.customer?.channelDesc = self.models[DDCClientTextFieldType.channelDetail.rawValue].text
         //是否会员介绍
+        self.model!.customer?.isReferral = self.models[DDCClientTextFieldType.memberReferral.rawValue].text == "是" ? 0 : 1
+        //会员手机号
+        self.model!.customer?.memberPhone = self.models[DDCClientTextFieldType.memberPhone.rawValue].text
+        //会员姓名
+        self.model!.customer?.memberName = self.models[DDCClientTextFieldType.memberName.rawValue].text
         //责任销售
+        self.model!.responsibleUsername = self.models[DDCClientTextFieldType.sales.rawValue].text
     }
     
     func forwardNextPage() {
@@ -216,10 +227,7 @@ extension DDCEditClientInfoViewController: UICollectionViewDelegate, UICollectio
         cell.textFieldView.textField.delegate = self
         cell.textFieldView.button.addTarget(self, action: #selector(getVerificationCode(button:)), for: .touchUpInside)
         self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
-        
-        // 不让用户手动改年龄
-        cell.textFieldView.textField.isUserInteractionEnabled = indexPath.item != DDCClientTextFieldType.age.rawValue
-        cell.textFieldView.textField.clearButtonMode = (indexPath.item == DDCClientTextFieldType.age.rawValue) ? .never : .always
+    
         return cell
     }
     
@@ -336,6 +344,7 @@ extension DDCEditClientInfoViewController {
     }
     
     @objc func cancel() {
+        self.collectionView.reloadData()
         self.resignFirstResponder()
     }
 }
@@ -346,7 +355,7 @@ extension DDCEditClientInfoViewController {
         DDCTools.showHUD(view: self.view)
         
         if let textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
-            let phoneNumber: String = (textFieldView.textField.text)!
+            let phoneNumber: String = DDCTools.removeWhiteSpace(string: textFieldView.textField.text!)
             
             guard DDCTools.isPhoneNumber(number: phoneNumber) else {
                 self.view.makeDDCToast(message: "手机号有误，请检查后重试", image: UIImage.init(named: "addCar_icon_fail")!)
@@ -432,16 +441,32 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         let totalLength: Int = existedLength - selectedLength + replaceLength
         
         if textField.tag == DDCClientTextFieldType.phone.rawValue {
-
             if (totalLength > 13) {//手机号输入长度不超过11个字符 多两个字符为分割号码用的空格
                 return false
             }
             textField.text = DDCTools.splitPhoneNumber(string: textField.text!, length: totalLength)
-
+        } else if textField.tag == DDCClientTextFieldType.channelDetail.rawValue {
+            if (totalLength > 20) {//渠道详情不超过20字
+                return false
+            }
+        } else if textField.tag == DDCClientTextFieldType.memberName.rawValue || textField.tag == DDCClientTextFieldType.sales.rawValue{
+            return false
         }
         return true
     }
     
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        let rawValue: Int = textField.tag
+
+        if rawValue == DDCClientTextFieldType.phone.rawValue || rawValue == DDCClientTextFieldType.name.rawValue ||
+           rawValue == DDCClientTextFieldType.age.rawValue ||
+        rawValue == DDCClientTextFieldType.email.rawValue ||
+            rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.memberPhone.rawValue || rawValue == DDCClientTextFieldType.memberName.rawValue {
+            self.models[rawValue].text = textField.text
+            self.models[rawValue].isFill = true
+        }
+        return true
+    }
 }
 
 // MARK: Notification & Action
