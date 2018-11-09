@@ -19,5 +19,5 @@ struct screen {
 
 class DDCAppConfig: NSObject {
     static let kBarHeight : CGFloat = 60.0
-
+    static let kLeftMargin : CGFloat = 134.0
 }

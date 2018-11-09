@@ -26,10 +26,13 @@ class DDCContractDetailsCell: UITableViewCell {
         return subtitleLabel
     }()
     
+    public var labelView: UIView = UIView()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.addSubview(self.titleLabel)
-        self.addSubview(self.subtitleLabel)
+        self.contentView.addSubview(self.labelView)
+        self.labelView.addSubview(self.titleLabel)
+        self.labelView.addSubview(self.subtitleLabel)
         self.setupViewConstraints()
     }
     
@@ -38,16 +41,20 @@ class DDCContractDetailsCell: UITableViewCell {
     }
     
     func setupViewConstraints() {
+        self.labelView.snp.makeConstraints({ (make) in
+            make.width.equalTo(screen.width - DDCAppConfig.kLeftMargin * 2)
+            make.centerX.centerY.height.equalTo(self.contentView)
+        })
+        
         self.titleLabel.snp.makeConstraints({ (make) in
-            make.width.equalTo(100)
-            make.left.equalTo(self.snp_leftMargin).offset(20)
-            make.right.equalTo(self.subtitleLabel.snp_leftMargin).offset(-30)
-            make.centerY.equalTo(self)
+            make.left.equalTo(self.labelView)
+            make.width.equalTo(120.0)
+            make.centerY.equalTo(self.labelView)
         })
         
         self.subtitleLabel.snp.makeConstraints({ (make) in
-            make.left.equalTo(self.contentView).offset(164)
-            make.centerY.right.equalTo(self)
+            make.left.equalTo(self.titleLabel.snp_rightMargin).offset(30)
+            make.centerY.right.equalTo(self.labelView)
         })
     }
 }

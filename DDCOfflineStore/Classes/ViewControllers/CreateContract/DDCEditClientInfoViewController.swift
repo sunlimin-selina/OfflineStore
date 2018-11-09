@@ -31,7 +31,13 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     var memberReferral = ["是","否"]
     var showHint: Bool = false
     
-    private lazy var bottomBar : DDCBottomBar = {
+    private lazy var contentView: UIView = {
+        var _contentView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: screen.width, height: screen.height))
+        _contentView.backgroundColor = UIColor.white
+        return _contentView
+    }()
+    
+    private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .highlighted, handler: {
             self.forwardNextPage()
@@ -70,14 +76,29 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
         _collectionView.dataSource = self
         return _collectionView
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.getChannels()
         self.view.backgroundColor = UIColor.white
-        self.view.addSubview(self.collectionView)
-        self.view.addSubview(self.bottomBar)
+        self.view.addSubview(self.contentView)
+        self.contentView.addSubview(self.collectionView)
+        self.contentView.addSubview(self.bottomBar)
         self.setupViewConstraints()
+        NotificationCenter.default.addObserver(
+            self,
+            selector:#selector(keyboardWillShow(notification:)),
+            name:UIResponder.keyboardWillShowNotification,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector:#selector(keyboardWillHide(notification:)),
+            name:UIResponder.keyboardWillHideNotification,
+            object: nil)
+        
+        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(tapGestureAction))
+        self.view.addGestureRecognizer(tapGesture)
     }
 }
 
@@ -137,29 +158,29 @@ extension DDCEditClientInfoViewController {
         var canForward: Bool = true
         
         for index in 0...(self.models.count - 1) {
+            canForward = false
             let model: DDCContractInfoViewModel = self.models[index]
-            if model.isRequired! && !model.isFill! {
+            if model.isRequired! ,
+                (!model.isFill! && (model.text?.count)! <= 0) {
                 self.bottomBar.buttonArray![0].isEnabled = true
                 self.showHint = true
                 self.view.makeDDCToast(message: "信息填写不完整，请填写完整", image: UIImage.init(named: "addCar_icon_fail")!)
                 self.collectionView.reloadData()
-                canForward = false
                 return
             }
             if index == DDCClientTextFieldType.name.rawValue {
                 guard DDCTools.validateString(string: model.text!) else {
                     self.view.makeDDCToast(message: "姓名格式不对，只支持中英文，不能有多余的空格", image: UIImage.init(named: "addCar_icon_fail")!)
                     self.collectionView.reloadData()
-                    canForward = false
                     return
                 }
             }
             if index == DDCClientTextFieldType.email.rawValue,
+                (model.text?.count)! > 0,
                 let email = model.text{
                 guard DDCTools.validateEmail(email: email) else {
                     self.view.makeDDCToast(message: "邮箱格式不对，请输入准确的邮箱地址", image: UIImage.init(named: "addCar_icon_fail")!)
                     self.collectionView.reloadData()
-                    canForward = false
                     return
                 }
             }
@@ -404,6 +425,40 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        //限制字符长度
+        let existedLength: Int = (textField.text?.count)!
+        let selectedLength: Int = range.length
+        let replaceLength: Int = string.count
+        
+        if textField.tag == DDCClientTextFieldType.phone.rawValue {
+            if (existedLength - selectedLength + replaceLength > 11) {//手机号输入长度不超过11个字符
+                return false
+            }
+        }
         return true
     }
+    
+}
+
+// MARK: Notification & Action
+extension DDCEditClientInfoViewController {
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        UIView.animate(withDuration: 0.23) {
+            self.contentView.frame = CGRect.init(x: 0.0, y: -kInputFieldViewHeight, width: screen.width, height: screen.height)
+        }
+        DDCKeyboardStateListener.sharedStore().isVisible = true
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.23) {
+            self.contentView.frame = CGRect.init(x: 0, y: 0, width: screen.width, height: screen.height)
+        }
+        DDCKeyboardStateListener.sharedStore().isVisible = false
+    }
+    
+    @objc func tapGestureAction() {
+        self.view.endEditing(true)
+    }
+    
 }

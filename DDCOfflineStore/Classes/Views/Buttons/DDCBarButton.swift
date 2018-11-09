@@ -46,9 +46,9 @@ class DDCBarButton : UIButton {
     func setStyle(style: DDCBarButtonStatus) {
         switch style {
         case .normal:
-            self.backgroundColor = DDCColor.complementaryColor.borderColor
+            self.backgroundColor = UIColor.white
             self.layer.borderColor = DDCColor.complementaryColor.borderColor.cgColor
-            self.setTitleColor(UIColor.white, for: .normal)
+            self.setTitleColor(DDCColor.fontColor.black, for: .normal)
             break
         case .highlighted:
             self.backgroundColor = DDCColor.mainColor.black
@@ -56,9 +56,9 @@ class DDCBarButton : UIButton {
             self.setTitleColor(UIColor.white, for: .normal)
             break
         case .forbidden:
-            self.backgroundColor = UIColor.white
+            self.backgroundColor = DDCColor.complementaryColor.borderColor
             self.layer.borderColor = DDCColor.complementaryColor.borderColor.cgColor
-            self.setTitleColor(DDCColor.fontColor.black, for: .normal)
+            self.setTitleColor(UIColor.white, for: .normal)
             break
         }
     }

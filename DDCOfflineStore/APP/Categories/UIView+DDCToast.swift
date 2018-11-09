@@ -30,7 +30,7 @@ extension UIView {
         backgroundView.layer.cornerRadius = 8.0
         backgroundView.backgroundColor = DDCColor.colorWithHex(RGB: 0x000000, alpha: 0.7)
         backgroundView.alpha = 0.0
-        
+
         let titleLabel = UILabel()
         titleLabel.textAlignment = .center
         titleLabel.textColor = UIColor.white
@@ -93,6 +93,19 @@ extension UIView {
             }
         default:
             break
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
+            backgroundView.alpha = 1.0
+        }) { (finished) in
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
+                backgroundView.alpha = 0.0
+            }) { (finished) in
+                backgroundView.removeFromSuperview()
+                if finishedBlock != nil {
+                    finishedBlock!()
+                }
+            }
         }
     }
 

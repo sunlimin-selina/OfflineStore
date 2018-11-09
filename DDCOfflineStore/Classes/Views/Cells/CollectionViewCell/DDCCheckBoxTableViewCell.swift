@@ -22,13 +22,6 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
             }
         }
     }
-
-    public lazy var titleLabel: DDCContractLabel = {
-        let titleLabel : DDCContractLabel = DDCContractLabel()
-        titleLabel.font = UIFont.systemFont(ofSize: 18)
-        titleLabel.textColor = DDCColor.fontColor.black
-        return titleLabel
-    }()
     
     lazy var subContentView: UIView = {
         let _subContentView : UIView = UIView()
@@ -37,7 +30,6 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.subContentView)
         self.clipsToBounds = true
         self.selectedBackgroundView = UIView()
@@ -52,16 +44,9 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
         let kHorizontalMargin: CGFloat = 140.0
         let kPadding: CGFloat = 20.0
 
-        self.titleLabel.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.contentView)
-            make.left.equalTo(self.contentView).offset(kHorizontalMargin)
-            make.right.equalTo(self.contentView).offset(-kHorizontalMargin)
-            make.bottom.equalTo(self.subContentView.snp_bottomMargin).offset(-kHorizontalMargin / 2)
-        })
-        
         self.subContentView.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.titleLabel.snp_bottomMargin).offset(kPadding / 2)
-            make.left.right.equalTo(self.titleLabel)
+            make.top.equalTo(self.contentView.snp_bottomMargin).offset(kPadding / 2)
+            make.left.right.equalTo(self.contentView)
             make.height.equalTo(self.contentView)
         })
         
@@ -73,7 +58,7 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
             button.snp.makeConstraints({ (make) in
                 make.top.equalTo(topMargin);
                 make.height.equalTo(moduleHeight)
-                make.left.right.equalTo(self.titleLabel)
+                make.left.right.equalTo(self.contentView)
             })
         }
         

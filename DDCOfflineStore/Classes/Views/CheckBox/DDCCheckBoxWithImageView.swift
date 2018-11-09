@@ -15,12 +15,13 @@ class DDCCheckBoxWithImageView: UIControl {
         _imageView.backgroundColor = UIColor.white
         _imageView.contentMode = .scaleAspectFit
         _imageView.clipsToBounds = true
+        _imageView.isUserInteractionEnabled = false
         return _imageView
     }()
     
     lazy var button: UIButton = {
         var _button = UIButton.init()
-        _button.titleLabel!.font = UIFont.systemFont(ofSize: 18.0)
+        _button.titleLabel!.font = UIFont.systemFont(ofSize: 20.0)
         _button.setTitleColor(DDCColor.fontColor.gray, for: .normal)
         _button.setTitleColor(DDCColor.fontColor.black, for: .selected)
 
@@ -32,6 +33,7 @@ class DDCCheckBoxWithImageView: UIControl {
         _button.titleLabel!.textAlignment = .right
         _button.contentHorizontalAlignment = .left
         _button.titleEdgeInsets = UIEdgeInsets.init(top: 0, left: 10.0, bottom: 0, right: 0)
+        _button.isUserInteractionEnabled = false
         return _button
     }()
 
@@ -62,7 +64,7 @@ class DDCCheckBoxWithImageView: UIControl {
             make.width.equalTo(self)
             make.left.greaterThanOrEqualTo(self)
             make.right.lessThanOrEqualTo(self)
-            make.height.equalTo(25.0)
+            make.height.equalTo(30.0)
             make.bottom.equalTo(self.snp_bottomMargin)
         })
     }

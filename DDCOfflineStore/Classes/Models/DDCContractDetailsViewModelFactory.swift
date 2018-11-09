@@ -89,6 +89,28 @@ class DDCContractDetailsViewModelFactory: NSObject {
         array = [code, status, name, gender, age, birthday, phoneNumber, career, email, channel, recommendUser, package, course, term, effectiveTime, store, payMethod, contractPrice, currentStore, signedUsername, responsibleUsername, createdUsername]
         return array
     }
+    
+    class func integrateUserData(category: Array<String>?) -> [DDCContractDetailsViewModel] {
+        var array: [DDCContractDetailsViewModel] = Array()
+        
+        //当前客户
+        let customer: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前客户", describe: "")
+        //客户手机
+        let phone: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "客户手机", describe: "")
+        //客户类型
+        let type: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "客户类型", describe: "")
+        //进行订单
+        let order: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "进行订单", describe: "")
+        //全部订单
+        let allOrder: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "全部订单", describe: "")
+        //约课次数
+        let times: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "约课次数", describe: "")
+        //最后课程
+        let finishCourse: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "最后课程", describe: "")
+       
+        array = [customer, phone, type, order, allOrder, times, finishCourse]
+        return array
+    }
  
     class func channelViewModel(category: Categorys) -> DDCContractDetailsViewModel{
         if let array = category.channels{

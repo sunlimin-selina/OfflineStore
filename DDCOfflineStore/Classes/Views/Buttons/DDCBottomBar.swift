@@ -60,7 +60,7 @@ class DDCBottomBar : UIView {
                     })
                 } else {
                     button.snp.makeConstraints({ (make) in
-                        make.left.equalTo(lastBtn!.snp_rightMargin).offset(kLineSpace)
+                        make.left.equalTo(lastBtn!.snp_rightMargin).offset(kLineSpace + 15)
                         make.width.equalTo(buttonWidth)
                         make.centerY.equalTo(self)
                         make.height.equalTo(kButtonHeight)
