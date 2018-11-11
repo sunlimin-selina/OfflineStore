@@ -55,7 +55,7 @@ class DDCEditClientInfoAPIManager: NSObject {
                         array.append(channelModel)
                     }
                 }
-//                successHandler(array)
+                successHandler(array)
                 return
             }
             successHandler(nil)

@@ -120,7 +120,9 @@ extension DDCEditClientInfoViewController {
     }
     
     func update() {
+        let customer: DDCCustomerModel = DDCCustomerModel()
         self.model = DDCContractModel()
+        self.model?.customer = customer
         self.model!.customer?.userName = self.models[DDCClientTextFieldType.phone.rawValue].text
         self.model!.customer?.nickName = self.models[DDCClientTextFieldType.name.rawValue].text
         //性别
@@ -440,7 +442,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         let replaceLength: Int = string.count
         let totalLength: Int = existedLength - selectedLength + replaceLength
         
-        if textField.tag == DDCClientTextFieldType.phone.rawValue {
+        if textField.tag == DDCClientTextFieldType.phone.rawValue || textField.tag == DDCClientTextFieldType.memberPhone.rawValue {
             if (totalLength > 13) {//手机号输入长度不超过11个字符 多两个字符为分割号码用的空格
                 return false
             }
