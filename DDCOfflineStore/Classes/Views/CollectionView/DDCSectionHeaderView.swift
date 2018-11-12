@@ -8,19 +8,17 @@
 
 import UIKit
 
-class DDCSectionHeaderView: UITableViewHeaderFooterView {
+class DDCSectionHeaderView: UICollectionReusableView {
     
     lazy var titleLabel: DDCContractLabel = {
         var _titleLabel = DDCContractLabel()
         return _titleLabel
     }()
-    
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        self.backgroundView = UIView(frame: self.bounds)
-        self.backgroundView!.backgroundColor = UIColor.white
-        
-        self.contentView.addSubview(self.titleLabel)
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = UIColor.white
+        self.addSubview(self.titleLabel)
         self.setupViewConstraints()
     }
     
@@ -31,7 +29,7 @@ class DDCSectionHeaderView: UITableViewHeaderFooterView {
     func setupViewConstraints() {
         self.titleLabel.snp.makeConstraints { (make) in
             make.width.equalTo(screen.width - DDCAppConfig.kLeftMargin * 2)
-            make.centerX.top.bottom.equalTo(self.contentView)
+            make.centerX.top.bottom.equalTo(self)
         }
     }
 }

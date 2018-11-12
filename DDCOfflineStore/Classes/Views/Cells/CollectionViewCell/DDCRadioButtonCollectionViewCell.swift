@@ -1,5 +1,5 @@
 //
-//  DDCRadioButtonTableViewCell.swift
+//  DDCRadioButtonCollectionViewCell.swift
 //  DDCOfflineStore
 //
 //  Created by sunlimin on 2018/11/9.
@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class DDCRadioButtonTableViewCell: UITableViewCell {
+class DDCRadioButtonCollectionViewCell: UICollectionViewCell {
     
     var identifier: String?
     
@@ -18,11 +18,10 @@ class DDCRadioButtonTableViewCell: UITableViewCell {
         _checkBox.isUserInteractionEnabled = false
         return _checkBox
     }()
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.contentView.addSubview(self.checkBox)
-        self.selectionStyle = .none
         self.setupViewConstraints()
     }
     
