@@ -1,5 +1,5 @@
 //
-//  DDCCheckBoxWithImageView.swift
+//  DDCRadioWithImageView.swift
 //  DDCOfflineStore
 //
 //  Created by sunlimin on 2018/11/5.
@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class DDCCheckBoxWithImageView: UIControl {
+class DDCRadioWithImageView: UIControl {
     lazy var imageView: UIImageView = {
         var _imageView = UIImageView()
         _imageView.backgroundColor = UIColor.white

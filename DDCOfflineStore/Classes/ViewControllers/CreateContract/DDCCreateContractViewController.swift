@@ -142,15 +142,10 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
     }
     
     func createChildViewControllers() {
-//        let contractViewController2 : DDCAddContractInfoViewController = DDCAddContractInfoViewController()
-//        contractViewController2.index = 2
-//        contractViewController2.delegate = self
-//        self.subviewControllers?.append(contractViewController2)
-//
-        let storeViewController2 : DDCSelectStoreViewController = DDCSelectStoreViewController()
-        storeViewController2.index = 1
-        storeViewController2.delegate = self
-        self.subviewControllers?.append(storeViewController2)
+        let contractViewController2 : DDCAddContractInfoViewController = DDCAddContractInfoViewController()
+        contractViewController2.index = 2
+        contractViewController2.delegate = self
+        self.subviewControllers?.append(contractViewController2)
         
         let customerViewController: DDCEditClientInfoViewController  = DDCEditClientInfoViewController()
         customerViewController.index = 0

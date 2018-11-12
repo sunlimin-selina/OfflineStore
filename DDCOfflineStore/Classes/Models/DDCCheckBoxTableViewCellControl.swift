@@ -40,7 +40,7 @@ class DDCCheckBoxTableViewCellControl: NSObject {
 //
 //            if (data.count > 0) {
 //                for index in 0...(cell.buttons.count - 1) {
-//                    let view: DDCCheckBoxWithImageView = cell.buttons[index]
+//                    let view: DDCRadioWithImageView = cell.buttons[index]
 //                    view.button.isEnabled = true
 //                    view.button.setTitle(data[index].title, for: .normal)
 //                    view.button.addTarget(self, action: Selector(("buttonClicked:")), for: .touchUpInside)
@@ -54,7 +54,7 @@ class DDCCheckBoxTableViewCellControl: NSObject {
 //
 //            if (self.contractTypes.count > 0) {
 //                for index in 0...(cell.buttons.count - 1) {
-//                    let view: DDCCheckBoxWithImageView = cell.buttons[index]
+//                    let view: DDCRadioWithImageView = cell.buttons[index]
 //                    view.button.isEnabled = true
 //                    view.button.setTitle(self.contractTypes[index].title, for: .normal)
 //                    view.button.addTarget(self, action: #selector(buttonClicked(sender:)), for: .touchUpInside)

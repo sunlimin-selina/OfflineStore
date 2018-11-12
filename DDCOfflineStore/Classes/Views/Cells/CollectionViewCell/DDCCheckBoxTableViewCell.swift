@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class DDCCheckBoxTableViewCell: UITableViewCell {
-    var buttons: [DDCCheckBoxWithImageView] = Array()
+    var buttons: [DDCRadioWithImageView] = Array()
     var buttonCount: Int {
         get {
             return 0
@@ -54,7 +54,7 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
         
         for idx in 0...(self.buttons.count - 1) {
             let topMargin: CGFloat = CGFloat(5 * idx + moduleHeight * idx)
-            let button: DDCCheckBoxWithImageView = self.buttons[idx]
+            let button: DDCRadioWithImageView = self.buttons[idx]
             button.snp.makeConstraints({ (make) in
                 make.top.equalTo(topMargin);
                 make.height.equalTo(moduleHeight)
@@ -67,14 +67,14 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
     func updateButtons(count: Int) {
         if self.buttons.count > 0 {
             for idx in 0...(self.buttons.count - 1) {
-                let button: DDCCheckBoxWithImageView = self.buttons[idx]
+                let button: DDCRadioWithImageView = self.buttons[idx]
                 button.removeFromSuperview()
             }
             self.buttons.removeAll()
         }
         
         for _ in 0...(count - 1) {
-            let button: DDCCheckBoxWithImageView = DDCCheckBoxWithImageView.init(frame: CGRect.zero)
+            let button: DDCRadioWithImageView = DDCRadioWithImageView.init(frame: CGRect.zero)
             self.buttons.append(button)
         }
         

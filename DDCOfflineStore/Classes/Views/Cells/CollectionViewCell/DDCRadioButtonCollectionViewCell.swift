@@ -13,8 +13,8 @@ class DDCRadioButtonCollectionViewCell: UICollectionViewCell {
     
     var identifier: String?
     
-    public lazy var checkBox: DDCCheckBoxWithImageView = {
-        let _checkBox: DDCCheckBoxWithImageView = DDCCheckBoxWithImageView()
+    public lazy var checkBox: DDCRadioWithImageView = {
+        let _checkBox: DDCRadioWithImageView = DDCRadioWithImageView()
         _checkBox.isUserInteractionEnabled = false
         return _checkBox
     }()
