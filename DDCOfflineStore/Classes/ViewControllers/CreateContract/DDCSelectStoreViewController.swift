@@ -19,6 +19,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
         _tableView.register(DDCRadioButtonTableViewCell.self, forCellReuseIdentifier: String(describing: DDCRadioButtonTableViewCell.self))
         _tableView.register(DDCContractDetailsCell.self, forCellReuseIdentifier: String(describing: DDCContractDetailsCell.self))
         _tableView.register(DDCSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCSectionHeaderView.self))
+        _tableView.register(DDCSectionFooterView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCSectionFooterView.self))
         _tableView.rowHeight = 80.0
         _tableView.delegate = self
         _tableView.dataSource = self
@@ -68,7 +69,7 @@ extension DDCSelectStoreViewController {
     
 }
 
-// MARK: UICollectionViewDelegate
+// MARK: UITableViewDelegate
 extension DDCSelectStoreViewController: UITableViewDelegate, UITableViewDataSource{
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -118,7 +119,7 @@ extension DDCSelectStoreViewController: UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 0 {
-            return 20.0
+            return 70.0
         }
         return CGFloat.leastNormalMagnitude
     }
@@ -134,8 +135,9 @@ extension DDCSelectStoreViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let headerView = (self.tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCSectionHeaderView.self))) as! DDCSectionHeaderView
-        return headerView
+        let footerView = (self.tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCSectionFooterView.self))) as! DDCSectionFooterView
+        footerView.titleLabel.text = "请继续补充订单／合同信息"
+        return footerView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

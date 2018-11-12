@@ -57,39 +57,6 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
     
     func configureCell(model : DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
         var _showHint = showHint
-        self.subtitle.removeFromSuperview()
-        self.textFieldView.textField.isUserInteractionEnabled = true
-        self.textFieldView.textField.clearButtonMode = .always
-        self.textFieldView.type = .normal
-
-        if indexPath.item == 0 {
-            _showHint = true
-            self.textFieldView.type = .labelButton
-            self.textFieldView.button.setTitle("获取用户信息", for: .normal)
-        } else if (indexPath.item == 1 && model.text!.count > 0) {
-            self.textFieldView.type = .labelButton
-            self.subtitle.text = "会员"//model.descriptions
-            self.textFieldView.addSubview(self.subtitle)
-            self.textFieldView.button.isHidden = true
-            self.subtitle.snp.makeConstraints { (make) in
-                make.left.equalTo(self.textFieldView.textField.snp_rightMargin)
-                make.right.top.bottom.equalTo(self.textFieldView)
-                make.width.equalTo(60)
-            }
-        } else if (indexPath.item == 10 && model.title == "介绍会员电话") {
-            self.textFieldView.type = .labelButton
-            self.textFieldView.button.setTitle("会员验证", for: .normal)
-        } else if (indexPath.item == 4) {
-            // 不让用户手动改年龄
-            self.textFieldView.textField.isUserInteractionEnabled = false
-            self.textFieldView.textField.clearButtonMode = .never
-        } else if (indexPath.item == 11 && model.title == "介绍会员姓名") || (indexPath.item == 12) || (indexPath.item == 10 && model.title == "责任销售") {
-            self.textFieldView.textField.isUserInteractionEnabled = false
-            self.textFieldView.textField.clearButtonMode = .never
-        }
-        else {
-            self.textFieldView.type = .normal
-        }
         self.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.tips!, isShowTips:_showHint)
         self.textFieldView.textField.attributedPlaceholder = NSAttributedString.init(string:model.placeholder!, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18.0)])
         self.textFieldView.textField.text = model.text

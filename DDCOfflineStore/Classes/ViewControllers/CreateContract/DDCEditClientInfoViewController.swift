@@ -214,6 +214,49 @@ extension DDCEditClientInfoViewController {
         self.delegate?.nextPage(model: self.model!)
     }
     
+    func configureCell(cell: DDCTitleTextFieldCell, model : DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
+        var _showHint = showHint
+        cell.subtitle.removeFromSuperview()
+        cell.textFieldView.textField.isUserInteractionEnabled = true
+        cell.textFieldView.textField.clearButtonMode = .always
+        cell.textFieldView.type = .normal
+        
+        if indexPath.item == 0 {
+            _showHint = true
+            cell.textFieldView.type = .labelButton
+            cell.textFieldView.button.setTitle("获取用户信息", for: .normal)
+        } else if (indexPath.item == 1 && model.text!.count > 0) {
+            cell.textFieldView.type = .labelButton
+            cell.subtitle.text = "会员"//model.descriptions
+            cell.textFieldView.addSubview(cell.subtitle)
+            cell.textFieldView.button.isHidden = true
+            cell.subtitle.snp.makeConstraints { (make) in
+                make.left.equalTo(cell.textFieldView.textField.snp_rightMargin)
+                make.right.top.bottom.equalTo(cell.textFieldView)
+                make.width.equalTo(60)
+            }
+        } else if (indexPath.item == 10 && model.title == "介绍会员电话") {
+            cell.textFieldView.type = .labelButton
+            cell.textFieldView.button.setTitle("会员验证", for: .normal)
+        } else if (indexPath.item == 4) {
+            // 不让用户手动改年龄
+            cell.textFieldView.textField.isUserInteractionEnabled = false
+            cell.textFieldView.textField.clearButtonMode = .never
+        } else if (indexPath.item == 11 && model.title == "介绍会员姓名") || (indexPath.item == 12) || (indexPath.item == 10 && model.title == "责任销售") {
+            cell.textFieldView.textField.isUserInteractionEnabled = false
+            cell.textFieldView.textField.clearButtonMode = .never
+        }
+        else {
+            cell.textFieldView.type = .normal
+        }
+        cell.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.tips!, isShowTips:_showHint)
+        cell.textFieldView.textField.attributedPlaceholder = NSAttributedString.init(string:model.placeholder!, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18.0)])
+        cell.textFieldView.textField.text = model.text
+        cell.textFieldView.textField.tag = indexPath.row
+        cell.textFieldView.textField.delegate = self
+        cell.textFieldView.button.addTarget(self, action: #selector(getVerificationCode(button:)), for: .touchUpInside)
+    }
+    
 }
 
 // MARK: UICollectionViewDelegate
@@ -225,9 +268,7 @@ extension DDCEditClientInfoViewController: UICollectionViewDelegate, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell
         let model: DDCContractInfoViewModel = self.models[indexPath.item]
-        cell.configureCell(model: model, indexPath: indexPath, showHint: self.showHint)
-        cell.textFieldView.textField.delegate = self
-        cell.textFieldView.button.addTarget(self, action: #selector(getVerificationCode(button:)), for: .touchUpInside)
+        self.configureCell(cell: cell, model: model, indexPath: indexPath, showHint: self.showHint)
         self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
     
         return cell
