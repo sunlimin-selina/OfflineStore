@@ -39,6 +39,6 @@ class DDCRadioButtonCollectionViewCell: UICollectionViewCell {
     
     func configureCell(model: DDCCheckBoxModel) {
         self.checkBox.button.setTitle(model.title, for: .normal)
-        self.checkBox.button.isSelected = model.isSelected!
+        self.checkBox.button.isSelected = model.isSelected
     }
 }

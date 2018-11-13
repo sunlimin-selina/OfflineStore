@@ -13,12 +13,20 @@ class DDCCheckBoxModel: Mappable {
     
     var id: Int?
     var title: String?
-    var isSelected: Bool?
+    var discription: String?
+    var isSelected: Bool = false
     
     init(id: Int?, title: String?, isSelected: Bool?) {
         self.id = id
         self.title = title
-        self.isSelected = isSelected
+        self.isSelected = isSelected!
+    }
+    
+    init(id: Int?, title: String?, discription: String, isSelected: Bool?) {
+        self.id = id
+        self.title = title
+        self.discription = discription
+        self.isSelected = isSelected!
     }
 
     required init?(map: Map) {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DDCContractPackageCategoryModel: NSObject {
+class DDCContractPackageCategoryModel: DDCCheckBoxModel {
     var displayTitle: String?
     var effectiveCount: Int?
     var costPrice: String?

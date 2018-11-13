@@ -10,15 +10,11 @@ import UIKit
 import SnapKit
 
 class DDCRadioWithImageView: UIControl {
-    lazy var imageView: UIImageView = {
-        var _imageView = UIImageView()
-        _imageView.backgroundColor = UIColor.white
-        _imageView.contentMode = .scaleAspectFit
-        _imageView.clipsToBounds = true
-        _imageView.isUserInteractionEnabled = false
-        return _imageView
-    }()
-    
+    enum DDCRadioStatus : UInt {
+        case normal
+        case image
+    }
+
     lazy var button: UIButton = {
         var _button = UIButton.init()
         _button.titleLabel!.font = UIFont.systemFont(ofSize: 20.0)
@@ -39,10 +35,7 @@ class DDCRadioWithImageView: UIControl {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.addSubview(self.imageView)
         self.addSubview(self.button)
-        
         self.setupLayoutConstraints()
     }
     
@@ -51,16 +44,7 @@ class DDCRadioWithImageView: UIControl {
     }
     
     func setupLayoutConstraints() {
-        self.imageView.snp.makeConstraints({ (make) in
-            make.top.equalTo(self)
-            make.width.equalTo(self)
-            make.left.greaterThanOrEqualTo(self)
-            make.right.lessThanOrEqualTo(self)
-            make.bottom.equalTo(self.button.snp_topMargin)
-        })
-        
         self.button.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.imageView.snp_bottomMargin)
             make.width.equalTo(self)
             make.left.greaterThanOrEqualTo(self)
             make.right.lessThanOrEqualTo(self)
