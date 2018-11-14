@@ -83,6 +83,7 @@
 		D3DAA4A72175A911003B0289 /* DDCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4A62175A911003B0289 /* DDCButton.swift */; };
 		D3DAA4AB2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */; };
 		D3DE3089217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DE3088217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift */; };
+		D3E50851219BCF5F00BFFE4D /* DDCRadioHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E50850219BCF5F00BFFE4D /* DDCRadioHeaderView.swift */; };
 		D3E73D252182C10700A5073A /* DDCString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E73D242182C10700A5073A /* DDCString.swift */; };
 		D3E73D2D218302C100A5073A /* DDCContractStateLineCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E73D28218302C000A5073A /* DDCContractStateLineCollectionViewCell.swift */; };
 		D3E73D2E218302C100A5073A /* DDCContractStateInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E73D29218302C000A5073A /* DDCContractStateInfoCell.swift */; };
@@ -201,6 +202,7 @@
 		D3DAA4A62175A911003B0289 /* DDCButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCButton.swift; sourceTree = "<group>"; };
 		D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSystemUserLoginAPIManager.swift; sourceTree = "<group>"; };
 		D3DE3088217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsViewModelFactory.swift; sourceTree = "<group>"; };
+		D3E50850219BCF5F00BFFE4D /* DDCRadioHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCRadioHeaderView.swift; sourceTree = "<group>"; };
 		D3E73D242182C10700A5073A /* DDCString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCString.swift; sourceTree = "<group>"; };
 		D3E73D28218302C000A5073A /* DDCContractStateLineCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractStateLineCollectionViewCell.swift; sourceTree = "<group>"; };
 		D3E73D29218302C000A5073A /* DDCContractStateInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractStateInfoCell.swift; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 		D3B607ED217499C10086387B /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				D3E50850219BCF5F00BFFE4D /* DDCRadioHeaderView.swift */,
 				D3ED086D219556D2001763E2 /* DDCSectionHeaderView.swift */,
 				D3B607EE217499C10086387B /* DDCProgressCollectionViewLayout.swift */,
 				D3D2559E21996BD7009C72B0 /* DDCContractHeaderFooterView.swift */,
@@ -854,6 +857,7 @@
 				D3B607FD217499C20086387B /* DDCProgressCollectionViewLayout.swift in Sources */,
 				D3B607C521745A3A0086387B /* DDCContractTypeModel.swift in Sources */,
 				D30D93A2219A75C000F641F9 /* DDCContractOptionsAPIManager.swift in Sources */,
+				D3E50851219BCF5F00BFFE4D /* DDCRadioHeaderView.swift in Sources */,
 				D3184D28219050BF006AAC2D /* DDCCheckBoxModel.swift in Sources */,
 				D3AE11162181A13100E61E08 /* DDCSelectStoreViewController.swift in Sources */,
 				D3E73D30218302C100A5073A /* DDCContractDetailsCell.swift in Sources */,

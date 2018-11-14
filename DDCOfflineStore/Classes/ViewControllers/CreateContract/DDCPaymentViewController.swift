@@ -17,8 +17,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
         var _collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
         _collectionView.showsHorizontalScrollIndicator = false
         _collectionView.register(DDCRadioButtonCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self))
-        _collectionView.register(DDCContractDetailsCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCContractDetailsCollectionViewCell.self))
-        _collectionView.register(DDCContractHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self))
+        _collectionView.register(DDCRadioHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self))
         _collectionView.register(DDCSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self))
         _collectionView.backgroundColor = UIColor.white
         _collectionView.delegate = self
@@ -33,6 +32,8 @@ class DDCPaymentViewController: DDCChildContractViewController {
         }))
         return _bottomBar
     }()
+    
+    lazy var images: Array<String> = ["icon_pay_wechat", "icon_pay_alipay", "icon_pay_offline"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,29 +90,39 @@ extension DDCPaymentViewController {
 // MARK: UICollectionViewDelegate
 extension DDCPaymentViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.payments.count
+        if section == 3 {
+            return self.payments.count
+        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self), for: indexPath) as! DDCRadioButtonCollectionViewCell
-            let model: DDCCheckBoxModel = self.payments[indexPath.row]
-            cell.configureCell(model: model)
+//            cell.configureCell(model: model)
             return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader{
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self), for: indexPath) as! DDCSectionHeaderView
-            headerView.titleLabel.configure(title: "请选择支付方式", isRequired: false)
-            return headerView
+            if indexPath.section == 0 {
+                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self), for: indexPath) as! DDCSectionHeaderView
+                headerView.titleLabel.configure(title: "请选择支付方式", isRequired: false)
+                return headerView
+            } else {
+                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self), for: indexPath) as! DDCRadioHeaderView
+                let model: DDCCheckBoxModel = self.payments[indexPath.section - 1]
+                headerView.radioButton.button.setTitle(model.title, for: .normal)
+                headerView.radioButton.button.isSelected = model.isSelected
+                headerView.radioButton.imageView.image = UIImage.init(named: self.images[indexPath.section - 1] as String)
+                return headerView
+            }
         }
         return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self), for: indexPath)
     }
-    
 }
 
 extension DDCPaymentViewController: UICollectionViewDelegateFlowLayout {
@@ -140,7 +151,10 @@ extension DDCPaymentViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize.init(width: 500, height: 50.0)
+        if section == 0 {
+            return CGSize.init(width: 500, height: 50.0)
+        }
+        return CGSize.init(width: 500, height: 65.0)
     }
     
 }
