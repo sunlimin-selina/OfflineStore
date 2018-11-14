@@ -9,13 +9,9 @@
 import UIKit
 
 class DDCCheckBox: DDCRadioWithImageView {
-    var handler: ((_ sender: UIButton)->Void)?
-    lazy var textField: DDCCircularTextFieldView = {
-        let _textField = DDCCircularTextFieldView()
-        return _textField
-    }()
+    var handler: ((_ sender: DDCCheckBox)->Void)?
 
-    convenience init(frame: CGRect, handler : ((_ sender: UIButton)->Void)?) {
+    convenience init(frame: CGRect, handler : ((_ sender: DDCCheckBox)->Void)?) {
         self.init(frame: frame)
         self.handler = handler
     }
@@ -27,19 +23,24 @@ class DDCCheckBox: DDCRadioWithImageView {
         self.button.isUserInteractionEnabled = true
         self.button.addTarget(self, action: #selector(clickAction(sender:)), for: .touchUpInside)
         self.isUserInteractionEnabled = true
-        self.addSubview(self.textField)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setHandler(handler : ((_ sender: UIButton)->Void)?) {
+    func setHandler(handler : ((_ sender: DDCCheckBox)->Void)?) {
         self.handler = handler
     }
     
-    @objc func clickAction(sender: UIButton) {
-        self.handler!(self.button)
+    func updateLayoutConstraints(width: CGFloat) {
+        self.button.snp.updateConstraints({ (make) in
+            make.width.equalTo(width)
+        })
+    }
+    
+    @objc func clickAction(sender: DDCCheckBox) {
+        self.handler!(self)
     }
     
 }

@@ -46,6 +46,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         _collectionView.register(DDCTitleTextFieldCell.self, forCellWithReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
         _collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self))
         _collectionView.register(DDCContractHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self))
+        _collectionView.register(DDCSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self))
         _collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self))
 
         _collectionView.backgroundColor = UIColor.white
@@ -184,6 +185,11 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self), for: indexPath) as! DDCContractHeaderFooterView
             view.titleLabel.text = "请继续补充订单／合同信息"
             return view
+        } else if indexPath.section == 3,
+            kind == UICollectionView.elementKindSectionHeader {
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self), for: indexPath) as! DDCSectionHeaderView
+            view.titleLabel.configure(title: "产品规格", isRequired: true)
+            return view
         }
         return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self), for: indexPath)
     }
@@ -225,6 +231,10 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if section == 3,
+            self.items.count > 0{
+            return CGSize.init(width: 500, height: 40.0)
+        }
         return CGSize.zero
     }
     

@@ -13,6 +13,7 @@ class DDCRadioWithImageView: UIControl {
     enum DDCRadioStatus : UInt {
         case normal
         case image
+        case textField
     }
     
     var status: DDCRadioStatus {
@@ -36,6 +37,8 @@ class DDCRadioWithImageView: UIControl {
                     })
                     self.button.setTitleColor(DDCColor.fontColor.black, for: .normal)
                 }
+            default :
+                break
             }
         }
     }
@@ -66,11 +69,22 @@ class DDCRadioWithImageView: UIControl {
         return _button
     }()
     
+    lazy var textField: DDCCircularTextFieldView = {
+        let _textField = DDCCircularTextFieldView()
+        _textField.cornerRadius = 17.0
+        _textField.type = .labelButton
+        _textField.button.setTitle("次", for: .normal)
+        _textField.button.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
+        _textField.button.setTitleColor(DDCColor.fontColor.gray, for: .normal)
+        _textField.button.snp.updateConstraints({ (make) in
+            make.width.equalTo(30.0)
+        })
+        _textField.isHidden = true
+        return _textField
+    }()
+    
     convenience init(frame: CGRect, status: DDCRadioStatus) {
         self.init(frame: frame)
-        self.addSubview(self.button)
-        self.addSubview(self.imageView)
-        self.setupLayoutConstraints()
         self.status = status
     }
     
@@ -78,6 +92,7 @@ class DDCRadioWithImageView: UIControl {
         super.init(frame: frame)
         self.addSubview(self.button)
         self.addSubview(self.imageView)
+        self.addSubview(self.textField)
         self.setupLayoutConstraints()
     }
     
@@ -87,10 +102,18 @@ class DDCRadioWithImageView: UIControl {
     
     func setupLayoutConstraints() {
         self.button.snp.makeConstraints({ (make) in
-            make.left.greaterThanOrEqualTo(self)
-            make.right.lessThanOrEqualTo(self)
+            make.left.equalTo(self)
+            make.right.equalTo(self.textField.snp_leftMargin)
             make.height.equalTo(30.0)
-            make.width.centerY.equalTo(self)
+            make.centerY.equalTo(self)
+            make.width.equalTo(screen.width - DDCAppConfig.kLeftMargin * 2)
+        })
+        
+        self.textField.snp.makeConstraints({ (make) in
+            make.left.equalTo(self.button.snp_rightMargin)
+            make.width.equalTo(130.0)
+            make.height.equalTo(34.0)
+            make.centerY.equalTo(self)
         })
     }
 }

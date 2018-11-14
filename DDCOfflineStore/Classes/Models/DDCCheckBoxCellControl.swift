@@ -21,7 +21,7 @@ class DDCCheckBoxCellControl: NSObject {
     var hasImage: Bool?
     
     func cellHeight() -> CGFloat {
-        return CGFloat((self.model!.isSelected ? (self.model!.attributes?.count)! + 1 : 1 ) * 40)
+        return CGFloat((self.model!.isSelected ? (self.model!.attributes?.count)! + 1 : 1 ) * 42)
     }
     
     override init() {
@@ -42,11 +42,13 @@ class DDCCheckBoxCellControl: NSObject {
                 let view: DDCCheckBox = self.cell!.buttons[index]
                 view.button.isEnabled = true
                 view.button.tag = index + DDCCheckBoxCellControl.kCTag
-                view.button.setTitle(model.attributes![index].attributeValue, for: .normal)
+                let subtitle:String = model.attributes![index].attributeValue!
+                view.button.setTitle(subtitle, for: .normal)
                 view.button.isSelected = false
                 view.setHandler { (sender) in
                     self.buttonClicked(sender: sender)
                 }
+                view.updateLayoutConstraints(width: DDCString.width(string: subtitle, font: UIFont.systemFont(ofSize: 20.0), height: 40.0) + 45)
             }
         }
         self.cell!.checkBox.button.setTitle(model.categoryName, for: .normal)
@@ -54,9 +56,9 @@ class DDCCheckBoxCellControl: NSObject {
         self.cell!.subContentView.isHidden = !model.isSelected
     }
     
-    func buttonClicked(sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-
+    func buttonClicked(sender: DDCCheckBox) {
+        sender.button.isSelected = !sender.button.isSelected
+        sender.textField.isHidden = !sender.button.isSelected
 //        if (self.model?.attributes?.count)! <= 0 {
 //            return
 //        }
@@ -74,16 +76,15 @@ class DDCCheckBoxCellControl: NSObject {
 //            }
 //        }
         
-//        TextFieldButton *textFieldButton = (TextFieldButton *)self.cell.buttons.lastObject;
-//        CampaignItemModel *textFieldItem = items[textFieldButton.tag - kTag];
-//        if (button == self.cell.buttons.lastObject) {
-//            if (textFieldButton.selected) {
-//                textFieldButton.textField.hidden = NO;
+//        var textFieldButton: UIButton = self.cell!.buttons.lastObject
+//
+//        if (button == self.cell!.buttons.lastObject) {
+//            if (textFieldButton.isSelected) {
 //            }
 //        }
-//        if (![self.selectedItems containsObject:textFieldItem]) {
-//            textFieldButton.textField.hidden = YES;
-//        }
+////        if (![self.selectedItems containsObject:textFieldItem]) {
+////            textFieldButton.textField.hidden = YES;
+////        }
     }
     
     func setupViewConstraints() {
@@ -101,4 +102,26 @@ class DDCCheckBoxCellControl: NSObject {
         //            make.height.equalTo(30.0)
         //        })
     }
+}
+
+extension DDCCheckBoxCellControl: UITextFieldDelegate {
+//    #pragma mark - UITextFieldDelegate
+//    - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//    {
+//    //限制字符长度
+//    NSInteger existedLength = textField.text.length;
+//    NSInteger selectedLength = range.length;
+//    NSInteger replaceLength = string.length;
+//    if (existedLength - selectedLength + replaceLength > 30) {
+//    return NO;
+//    }
+//    self.content = textField.text;
+//
+//    return YES;
+//    }
+//
+//    - (void)textFieldDidEndEditing:(UITextField *)textField
+//    {
+//    self.content = textField.text;
+//    }
 }
