@@ -21,7 +21,10 @@ class DDCCheckBoxCellControl: NSObject {
     var hasImage: Bool?
     
     func cellHeight() -> CGFloat {
-        return CGFloat((self.model!.isSelected ? (self.model!.attributes?.count)! + 1: 1 ) * 42)
+        if self.model != nil {
+            return CGFloat((self.model!.isSelected ? (self.model!.attributes?.count)! + 1: 1 ) * 42)
+        }
+        return 42
     }
     
     override init() {
@@ -36,13 +39,14 @@ class DDCCheckBoxCellControl: NSObject {
     func configureCell(model: DDCCourseModel, indexPath: IndexPath) {
         self.model = model
         
-        if (model.attributes!.count > 0 && model.isSelected) {
-            self.cell!.buttonCount = (model.attributes?.count)!
+        if let _attributes = model.attributes,
+            (_attributes.count > 0 && model.isSelected) {
+            self.cell!.buttonCount = _attributes.count
             for index in 0...(self.cell!.buttons.count - 1) {
                 let view: DDCCheckBox = self.cell!.buttons[index]
                 view.button.isEnabled = true
                 view.button.tag = index + DDCCheckBoxCellControl.kCTag
-                let subtitle:String = model.attributes![index].attributeValue!
+                let subtitle:String = _attributes[index].attributeValue!
                 view.button.setTitle(subtitle, for: .normal)
                 view.button.isSelected = false
                 view.setHandler { (sender) in

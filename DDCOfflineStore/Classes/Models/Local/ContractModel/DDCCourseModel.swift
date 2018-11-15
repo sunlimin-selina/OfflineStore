@@ -12,15 +12,15 @@ import ObjectMapper
 class DDCCourseModel: DDCCheckBoxModel {
     
     var courseid: Int?
-    var count: Int?
     var categoryName: String?
     var attributes: [DDCCourseAttributeModel]?
+    var courseName: String?
 
     override func mapping(map: Map) {
         courseid <- map["id"]
         categoryName <- map["categoryName"]
-        count <- map["name"]
         attributes <- map["optionAttributeValueList"]
+        courseName <- map["courseName"]
     }
     
 }

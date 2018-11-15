@@ -29,10 +29,10 @@ class DDCAddContractInfoModelFactory: NSObject {
         let defaultInfo: DDCContractInfoViewModel = DDCContractInfoViewModel()
         //合同编号
         let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: "请扫描合同编号", text: "", isRequired: true, tips: "")
-        //产品套餐
-        let package: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "正式课产品套餐", placeholder: "请选择产品套餐", text: "", isRequired: true, tips: "")//体验课
-        //产品规格
-        let specification: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "请选择产品规格", text: "", isRequired: true, tips: "")
+        //产品规格-正式课
+        let specification: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "购买正式课程", text: "", isRequired: true, tips: "")
+        //产品规格-体验课
+        let sample: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "购买体验课程", text: "", isRequired: true, tips: "")
         //课程进阶规则
         let orderRule: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "课程进阶规则", placeholder: "请选择课程进阶规则", text: "", isRequired: true,  tips: "")
         //合同金额
@@ -46,7 +46,7 @@ class DDCAddContractInfoModelFactory: NSObject {
         //有效门店
         let store: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效门店", placeholder: "", text:"", isRequired: false, tips: "")
         
-        array = [defaultInfo, contractNumber, package, specification, orderRule, money, startDate, endDate, effectiveTime, store]
+        array = [defaultInfo, contractNumber, specification, sample, orderRule, money, startDate, endDate, effectiveTime, store]
         return array
 
     }

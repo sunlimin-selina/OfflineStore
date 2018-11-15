@@ -28,6 +28,9 @@ class DDCCheckBoxModel: Mappable {
         self.discription = discription
         self.isSelected = isSelected!
     }
+    
+    init() {
+    }
 
     required init?(map: Map) {
     }

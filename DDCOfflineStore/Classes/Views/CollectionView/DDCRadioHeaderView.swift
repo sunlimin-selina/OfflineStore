@@ -10,6 +10,35 @@ import UIKit
 import SnapKit
 
 class DDCRadioHeaderView: UICollectionReusableView {
+    enum DDCRadioHeaderViewType {
+        case normal
+        case title // 带标题
+    }
+    
+    var type: DDCRadioHeaderViewType {
+        get {
+            return .normal
+        }
+        set {
+            switch newValue {
+            case .title:
+                self.titleLabel.isHidden = false
+                self.radioButton.status = .normal
+                self.updateViewConstraints()
+            case .normal:
+                self.titleLabel.isHidden = true
+                self.radioButton.status = .normal
+                self.updateViewConstraints()
+            }
+        }
+    }
+    
+    
+    public lazy var titleLabel: DDCContractLabel = {
+        let _titleLabel: DDCContractLabel = DDCContractLabel()
+        _titleLabel.isHidden = true
+        return _titleLabel
+    }()
 
     lazy var radioButton: DDCRadioWithImageView = {
         let _radioButton: DDCRadioWithImageView = DDCRadioWithImageView.init(frame: CGRect.zero, status: .image)
@@ -19,6 +48,7 @@ class DDCRadioHeaderView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.addSubview(self.titleLabel)
         self.addSubview(self.radioButton)
         self.setupViewConstraints()
     }
@@ -28,6 +58,7 @@ class DDCRadioHeaderView: UICollectionReusableView {
     }
     
     func setupViewConstraints() {
+
         self.radioButton.snp.makeConstraints({ (make) in
             make.width.equalTo(screen.width - DDCAppConfig.kLeftMargin * 2)
             make.centerX.top.bottom.equalTo(self)
@@ -35,5 +66,26 @@ class DDCRadioHeaderView: UICollectionReusableView {
         
     }
     
+    func updateViewConstraints() {
+        
+        if self.titleLabel.isHidden {
+            self.radioButton.snp.remakeConstraints({ (make) in
+                make.width.equalTo(self.titleLabel)
+                make.centerX.top.bottom.equalTo(self)
+            })
+        } else {
+            self.titleLabel.snp.makeConstraints { (make) in
+                make.width.equalTo(screen.width - DDCAppConfig.kLeftMargin * 2)
+                make.centerX.top.bottom.equalTo(self)
+            }
+            
+            self.radioButton.snp.remakeConstraints({ (make) in
+                make.width.left.equalTo(self.titleLabel)
+                make.centerX.bottom.equalTo(self)
+                make.top.equalTo(self.titleLabel.snp_bottomMargin).offset(40)
+            })
+        }
+       
+    }
 
 }
