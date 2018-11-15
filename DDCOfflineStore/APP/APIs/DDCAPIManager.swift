@@ -39,7 +39,7 @@ class DDCAPIManager: NSObject {
     private var DDC_Base_Dev_Url = "http://192.168.18.114:8088/daydaycook"
 
     /// 当前环境
-    private(set) var currentNetWork : NetworkEnvironment
+    private(set) var currentNetWork: NetworkEnvironment
     
     /// 根据环境获取请求地址
     fileprivate var baseUrl: String {

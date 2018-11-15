@@ -13,24 +13,24 @@ class DDCContractListTableHeaderView: UIView {
     static let kImgBorderWidth: CGFloat = 15
     static let kImgDiameter: CGFloat = 80
     
-    private lazy var backgroundView : UIImageView = {
-        let _backgroundView : UIImageView = UIImageView.init()
+    private lazy var backgroundView: UIImageView = {
+        let _backgroundView: UIImageView = UIImageView.init()
         _backgroundView.backgroundColor = DDCColor.colorWithHex(RGB: 0x202932)
         _backgroundView.contentMode = .scaleAspectFill
         _backgroundView.clipsToBounds = true
         return _backgroundView
     }()
     
-    lazy var portraitView : UIImageView = {
-        let _portraitView : UIImageView = UIImageView()
+    lazy var portraitView: UIImageView = {
+        let _portraitView: UIImageView = UIImageView()
         _portraitView.contentMode = .scaleAspectFill
         _portraitView.clipsToBounds = true
         _portraitView.layer.masksToBounds = true
         return _portraitView
     }()
     
-    lazy var portraitViewHolder : UIView = {
-        let _portraitViewHolder : UIView = UIView()
+    lazy var portraitViewHolder: UIView = {
+        let _portraitViewHolder: UIView = UIView()
         _portraitViewHolder.layer.cornerRadius = (DDCContractListTableHeaderView.kImgDiameter + DDCContractListTableHeaderView.kImgBorderWidth) / 2
         _portraitViewHolder.layer.masksToBounds = true
         _portraitViewHolder.layer.borderColor = UIColor.init(white: 1, alpha: 0.05).cgColor
@@ -38,8 +38,8 @@ class DDCContractListTableHeaderView: UIView {
         return _portraitViewHolder
     }()
     
-    lazy var userName : UILabel = {
-        let _userName : UILabel = UILabel()
+    lazy var userName: UILabel = {
+        let _userName: UILabel = UILabel()
         _userName.textColor = UIColor.white
         _userName.font = UIFont.systemFont(ofSize: 22.0, weight: .medium)
         return _userName

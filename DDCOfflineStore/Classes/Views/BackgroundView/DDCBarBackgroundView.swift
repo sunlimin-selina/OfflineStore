@@ -11,8 +11,8 @@ import SnapKit
 
 class DDCBarBackgroundView: UIView {
     
-    public lazy var tableView : UITableView = {
-        let tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .grouped)
+    public lazy var tableView: UITableView = {
+        let tableView: UITableView = UITableView.init(frame: CGRect.zero, style: .grouped)
         tableView.backgroundColor = UIColor.white
         return tableView
     }()
@@ -41,8 +41,8 @@ extension DDCBarBackgroundView {
         
         if(width==0||height==0) { return }
         
-        let maskPath : UIBezierPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft , .topRight], cornerRadii: CGSize.init(width: 10.0, height: 10.0))
-        let maskLayer : CAShapeLayer = CAShapeLayer.init()
+        let maskPath: UIBezierPath = UIBezierPath.init(roundedRect: self.bounds, byRoundingCorners: [.topLeft , .topRight], cornerRadii: CGSize.init(width: 10.0, height: 10.0))
+        let maskLayer: CAShapeLayer = CAShapeLayer.init()
         maskLayer.frame = self.bounds
         maskLayer.path = maskPath.cgPath
         self.layer.mask = maskLayer

@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class DDCLoadingView : UIView{
+class DDCLoadingView: UIView{
     lazy var loadingImage1: UIImageView = {
         var _loadingImage1 = UIImageView.init()
         _loadingImage1.image = UIImage.init(named: "loadingIcon")
@@ -75,7 +75,7 @@ class DDCLoadingView : UIView{
     }
     
     func runAnimation() {
-        let rotationAnimation : CABasicAnimation = CABasicAnimation.init(keyPath: "transform.rotation.z")
+        let rotationAnimation: CABasicAnimation = CABasicAnimation.init(keyPath: "transform.rotation.z")
         rotationAnimation.toValue = NSNumber.init(value: Double.pi * 2.0)
         rotationAnimation.duration = 1.0
         rotationAnimation.isCumulative = true

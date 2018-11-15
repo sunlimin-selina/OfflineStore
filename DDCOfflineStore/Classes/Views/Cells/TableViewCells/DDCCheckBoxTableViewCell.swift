@@ -24,7 +24,7 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
     }
     
     lazy var subContentView: UIView = {
-        let _subContentView : UIView = UIView()
+        let _subContentView: UIView = UIView()
         return _subContentView
     }()
     

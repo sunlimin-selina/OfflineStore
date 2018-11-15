@@ -9,17 +9,17 @@
 import UIKit
 import SnapKit
 
-class DDCBarButton : UIButton {
-    enum DDCBarButtonStatus : UInt{
+class DDCBarButton: UIButton {
+    enum DDCBarButtonStatus: UInt{
         case normal
         case highlighted
         case forbidden
     }
     
-    var handler : (()->Void)?
+    var handler: (()->Void)?
     var style: DDCBarButtonStatus?
     
-    convenience init(title: String, style: DDCBarButtonStatus, handler : (()->Void)?) {
+    convenience init(title: String, style: DDCBarButtonStatus, handler: (()->Void)?) {
         self.init(frame: CGRect.zero)
         self.setTitle(title, for: .normal)
         self.handler = handler

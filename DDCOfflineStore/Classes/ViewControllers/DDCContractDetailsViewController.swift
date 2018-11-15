@@ -17,11 +17,11 @@ class DDCContractDetailsViewController: UIViewController {
     }
     
     public var detailsID: Int?
-    var modelArray : [DDCContractDetailsViewModel]? = Array()
-    var categorys : Categorys
+    var modelArray: [DDCContractDetailsViewModel]? = Array()
+    var categorys: Categorys
     
-    private lazy var barBackgroundView : DDCBarBackgroundView = {
-        let _barBackgroundView : DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: constant.kMargin, y: screen.navigationBarHeight + screen.statusBarHeight + 32, width: screen.width - constant.kMargin * 2, height: screen.height - constant.kMargin - 32))
+    private lazy var barBackgroundView: DDCBarBackgroundView = {
+        let _barBackgroundView: DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: constant.kMargin, y: screen.navigationBarHeight + screen.statusBarHeight + 32, width: screen.width - constant.kMargin * 2, height: screen.height - constant.kMargin - 32))
         _barBackgroundView.tableView.delegate = self
         _barBackgroundView.tableView.dataSource = self
         _barBackgroundView.tableView.separatorStyle = .none
@@ -30,10 +30,10 @@ class DDCContractDetailsViewController: UIViewController {
         return _barBackgroundView
     }()
     
-    private lazy var bottomBar : DDCBottomBar = {
-        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
+    private lazy var bottomBar: DDCBottomBar = {
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "继续编辑", style: .highlighted, handler: {
-            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .storeAndContractType, model: self.categorys.model)
+            let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .storeAndContractType, model: self.categorys.model)
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar
@@ -108,7 +108,7 @@ extension DDCContractDetailsViewController {
 }
 
 // MARK: UITableViewDataSource & UITableViewDelegate
-extension DDCContractDetailsViewController : UITableViewDataSource , UITableViewDelegate {
+extension DDCContractDetailsViewController: UITableViewDataSource , UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

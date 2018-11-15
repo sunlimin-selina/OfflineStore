@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class DDCRadioWithImageView: UIControl {
-    enum DDCRadioStatus : UInt {
+    enum DDCRadioStatus: UInt {
         case normal
         case image
         case textField

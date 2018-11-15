@@ -1,5 +1,5 @@
 //
-//  DDCSectionHeaderView.swift
+//  DDCSectionHeaderFooterView.swift
 //  DDCOfflineStore
 //
 //  Created by sunlimin on 2018/11/9.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DDCSectionHeaderView: UICollectionReusableView {
+class DDCSectionHeaderFooterView: UICollectionReusableView {
     
     lazy var titleLabel: DDCContractLabel = {
         var _titleLabel = DDCContractLabel()

@@ -21,7 +21,7 @@ class DDCCheckBoxCellControl: NSObject {
     var hasImage: Bool?
     
     func cellHeight() -> CGFloat {
-        return CGFloat((self.model!.isSelected ? (self.model!.attributes?.count)! + 1 : 1 ) * 42)
+        return CGFloat((self.model!.isSelected ? (self.model!.attributes?.count)! + 1: 1 ) * 42)
     }
     
     override init() {

@@ -8,9 +8,9 @@
 
 import Foundation
 
-class DDCOpenUUID : NSObject {
+class DDCOpenUUID: NSObject {
     struct identifier {
-        var kOpenUUIDSessionCache : String?
+        var kOpenUUIDSessionCache: String?
         static let kUUIDInSerice = "app.daydaycook.uuid.service"
         static let kOpenUUIDDomain = "app.daydaycook.OpenUDID"
     }
@@ -19,8 +19,8 @@ class DDCOpenUUID : NSObject {
         if (NSClassFromString("NSUUID") != nil) {
             return NSUUID().uuidString
         }
-        let uuidRef : CFUUID = CFUUIDCreate(kCFAllocatorDefault)
-        let cfuuid : CFString = CFUUIDCreateString(kCFAllocatorDefault, uuidRef)
+        let uuidRef: CFUUID = CFUUIDCreate(kCFAllocatorDefault)
+        let cfuuid: CFString = CFUUIDCreateString(kCFAllocatorDefault, uuidRef)
         return cfuuid as String
     }
     
@@ -28,7 +28,7 @@ class DDCOpenUUID : NSObject {
         return DDCOpenUUID.valueWithError(error: nil)
     }
     
-    class func valueWithError (error : NSError?) -> String{
+    class func valueWithError (error: NSError?) -> String{
 //        if (kOpenUUIDSessionCache && kOpenUUIDSessionCache.length) {
 //            if (error!=nil)
 //            *error = [NSError errorWithDomain:kOpenUUIDDomain

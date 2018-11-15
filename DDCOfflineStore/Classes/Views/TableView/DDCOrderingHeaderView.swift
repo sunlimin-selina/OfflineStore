@@ -13,7 +13,7 @@ typealias OrderingUpdateCallback = (String?)->Void
 
 class DDCOrderingHeaderView: UITableViewHeaderFooterView {
 
-    var delegate : DDCOrderingHeaderViewDelegate?
+    var delegate: DDCOrderingHeaderViewDelegate?
     
     lazy var titleLabel: UILabel = {
         var _titleLabel = UILabel()
@@ -78,5 +78,5 @@ class DDCOrderingHeaderView: UITableViewHeaderFooterView {
 }
 
 protocol DDCOrderingHeaderViewDelegate {
-    func headerView(_ headerView: DDCOrderingHeaderView, callback : @escaping OrderingUpdateCallback)
+    func headerView(_ headerView: DDCOrderingHeaderView, callback: @escaping OrderingUpdateCallback)
 }

@@ -33,13 +33,13 @@ class DDCProgressViewController: UIViewController {
         return _collectionView
     }()
     
-    lazy var layout : DDCProgressCollectionViewLayout! = {
-        var _layout : DDCProgressCollectionViewLayout = DDCProgressCollectionViewLayout.init(stages: self.stages!.count, yOffset: DDCProgressViewController.height / 2)
+    lazy var layout: DDCProgressCollectionViewLayout! = {
+        var _layout: DDCProgressCollectionViewLayout = DDCProgressCollectionViewLayout.init(stages: self.stages!.count, yOffset: DDCProgressViewController.height / 2)
         _layout.delegate = self
         return _layout
     }()
     
-    init(stages : Array<DDCContractStateInfoViewModel>) {
+    init(stages: Array<DDCContractStateInfoViewModel>) {
         super.init(nibName: nil, bundle: nil)
         self.stages = stages
     }
@@ -59,7 +59,7 @@ class DDCProgressViewController: UIViewController {
     
 }
 
-extension DDCProgressViewController : DDCProgressCollectionViewLayoutDelegate {
+extension DDCProgressViewController: DDCProgressCollectionViewLayoutDelegate {
     func widthForStageAtIndex(index: Int) -> CGFloat {
         return DDCContractStateInfoCell.size(data: self.stages![index]).width
     }
@@ -87,7 +87,7 @@ extension DDCProgressViewController: UICollectionViewDelegate, UICollectionViewD
         {
             let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCContractStateLineCollectionViewCell.self), for: indexPath) as! DDCContractStateLineCollectionViewCell
             let model: DDCContractStateInfoViewModel = self.stages![(indexPath.item - 1) / 2]
-            cell.configureCell(style: model.state == DDCContractState.done ? DDCLineStyle.solid : DDCLineStyle.dotted)
+            cell.configureCell(style: model.state == DDCContractState.done ? DDCLineStyle.solid: DDCLineStyle.dotted)
             return cell
         }
     }

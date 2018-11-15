@@ -31,7 +31,7 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
     }
     
     lazy var subContentView: UIView = {
-        let _subContentView : UIView = UIView()
+        let _subContentView: UIView = UIView()
         _subContentView.isUserInteractionEnabled = true
         return _subContentView
     }()

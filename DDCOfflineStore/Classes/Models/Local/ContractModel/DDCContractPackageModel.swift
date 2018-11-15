@@ -18,6 +18,7 @@ class DDCContractPackageModel: DDCCheckBoxModel {
         case aging // 按时效
     }
 
+    var name: String?
     var packageType: DDCRegularCoursePurchaseType?
     var customSkuConfig: Int?//自选套餐标志(1自选)
     var modifySkuPrice: Bool?//修改金额标志
@@ -28,8 +29,10 @@ class DDCContractPackageModel: DDCCheckBoxModel {
     var beginDate: NSDate?
     var upgradeLimit: Int?
     var courseType: DDCCourseType?//课程类型，正式课程1，体验课程2
+    var skuList: [DDCContractPackageCategoryModel]?
 
     override func mapping(map: Map) {
+        name <- map["name"]
         packageType <- map["packageType"]
         customSkuConfig <- map["customSkuConfig"]
         modifySkuPrice <- map["modifySkuPrice"]
@@ -41,6 +44,40 @@ class DDCContractPackageModel: DDCCheckBoxModel {
         upgradeLimit <- map["upgradeLimit"]
         
         courseType <- map["courseType"]
+        
+        skuList = self.getVirtualSkuList(array: virtualSkuList)
     }
     
+    func getVirtualSkuList(array: Array<Any>?) -> [DDCContractPackageCategoryModel] {
+        if array!.count > 0 {
+            var list: Array<Any> = Array()
+            for data in array! {
+                if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
+                    let model: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel(JSON: _data)!
+                    list.append(model)
+                }
+            }
+            return list as! [DDCContractPackageCategoryModel]
+        }
+       return []
+    }
+}
+
+class DDCContractPackageCategoryModel: DDCCheckBoxModel {
+    var name: String?
+    var effectiveCount: Int?
+    var costPrice: Int?
+    var validPeriod: Int?
+    var haveUseRule: Int?
+
+    override func mapping(map: Map) {
+        id <- map["id"]
+        name <- map["name"]
+        effectiveCount <- map["effectiveCount"]
+        costPrice <- map["costPrice"]
+        validPeriod <- map["validPeriod"]
+        haveUseRule <- map["haveUseRule"]
+        
+        costPrice = costPrice! / 100
+    }
 }

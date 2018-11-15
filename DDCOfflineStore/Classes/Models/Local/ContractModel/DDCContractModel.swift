@@ -11,24 +11,24 @@ import ObjectMapper
 
 class DDCContractModel: Mappable {
 
-    var id : Int?
-    var code : String?
+    var id: Int?
+    var code: String?
     
-    var status : DDCContractStatus?
-    var payMethod : DDCPayMethod?
+    var status: DDCContractStatus?
+    var payMethod: DDCPayMethod?
     
-    var customer : DDCCustomerModel?
-    var contractType : DDCContractTypeModel?
-    var currentStore : DDCStoreModel?
-    var subContract : DDCSubContractModel?
-    var packageModel : DDCContractPackageModel?
-    var packageCategoryModel : DDCContractPackageCategoryModel?
+    var customer: DDCCustomerModel?
+    var contractType: DDCContractTypeModel?
+    var currentStore: DDCStoreModel?
+    var subContract: DDCSubContractModel?
+    var packageModel: DDCContractPackageModel?
+    var packageCategoryModel: DDCContractPackageCategoryModel?
 
-    var courseType : DDCCourseType?
-    var contractPrice : String?
-    var createdUsername : String?
-    var signedUsername : String?
-    var responsibleUsername : String?
+    var courseType: DDCCourseType?
+    var contractPrice: String?
+    var createdUsername: String?
+    var signedUsername: String?
+    var responsibleUsername: String?
     
     let payMethodTransform = TransformOf<DDCPayMethod, String>(fromJSON: { (value: String?) -> DDCPayMethod? in
         if let _value = value {

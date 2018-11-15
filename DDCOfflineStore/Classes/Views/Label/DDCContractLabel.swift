@@ -26,7 +26,7 @@ class DDCContractLabel: UILabel {
         if isRequired {
             let dotString: String = title + " • "
             if isShowTips {
-                let tipsString: String = tips!.count > 0 ? tips! : "请填写\(title)"
+                let tipsString: String = tips!.count > 0 ? tips!: "请填写\(title)"
                 let totalString: String = "\(dotString)(\(tipsString))"
                 let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: totalString, attributes: [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .medium)])
                 attributedString.addAttributes([NSAttributedString.Key.foregroundColor: DDCColor.mainColor.red, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .regular)], range: NSRange.init(location: title.count + 1, length: totalString.count - title.count - 1))

@@ -11,16 +11,16 @@ import SnapKit
 
 class DDCContractDetailsCell: UITableViewCell {
     
-    public lazy var titleLabel : UILabel = {
-        let titleLabel : UILabel = UILabel()
+    public lazy var titleLabel: UILabel = {
+        let titleLabel: UILabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
         titleLabel.textColor = DDCColor.fontColor.gray
         titleLabel.textAlignment = .right
         return titleLabel
     }()
     
-    public lazy var subtitleLabel : UILabel = {
-        let subtitleLabel : UILabel = UILabel()
+    public lazy var subtitleLabel: UILabel = {
+        let subtitleLabel: UILabel = UILabel()
         subtitleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
         subtitleLabel.textColor = DDCColor.fontColor.black
         return subtitleLabel

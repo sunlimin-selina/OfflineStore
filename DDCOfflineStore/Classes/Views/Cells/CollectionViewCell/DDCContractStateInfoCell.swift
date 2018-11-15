@@ -10,13 +10,13 @@ import UIKit
 import SnapKit
 
 class DDCContractStateInfoCell: UICollectionViewCell {
-    let kIndicatorImgDiameter : CGFloat = 16.0
-    let kIndicatorTopOffset : CGFloat = 5.0
-    var line_left : UIButton?
-    var line_right : UIButton?
+    let kIndicatorImgDiameter: CGFloat = 16.0
+    let kIndicatorTopOffset: CGFloat = 5.0
+    var line_left: UIButton?
+    var line_right: UIButton?
 
-    private lazy var dot : UIButton = {
-        let _dot : UIButton = UIButton.init(type: .custom)
+    private lazy var dot: UIButton = {
+        let _dot: UIButton = UIButton.init(type: .custom)
         _dot.backgroundColor = UIColor.white
         _dot.setImage(UIImage.init(named: "icon_state_node_done"), for: .normal)
         _dot.setImage(UIImage.init(named: "icon_state_node_doing"), for: .selected)
@@ -27,8 +27,8 @@ class DDCContractStateInfoCell: UICollectionViewCell {
         return _dot
     }()
     
-    private lazy var titleButton : DDCButton = {
-        let _titleButton : DDCButton = DDCButton.init(type: .custom)
+    private lazy var titleButton: DDCButton = {
+        let _titleButton: DDCButton = DDCButton.init(type: .custom)
         _titleButton.titleLabel!.numberOfLines = 0
         _titleButton.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         _titleButton.setTitleColor(DDCColor.mainColor.red, for: .normal)

@@ -11,7 +11,7 @@ import Alamofire
 import ObjectMapper
 
 class DDCPaymentOptionsAPIManager: NSObject {
-    class func paymentOptions(contractID: String, price: String, successHandler: @escaping (_ result : [DDCContractPackageModel]?) -> (), failHandler: @escaping (_ error : String) -> ()) {
+    class func paymentOptions(contractID: String, price: String, successHandler: @escaping (_ result: [DDCContractPackageModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         
     }
     

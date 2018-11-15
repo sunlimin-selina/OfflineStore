@@ -9,8 +9,8 @@
 import UIKit
 
 class DDCButton: UIButton {
-    var backgroundColors : Dictionary<String, UIColor> = Dictionary()
-    var fonts : Dictionary<String, UIFont> = Dictionary()
+    var backgroundColors: Dictionary<String, UIColor> = Dictionary()
+    var fonts: Dictionary<String, UIFont> = Dictionary()
     
     override public var isHighlighted: Bool {
         get {

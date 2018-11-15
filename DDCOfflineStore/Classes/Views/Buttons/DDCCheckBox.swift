@@ -11,7 +11,7 @@ import UIKit
 class DDCCheckBox: DDCRadioWithImageView {
     var handler: ((_ sender: DDCCheckBox)->Void)?
 
-    convenience init(frame: CGRect, handler : ((_ sender: DDCCheckBox)->Void)?) {
+    convenience init(frame: CGRect, handler: ((_ sender: DDCCheckBox)->Void)?) {
         self.init(frame: frame)
         self.handler = handler
     }
@@ -29,7 +29,7 @@ class DDCCheckBox: DDCRadioWithImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setHandler(handler : ((_ sender: DDCCheckBox)->Void)?) {
+    func setHandler(handler: ((_ sender: DDCCheckBox)->Void)?) {
         self.handler = handler
     }
     

@@ -10,11 +10,11 @@ import Foundation
 import ObjectMapper
 
 class DDCContractDetailsModel: Mappable {
-    var createUser : DDCUserModel?
-    var user : DDCCustomerModel?
-    var info : DDCContractInfoModel?
-    var showStatus : DDCContractStatus?
-    var payMethod : DDCPayMethod?
+    var createUser: DDCUserModel?
+    var user: DDCCustomerModel?
+    var info: DDCContractInfoModel?
+    var showStatus: DDCContractStatus?
+    var payMethod: DDCPayMethod?
 
     required init?(map: Map) {
     }

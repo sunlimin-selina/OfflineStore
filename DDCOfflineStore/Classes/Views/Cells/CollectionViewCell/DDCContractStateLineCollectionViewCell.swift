@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class DDCContractStateLineCollectionViewCell: UICollectionViewCell {
-    var lineView : DDCLineView = DDCLineView()
+    var lineView: DDCLineView = DDCLineView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,7 +29,7 @@ class DDCContractStateLineCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(style: DDCLineStyle) {
-        self.lineView.drawLine(style: style, color: (style == DDCLineStyle.solid) ? DDCColor.mainColor.red : DDCColor.colorWithHex(RGB: 0x979797))
+        self.lineView.drawLine(style: style, color: (style == DDCLineStyle.solid) ? DDCColor.mainColor.red: DDCColor.colorWithHex(RGB: 0x979797))
     }
     
     class func height() -> CGFloat {

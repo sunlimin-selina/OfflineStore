@@ -10,21 +10,21 @@ import Foundation
 import ObjectMapper
 
 class DDCCustomerModel: Mappable {
-    var id : Int?
-    var userName : String?
-    var nickName : String?
-    var age : String?
-    var email : String?
-    var sex : DDCGender?
-    var birthday : Int?
-    var career : String?
-    var channel : String?
-    var channelDesc : String?
+    var id: Int?
+    var userName: String?
+    var nickName: String?
+    var age: String?
+    var email: String?
+    var sex: DDCGender?
+    var birthday: Int?
+    var career: String?
+    var channel: String?
+    var channelDesc: String?
     
     var isReferral: Int?
     var memberPhone: String?
     var memberName: String?
-    var responsibleUsername : String?
+    var responsibleUsername: String?
 
     var formattedBirthday: String?
 

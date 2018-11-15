@@ -13,14 +13,14 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
     static let kTextFieldViewHeight: CGFloat = 50.0
 
     public lazy var titleLabel: DDCContractLabel = {
-        let titleLabel : DDCContractLabel = DDCContractLabel()
+        let titleLabel: DDCContractLabel = DDCContractLabel()
         titleLabel.textColor = UIColor.black
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         return titleLabel
     }()
     
     public lazy var subtitle: UILabel = {
-        let subtitle : UILabel = UILabel()
+        let subtitle: UILabel = UILabel()
         subtitle.textColor = UIColor.black
         subtitle.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         return subtitle
@@ -37,6 +37,7 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.textFieldView)
         self.setupViewConstraints()
+        self.layer.masksToBounds = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -44,19 +45,25 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
     }
     
     func setupViewConstraints() {
+
+        let kShadowMargin: CGFloat = 5.0
+        
         self.titleLabel.snp.makeConstraints({ (make) in
-            make.top.left.equalTo(self.contentView)
+            make.top.equalTo(self.contentView)
+            make.left.equalTo(self.contentView).offset(kShadowMargin)
         })
         
         self.textFieldView.snp.makeConstraints({ (make) in
-            make.bottom.left.right.equalTo(self.contentView)
+            make.centerX.equalTo(self.contentView)
+            make.width.equalTo(DDCAppConfig.width - kShadowMargin * 2)
+            make.bottom.equalTo(self.contentView).offset(-10)
             make.height.equalTo(DDCTitleTextFieldCell.kTextFieldViewHeight)
         })
         
     }
     
-    func configureCell(model : DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
-        var _showHint = showHint
+    func configureCell(model: DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
+        let _showHint = showHint
         self.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.tips!, isShowTips:_showHint)
         self.textFieldView.textField.attributedPlaceholder = NSAttributedString.init(string:model.placeholder!, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18.0)])
         self.textFieldView.textField.text = model.text

@@ -10,19 +10,19 @@ import Foundation
 import ObjectMapper
 
 class DDCContractInfoModel: Mappable {
-    var id : Int?
-    var contractNo : String?
-    var course : Array<DDCOffLineStoreModel>?
-    var startTime : String?
-    var endTime : String?
-    var effectiveTime : String?
-    var contractPrice : String?
-    var createDate : Int?
-    var createDateString : String?
-    var realCreateUserName : String?
-    var belongCreateUserName : String?
-    var effectiveCourseAddress : DDCOffLineStoreModel?
-    var currentCourseAddress : DDCOffLineStoreModel?
+    var id: Int?
+    var contractNo: String?
+    var course: Array<DDCOffLineStoreModel>?
+    var startTime: String?
+    var endTime: String?
+    var effectiveTime: String?
+    var contractPrice: String?
+    var createDate: Int?
+    var createDateString: String?
+    var realCreateUserName: String?
+    var belongCreateUserName: String?
+    var effectiveCourseAddress: DDCOffLineStoreModel?
+    var currentCourseAddress: DDCOffLineStoreModel?
 
     required init?(map: Map) {
     }

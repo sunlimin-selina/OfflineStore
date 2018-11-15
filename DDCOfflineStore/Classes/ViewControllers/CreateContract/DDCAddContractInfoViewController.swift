@@ -9,11 +9,35 @@
 import UIKit
 
 class DDCAddContractInfoViewController: DDCChildContractViewController {
-    var contractInfo: [DDCContractDetailsViewModel] = DDCContractDetailsViewModelFactory.integrateContractData(category: nil)
-    var models: [DDCContractInfoViewModel] = DDCAddContractInfoModelFactory.integrateData(model:  DDCCustomerModel(), channels: [DDCChannelModel()])
+    enum DDCAddContractTextFieldType: Int{
+        case none
+        case contraceNumber
+        case package
+        case spec
+        case rule
+        case money
+        case startDate
+        case endDate
+        case effectiveDate
+        case store
+    }
+
+    var contractInfo: [DDCContractDetailsViewModel] = Array()
+    var models: [DDCContractInfoViewModel] = Array()
     var currentTextField: UITextField?
     var items: [DDCCourseModel] = Array()
+    var package: [DDCContractPackageModel] = Array()
+    var specs: [DDCContractPackageCategoryModel] = Array()
+    var contractType: DDCCourseType {
+        get {
+            return .sample//self.model.contractType.id
+        }
+    }
+    
     var checkBoxControls: [DDCCheckBoxCellControl] = Array()
+    var isPickedPackage: Bool = false
+    var isPickedCustom: Bool = false
+    var orderRule = ["跳过","遵守"]
 
     private lazy var datePickerView: UIDatePicker = {
         let _datePickerView = UIDatePicker.init(frame: CGRect.zero)
@@ -36,7 +60,6 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         return _toolbar
     }()
     
-    
     lazy var collectionView: UICollectionView! = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         
@@ -46,7 +69,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         _collectionView.register(DDCTitleTextFieldCell.self, forCellWithReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
         _collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self))
         _collectionView.register(DDCContractHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self))
-        _collectionView.register(DDCSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self))
+        _collectionView.register(DDCSectionHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self))
         _collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self))
 
         _collectionView.backgroundColor = UIColor.white
@@ -56,7 +79,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
     }()
     
     private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
             //            self.forwardNextPage()
         }))
@@ -69,59 +92,48 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.collectionView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
+
+        self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:.group)//self.contractType
+
         self.getPackagesForContract()
     }
-    
 }
 
 // MARK: Private
 extension DDCAddContractInfoViewController {
     func configureInputView(textField: UITextField, indexPath: IndexPath) {
-        textField.inputAssistantItem.leadingBarButtonGroups = []
-        textField.inputAssistantItem.trailingBarButtonGroups = []
-        textField.inputView = self.pickerView
-        textField.inputAccessoryView = self.toolbar
-//        switch indexPath.row {
-//        case DDCClientTextFieldType.channel.rawValue, DDCClientTextFieldType.career.rawValue, DDCClientTextFieldType.sex.rawValue,DDCClientTextFieldType.memberReferral.rawValue:
-//            do {
-//
-//            }
-//            break
-//        case DDCClientTextFieldType.birthday.rawValue:
-//            do {
-//                textField.inputAssistantItem.leadingBarButtonGroups = []
-//                textField.inputAssistantItem.trailingBarButtonGroups = []
-//                textField.inputView = self.datePickerView
-//                textField.inputAccessoryView = self.toolbar
-//            }
-//            break
-//        case DDCClientTextFieldType.email.rawValue:
-//            do {
-//                textField.inputView = nil
-//                textField.inputAccessoryView = nil
-//                textField.keyboardType = .emailAddress
-//            }
-//            break
-//        case DDCClientTextFieldType.channelDetail.rawValue:
-//            do {
-//                textField.inputView = nil
-//                textField.inputAccessoryView = nil
-//                textField.keyboardType = .default
-//            }
-//            break
-//        default:
-//            do {
-//                textField.inputView = nil
-//                textField.inputAccessoryView = nil
-//                textField.keyboardType = .phonePad
-//            }
-//            break
-//        }
+        switch indexPath.section {
+        case DDCAddContractTextFieldType.package.rawValue,
+             DDCAddContractTextFieldType.spec.rawValue,
+             DDCAddContractTextFieldType.rule.rawValue:
+            do {
+                textField.inputAssistantItem.leadingBarButtonGroups = []
+                textField.inputAssistantItem.trailingBarButtonGroups = []
+                textField.inputView = self.pickerView
+                textField.inputAccessoryView = self.toolbar
+            }
+            break
+        case DDCAddContractTextFieldType.startDate.rawValue :
+            do {
+                textField.inputAssistantItem.leadingBarButtonGroups = []
+                textField.inputAssistantItem.trailingBarButtonGroups = []
+                textField.inputView = self.datePickerView
+                textField.inputAccessoryView = self.toolbar
+            }
+            break
+        default:
+            do {
+                textField.inputView = nil
+                textField.inputAccessoryView = nil
+                textField.keyboardType = .default
+            }
+            break
+        }
     }
     
     func setupViewConstraints() {
@@ -143,13 +155,13 @@ extension DDCAddContractInfoViewController {
 // MARK: UICollectionViewDelegate
 extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.models.count + 1
+        return self.models.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
             return self.contractInfo.count
-        } else if self.items.count > 0 && section == 3 {
+        } else if self.isPickedCustom && section == 3 {
             return self.items.count
         }
         return 1
@@ -163,7 +175,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             cell.subtitleLabel.text = model.describe
             cell.titleLabel.textAlignment = .left
             return cell
-        } else if self.items.count > 0 && indexPath.section == 3 {
+        } else if self.isPickedCustom && indexPath.section == 3 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
             let model: DDCCourseModel = self.items[indexPath.item]
             let control = DDCCheckBoxCellControl.init(cell: cell)
@@ -172,9 +184,11 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell
-            let model: DDCContractInfoViewModel = self.models[indexPath.section - 1]
+            let model: DDCContractInfoViewModel = self.models[indexPath.section]
             cell.configureCell(model: model, indexPath: indexPath, showHint: false)
             self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
+            cell.textFieldView.textField.tag = indexPath.section
+            cell.textFieldView.textField.delegate = self
             return cell
         }
     }
@@ -187,7 +201,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             return view
         } else if indexPath.section == 3,
             kind == UICollectionView.elementKindSectionHeader {
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self), for: indexPath) as! DDCSectionHeaderView
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self), for: indexPath) as! DDCSectionHeaderFooterView
             view.titleLabel.configure(title: "产品规格", isRequired: true)
             return view
         }
@@ -196,17 +210,19 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.section == 0 {
-            return CGSize.init(width: 500, height: 20)
+            return CGSize.init(width: DDCAppConfig.width, height: 20)
         }  else if self.items.count > 0 && indexPath.section == 3 {
-            return CGSize.init(width: 500, height: self.checkBoxControls.count > 0 ?self.checkBoxControls[indexPath.item].cellHeight() : 30)
+            return CGSize.init(width: DDCAppConfig.width, height: self.checkBoxControls.count > 0 ?self.checkBoxControls[indexPath.item].cellHeight(): 30)
+        } else if self.contractType == DDCCourseType.sample && indexPath.section == 1 {
+            return CGSize.zero
         }
-        return CGSize.init(width: 500, height: 90)
+        return CGSize.init(width: DDCAppConfig.width, height: 100)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let top: CGFloat = (section == 0 || section == 3 ) ? 0 : 20
-        let bottom: CGFloat = (section == 0 || section == 3 ) ? 0 : 25
-        return UIEdgeInsets.init(top: top, left: (screen.width - 500)/2, bottom: bottom, right: (screen.width - 500)/2)
+        let top: CGFloat = (section == 0 || section == 3 ) ? 0: 20
+        let bottom: CGFloat = (section == 0 || section == 3 ) ? 5: 25
+        return UIEdgeInsets.init(top: top, left: DDCAppConfig.kLeftMargin, bottom: bottom, right: DDCAppConfig.kLeftMargin)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -225,7 +241,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         if section == 0 {
-            return CGSize.init(width: 500, height: 70.0)
+            return CGSize.init(width: DDCAppConfig.width, height: 70.0)
         }
         return CGSize.zero
     }
@@ -233,7 +249,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if section == 3,
             self.items.count > 0{
-            return CGSize.init(width: 500, height: 40.0)
+            return CGSize.init(width: DDCAppConfig.width, height: 40.0)
         }
         return CGSize.zero
     }
@@ -245,10 +261,10 @@ extension DDCAddContractInfoViewController: UICollectionViewDelegate {
         if self.items.count > 0 && indexPath.section == 3 {
             let items = self.items
             
-            var model = items[indexPath.item]
+            let model = items[indexPath.item]
             model.isSelected = !model.isSelected
         }
-        self.collectionView.reloadSections([indexPath.section])
+        self.collectionView.reloadData()//.reloadSections([indexPath.section])
     }
     
 }
@@ -260,7 +276,9 @@ extension DDCAddContractInfoViewController {
         DDCTools.showHUD(view: self.view)//(self.model?.currentStore?.id)!
         DDCContractOptionsAPIManager.packagesForContract(storeId: 4, successHandler: { (array) in
             DDCTools.hideHUD()
-//            self.items = Array
+            if (array?.count)! > 0 {
+                self.package = array!
+            }
         }) { (error) in
             
         }
@@ -287,33 +305,39 @@ extension DDCAddContractInfoViewController: UIPickerViewDelegate, UIPickerViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        switch self.currentTextField?.tag {
-//        case DDCClientTextFieldType.sex.rawValue:
-//            return DDCContract.genderArray.count
-//        case DDCClientTextFieldType.career.rawValue:
-//            return DDCContract.occupationArray.count
-//        case DDCClientTextFieldType.channel.rawValue:
-//            return (self.channels?.count)!
-//        case DDCClientTextFieldType.memberReferral.rawValue:
-//            return 2
-//        default:
+        switch self.currentTextField?.tag {
+        case DDCAddContractTextFieldType.package.rawValue:
+            return self.package.count
+        case DDCAddContractTextFieldType.spec.rawValue:
+            do {
+                guard self.isPickedPackage else {
+                    return 1
+                }
+                return self.specs.count
+            }
+        case DDCAddContractTextFieldType.rule.rawValue:
+            return self.orderRule.count
+        default:
             return 0
-//        }
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        switch self.currentTextField?.tag {
-//        case DDCClientTextFieldType.sex.rawValue:
-//            return DDCContract.genderArray[row]
-//        case DDCClientTextFieldType.career.rawValue:
-//            return DDCContract.occupationArray[row]
-//        case DDCClientTextFieldType.channel.rawValue:
-//            return (self.channels?.count != 0) ? (self.channels?[row] )!.name : "加载中"
-//        case DDCClientTextFieldType.memberReferral.rawValue:
-//            return memberReferral[row]
-//        default:
+        switch self.currentTextField?.tag {
+        case DDCAddContractTextFieldType.package.rawValue:
+            return self.package[row].name
+        case DDCAddContractTextFieldType.spec.rawValue:
+            do {
+                guard self.isPickedPackage else {
+                    return "请先选择套餐"
+                }
+                return "\(self.specs[row].name ?? "") - \(self.specs[row].costPrice ?? 0)"
+            }
+        case DDCAddContractTextFieldType.rule.rawValue:
+            return self.orderRule[row]
+        default:
             return ""
-//        }
+        }
     }
     
 }
@@ -322,85 +346,59 @@ extension DDCAddContractInfoViewController: UIPickerViewDelegate, UIPickerViewDa
 extension DDCAddContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.currentTextField = textField
+        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && !self.isPickedPackage) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
+            return false
+        }
         return true
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        //限制字符长度
-        let existedLength: Int = (textField.text?.count)!
-        let selectedLength: Int = range.length
-        let replaceLength: Int = string.count
-        let totalLength: Int = existedLength - selectedLength + replaceLength
-        
-//        if textField.tag == DDCClientTextFieldType.phone.rawValue || textField.tag == DDCClientTextFieldType.memberPhone.rawValue {
-//            if (totalLength > 13) {//手机号输入长度不超过11个字符 多两个字符为分割号码用的空格
-//                return false
-//            }
-//            textField.text = DDCTools.splitPhoneNumber(string: textField.text!, length: totalLength)
-//        } else if textField.tag == DDCClientTextFieldType.channelDetail.rawValue {
-//            if (totalLength > 20) {//渠道详情不超过20字
-//                return false
-//            }
-//        } else if textField.tag == DDCClientTextFieldType.memberName.rawValue || textField.tag == DDCClientTextFieldType.sales.rawValue{
-//            return false
-//        }
-        return true
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-//        let rawValue: Int = textField.tag
-//        
-//        if rawValue == DDCClientTextFieldType.phone.rawValue || rawValue == DDCClientTextFieldType.name.rawValue ||
-//            rawValue == DDCClientTextFieldType.age.rawValue ||
-//            rawValue == DDCClientTextFieldType.email.rawValue ||
-//            rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.memberPhone.rawValue || rawValue == DDCClientTextFieldType.memberName.rawValue {
-//            self.models[rawValue].text = textField.text
-//            self.models[rawValue].isFill = true
-//        }
-        return true
-    }
 }
 
 // MARK: Action
 extension DDCAddContractInfoViewController {
     @objc func done() {
-//        switch self.currentTextField?.tag {
-//        case DDCClientTextFieldType.birthday.rawValue:
-//            do {
-//                let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")
-//                let birthday: Date = self.datePickerView.date
-//                self.models[DDCClientTextFieldType.birthday.rawValue].text = dateFormatter.string(from: birthday)
-//                let components = Calendar.current.dateComponents([.year], from: birthday, to: Date())
-//                self.models[DDCClientTextFieldType.age.rawValue].text = "\(components.year ?? 0)"
-//                self.models[DDCClientTextFieldType.age.rawValue].isFill = true
-//            }
-//            break
-//        case DDCClientTextFieldType.sex.rawValue:
-//            self.models[DDCClientTextFieldType.sex.rawValue].text = DDCContract.genderArray[self.pickerView.selectedRow(inComponent: 0)]
-//            self.models[DDCClientTextFieldType.sex.rawValue].isFill = true
-//            break
-//        case DDCClientTextFieldType.career.rawValue:
-//            self.models[DDCClientTextFieldType.career.rawValue].text = DDCContract.occupationArray[self.pickerView.selectedRow(inComponent: 0)]
-//            self.models[DDCClientTextFieldType.career.rawValue].isFill = true
-//            break
-//        case DDCClientTextFieldType.channel.rawValue:
-//            self.models[DDCClientTextFieldType.channel.rawValue].text = self.channels![self.pickerView.selectedRow(inComponent: 0)].name
-//            self.models[DDCClientTextFieldType.channel.rawValue].isFill = true
-//            break
-//        case DDCClientTextFieldType.memberReferral.rawValue:
-//            do {
-//                let isMemberReferral: String = memberReferral[self.pickerView.selectedRow(inComponent: 0)]
-//                self.models[DDCClientTextFieldType.memberReferral.rawValue].text = isMemberReferral
-//                self.models[DDCClientTextFieldType.memberReferral.rawValue].isFill = true
-//                //是否为会员推荐
-//                self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, isReferral: (isMemberReferral == "是") ? true : false)
-//                self.collectionView.reloadData()
-//            }
-//        default:
-//            break
-//        }
-//
-        self.getCustomCourse()
+        let section = self.currentTextField?.tag
+        switch section {
+        case DDCAddContractTextFieldType.package.rawValue:
+            do {
+                self.models[DDCAddContractTextFieldType.package.rawValue].text = self.package[self.pickerView.selectedRow(inComponent: 0)].name
+                self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
+                self.isPickedPackage = true
+                self.isPickedCustom = false
+                self.specs = self.package[self.pickerView.selectedRow(inComponent: 0)].skuList!
+                if self.pickerView.selectedRow(inComponent: 0) == 1 {
+                    self.isPickedCustom = true
+                    if self.items.count <= 0 {
+                        self.getCustomCourse()
+                    } else {
+                        self.collectionView.reloadData()
+                    }
+                    return
+                }
+            }
+        case DDCAddContractTextFieldType.spec.rawValue:
+            do {
+                guard self.isPickedPackage else {
+                    self.cancel()
+                    return
+                }
+                self.models[DDCAddContractTextFieldType.spec.rawValue].text = "\(self.specs[self.pickerView.selectedRow(inComponent: 0)].name ?? "") - \(self.specs[self.pickerView.selectedRow(inComponent: 0)].costPrice ?? 0)"
+                self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
+                self.models[DDCAddContractTextFieldType.money.rawValue].text = "\(self.specs[self.pickerView.selectedRow(inComponent: 0)].costPrice ?? 0)"
+                self.models[DDCAddContractTextFieldType.money.rawValue].isFill = true
+            }
+        case DDCAddContractTextFieldType.rule.rawValue:
+            self.models[DDCAddContractTextFieldType.rule.rawValue].text = self.orderRule[self.pickerView.selectedRow(inComponent: 0)]
+            self.models[DDCAddContractTextFieldType.rule.rawValue].isFill = true
+        case DDCAddContractTextFieldType.startDate.rawValue:
+            do {
+                let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")
+                let startDate: Date = self.datePickerView.date
+                self.models[DDCAddContractTextFieldType.startDate.rawValue].text = dateFormatter.string(from: startDate)
+            }
+        default:
+            return
+        }
         self.collectionView.reloadData()
         self.resignFirstResponder()
     }

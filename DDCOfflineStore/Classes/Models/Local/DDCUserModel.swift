@@ -11,11 +11,11 @@ import ObjectMapper
 
 class DDCUserModel: NSObject, Mappable ,NSCoding {
     
-    var id : Int?
-    var userName : String?
-    var name : String?
-    var imageUrl : String?
-    var recommendType : String?
+    var id: Int?
+    var userName: String?
+    var name: String?
+    var imageUrl: String?
+    var recommendType: String?
     
     required init?(map: Map) {
     }

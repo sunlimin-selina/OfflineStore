@@ -11,7 +11,7 @@ import SnapKit
 
 extension UIView {
 
-    enum ImagePosition : UInt{
+    enum ImagePosition: UInt{
         case top
         case left
         case bottom
@@ -20,10 +20,10 @@ extension UIView {
 
     func makeDDCToast(message: String,image: UIImage,position: ImagePosition,finishedBlock:(()->Void)?) {
         //初始化
-        let kVerticalPadding : CGFloat = 25.0
-        let kSpacing : CGFloat  = 15.0
-        let kViewWidth : CGFloat = 240.0
-        let kLeftPadding : CGFloat = 15.0
+        let kVerticalPadding: CGFloat = 25.0
+        let kSpacing: CGFloat  = 15.0
+        let kViewWidth: CGFloat = 240.0
+        let kLeftPadding: CGFloat = 15.0
         
         let backgroundView = UIView()
         backgroundView.layer.masksToBounds = true
@@ -45,7 +45,7 @@ extension UIView {
         self.addSubview(backgroundView)
         
         //获取字体高度
-        let titleHeight : CGFloat = self.addAttributeString(message: message, titleLabel: titleLabel)
+        let titleHeight: CGFloat = self.addAttributeString(message: message, titleLabel: titleLabel)
         let height = kVerticalPadding * 2 + image.size.height + kSpacing + titleHeight
         backgroundView.snp.makeConstraints { (make) in
             make.centerX.equalTo(self)
@@ -111,10 +111,10 @@ extension UIView {
 
     
     func addAttributeString(message: String, titleLabel:UILabel) -> CGFloat {
-        let kViewWidth : CGFloat = 240.0
-        let kLeftPadding : CGFloat = 15.0
-        let attributeString : NSMutableAttributedString = NSMutableAttributedString.init(string: message)
-        let paragraphStyle : NSMutableParagraphStyle = NSMutableParagraphStyle()
+        let kViewWidth: CGFloat = 240.0
+        let kLeftPadding: CGFloat = 15.0
+        let attributeString: NSMutableAttributedString = NSMutableAttributedString.init(string: message)
+        let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 7.0     //设置行间距
         paragraphStyle.alignment = .center
         attributeString.addAttributes([NSAttributedString.Key.paragraphStyle: paragraphStyle], range: NSMakeRange(0, attributeString.length))

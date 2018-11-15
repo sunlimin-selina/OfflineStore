@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum DDCGender : Int{
+enum DDCGender: Int{
     case unknown
     case male
     case female

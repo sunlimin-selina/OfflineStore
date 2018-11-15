@@ -17,17 +17,17 @@ struct Constants {
 
 class DDCContractListViewController: UIViewController {
     
-    private lazy var bottomBar : DDCBottomBar = {
-        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+    private lazy var bottomBar: DDCBottomBar = {
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "创建新订单", style: .highlighted, handler: {
-            let viewController : DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .editClientInformation, model: nil)
+            let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .editClientInformation, model: nil)
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar
     }()
     
-    private lazy var tableView : UITableView = {
-        let _tableView : UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
+    private lazy var tableView: UITableView = {
+        let _tableView: UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
         _tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListTableViewCell.self))
         _tableView.register(DDCOrderingHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCOrderingHeaderView.self))
         _tableView.rowHeight = 112.0
@@ -48,22 +48,22 @@ class DDCContractListViewController: UIViewController {
         return _tableView
     }()
     
-    private lazy var contractTableHeaderView : DDCContractListTableHeaderView = {
-        let _contractTableHeaderView : DDCContractListTableHeaderView = DDCContractListTableHeaderView.init(frame: CGRect.zero)
+    private lazy var contractTableHeaderView: DDCContractListTableHeaderView = {
+        let _contractTableHeaderView: DDCContractListTableHeaderView = DDCContractListTableHeaderView.init(frame: CGRect.zero)
         
         return _contractTableHeaderView
     }()
     
-    private var user : DDCUserModel? {
+    private var user: DDCUserModel? {
         get {
             return DDCStore.sharedStore().user
         }
     }
     
-    private var contractArray : NSMutableArray? = NSMutableArray()
-    private var orderingUpdate : ((_ newOrdering: String) -> Void)?
-    private var page : UInt = 0
-    private var status : DDCContractStatus = .all
+    private var contractArray: NSMutableArray? = NSMutableArray()
+    private var orderingUpdate: ((_ newOrdering: String) -> Void)?
+    private var page: UInt = 0
+    private var status: DDCContractStatus = .all
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -123,7 +123,7 @@ extension DDCContractListViewController {
     
     @objc func rightNaviBtnPressed() {
         weak var weakSelf = self
-        let alertController : UIAlertController = UIAlertController.init(title: "您确定要登出当前账号吗？", message: nil, preferredStyle: .alert)
+        let alertController: UIAlertController = UIAlertController.init(title: "您确定要登出当前账号吗？", message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: { (action) in
             DDCStore.sharedStore().user = nil
             UserDefaults.standard.removeObject(forKey: "DDCUser")
@@ -138,7 +138,7 @@ extension DDCContractListViewController {
         if self.user != nil {
             self.contractTableHeaderView.userName.text = self.user!.name
             print(self.user!.imageUrl!)
-            self.contractTableHeaderView.portraitView.image = (self.user!.imageUrl != "") ? UIImage.init(named: self.user!.imageUrl!) : UIImage.init(named: "Personal_head")
+            self.contractTableHeaderView.portraitView.image = (self.user!.imageUrl != "") ? UIImage.init(named: self.user!.imageUrl!): UIImage.init(named: "Personal_head")
             
             self.getContractList()
         } else {
@@ -192,7 +192,7 @@ extension DDCContractListViewController {
 }
 
 // MARK: UITableViewDataSource & UITableViewDelegate
-extension DDCContractListViewController : UITableViewDataSource , UITableViewDelegate {
+extension DDCContractListViewController: UITableViewDataSource , UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -204,14 +204,14 @@ extension DDCContractListViewController : UITableViewDataSource , UITableViewDel
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListTableViewCell.self), for: indexPath)) as! DDCContractListTableViewCell
-        cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.complementaryColor.backgroundColor : UIColor.white
+        cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.complementaryColor.backgroundColor: UIColor.white
         cell.configureCell(model: self.contractArray![indexPath.row] as! DDCContractDetailsModel)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let model : DDCContractDetailsModel = self.contractArray![indexPath.item] as! DDCContractDetailsModel
-        let viewController : DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: (model.info?.id)!)
+        let model: DDCContractDetailsModel = self.contractArray![indexPath.item] as! DDCContractDetailsModel
+        let viewController: DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: (model.info?.id)!)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

@@ -16,7 +16,7 @@ class DDCEditClientInfoModelFactory: NSObject {
         //姓名
         let name: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "姓名", placeholder: "请输入姓名", text: model.nickName ?? "", isRequired: true, tips: "")
         //性别
-        let sex: String = (model.sex != nil) ? DDCContract.genderArray[(model.sex!.rawValue)] : ""
+        let sex: String = (model.sex != nil) ? DDCContract.genderArray[(model.sex!.rawValue)]: ""
         let gender: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "性别", placeholder: "请选择性别", text: sex, isRequired: true, tips: "")
         //生日
         let birthday: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生日", placeholder: "请输入生日", text: model.formattedBirthday ?? "", isRequired: true,  tips: "")
@@ -25,7 +25,7 @@ class DDCEditClientInfoModelFactory: NSObject {
         //邮箱
         let email: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "邮箱", placeholder: "邮箱", text: model.email ?? "", isRequired: false, tips: "")
         //职业
-        let careerText: String = model.career != nil ? DDCContract.occupationArray[Int(model.career!)!] : ""
+        let careerText: String = model.career != nil ? DDCContract.occupationArray[Int(model.career!)!]: ""
         let career: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "职业", placeholder: "请选择职业", text: careerText, isRequired: false, tips: "")
         //渠道
         let channel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text:"", isRequired: true, tips: "")
@@ -35,7 +35,7 @@ class DDCEditClientInfoModelFactory: NSObject {
         let memberReferral: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "是否会员介绍", placeholder: "请选择", text:"", isRequired: true, tips: "")
         
         //责任销售
-        let responsibleUsername: String = (model.responsibleUsername != nil ? model.responsibleUsername : DDCStore.sharedStore().user?.name)!
+        let responsibleUsername: String = (model.responsibleUsername != nil ? model.responsibleUsername: DDCStore.sharedStore().user?.name)!
         
         let sales: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "责任销售", placeholder: "责任销售", text:responsibleUsername, isRequired: false, tips: "")
         

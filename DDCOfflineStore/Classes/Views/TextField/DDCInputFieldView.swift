@@ -11,7 +11,7 @@ import SnapKit
 
 class DDCInputFieldView: UIView, CountButtonDelegate {
     
-    lazy var firstTextFieldView : DDCCircularTextFieldWithExtraButtonView? = {
+    lazy var firstTextFieldView: DDCCircularTextFieldWithExtraButtonView? = {
         var _firstTextFieldView = DDCCircularTextFieldWithExtraButtonView()
         _firstTextFieldView.textField.placeholder = "请输入用户名 "
         _firstTextFieldView.button.delegate = self
@@ -19,7 +19,7 @@ class DDCInputFieldView: UIView, CountButtonDelegate {
         return _firstTextFieldView
     }()
     
-    var secondTextFieldView : DDCCircularTextFieldView? = {
+    var secondTextFieldView: DDCCircularTextFieldView? = {
         var _secondTextFieldView = DDCCircularTextFieldView.init(frame: CGRect.zero, type: .imageButton)
         _secondTextFieldView.textField.placeholder = "请输入密码"
         _secondTextFieldView.textField.isSecureTextEntry = true
@@ -27,8 +27,8 @@ class DDCInputFieldView: UIView, CountButtonDelegate {
         return _secondTextFieldView
     }()
     
-    var bottomHidden : Bool?
-    var delegate : InputFieldViewDelegate?
+    var bottomHidden: Bool?
+    var delegate: InputFieldViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -56,8 +56,8 @@ class DDCInputFieldView: UIView, CountButtonDelegate {
     }
     
     func updateViewConstraints() {
-        let kWidth : CGFloat = 424.0
-        let kHeight : CGFloat = 145.0 * 0.3
+        let kWidth: CGFloat = 424.0
+        let kHeight: CGFloat = 145.0 * 0.3
         let kTextFieldMargin = (screen.width - kWidth) / 2
         
         self.firstTextFieldView!.snp.makeConstraints { (make) in

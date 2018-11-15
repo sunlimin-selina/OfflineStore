@@ -9,8 +9,8 @@
 import UIKit
 import SnapKit
 
-class DDCCircularTextFieldWithExtraButtonView : DDCCircularTextFieldView {
-    lazy var extraButton : CountButton? = {
+class DDCCircularTextFieldWithExtraButtonView: DDCCircularTextFieldView {
+    lazy var extraButton: CountButton? = {
         var _extraButton = CountButton()
         _extraButton.contentHorizontalAlignment = .right
         _extraButton.titleLabel!.font = UIFont.systemFont(ofSize: 10.0)
@@ -19,13 +19,13 @@ class DDCCircularTextFieldWithExtraButtonView : DDCCircularTextFieldView {
         _extraButton.isHidden = true
         return _extraButton
     }()
-    var showExtraButton : Bool? {
+    var showExtraButton: Bool? {
         didSet {
             self.button.isHidden = showExtraButton!
             self.extraButton?.isHidden = !showExtraButton!
         }
     }
-    var enabled : Bool? {
+    var enabled: Bool? {
         didSet {
             if (self.showExtraButton!) {
                 self.button.isHidden = enabled!

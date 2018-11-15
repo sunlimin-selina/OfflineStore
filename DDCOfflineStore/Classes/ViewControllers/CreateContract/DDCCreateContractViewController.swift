@@ -11,14 +11,14 @@ import SnapKit
 
 class DDCCreateContractViewController: UIViewController{
     
-    enum DDCContractProgress : UInt {
+    enum DDCContractProgress: UInt {
         case editClientInformation//客户信息
         case storeAndContractType//门店及类型
         case addContractInformation//订单信息
         case finishContract//创建成功
     }
     
-    var progress : DDCContractProgress {
+    var progress: DDCContractProgress {
         get {
             return .editClientInformation
         }
@@ -40,18 +40,18 @@ class DDCCreateContractViewController: UIViewController{
             self.progressViewController.stages = self.categorys
         }
     }
-    var model : DDCContractModel?
+    var model: DDCContractModel?
     
-    var subviewControllers : Array<DDCChildContractViewController>? = Array()
+    var subviewControllers: Array<DDCChildContractViewController>? = Array()
     
-    lazy var categorys : Array<DDCContractStateInfoViewModel> = {
-        var titles : Array = ["客户信息", "门店及类型", "订单信息", "创建成功"]
+    lazy var categorys: Array<DDCContractStateInfoViewModel> = {
+        var titles: Array = ["客户信息", "门店及类型", "订单信息", "创建成功"]
         
         var _categorys = Array<Any>()
-        var interval : UInt = self.progress.rawValue - DDCContractProgress.editClientInformation.rawValue
+        var interval: UInt = self.progress.rawValue - DDCContractProgress.editClientInformation.rawValue
         
         for index in 0...(titles.count - 1){
-            var model : DDCContractStateInfoViewModel = DDCContractStateInfoViewModel()
+            var model: DDCContractStateInfoViewModel = DDCContractStateInfoViewModel()
             model.title = titles[index]
             
             if index < interval {
@@ -67,17 +67,17 @@ class DDCCreateContractViewController: UIViewController{
         return _categorys as! [DDCContractStateInfoViewModel]
     }()
     
-    lazy var progressViewController : DDCProgressViewController = {
+    lazy var progressViewController: DDCProgressViewController = {
         var _progressViewController = DDCProgressViewController.init(stages: self.categorys)
         return _progressViewController
     }()
     
-    lazy var pageViewController : UIPageViewController = {
+    lazy var pageViewController: UIPageViewController = {
         var _pageViewController = UIPageViewController.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         _pageViewController.delegate = self as UIPageViewControllerDelegate
         _pageViewController.dataSource = self as UIPageViewControllerDataSource
         _pageViewController.view.backgroundColor = UIColor.white
-        var views : Array<Any> = _pageViewController.view.subviews
+        var views: Array<Any> = _pageViewController.view.subviews
         
         for view in views {
             if view is UIScrollView {
@@ -117,32 +117,32 @@ class DDCCreateContractViewController: UIViewController{
 }
 
 // MARK: Private
-extension DDCCreateContractViewController : DDCChildContractViewControllerDelegate{
+extension DDCCreateContractViewController: DDCChildContractViewControllerDelegate{
     
     func nextPage(model: DDCContractModel) {
         if self.progress.rawValue >= self.subviewControllers!.count {return}
-        var selectedIndex : Int = Int(self.progress.rawValue)
+        var selectedIndex: Int = Int(self.progress.rawValue)
         selectedIndex += 1
         self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
         
-        let viewController : DDCChildContractViewController = self.subviewControllers![selectedIndex]
+        let viewController: DDCChildContractViewController = self.subviewControllers![selectedIndex]
         viewController.model = model
         self.pageViewController.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
     }
     
     func previousPage(model: DDCContractModel) {
         if self.progress.rawValue == 0 {return}
-        var selectedIndex : Int = Int(self.progress.rawValue)
+        var selectedIndex: Int = Int(self.progress.rawValue)
         selectedIndex -= 1
         self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
 
-        let viewController : DDCChildContractViewController = self.subviewControllers![selectedIndex]
+        let viewController: DDCChildContractViewController = self.subviewControllers![selectedIndex]
         viewController.model = model
         self.pageViewController.setViewControllers([viewController], direction: .reverse, animated: true, completion: nil)
     }
     
     func createChildViewControllers() {
-        let contractViewController2 : DDCAddContractInfoViewController = DDCAddContractInfoViewController()
+        let contractViewController2: DDCAddContractInfoViewController = DDCAddContractInfoViewController()
         contractViewController2.index = 2
         contractViewController2.delegate = self
         self.subviewControllers?.append(contractViewController2)
@@ -152,23 +152,23 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
         customerViewController.delegate = self
         self.subviewControllers?.append(customerViewController)
         
-        let storeViewController : DDCSelectStoreViewController = DDCSelectStoreViewController()
+        let storeViewController: DDCSelectStoreViewController = DDCSelectStoreViewController()
         storeViewController.index = 1
         storeViewController.delegate = self
         self.subviewControllers?.append(storeViewController)
         
-        let contractViewController : DDCAddContractInfoViewController = DDCAddContractInfoViewController()
+        let contractViewController: DDCAddContractInfoViewController = DDCAddContractInfoViewController()
         contractViewController.index = 2
         contractViewController.delegate = self
         self.subviewControllers?.append(contractViewController)
         
-        let paymentViewController : DDCPaymentViewController = DDCPaymentViewController()
+        let paymentViewController: DDCPaymentViewController = DDCPaymentViewController()
         paymentViewController.index = 3
         paymentViewController.delegate = self
         self.subviewControllers?.append(paymentViewController)
         
         if self.model != nil {
-            let viewController : DDCChildContractViewController = self.subviewControllers![Int(self.progress.rawValue)]
+            let viewController: DDCChildContractViewController = self.subviewControllers![Int(self.progress.rawValue)]
             viewController.model = self.model
         }
     }
@@ -202,7 +202,7 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
     
     @objc func goBack() {
         if self.model != nil {
-            let alertController : UIAlertController = UIAlertController.init(title: "您确定要退出当前创建的新合同吗？", message: nil, preferredStyle: .alert)
+            let alertController: UIAlertController = UIAlertController.init(title: "您确定要退出当前创建的新合同吗？", message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: { (action) in
                 self.navigationController?.popViewController(animated: true)
             }))
@@ -217,14 +217,14 @@ extension DDCCreateContractViewController : DDCChildContractViewControllerDelega
 
 extension DDCCreateContractViewController :UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        var index : Int = (viewController as! DDCChildContractViewController).index
+        var index: Int = (viewController as! DDCChildContractViewController).index
         index -= 1
         if index < 0 { return nil }
         return self.subviewControllers![index]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        var index : Int = (viewController as! DDCChildContractViewController).index
+        var index: Int = (viewController as! DDCChildContractViewController).index
         index += 1
         if index >= (self.subviewControllers?.count)! { return nil }
         return self.subviewControllers![index]

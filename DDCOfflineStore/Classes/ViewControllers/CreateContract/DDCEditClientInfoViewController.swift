@@ -11,7 +11,7 @@ import SnapKit
 
 class DDCEditClientInfoViewController: DDCChildContractViewController {
 
-    enum DDCClientTextFieldType : Int{
+    enum DDCClientTextFieldType: Int{
         case phone
         case name
         case sex
@@ -40,7 +40,7 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     }()
     
     private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .highlighted, handler: {
             self.forwardNextPage()
         }))
@@ -142,8 +142,8 @@ extension DDCEditClientInfoViewController {
         let occupationArray: NSArray = DDCContract.occupationArray as NSArray
         self.model?.customer?.career = String(occupationArray.index(of: self.models[DDCClientTextFieldType.career.rawValue].text as Any))
         //渠道
-        if let channels : NSArray = (self.channels! as NSArray) {
-            let idx : Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
+        if let channels: NSArray = (self.channels! as NSArray) {
+            let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
                 if let object = channelModel as? DDCChannelModel{
                     return object.name == self.models[DDCClientTextFieldType.channel.rawValue].text
                 }
@@ -157,7 +157,7 @@ extension DDCEditClientInfoViewController {
         //渠道详情
         self.model!.customer?.channelDesc = self.models[DDCClientTextFieldType.channelDetail.rawValue].text
         //是否会员介绍
-        self.model!.customer?.isReferral = self.models[DDCClientTextFieldType.memberReferral.rawValue].text == "是" ? 0 : 1
+        self.model!.customer?.isReferral = self.models[DDCClientTextFieldType.memberReferral.rawValue].text == "是" ? 0: 1
         //会员手机号
         self.model!.customer?.memberPhone = self.models[DDCClientTextFieldType.memberPhone.rawValue].text
         //会员姓名
@@ -214,7 +214,7 @@ extension DDCEditClientInfoViewController {
         self.delegate?.nextPage(model: self.model!)
     }
     
-    func configureCell(cell: DDCTitleTextFieldCell, model : DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
+    func configureCell(cell: DDCTitleTextFieldCell, model: DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
         var _showHint = showHint
         cell.subtitle.removeFromSuperview()
         cell.textFieldView.textField.isUserInteractionEnabled = true
@@ -282,12 +282,12 @@ extension DDCEditClientInfoViewController: UICollectionViewDelegate, UICollectio
         } else if  indexPath.item == DDCClientTextFieldType.age.rawValue || indexPath.item == DDCClientTextFieldType.sex.rawValue{
             return CGSize.init(width: 120, height: 90)
         } else {
-            return CGSize.init(width: 500, height: 90)
+            return CGSize.init(width: DDCAppConfig.width, height: 90)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.init(top: 0, left: (screen.width - 500)/2, bottom: 0, right: (screen.width - 500)/2)
+        return UIEdgeInsets.init(top: 0, left: DDCAppConfig.kLeftMargin, bottom: 0, right: DDCAppConfig.kLeftMargin)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -375,7 +375,7 @@ extension DDCEditClientInfoViewController {
                 self.models[DDCClientTextFieldType.memberReferral.rawValue].text = isMemberReferral
                 self.models[DDCClientTextFieldType.memberReferral.rawValue].isFill = true
                 //是否为会员推荐
-                self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, isReferral: (isMemberReferral == "是") ? true : false)
+                self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, isReferral: (isMemberReferral == "是") ? true: false)
                 self.collectionView.reloadData()
             }
         default:
@@ -459,7 +459,7 @@ extension DDCEditClientInfoViewController: UIPickerViewDelegate, UIPickerViewDat
         case DDCClientTextFieldType.career.rawValue:
             return DDCContract.occupationArray[row]
         case DDCClientTextFieldType.channel.rawValue:
-            return (self.channels?.count != 0) ? (self.channels?[row] )!.name : "加载中"
+            return (self.channels?.count != 0) ? (self.channels?[row] )!.name: "加载中"
         case DDCClientTextFieldType.memberReferral.rawValue:
             return memberReferral[row]
         default:

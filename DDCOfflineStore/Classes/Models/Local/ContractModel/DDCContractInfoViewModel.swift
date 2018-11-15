@@ -10,7 +10,7 @@ import Foundation
 
 class DDCContractInfoViewModel: NSObject {
     
-    enum DDCContractInfoModelType : Int{
+    enum DDCContractInfoModelType: Int{
         case textField
         case checked
     }
@@ -27,8 +27,8 @@ class DDCContractInfoViewModel: NSObject {
     var type: DDCContractInfoModelType?
     var courseArr: [DDCOffLineCourseModel]?
     
-    init(title: String, placeholder: String, text: String, isRequired: Bool, tips: String) {
-        super.init()
+    convenience init(title: String, placeholder: String, text: String, isRequired: Bool, tips: String) {
+        self.init()
         self.title = title
         self.placeholder = placeholder
         self.text = text
@@ -37,8 +37,8 @@ class DDCContractInfoViewModel: NSObject {
         self.isFill = false
     }
     
-    init(title: String, placeholder: String, text: String, isRequired: Bool, tips: String, type: DDCContractInfoModelType) {
-        super.init()
+    convenience init(title: String, placeholder: String, text: String, isRequired: Bool, tips: String, type: DDCContractInfoModelType) {
+        self.init()
         self.title = title
         self.placeholder = placeholder
         self.text = text
@@ -46,5 +46,9 @@ class DDCContractInfoViewModel: NSObject {
         self.tips = tips
         self.type = type
         self.isFill = false
+    }
+    
+    override init() {
+        super.init()
     }
 }

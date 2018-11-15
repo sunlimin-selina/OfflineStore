@@ -10,14 +10,15 @@ import Foundation
 import UIKit
 
 struct screen {
-    static let width : CGFloat = UIScreen.main.bounds.width
-    static let height : CGFloat = UIScreen.main.bounds.height
-    static let statusBarHeight : CGFloat = 20.0
-    static let tabbarHeight : CGFloat = 49.0
-    static let navigationBarHeight : CGFloat = 44.0
+    static let width: CGFloat = UIScreen.main.bounds.width
+    static let height: CGFloat = UIScreen.main.bounds.height
+    static let statusBarHeight: CGFloat = 20.0
+    static let tabbarHeight: CGFloat = 49.0
+    static let navigationBarHeight: CGFloat = 44.0
 }
 
 class DDCAppConfig: NSObject {
-    static let kBarHeight : CGFloat = 60.0
-    static let kLeftMargin : CGFloat = 134.0
+    static let kBarHeight: CGFloat = 60.0
+    static let kLeftMargin: CGFloat = 134.0
+    static let width = screen.width - kLeftMargin * 2
 }

@@ -9,9 +9,9 @@
 import UIKit
 
 class DDCChildContractViewController: UIViewController {
-    var delegate : DDCChildContractViewControllerDelegate?
-    var model : DDCContractModel?
-    var index : Int = 0
+    var delegate: DDCChildContractViewControllerDelegate?
+    var model: DDCContractModel?
+    var index: Int = 0
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

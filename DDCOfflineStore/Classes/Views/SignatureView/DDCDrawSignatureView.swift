@@ -9,7 +9,7 @@
 import UIKit
 
 open class DDCDrawSignatureView: UIView {
-    var delegate : DDCDrawSignatureViewDelegate?
+    var delegate: DDCDrawSignatureViewDelegate?
 
     // 公共属性
     open var lineWidth: CGFloat = 2.0 {

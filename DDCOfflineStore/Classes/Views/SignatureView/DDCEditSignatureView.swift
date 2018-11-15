@@ -33,7 +33,7 @@ class DDCEditSignatureView: UIView {
     }()
     
     lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "重置", style: .forbidden, handler: {
             self.signatureView.clearSignature()
             self.titleLabel.isHidden = false

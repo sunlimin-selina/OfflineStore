@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-class DDCStore : NSObject{
+class DDCStore: NSObject{
     
     static let instance: DDCStore = DDCStore()
     class func sharedStore() -> DDCStore {
         return instance
     }
     
-    static let kUser : String = "User"
+    static let kUser: String = "User"
 
     struct AppId {
         static let buglyAppId = "000b731ad0"
@@ -29,7 +29,7 @@ class DDCStore : NSObject{
         static let DDC_Device_UUID_Key = "OpenUUID"
     }
     
-    var user : DDCUserModel? {
+    var user: DDCUserModel? {
         get {
             var _user: DDCUserModel?
             let userData = UserDefaults.standard.data(forKey: "DDCUser")
@@ -40,7 +40,7 @@ class DDCStore : NSObject{
         }
         set {
             if let data = newValue {
-                let userData : AnyObject = NSKeyedArchiver.archivedData(withRootObject: data as Any) as AnyObject
+                let userData: AnyObject = NSKeyedArchiver.archivedData(withRootObject: data as Any) as AnyObject
                 UserDefaults.standard.set(userData, forKey: "DDCUser")
                 UserDefaults.standard.synchronize()
             }

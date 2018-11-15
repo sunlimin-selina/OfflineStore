@@ -9,6 +9,6 @@
 import Foundation
 
 class DDCContractStateInfoViewModel: NSObject {
-    var title : String?
-    var state : DDCContractState?
+    var title: String?
+    var state: DDCContractState?
 }

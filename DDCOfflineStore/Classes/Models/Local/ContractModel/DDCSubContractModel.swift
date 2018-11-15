@@ -27,7 +27,7 @@ class DDCSubContractModel: Mappable {
         effectiveTime <- map["effectiveTime"]
         
         self.startTime = (self.startTimestamp != nil) ? DDCTools.date(from: self.startTimestamp!): ""
-        self.endTime = (self.endTimestamp != nil) ?  DDCTools.date(from: self.endTimestamp!) : ""
+        self.endTime = (self.endTimestamp != nil) ?  DDCTools.date(from: self.endTimestamp!): ""
     }
     
 }

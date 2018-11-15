@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Darwin
 
-enum CircularTextFieldViewType : UInt{
+enum CircularTextFieldViewType: UInt{
     case normal
     case labelButton
     case imageButton
@@ -19,7 +19,7 @@ enum CircularTextFieldViewType : UInt{
 
 class DDCCircularTextFieldView: UIView {
     
-    lazy var contentView : UIView = {
+    lazy var contentView: UIView = {
         var _contentView = UIView.init()
         _contentView.layer.shadowColor = DDCColor.fontColor.gray.cgColor
         _contentView.layer.shadowRadius = 5.0
@@ -29,8 +29,8 @@ class DDCCircularTextFieldView: UIView {
         return _contentView
     }()
     
-    lazy var textField : UITextField = {
-        var _textField : UITextField = UITextField.init()
+    lazy var textField: UITextField = {
+        var _textField: UITextField = UITextField.init()
         _textField.autocorrectionType = .no
         _textField.autocapitalizationType = .none
         _textField.clearButtonMode = .always
@@ -41,7 +41,7 @@ class DDCCircularTextFieldView: UIView {
         return _textField
     }()
     
-    lazy var button : CountButton = {
+    lazy var button: CountButton = {
         var _button = CountButton.init(frame: CGRect.zero)
         _button.contentHorizontalAlignment = .right
         _button.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: .medium)
@@ -49,14 +49,14 @@ class DDCCircularTextFieldView: UIView {
         return _button
     }()
     
-    var cornerRadius : CGFloat? {
+    var cornerRadius: CGFloat? {
         didSet
         {
             self.contentView.layer.cornerRadius = cornerRadius!
         }
     }
     
-    var type : CircularTextFieldViewType? {
+    var type: CircularTextFieldViewType? {
         didSet{
             switch type {
             case .normal?:

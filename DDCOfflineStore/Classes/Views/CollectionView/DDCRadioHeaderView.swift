@@ -11,8 +11,8 @@ import SnapKit
 
 class DDCRadioHeaderView: UICollectionReusableView {
 
-    lazy var radioButton : DDCRadioWithImageView = {
-        let _radioButton : DDCRadioWithImageView = DDCRadioWithImageView.init(frame: CGRect.zero, status: .image)
+    lazy var radioButton: DDCRadioWithImageView = {
+        let _radioButton: DDCRadioWithImageView = DDCRadioWithImageView.init(frame: CGRect.zero, status: .image)
         _radioButton.status = .image
         return _radioButton
     }()

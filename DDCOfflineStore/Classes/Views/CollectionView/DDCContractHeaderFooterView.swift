@@ -9,8 +9,8 @@
 import UIKit
 
 class DDCContractHeaderFooterView: UICollectionReusableView {
-    public lazy var titleLabel : UILabel = {
-        let titleLabel : UILabel = UILabel()
+    public lazy var titleLabel: UILabel = {
+        let titleLabel: UILabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         titleLabel.textColor = DDCColor.fontColor.gray
         return titleLabel

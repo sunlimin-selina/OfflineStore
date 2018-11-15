@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class DDCTools : NSObject{
+class DDCTools: NSObject{
     
     class func isPhoneNumber(number: String?) -> Bool {
         if number != nil {
@@ -36,28 +36,28 @@ class DDCTools : NSObject{
     }
     
     class func date(from timeInterval:Int) -> String {
-        let _dateFormatter : DateFormatter = DateFormatter()
+        let _dateFormatter: DateFormatter = DateFormatter()
         _dateFormatter.dateFormat = "yyyy/MM/dd"
         
-        let timeInterval : TimeInterval = TimeInterval.init(Double(timeInterval))
-        let date : NSDate = NSDate.init(timeIntervalSince1970: timeInterval / 1000)
+        let timeInterval: TimeInterval = TimeInterval.init(Double(timeInterval))
+        let date: NSDate = NSDate.init(timeIntervalSince1970: timeInterval / 1000)
         return _dateFormatter.string(from: date as Date)
     }
     
     class func datetime(from timeInterval: Int) -> Date {
-        let _dateFormatter : DateFormatter = DateFormatter()
+        let _dateFormatter: DateFormatter = DateFormatter()
         _dateFormatter.dateFormat = "yyyy/MM/dd"
         
-        let timeInterval : TimeInterval = TimeInterval.init(Double(timeInterval))
-        let date : NSDate = NSDate.init(timeIntervalSince1970: timeInterval / 1000)
+        let timeInterval: TimeInterval = TimeInterval.init(Double(timeInterval))
+        let date: NSDate = NSDate.init(timeIntervalSince1970: timeInterval / 1000)
         return date as Date
     }
     
     class func date(from dateString: String) -> Int {
-        let _dateFormatter : DateFormatter = DateFormatter()
+        let _dateFormatter: DateFormatter = DateFormatter()
         _dateFormatter.dateFormat = "yyyy/MM/dd"
         
-        let date : Date = _dateFormatter.date(from: dateString)!
+        let date: Date = _dateFormatter.date(from: dateString)!
         let timeInterval: TimeInterval = date.timeIntervalSince1970
         let timeStamp: Int = Int(timeInterval)
         return timeStamp

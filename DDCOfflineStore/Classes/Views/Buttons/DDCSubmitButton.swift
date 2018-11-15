@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-enum SubmitButtonType : UInt{
+enum SubmitButtonType: UInt{
     case SubmitButtonTypeDefault
     case SubmitButtonTypeNext
     case SubmitButtonTypeCommit
@@ -35,7 +35,7 @@ class DDCSubmitButton: UIButton {
     }
     
     // MARK: Private
-    func enableButtonWithType(type : SubmitButtonType) {
+    func enableButtonWithType(type: SubmitButtonType) {
         switch type {
         case .SubmitButtonTypeCommit:
             do {

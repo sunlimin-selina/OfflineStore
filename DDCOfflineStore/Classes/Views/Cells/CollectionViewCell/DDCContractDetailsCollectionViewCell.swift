@@ -11,16 +11,16 @@ import SnapKit
 
 class DDCContractDetailsCollectionViewCell: UICollectionViewCell {
     
-    public lazy var titleLabel : UILabel = {
-        let titleLabel : UILabel = UILabel()
+    public lazy var titleLabel: UILabel = {
+        let titleLabel: UILabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
         titleLabel.textColor = DDCColor.fontColor.gray
         titleLabel.textAlignment = .right
         return titleLabel
     }()
     
-    public lazy var subtitleLabel : UILabel = {
-        let subtitleLabel : UILabel = UILabel()
+    public lazy var subtitleLabel: UILabel = {
+        let subtitleLabel: UILabel = UILabel()
         subtitleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
         subtitleLabel.textColor = DDCColor.fontColor.black
         return subtitleLabel
@@ -34,6 +34,7 @@ class DDCContractDetailsCollectionViewCell: UICollectionViewCell {
         self.labelView.addSubview(self.titleLabel)
         self.labelView.addSubview(self.subtitleLabel)
         self.setupViewConstraints()
+        self.clipsToBounds = true
     }
     
     required init?(coder aDecoder: NSCoder) {

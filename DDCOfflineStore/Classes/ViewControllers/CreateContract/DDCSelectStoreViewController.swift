@@ -22,7 +22,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
         _collectionView.register(DDCRadioButtonCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self))
         _collectionView.register(DDCContractDetailsCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCContractDetailsCollectionViewCell.self))
         _collectionView.register(DDCContractHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self))
-        _collectionView.register(DDCSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self))
+        _collectionView.register(DDCSectionHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self))
         _collectionView.backgroundColor = UIColor.white
         _collectionView.delegate = self
         _collectionView.dataSource = self
@@ -30,7 +30,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
     }()
     
     private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar : DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
             //            self.forwardNextPage()
         }))
@@ -136,7 +136,7 @@ extension DDCSelectStoreViewController: UICollectionViewDataSource {
             return view
         } else if indexPath.section > 0,
             kind == UICollectionView.elementKindSectionHeader{
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderView.self), for: indexPath) as! DDCSectionHeaderView
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self), for: indexPath) as! DDCSectionHeaderFooterView
             if indexPath.section == 1 {
                 headerView.titleLabel.configure(title: "当前所在门店", isRequired: true)
             } else {
@@ -153,13 +153,13 @@ extension DDCSelectStoreViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.section == 0 {
-            return CGSize.init(width: 500, height: 20)
+            return CGSize.init(width: DDCAppConfig.width, height: 20)
         }
-        return CGSize.init(width: 500, height: 40)
+        return CGSize.init(width: DDCAppConfig.width, height: 40)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.init(top: 0, left: (screen.width - 500)/2, bottom: 0, right: (screen.width - 500)/2)
+        return UIEdgeInsets.init(top: 0, left: DDCAppConfig.kLeftMargin, bottom: 0, right: DDCAppConfig.kLeftMargin)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -175,7 +175,7 @@ extension DDCSelectStoreViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         if section == 0 {
-            return CGSize.init(width: 500, height: 70.0)
+            return CGSize.init(width: DDCAppConfig.width, height: 70.0)
         }
         return CGSize.zero
     }
@@ -184,7 +184,7 @@ extension DDCSelectStoreViewController: UICollectionViewDelegateFlowLayout {
         if section == 0 {
             return CGSize.zero
         }
-        return CGSize.init(width: 500, height: 50.0)
+        return CGSize.init(width: DDCAppConfig.width, height: 50.0)
     }
     
 }

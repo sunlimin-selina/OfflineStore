@@ -8,12 +8,12 @@
 
 import UIKit
 
-class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
-    var delegate : DDCProgressCollectionViewLayoutDelegate?
-    var stages : Int?
-    var yOffset : CGFloat?
-    var cache : [UICollectionViewLayoutAttributes] = []
-    var contentHeight : CGFloat {
+class DDCProgressCollectionViewLayout: UICollectionViewFlowLayout {
+    var delegate: DDCProgressCollectionViewLayoutDelegate?
+    var stages: Int?
+    var yOffset: CGFloat?
+    var cache: [UICollectionViewLayoutAttributes] = []
+    var contentHeight: CGFloat {
         get {
             if self.collectionView != nil {
                 return DDCProgressViewController.height
@@ -22,9 +22,9 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
             }
         }
     }
-    var contentWidth : CGFloat = 0.0
+    var contentWidth: CGFloat = 0.0
 
-    init(stages : Int, yOffset : CGFloat) {
+    init(stages: Int, yOffset: CGFloat) {
         super.init()
         self.stages = stages
         self.yOffset = yOffset
@@ -47,19 +47,19 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
         if self.cache.count != 0 || self.collectionView == nil { return }
         super.collectionView?.layoutIfNeeded()
 
-        let lastItemWidth : CGFloat = (self.delegate?.widthForStageAtIndex(index: self.stages! - 1))!
-        let startingOffset : CGFloat = lastItemWidth / 4
-        var xOffset : CGFloat = startingOffset
-        let lineWidth : CGFloat = (self.collectionView!.bounds.size.width - (1.5 * lastItemWidth)) / CGFloat((self.stages! - 1))
+        let lastItemWidth: CGFloat = (self.delegate?.widthForStageAtIndex(index: self.stages! - 1))!
+        let startingOffset: CGFloat = lastItemWidth / 4
+        var xOffset: CGFloat = startingOffset
+        let lineWidth: CGFloat = (self.collectionView!.bounds.size.width - (1.5 * lastItemWidth)) / CGFloat((self.stages! - 1))
 
-        let numberOfItem : Int = (self.collectionView?.numberOfItems(inSection: 0))!
+        let numberOfItem: Int = (self.collectionView?.numberOfItems(inSection: 0))!
         
         for index in 0...(numberOfItem - 1) {
-            var frame : CGRect?
+            var frame: CGRect?
             if (index % 2 == 0) // stage
             {
                 let itemWidth: CGFloat = (self.delegate?.widthForStageAtIndex(index: index / 2))!
-                var x : CGFloat = xOffset
+                var x: CGFloat = xOffset
                 
                 if x > startingOffset {
                     x -= itemWidth / 2
@@ -75,10 +75,10 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
                 xOffset += lineWidth
             }
             
-            let indexPath : IndexPath = IndexPath.init(item: index, section: 0)
-            let attributes : UICollectionViewLayoutAttributes = UICollectionViewLayoutAttributes.init(forCellWith: indexPath)
+            let indexPath: IndexPath = IndexPath.init(item: index, section: 0)
+            let attributes: UICollectionViewLayoutAttributes = UICollectionViewLayoutAttributes.init(forCellWith: indexPath)
             attributes.frame = frame!
-            attributes.zIndex = (index % 2 == 0) ? 0 : 2
+            attributes.zIndex = (index % 2 == 0) ? 0: 2
             self.cache.append(attributes)
             self.contentWidth = max(self.contentWidth, (frame!.origin.x + frame!.size.width))
         }
@@ -86,7 +86,7 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        var visibleAttributes : Array<UICollectionViewLayoutAttributes> = Array()
+        var visibleAttributes: Array<UICollectionViewLayoutAttributes> = Array()
 
         for attribute in self.cache {
             if attribute.frame.intersects(rect) {
@@ -103,5 +103,5 @@ class DDCProgressCollectionViewLayout : UICollectionViewFlowLayout {
 }
 
 protocol DDCProgressCollectionViewLayoutDelegate {
-    func widthForStageAtIndex(index : Int) -> CGFloat
+    func widthForStageAtIndex(index: Int) -> CGFloat
 }

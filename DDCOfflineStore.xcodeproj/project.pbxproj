@@ -44,7 +44,6 @@
 		D3B607C721745A440086387B /* DDCStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607C621745A440086387B /* DDCStoreModel.swift */; };
 		D3B607C921745A4D0086387B /* DDCSubContractModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607C821745A4D0086387B /* DDCSubContractModel.swift */; };
 		D3B607CB21745A560086387B /* DDCContractPackageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607CA21745A560086387B /* DDCContractPackageModel.swift */; };
-		D3B607CD21745A5F0086387B /* DDCContractPackageCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607CC21745A5F0086387B /* DDCContractPackageCategoryModel.swift */; };
 		D3B607CF21745A6D0086387B /* DDCCustomerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607CE21745A6D0086387B /* DDCCustomerModel.swift */; };
 		D3B607DD21748AB40086387B /* DDCContractStateInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607DC21748AB40086387B /* DDCContractStateInfoViewModel.swift */; };
 		D3B607F5217499C20086387B /* DDCLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607E2217499C10086387B /* DDCLoadingView.swift */; };
@@ -95,7 +94,7 @@
 		D3E832892179A7D900685FFB /* DDCChannelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E832882179A7D900685FFB /* DDCChannelModel.swift */; };
 		D3E8328B2179AFA600685FFB /* DDCStoreOptionsAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E8328A2179AFA600685FFB /* DDCStoreOptionsAPIManager.swift */; };
 		D3ED086C2195525B001763E2 /* DDCRadioButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ED086B2195525B001763E2 /* DDCRadioButtonCollectionViewCell.swift */; };
-		D3ED086E219556D2001763E2 /* DDCSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ED086D219556D2001763E2 /* DDCSectionHeaderView.swift */; };
+		D3ED086E219556D2001763E2 /* DDCSectionHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ED086D219556D2001763E2 /* DDCSectionHeaderFooterView.swift */; };
 		D3EEAE40217D7B8A0078737A /* DDCOrderingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EEAE3F217D7B8A0078737A /* DDCOrderingHeaderView.swift */; };
 		D3F88199215F2A950091C61A /* DDCOfflineStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F88198215F2A950091C61A /* DDCOfflineStoreTests.swift */; };
 		D3F881A4215F2A950091C61A /* DDCOfflineStoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881A3215F2A950091C61A /* DDCOfflineStoreUITests.swift */; };
@@ -162,7 +161,6 @@
 		D3B607C621745A440086387B /* DDCStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCStoreModel.swift; sourceTree = "<group>"; };
 		D3B607C821745A4D0086387B /* DDCSubContractModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSubContractModel.swift; sourceTree = "<group>"; };
 		D3B607CA21745A560086387B /* DDCContractPackageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractPackageModel.swift; sourceTree = "<group>"; };
-		D3B607CC21745A5F0086387B /* DDCContractPackageCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractPackageCategoryModel.swift; sourceTree = "<group>"; };
 		D3B607CE21745A6D0086387B /* DDCCustomerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCustomerModel.swift; sourceTree = "<group>"; };
 		D3B607DC21748AB40086387B /* DDCContractStateInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractStateInfoViewModel.swift; sourceTree = "<group>"; };
 		D3B607E2217499C10086387B /* DDCLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCLoadingView.swift; sourceTree = "<group>"; };
@@ -214,7 +212,7 @@
 		D3E832882179A7D900685FFB /* DDCChannelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCChannelModel.swift; sourceTree = "<group>"; };
 		D3E8328A2179AFA600685FFB /* DDCStoreOptionsAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCStoreOptionsAPIManager.swift; sourceTree = "<group>"; };
 		D3ED086B2195525B001763E2 /* DDCRadioButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCRadioButtonCollectionViewCell.swift; sourceTree = "<group>"; };
-		D3ED086D219556D2001763E2 /* DDCSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSectionHeaderView.swift; sourceTree = "<group>"; };
+		D3ED086D219556D2001763E2 /* DDCSectionHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSectionHeaderFooterView.swift; sourceTree = "<group>"; };
 		D3EEAE3F217D7B8A0078737A /* DDCOrderingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOrderingHeaderView.swift; sourceTree = "<group>"; };
 		D3F88180215F2A930091C61A /* DDCOfflineStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDCOfflineStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F88194215F2A950091C61A /* DDCOfflineStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDCOfflineStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -333,7 +331,6 @@
 				D3B607C421745A3A0086387B /* DDCContractTypeModel.swift */,
 				D3B607C621745A440086387B /* DDCStoreModel.swift */,
 				D3B607C821745A4D0086387B /* DDCSubContractModel.swift */,
-				D3B607CC21745A5F0086387B /* DDCContractPackageCategoryModel.swift */,
 				D3B607CA21745A560086387B /* DDCContractPackageModel.swift */,
 				D3B607DC21748AB40086387B /* DDCContractStateInfoViewModel.swift */,
 				D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */,
@@ -400,7 +397,7 @@
 			isa = PBXGroup;
 			children = (
 				D3E50850219BCF5F00BFFE4D /* DDCRadioHeaderView.swift */,
-				D3ED086D219556D2001763E2 /* DDCSectionHeaderView.swift */,
+				D3ED086D219556D2001763E2 /* DDCSectionHeaderFooterView.swift */,
 				D3B607EE217499C10086387B /* DDCProgressCollectionViewLayout.swift */,
 				D3D2559E21996BD7009C72B0 /* DDCContractHeaderFooterView.swift */,
 			);
@@ -833,7 +830,7 @@
 				D3AE11122181A13100E61E08 /* DDCContractDetailsViewController.swift in Sources */,
 				D3EEAE40217D7B8A0078737A /* DDCOrderingHeaderView.swift in Sources */,
 				D3AE110F2181A13100E61E08 /* DDCLoginRegisterViewController.swift in Sources */,
-				D3ED086E219556D2001763E2 /* DDCSectionHeaderView.swift in Sources */,
+				D3ED086E219556D2001763E2 /* DDCSectionHeaderFooterView.swift in Sources */,
 				D3CC6509216F2C7C00383DD5 /* DDCUserModel.swift in Sources */,
 				D35D24AA21943CDA0067CF09 /* DDCDefaultView.swift in Sources */,
 				D3184D2121901767006AAC2D /* DDCCheckBoxTableViewCell.swift in Sources */,
@@ -870,7 +867,6 @@
 				D3B607FA217499C20086387B /* DDCBarButton.swift in Sources */,
 				D3DAA4AB2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift in Sources */,
 				D3AE110E2181A13100E61E08 /* DDCContractListViewController.swift in Sources */,
-				D3B607CD21745A5F0086387B /* DDCContractPackageCategoryModel.swift in Sources */,
 				D3FDEB9D2186DB0400856581 /* DDCContractInfoViewModel.swift in Sources */,
 				D3D2559F21996BD7009C72B0 /* DDCContractHeaderFooterView.swift in Sources */,
 				D3B607C721745A440086387B /* DDCStoreModel.swift in Sources */,

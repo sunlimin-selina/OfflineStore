@@ -11,11 +11,11 @@ import SnapKit
 
 class CountButton: UIButton {
     
-    var countDown : UInt?
-    var countDownTimer : Timer?
-    var counting : Bool?
-    var delegate : CountButtonDelegate?
-    static let countTime : UInt = 60
+    var countDown: UInt?
+    var countDownTimer: Timer?
+    var counting: Bool?
+    var delegate: CountButtonDelegate?
+    static let countTime: UInt = 60
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,7 +64,7 @@ class CountButton: UIButton {
 }
 
 protocol CountButtonDelegate {
-    func countButton(button : CountButton , isFinished : Bool)
+    func countButton(button: CountButton , isFinished: Bool)
 }
 
 
