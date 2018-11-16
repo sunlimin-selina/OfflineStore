@@ -40,7 +40,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
         self.view.addSubview(self.collectionView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
-//        self.getStoresAndContractTypes()
+        //        self.getStoresAndContractTypes()
         self.automaticallyAdjustsScrollViewInsets = false
     }
     
@@ -101,9 +101,9 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self), for: indexPath) as! DDCRadioButtonCollectionViewCell
-//            cell.configureCell(model: model)
-            return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self), for: indexPath) as! DDCRadioButtonCollectionViewCell
+        //            cell.configureCell(model: model)
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -161,15 +161,15 @@ extension DDCPaymentViewController: UICollectionViewDelegateFlowLayout {
 
 extension DDCPaymentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            var store: DDCCheckBoxModel?
+        var store: DDCCheckBoxModel?
         for index in 0...(self.payments.count - 1) {
-                store = self.payments[index]
-                if indexPath.row == index {
-                    store!.isSelected = true
-                } else {
-                    store!.isSelected = false
-                }
+            store = self.payments[index]
+            if indexPath.row == index {
+                store!.isSelected = true
+            } else {
+                store!.isSelected = false
             }
+        }
         self.collectionView.reloadSections([indexPath.section])
     }
     

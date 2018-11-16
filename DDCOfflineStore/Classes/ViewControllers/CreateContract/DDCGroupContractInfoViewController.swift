@@ -21,7 +21,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
         case effectiveDate
         case store
     }
-
+    
     var contractInfo: [DDCContractDetailsViewModel] = Array()
     var models: [DDCContractInfoViewModel] = Array()
     var currentTextField: UITextField?
@@ -31,19 +31,18 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
     var specs: [DDCContractPackageCategoryModel] = Array()
     var contractType: DDCCourseType {
         get {
-            return .sample//self.model.contractType.id
+            return .group//self.model.contractType.id
         }
     }
     var groupCourses: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "购买正式课程", discription: "", isSelected: false) ,DDCCheckBoxModel.init(id: nil, title: "购买体验课程", discription: "", isSelected: false)]
-
+    var pickedSection: Int = 999
     
     var customCoursesControls: [DDCCheckBoxCellControl] = Array()
-    var sampleCoursesControls: [DDCCheckBoxCellControl] = Array()
-
+    
     var isPickedPackage: Bool = false
     var isPickedCustom: Bool = false
     var orderRule = ["跳过","遵守"]
-
+    
     private lazy var datePickerView: UIDatePicker = {
         let _datePickerView = UIDatePicker.init(frame: CGRect.zero)
         _datePickerView.datePickerMode = .date
@@ -78,7 +77,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
         _collectionView.register(DDCSectionHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self))
         _collectionView.register(DDCRadioHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self))
         _collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self))
-
+        
         _collectionView.backgroundColor = UIColor.white
         _collectionView.delegate = self
         _collectionView.dataSource = self
@@ -104,12 +103,8 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
-        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:.group)//self.contractType
-        if self.contractType == .group {
-            self.getGroupCourse()
-        } else {
-            self.getPackagesForContract()
-        }
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.contractType)
+        self.getGroupCourse()
     }
 }
 
@@ -170,8 +165,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
             return self.contractInfo.count
-        }
-        if self.contractType == .group &&  (section == 3 || section == 2){
+        }else if  (section == 3 || section == 2){
             if self.groupItems == nil {
                 return 0
             }
@@ -180,12 +174,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             } else {
                 return (self.groupItems?.customCourses!.count)!
             }
-        } else {
-            if self.isPickedCustom && section == 3 {
-                return self.items.count
-            }
         }
-
         return 1
     }
     
@@ -208,29 +197,21 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self), for: indexPath) as! DDCContractHeaderFooterView
             view.titleLabel.text = "请继续补充订单／合同信息"
             return view
-        }
-        if self.contractType == .group{
-            if indexPath.section == 2 || indexPath.section == 3,
-                kind == UICollectionView.elementKindSectionHeader {
-                let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self), for: indexPath) as! DDCRadioHeaderView
-                let model = self.groupCourses[indexPath.section - 2]
-                if indexPath.section == 2 {
-                    view.type = .title
-                    view.titleLabel.configure(title: "产品规格", isRequired: true)
-                } else {
-                    view.type = .normal
-                }
-                view.radioButton.button.setTitle(model.title, for: .normal)
-                view.radioButton.button.isSelected = model.isSelected
-                return view
-            }
-        } else {
-            if indexPath.section == 3,
-                kind == UICollectionView.elementKindSectionHeader {
-                let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self), for: indexPath) as! DDCSectionHeaderFooterView
+        }else if indexPath.section == 2 || indexPath.section == 3,
+            kind == UICollectionView.elementKindSectionHeader {
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self), for: indexPath) as! DDCRadioHeaderView
+            let model = self.groupCourses[indexPath.section - 2]
+            if indexPath.section == 2 {
+                view.type = .title
                 view.titleLabel.configure(title: "产品规格", isRequired: true)
-                return view
+            } else {
+                view.type = .normal
             }
+            view.radioButton.button.setTitle(model.title, for: .normal)
+            view.radioButton.button.isSelected = model.isSelected
+            view.tag = indexPath.section
+            view.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(headerSelected(gesture:))))
+            return view
         }
         
         return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self), for: indexPath)
@@ -239,30 +220,35 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.section == 0 {
             return CGSize.init(width: DDCAppConfig.width, height: 20)
-        }else if indexPath.section == 2{
-            return CGSize.init(width: DDCAppConfig.width, height: self.customCoursesControls.count > 0 ?self.customCoursesControls[indexPath.item].cellHeight(): 30)
+        }else if indexPath.section == 2 {
+            if indexPath.section == (self.pickedSection + 2) {
+                return CGSize.init(width: DDCAppConfig.width, height: self.customCoursesControls.count > 0 ?self.customCoursesControls[indexPath.item].cellHeight(): 30)
+            }
+            return CGSize.zero
         } else if indexPath.section == 3 {
-            return CGSize.init(width: DDCAppConfig.width, height: self.sampleCoursesControls.count > 0 ?self.sampleCoursesControls[indexPath.item].cellHeight(): 30)
+            if indexPath.section ==  (self.pickedSection + 2)  {
+                return CGSize.init(width: DDCAppConfig.width, height: 40)
+            }
+            return CGSize.zero
         }
-        
         return CGSize.init(width: DDCAppConfig.width, height: 100)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let top: CGFloat = (section == 0 || section == 3 ) ? 0: 20
-        let bottom: CGFloat = (section == 0 || section == 3 ) ? 5: 25
+        let top: CGFloat = (section == 0 || section == 3) ? 0: 20
+        let bottom: CGFloat = (section == 0 || section == 3 || section == 2 ) ? 5: 25
         return UIEdgeInsets.init(top: top, left: DDCAppConfig.kLeftMargin, bottom: bottom, right: DDCAppConfig.kLeftMargin)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if section == 0 || section == 3 {
+        if section == 0 || section == 3 || section == 2 {
             return CGFloat.leastNormalMagnitude
         }
         return 60.0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if section == 0 || section == 3 {
+        if section == 0 || section == 3 || section == 2 {
             return 20.0
         }
         return 50.0
@@ -276,11 +262,8 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if self.contractType == .group && (section == 2 || section == 3){
+        if  section == 2 || section == 3 {
             return CGSize.init(width: DDCAppConfig.width, height: 60.0)
-        }else if section == 3,
-            self.items.count > 0{
-            return CGSize.init(width: DDCAppConfig.width, height: 40.0)
         }
         return CGSize.zero
     }
@@ -297,10 +280,9 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
             let model: DDCCourseModel = (self.groupItems?.sampleCourses![indexPath.item])!
             let control = DDCCheckBoxCellControl.init(cell: cell)
-//            control.configureCell(model: model, indexPath: indexPath)
+            //            control.configureCell(model: model, indexPath: indexPath)
             cell.checkBox.button.setTitle(model.courseName, for: .normal)
             cell.checkBox.button.isSelected = model.isSelected
-            self.sampleCoursesControls.insert(control, at: indexPath.item)
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell
@@ -317,14 +299,17 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
 
 extension DDCGroupContractInfoViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        var course: DDCCheckBoxModel?
-        for index in 0...(self.groupCourses.count - 1) {
-            course = self.groupCourses[index]
-            if indexPath.row == index {
-                course!.isSelected = true
-            } else {
-                course!.isSelected = false
+        if indexPath.section == 2 {
+            if (self.groupItems?.customCourses!.count)! > 0 {
+                let items = self.groupItems?.customCourses!
+                let model = items![indexPath.item]
+                model.isSelected = !model.isSelected
+            }
+        } else {
+            if (self.groupItems?.sampleCourses!.count)! > 0 {
+                let items = self.groupItems?.sampleCourses!
+                let model = items![indexPath.item]
+                model.isSelected = !model.isSelected
             }
         }
         
@@ -481,5 +466,20 @@ extension DDCGroupContractInfoViewController {
     @objc func cancel() {
         self.collectionView.reloadData()
         self.resignFirstResponder()
+    }
+    
+    @objc func headerSelected(gesture: UITapGestureRecognizer) {
+        var course: DDCCheckBoxModel?
+        let index = (gesture.view?.tag)! - 2
+        self.pickedSection = index
+        for idx in 0...(self.groupCourses.count - 1) {
+            course = self.groupCourses[idx]
+            if index == idx {
+                course!.isSelected = true
+            } else {
+                course!.isSelected = false
+            }
+        }
+        self.collectionView.reloadData()
     }
 }

@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 class DDCCheckBoxCellControl: NSObject {
-    static let kTag: Int = 100
     static let kCTag: Int = 200
 
     var selectedItems: NSMutableArray = NSMutableArray()
@@ -48,7 +47,8 @@ class DDCCheckBoxCellControl: NSObject {
                 view.button.tag = index + DDCCheckBoxCellControl.kCTag
                 let subtitle:String = _attributes[index].attributeValue!
                 view.button.setTitle(subtitle, for: .normal)
-                view.button.isSelected = false
+                view.button.isSelected = _attributes[index].isSelected
+                view.textField.isHidden = !view.button.isSelected
                 view.setHandler { (sender) in
                     self.buttonClicked(sender: sender)
                 }
@@ -62,21 +62,22 @@ class DDCCheckBoxCellControl: NSObject {
     
     func buttonClicked(sender: DDCCheckBox) {
         sender.button.isSelected = !sender.button.isSelected
-        sender.textField.isHidden = !sender.button.isSelected
-//        if (self.model?.attributes?.count)! <= 0 {
-//            return
-//        }
-//        let item: DDCCourseAttributeModel = (self.model?.attributes![sender.tag - DDCCheckBoxTableViewCellControl.kTag])!
+        sender.textField.isHidden = !sender.button.isSelected 
+        if (self.model?.attributes?.count)! <= 0 {
+            return
+        }
+        let item: DDCCourseAttributeModel = (self.model?.attributes![sender.button.tag - DDCCheckBoxCellControl.kCTag])!
+        item.isSelected = sender.button.isSelected
 //
 //        if (sender.isSelected) {
 //            if self.selectedItems.contains(item) {
 //                self.selectedItems.add(item)
-//                self.selectedIndexes.add(sender.tag - DDCCheckBoxTableViewCellControl.kTag)
+//                self.selectedIndexes.add(sender.tag - DDCCheckBoxTableViewCellControl.kCTag)
 //            }
 //        } else {
 //            if self.selectedItems.contains(item) {
 //                self.selectedItems.remove(item)
-//                self.selectedIndexes.remove(sender.tag - DDCCheckBoxTableViewCellControl.kTag)
+//                self.selectedIndexes.remove(sender.tag - DDCCheckBoxTableViewCellControl.kCTag)
 //            }
 //        }
         
@@ -91,21 +92,6 @@ class DDCCheckBoxCellControl: NSObject {
 ////        }
     }
     
-    func setupViewConstraints() {
-        let kPadding: CGFloat = 5.0
-//        self.cell.button.snp.remakeConstraints({ (make) in
-//            make.top.equalTo(self)
-//            make.left.greaterThanOrEqualTo(self)
-//            make.right.equalTo(self.textField.snp_leftMargin)
-//            make.height.equalTo(30.0)
-//        })
-        
-        //        self.textField.snp.makeConstraints({ (make) in
-        //            make.width.equalTo(screen.width - DDCAppConfig.kLeftMargin * 2)
-        //            make.left.equalTo(self.button)
-        //            make.height.equalTo(30.0)
-        //        })
-    }
 }
 
 extension DDCCheckBoxCellControl: UITextFieldDelegate {

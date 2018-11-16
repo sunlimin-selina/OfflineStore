@@ -30,7 +30,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
     var specs: [DDCContractPackageCategoryModel] = Array()
     var contractType: DDCCourseType {
         get {
-            return .regular //self.model.contractType.id
+            return .sample //self.model.contractType.id
         }
     }
     var checkBoxControls: [DDCCheckBoxCellControl] = Array()
@@ -97,9 +97,9 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
-        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:.group)//self.contractType
-       
-            self.getPackagesForContract()
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.contractType)
+        
+        self.getPackagesForContract()
     }
 }
 
@@ -162,9 +162,9 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             return self.contractInfo.count
         }
         
-            if self.isPickedCustom && section == 3 {
-                return self.items.count
-            }
+        if self.isPickedCustom && section == 3 {
+            return self.items.count
+        }
         
         return 1
     }
@@ -178,8 +178,8 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             cell.titleLabel.textAlignment = .left
             return cell
         }
-
-            return self.collectionViewRegularCell(collectionView, cellForItemAt: indexPath)
+        
+        return self.collectionViewRegularCell(collectionView, cellForItemAt: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -189,13 +189,13 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             view.titleLabel.text = "请继续补充订单／合同信息"
             return view
         }
-       
-            if indexPath.section == 3,
-                kind == UICollectionView.elementKindSectionHeader {
-                let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self), for: indexPath) as! DDCSectionHeaderFooterView
-                view.titleLabel.configure(title: "产品规格", isRequired: true)
-                return view
-            }
+        
+        if indexPath.section == 3,
+            kind == UICollectionView.elementKindSectionHeader {
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self), for: indexPath) as! DDCSectionHeaderFooterView
+            view.titleLabel.configure(title: "产品规格", isRequired: true)
+            return view
+        }
         
         return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self), for: indexPath)
     }
@@ -268,13 +268,13 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
 
 extension DDCAddContractInfoViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    
-            if self.items.count > 0 && indexPath.section == 3 {
-                let items = self.items
-                
-                let model = items[indexPath.item]
-                model.isSelected = !model.isSelected
-            }
+        
+        if self.items.count > 0 && indexPath.section == 3 {
+            let items = self.items
+            
+            let model = items[indexPath.item]
+            model.isSelected = !model.isSelected
+        }
         
         self.collectionView.reloadData()//.reloadSections([indexPath.section])
     }
