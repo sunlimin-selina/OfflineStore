@@ -263,7 +263,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if  section == 2 || section == 3 {
-            return CGSize.init(width: DDCAppConfig.width, height: 60.0)
+            return CGSize.init(width: DDCAppConfig.width, height: section == 2 ? 80.0 : 60.0)
         }
         return CGSize.zero
     }

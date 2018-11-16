@@ -76,13 +76,14 @@ class DDCRadioHeaderView: UICollectionReusableView {
         } else {
             self.titleLabel.snp.makeConstraints { (make) in
                 make.width.equalTo(screen.width - DDCAppConfig.kLeftMargin * 2)
-                make.centerX.top.bottom.equalTo(self)
+                make.centerX.top.equalTo(self)
+                make.height.equalTo(40)
             }
             
             self.radioButton.snp.remakeConstraints({ (make) in
                 make.width.left.equalTo(self.titleLabel)
                 make.centerX.bottom.equalTo(self)
-                make.top.equalTo(self.titleLabel.snp_bottomMargin).offset(40)
+                make.top.equalTo(self.titleLabel.snp_bottomMargin).offset(20)
             })
         }
        

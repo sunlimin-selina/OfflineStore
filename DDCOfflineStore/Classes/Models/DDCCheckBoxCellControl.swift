@@ -49,6 +49,7 @@ class DDCCheckBoxCellControl: NSObject {
                 view.button.setTitle(subtitle, for: .normal)
                 view.button.isSelected = _attributes[index].isSelected
                 view.textField.isHidden = !view.button.isSelected
+                view.textField.textField.delegate = self
                 view.setHandler { (sender) in
                     self.buttonClicked(sender: sender)
                 }
@@ -62,56 +63,38 @@ class DDCCheckBoxCellControl: NSObject {
     
     func buttonClicked(sender: DDCCheckBox) {
         sender.button.isSelected = !sender.button.isSelected
-        sender.textField.isHidden = !sender.button.isSelected 
+        sender.textField.isHidden = !sender.button.isSelected
         if (self.model?.attributes?.count)! <= 0 {
             return
         }
         let item: DDCCourseAttributeModel = (self.model?.attributes![sender.button.tag - DDCCheckBoxCellControl.kCTag])!
         item.isSelected = sender.button.isSelected
-//
-//        if (sender.isSelected) {
-//            if self.selectedItems.contains(item) {
-//                self.selectedItems.add(item)
-//                self.selectedIndexes.add(sender.tag - DDCCheckBoxTableViewCellControl.kCTag)
-//            }
-//        } else {
-//            if self.selectedItems.contains(item) {
-//                self.selectedItems.remove(item)
-//                self.selectedIndexes.remove(sender.tag - DDCCheckBoxTableViewCellControl.kCTag)
-//            }
-//        }
-        
-//        var textFieldButton: UIButton = self.cell!.buttons.lastObject
-//
-//        if (button == self.cell!.buttons.lastObject) {
-//            if (textFieldButton.isSelected) {
-//            }
-//        }
-////        if (![self.selectedItems containsObject:textFieldItem]) {
-////            textFieldButton.textField.hidden = YES;
-////        }
+
+        if (sender.isSelected) {
+            if self.selectedItems.contains(item) {
+                self.selectedItems.add(item)
+            }
+        } else {
+            if self.selectedItems.contains(item) {
+                self.selectedItems.remove(item)
+            }
+        }
     }
     
 }
 
 extension DDCCheckBoxCellControl: UITextFieldDelegate {
-//    #pragma mark - UITextFieldDelegate
-//    - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-//    {
-//    //限制字符长度
-//    NSInteger existedLength = textField.text.length;
-//    NSInteger selectedLength = range.length;
-//    NSInteger replaceLength = string.length;
-//    if (existedLength - selectedLength + replaceLength > 30) {
-//    return NO;
-//    }
-//    self.content = textField.text;
-//
-//    return YES;
-//    }
-//
-//    - (void)textFieldDidEndEditing:(UITextField *)textField
-//    {
-//    self.content = textField.text;
-//    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        //限制字符长度
+        let existedLength: Int = (textField.text?.count)!
+        let selectedLength: Int = range.length
+        let replaceLength: Int = string.count
+        let totalLength: Int = existedLength - selectedLength + replaceLength
+        
+        if (totalLength > 3) {//字符数量不超过3
+            return false
+        }
+        
+        return true
+    }
 }

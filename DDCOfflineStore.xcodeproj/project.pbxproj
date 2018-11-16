@@ -314,8 +314,8 @@
 				D3AE11092181A13100E61E08 /* DDCChildContractViewController.swift */,
 				D3AE11082181A13100E61E08 /* DDCEditClientInfoViewController.swift */,
 				D3AE110A2181A13100E61E08 /* DDCSelectStoreViewController.swift */,
-				D3AE110D2181A13100E61E08 /* DDCGroupContractInfoViewController.swift */,
 				D34E2881219D81350089D6E4 /* DDCAddContractInfoViewController.swift */,
+				D3AE110D2181A13100E61E08 /* DDCGroupContractInfoViewController.swift */,
 				D3AE110B2181A13100E61E08 /* DDCPaymentViewController.swift */,
 			);
 			path = CreateContract;
