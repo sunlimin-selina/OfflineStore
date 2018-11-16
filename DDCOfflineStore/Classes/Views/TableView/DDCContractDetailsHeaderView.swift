@@ -27,8 +27,8 @@ class DDCContractDetailsHeaderView: UITableViewHeaderFooterView {
                     self.imageView.image = UIImage.init(named: "icon_contractdetails_yijiechu")
                     self.titleLabel.textColor = DDCColor.fontColor.gray
                 }
-            case .unpaid?:
-                self.imageView.image = UIImage.init(named: "icon_contractdetails_daizhifu")
+            case .cancel?:
+                self.imageView.image = UIImage.init(named: "icon_contractdetails_yiquxiao")
             default:
                 break
             }

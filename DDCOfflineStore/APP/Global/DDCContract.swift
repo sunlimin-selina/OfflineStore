@@ -9,13 +9,13 @@ import Foundation
 
 enum DDCContractStatus: UInt , Codable{
     case all
-    case effective //生效中
-    case ineffective //未生效
-    case inComplete //未完成
-    case completed //已结束
-    case revoked //已解除
-    case used //已核销
-    case unpaid //待支付
+    case effective //生效中     -> 3:生效
+    case ineffective //未生效   -> 2:已经支付未开始预定
+    case inComplete //未完成    -> 1:未支付
+    case completed //已结束     -> 4:过期
+    case revoked //已解除       -> 7:解绑
+    case used //已核销          -> 6:核销完
+    case cancel //已取消        -> 新增 5:取消
 }
 
 enum DDCCourseType {
@@ -71,7 +71,7 @@ class DDCContract: NSObject {
 
     static var statusPairings: Dictionary<UInt, DDCStatusViewModel> {
         get {
-            return [DDCContractStatus.ineffective.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xF7B761), title: "待生效", imageName: "icon_contractdetails_daishengxiao"),DDCContractStatus.used.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xC4C4C4), title: "已核销", imageName: "icon_contractdetails_yixiaohe"),DDCContractStatus.inComplete.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xFF5269), title: "未完成", imageName: "icon_contractdetails_weiwancheng"),DDCContractStatus.effective.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x3AC09F), title: "生效中", imageName: "icon_contractdetails_shengxiaozhong"),DDCContractStatus.completed.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x474747), title: "已结束", imageName: "icon_contractdetails_yijieshu"),DDCContractStatus.revoked.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xC4C4C4), title: "已解除", imageName: "icon_contractdetails_yijiechu"),DDCContractStatus.unpaid.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xFF7F55), title: "待支付", imageName: "icon_contractdetails_daizhifu")]
+            return [DDCContractStatus.ineffective.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xF7B761), title: "待生效", imageName: "icon_contractdetails_daishengxiao"),DDCContractStatus.used.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xC4C4C4), title: "已核销", imageName: "icon_contractdetails_yixiaohe"),DDCContractStatus.inComplete.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xFF5269), title: "未完成", imageName: "icon_contractdetails_weiwancheng"),DDCContractStatus.effective.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x3AC09F), title: "生效中", imageName: "icon_contractdetails_shengxiaozhong"),DDCContractStatus.completed.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x474747), title: "已结束", imageName: "icon_contractdetails_yijieshu"),DDCContractStatus.revoked.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xC4C4C4), title: "已解除", imageName: "icon_contractdetails_yijiechu"),DDCContractStatus.cancel.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x474747), title: "已取消", imageName: "icon_contractdetails_yiquxiao")]
         }
     }
 

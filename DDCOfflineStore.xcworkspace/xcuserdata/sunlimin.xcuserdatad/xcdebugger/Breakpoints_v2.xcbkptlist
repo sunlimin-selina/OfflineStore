@@ -2,4 +2,54 @@
 <Bucket
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/APP/APIs/DDCContractListAPIManager.swift"
+            timestampString = "564042199.835519"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "getContractList(page:status:successHandler:failHandler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static DDCOfflineStore.DDCContractListAPIManager.getContractList(page: Swift.UInt, status: Swift.UInt, successHandler: (Swift.Array&lt;DDCOfflineStore.DDCContractDetailsModel&gt;) -&gt; (), failHandler: (Swift.String) -&gt; ()) -&gt; ()"
+                  moduleName = "DDCOfflineStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCContractListAPIManager.swift"
+                  timestampString = "564042199.991864"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "1252">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;) -&gt; () in static DDCOfflineStore.DDCContractListAPIManager.getContractList(page: Swift.UInt, status: Swift.UInt, successHandler: (Swift.Array&lt;DDCOfflineStore.DDCContractDetailsModel&gt;) -&gt; (), failHandler: (Swift.String) -&gt; ()) -&gt; ()"
+                  moduleName = "DDCOfflineStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCContractListAPIManager.swift"
+                  timestampString = "564042199.993865"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
