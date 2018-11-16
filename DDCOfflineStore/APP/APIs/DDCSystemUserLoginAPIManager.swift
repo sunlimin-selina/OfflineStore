@@ -17,6 +17,10 @@ class DDCSystemUserLoginAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             if case let data as Dictionary<String, Any> = tuple.data {
                 let user: DDCUserModel = DDCUserModel(JSON: data)!
                 successHandler(user)
@@ -32,6 +36,10 @@ class DDCSystemUserLoginAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             if case let data as Dictionary<String, Any> = tuple.data {
                 let user: DDCCustomerModel = DDCCustomerModel(JSON: data)!
                 successHandler(user)

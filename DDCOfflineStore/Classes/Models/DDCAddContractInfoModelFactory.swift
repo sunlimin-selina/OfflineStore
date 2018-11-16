@@ -38,11 +38,13 @@ class DDCAddContractInfoModelFactory: NSObject {
         //合同金额
         let money: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: "", isRequired: true, tips: "")
         //生效日期(今日生效)
-        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: "", text: "", isRequired: false, tips: "(今日生效)")
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: dateFormatter.string(from: Date()), text: "", isRequired: false, tips: "(今日生效)")
         //结束日期
-        let endDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "结束日期", placeholder: "请选择职业", text: "", isRequired: false, tips: "")
+        let endDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "结束日期", placeholder: "根据课程购买数量自动计算得出", text: "", isRequired: false, tips: "")
         //有效时间(有效时间≦本月剩余天数+48个月)
-        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: "", text:"", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
+        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: "根据课程购买数量自动计算得出", text:"", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
         //有效门店
         let store: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效门店", placeholder: "", text:"", isRequired: false, tips: "")
         
@@ -67,11 +69,13 @@ class DDCAddContractInfoModelFactory: NSObject {
         //合同金额
         let money: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: "", isRequired: true, tips: "")
         //生效日期(今日生效)
-        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: "", text: "", isRequired: false, tips: "(今日生效)")
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: dateFormatter.string(from: Date()), text: "", isRequired: false, tips: "(今日生效)")
         //结束日期
-        let endDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "结束日期", placeholder: "请选择职业", text: "", isRequired: false, tips: "")
+        let endDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "结束日期", placeholder: "根据课程购买数量自动计算得出", text: "", isRequired: false, tips: "")
         //有效时间(有效时间≦本月剩余天数+48个月)
-        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: "", text:"", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
+        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: "根据课程购买数量自动计算得出", text:"", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
         //有效门店
         let store: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效门店", placeholder: "", text:"", isRequired: false, tips: "")
         

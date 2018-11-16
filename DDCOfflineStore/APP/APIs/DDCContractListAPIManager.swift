@@ -19,7 +19,10 @@ class DDCContractListAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
-            
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             if case let data as [Dictionary<String, Any>] = tuple.data,
                 data.count > 0 {
                 let modelArray: [DDCContractDetailsModel] = DDCContractListAPIManager.parseDictionary(data)!//Mapper<DDCContractDetailsModel>().mapArray(JSONString: data as! String)!

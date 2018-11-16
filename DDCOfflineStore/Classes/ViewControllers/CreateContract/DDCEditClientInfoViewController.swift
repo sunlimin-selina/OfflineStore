@@ -209,7 +209,7 @@ extension DDCEditClientInfoViewController {
             DDCTools.hideHUD()
             
         }) { (error) in
-            
+            DDCTools.hideHUD()
         }
         self.delegate?.nextPage(model: self.model!)
     }
@@ -416,6 +416,7 @@ extension DDCEditClientInfoViewController {
                     self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
                 }
             }) { (error) in
+                DDCTools.hideHUD()
                 self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
             }
         }
@@ -427,6 +428,7 @@ extension DDCEditClientInfoViewController {
         DDCEditClientInfoAPIManager.availableChannels(successHandler: { (array) in
             self.channels = array
         }, failHandler: { (error) in
+            DDCTools.hideHUD()
         })
     }
 }

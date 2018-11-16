@@ -17,6 +17,10 @@ class DDCStoreOptionsAPIManager: NSObject {
 
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             var array: Array<DDCStoreModel> = Array()
             
             if case let stores as Array<Any> = tuple.data {

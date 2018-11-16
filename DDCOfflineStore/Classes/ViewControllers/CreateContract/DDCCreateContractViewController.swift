@@ -142,11 +142,11 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
     }
     
     func createChildViewControllers() {
-        let groupContractViewController: DDCGroupContractInfoViewController = DDCGroupContractInfoViewController()
-        groupContractViewController.index = 2
-        groupContractViewController.delegate = self
-        self.subviewControllers?.append(groupContractViewController)
-
+        let paymentViewController1: DDCPaymentViewController = DDCPaymentViewController()
+        paymentViewController1.index = 3
+        paymentViewController1.delegate = self
+        self.subviewControllers?.append(paymentViewController1)
+        
         let customerViewController: DDCEditClientInfoViewController  = DDCEditClientInfoViewController()
         customerViewController.index = 0
         customerViewController.delegate = self
@@ -162,6 +162,11 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
         contractViewController.index = 2
         contractViewController.delegate = self
         self.subviewControllers?.append(contractViewController)
+        
+//        let groupContractViewController: DDCGroupContractInfoViewController = DDCGroupContractInfoViewController()
+//        groupContractViewController.index = 2
+//        groupContractViewController.delegate = self
+//        self.subviewControllers?.append(groupContractViewController)
         
         let paymentViewController: DDCPaymentViewController = DDCPaymentViewController()
         paymentViewController.index = 3

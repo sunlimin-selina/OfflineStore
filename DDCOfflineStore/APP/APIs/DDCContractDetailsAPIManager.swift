@@ -86,6 +86,10 @@ class DDCContractDetailsAPIManager: NSObject {
         let param: Dictionary = ["id":detailId]
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: param, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             if case let data as Dictionary<String, Any> = tuple.data!["userContract"] {
                 let contractDetail: DDCContractModel = DDCContractModel(JSON: data)!
                 let subContract: DDCSubContractModel = DDCSubContractModel(JSON: data)!
@@ -102,6 +106,10 @@ class DDCContractDetailsAPIManager: NSObject {
         let param: Dictionary = ["id":detailId]
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: param, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             if case let data as Dictionary<String, Any> = tuple.data {
                 let packageName: String = (data["packageName"] is NSNull) || (data["packageName"] != nil) ? "": data["packageName"] as! String
                 let packageCategoryName: String = (data["skuName"] is NSNull) || (data["skuName"] != nil) ? "": data["skuName"] as! String

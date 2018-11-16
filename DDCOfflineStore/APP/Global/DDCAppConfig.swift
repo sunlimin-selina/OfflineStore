@@ -21,4 +21,10 @@ class DDCAppConfig: NSObject {
     static let kBarHeight: CGFloat = 60.0
     static let kLeftMargin: CGFloat = 134.0
     static let width = screen.width - kLeftMargin * 2
+    
+    struct payment {
+        static let kAlipayPaymentID: String = "1"
+        static let kWechatPaymentID: String = "2"
+        static let kOfflinePaymentID: String = "3"
+    }
 }

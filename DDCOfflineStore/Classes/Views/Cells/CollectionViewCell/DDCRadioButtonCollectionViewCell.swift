@@ -31,8 +31,7 @@ class DDCRadioButtonCollectionViewCell: UICollectionViewCell {
     
     func setupViewConstraints() {
         self.checkBox.snp.makeConstraints({ (make) in
-            make.width.equalTo(screen.width - DDCAppConfig.kLeftMargin * 2)
-            make.centerX.top.bottom.equalTo(self.contentView)
+            make.centerX.width.top.bottom.equalTo(self.contentView)
         })
         
     }

@@ -292,7 +292,7 @@ extension DDCAddContractInfoViewController {
                 self.package = array!
             }
         }) { (error) in
-            
+            DDCTools.hideHUD()
         }
     }
     
@@ -305,7 +305,7 @@ extension DDCAddContractInfoViewController {
                 self.collectionView.reloadData()
             }
         }) { (error) in
-            
+            DDCTools.hideHUD()
         }
     }
     

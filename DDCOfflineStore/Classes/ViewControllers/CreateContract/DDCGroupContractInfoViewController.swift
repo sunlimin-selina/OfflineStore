@@ -329,7 +329,7 @@ extension DDCGroupContractInfoViewController {
                 self.package = array!
             }
         }) { (error) in
-            
+            DDCTools.hideHUD()
         }
     }
     
@@ -342,7 +342,7 @@ extension DDCGroupContractInfoViewController {
                 self.collectionView.reloadData()
             }
         }) { (error) in
-            
+            DDCTools.hideHUD()
         }
     }
     
@@ -353,7 +353,7 @@ extension DDCGroupContractInfoViewController {
             self.groupItems = tuple
             self.collectionView.reloadData()
         }) { (error) in
-            
+            DDCTools.hideHUD()
         }
     }
 }

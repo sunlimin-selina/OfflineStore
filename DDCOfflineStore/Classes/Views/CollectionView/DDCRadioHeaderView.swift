@@ -43,6 +43,7 @@ class DDCRadioHeaderView: UICollectionReusableView {
     lazy var radioButton: DDCRadioWithImageView = {
         let _radioButton: DDCRadioWithImageView = DDCRadioWithImageView.init(frame: CGRect.zero, status: .image)
         _radioButton.status = .image
+        _radioButton.isUserInteractionEnabled = true
         return _radioButton
     }()
     

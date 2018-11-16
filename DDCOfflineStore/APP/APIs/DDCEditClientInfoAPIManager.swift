@@ -16,6 +16,10 @@ class DDCEditClientInfoAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: nil, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             var array: [DDCChannelModel] = Array()
             if case let channels as Array<Any> = tuple.data {
                 for data in channels {
@@ -47,6 +51,10 @@ class DDCEditClientInfoAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             if let data = tuple.data {
                 if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
                     let model: DDCContractModel = DDCContractModel(JSON: _data)!

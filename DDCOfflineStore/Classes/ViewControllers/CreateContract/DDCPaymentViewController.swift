@@ -10,7 +10,9 @@ import UIKit
 
 class DDCPaymentViewController: DDCChildContractViewController {
     var payments: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "微信支付", discription: "", isSelected: false) ,DDCCheckBoxModel.init(id: nil, title: "支付宝支付", discription: "", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "已完成线下支付", discription: "(请在确认收到款项后勾选此项)", isSelected: false)]
-    
+    var result: (wechat: DDCOnlinePaymentOptionModel?, alipay: DDCOnlinePaymentOptionModel?, offline: [DDCPaymentOptionModel]?)
+    var pickedSection: Int = 999
+
     lazy var collectionView: UICollectionView! = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         
@@ -40,7 +42,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
         self.view.addSubview(self.collectionView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
-        //        self.getStoresAndContractTypes()
+        self.getPaymentOptions()
         self.automaticallyAdjustsScrollViewInsets = false
     }
     
@@ -67,14 +69,15 @@ extension DDCPaymentViewController {
 // MARK: API
 extension DDCPaymentViewController {
     
-    func getStoresAndContractTypes() {
+    func getPaymentOptions() {
         DDCTools.showHUD(view: self.view)
-        DDCStoreAndContractTypeAPIManager.getStoresAndContractTypes(successHandler: { (array) in
+        DDCPaymentOptionsAPIManager.paymentOptions(contractId: "1414", price: "0.01", successHandler: { (tuple) in
+            if let _tuple = tuple {
+                self.result = _tuple
+            }
             DDCTools.hideHUD()
-            self.payments = DDCCheckBoxModel.modelTransformation(models: array)
-            self.collectionView.reloadData()
         }) { (error) in
-            
+            DDCTools.hideHUD()
         }
     }
 }
@@ -94,15 +97,17 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 3 {
-            return self.payments.count
+        if section == 3, self.pickedSection == 3,
+            let offlineOptions = self.result.offline {
+            return offlineOptions.count
         }
         return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self), for: indexPath) as! DDCRadioButtonCollectionViewCell
-        //            cell.configureCell(model: model)
+        let model = self.result.offline![indexPath.item]
+        cell.configureCell(model: model)
         return cell
     }
     
@@ -118,6 +123,8 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
                 headerView.radioButton.button.setTitle(model.title, for: .normal)
                 headerView.radioButton.button.isSelected = model.isSelected
                 headerView.radioButton.imageView.image = UIImage.init(named: self.images[indexPath.section - 1] as String)
+                headerView.tag = indexPath.section
+                headerView.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(headerSelected(gesture:))))
                 return headerView
             }
         }
@@ -128,7 +135,7 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
 extension DDCPaymentViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize.init(width: DDCAppConfig.width, height: 40)
+        return CGSize.init(width: DDCAppConfig.width - 40 * 2, height: 40)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -161,16 +168,37 @@ extension DDCPaymentViewController: UICollectionViewDelegateFlowLayout {
 
 extension DDCPaymentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var store: DDCCheckBoxModel?
-        for index in 0...(self.payments.count - 1) {
-            store = self.payments[index]
-            if indexPath.row == index {
-                store!.isSelected = true
-            } else {
-                store!.isSelected = false
+        if indexPath.section == 3 {
+            var item: DDCCheckBoxModel?
+            for index in 0...((self.result.offline!.count) - 1) {
+                item = self.result.offline![index]
+                if indexPath.item == index {
+                    item!.isSelected = true
+                } else {
+                    item!.isSelected = false
+                }
             }
         }
-        self.collectionView.reloadSections([indexPath.section])
+        self.collectionView.reloadSections([3])
     }
     
+}
+
+// MARK: Action
+extension DDCPaymentViewController {
+    
+    @objc func headerSelected(gesture: UITapGestureRecognizer) {
+        var offlineOptions: DDCCheckBoxModel?
+        let index = (gesture.view?.tag)! - 1
+        self.pickedSection = (gesture.view?.tag)!
+        for idx in 0...(self.payments.count - 1) {
+            offlineOptions = self.payments[idx]
+            if index == idx {
+                offlineOptions!.isSelected = true
+            } else {
+                offlineOptions!.isSelected = false
+            }
+        }
+        self.collectionView.reloadData()
+    }
 }

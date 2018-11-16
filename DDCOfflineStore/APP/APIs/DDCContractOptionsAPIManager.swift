@@ -17,6 +17,10 @@ class DDCContractOptionsAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             var array: Array<DDCContractPackageModel> = Array()
             
             if case let packages as Array<Any> = tuple.data {
@@ -41,6 +45,10 @@ class DDCContractOptionsAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             var array: Array<DDCCourseModel> = Array()
             if case let courses as Array<Any> = tuple.data {
                 for data in courses {
@@ -64,6 +72,10 @@ class DDCContractOptionsAPIManager: NSObject {
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             var array: Array<DDCCourseModel> = Array()
             if case let courses as Array<Any> = tuple.data {
                 for data in courses {

@@ -79,7 +79,7 @@ extension DDCSelectStoreViewController {
             self.stores = DDCCheckBoxModel.modelTransformation(models: array)
             self.collectionView.reloadData()
         }) { (error) in
-            
+            DDCTools.hideHUD()
         }
     }
 }
