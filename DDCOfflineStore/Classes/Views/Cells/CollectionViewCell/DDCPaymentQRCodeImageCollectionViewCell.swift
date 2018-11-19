@@ -59,7 +59,7 @@ class DDCPaymentQRCodeImageCollectionViewCell: UICollectionViewCell {
     
     func configureCell(QRCodeURLString: String, price: String) {
         self.loadQRCodeImage(url: QRCodeURLString)
-        let attributeString: NSMutableAttributedString = NSMutableAttributedString.init(string: "¥\(price)")
+        let attributeString: NSMutableAttributedString = NSMutableAttributedString.init(string: "¥ \(price)")
         attributeString.addAttributes([NSAttributedString.Key.font: UIFont.init(name: "AshbyBlack", size: 40.0)!], range: NSMakeRange(0, attributeString.length))
         attributeString.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18.0, weight: .medium)], range: NSMakeRange(0, 1))
 
@@ -78,7 +78,8 @@ class DDCPaymentQRCodeImageCollectionViewCell: UICollectionViewCell {
             self.qrCodeImageView.setNeedsLayout()
             self.qrCodeImageView.layoutIfNeeded()
             width = self.qrCodeImageView.bounds.size.width
-        }
+        } 
         self.qrCodeImageView.image = DDCQRCodeGenerateManager.setupQRCodeImage(url, image: nil)
     }
+    
 }
