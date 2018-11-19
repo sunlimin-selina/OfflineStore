@@ -30,7 +30,7 @@ class DDCEditClientInfoModelFactory: NSObject {
         let careerText: String = model.career != nil ? DDCContract.occupationArray[(model.career?.rawValue)!]: ""
         let career: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "职业", placeholder: "请选择职业", text: careerText, isRequired: false, tips: "")
         //渠道
-        let channel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text:"", isRequired: true, tips: "")
+        let channel: DDCContractInfoViewModel = DDCEditClientInfoModelFactory.channelViewModel(model: model, channels: channels)
         //渠道详情
         let channelDetail: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道详情", placeholder: "请录入详情", text: model.channelDesc ?? "", isRequired: true, tips: "")
         //是否会员介绍
@@ -68,28 +68,31 @@ class DDCEditClientInfoModelFactory: NSObject {
         return newModels
     }
     
-//    class func channelViewModel(models: [DDCContractInfoViewModel], channels: [DDCChannelModel]) -> DDCContractDetailsViewModel{
-//        if let array = category.channels{
-//            let channels: NSArray = array as NSArray
-//
-//            if let channelId = category.model?.customer?.channelCode{
-//                let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
-//                    if let object = channelModel as? DDCChannelModel{
-//                        return object.id == Int(channelId)
-//                    }
-//                    return false
-//                }
-//                let channel: DDCChannelModel? = (channels[idx] as! DDCChannelModel)
-//                var string = category.model?.customer?.channelDesc
-//                if string != nil,
-//                    (string!.count) > 0 {
-//                    string = "\(channel!.name ?? "")-\(category.model!.customer!.channelDesc!)"
-//                } else {
-//                    string = channel!.name ?? ""
-//                }
-//                return DDCContractDetailsViewModel.init(title: "顾客渠道", describe:channel != nil ? string: "")
-//            }
-//        }
-//        return DDCContractDetailsViewModel.init(title: "顾客渠道", describe:"")
-//    }
+    class func channelViewModel(model: DDCCustomerModel, channels: [DDCChannelModel]?) -> DDCContractInfoViewModel{
+        if let array = channels {
+            let channels: NSArray = array as NSArray
+
+            if let channelId = model.channelCode{
+                let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
+                    if let object = channelModel as? DDCChannelModel{
+                        return object.id == Int(channelId)
+                    }
+                    return false
+                }
+                if idx < channels.count,
+                    let channel: DDCChannelModel = (channels[idx] as! DDCChannelModel) {
+                    
+                    var string = model.channelDesc
+                    if string != nil,
+                        (string!.count) > 0 {
+                        string = "\(channel.name ?? "")-\(model.channelDesc!)"
+                    } else {
+                        string = channel.name ?? ""
+                    }
+                    return DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text:channel != nil ? string!: "", isRequired: true, tips: "")
+                }
+            }
+        }
+        return DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text:"", isRequired: true, tips: "")
+    }
 }

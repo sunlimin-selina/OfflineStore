@@ -264,7 +264,7 @@ extension DDCContractListViewController {
             self.contractArray?.addObjects(from: contractList)
             self.tableView.mj_footer.endRefreshing()
             self.tableView.reloadData()
-            if self.contractArray?.count == 0 {
+            if self.contractArray == nil || self.contractArray?.count == 0 {
                 self.tableView.backgroundView = UIView()
                 DDCDefaultView.sharedView().showDefaultView(view: self.tableView.backgroundView!, title: "还没有创建过订单哟！", image: UIImage.init(named: "homepage_queshengtu")!)
             }
@@ -279,6 +279,11 @@ extension DDCContractListViewController {
             }
             if (self.page == 0) {
                 //                [self networkReloadView] 
+            }
+            if self.contractArray == nil || self.contractArray?.count == 0 {
+                self.tableView.mj_footer.isHidden = true
+                self.tableView.backgroundView = UIView()
+                DDCDefaultView.sharedView().showDefaultView(view: self.tableView.backgroundView!, title: "还没有创建过订单哟！", image: UIImage.init(named: "homepage_queshengtu")!)
             }
             if (completionHandler != nil) {
                 completionHandler! (false)

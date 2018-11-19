@@ -139,15 +139,17 @@ class DDCContractDetailsViewModelFactory: NSObject {
                     }
                     return false
                 }
-                let channel: DDCChannelModel? = (channels[idx] as! DDCChannelModel)
-                var string = category.model?.customer?.channelDesc
-                if string != nil,
-                    (string!.count) > 0 {
-                    string = "\(channel!.name ?? "")-\(category.model!.customer!.channelDesc!)"
-                } else {
-                    string = channel!.name ?? ""
+                if idx < channels.count,
+                    let channel: DDCChannelModel = (channels[idx] as! DDCChannelModel) {
+                    var string = category.model?.customer?.channelDesc
+                    if string != nil,
+                        (string!.count) > 0 {
+                        string = "\(channel.name ?? "")-\(category.model!.customer!.channelDesc!)"
+                    } else {
+                        string = channel.name ?? ""
+                    }
+                    return DDCContractDetailsViewModel.init(title: "顾客渠道", describe:channel != nil ? string: "")
                 }
-                return DDCContractDetailsViewModel.init(title: "顾客渠道", describe:channel != nil ? string: "")
             }
         }
         return DDCContractDetailsViewModel.init(title: "顾客渠道", describe:"")
