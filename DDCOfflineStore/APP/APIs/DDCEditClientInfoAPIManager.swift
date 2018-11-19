@@ -39,13 +39,13 @@ class DDCEditClientInfoAPIManager: NSObject {
     
     class func uploadUserInfo(model: DDCContractModel, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/server/user/registerLineUser.do")
-        var params: Dictionary<String,String> = ["userName": model.customer!.userName!,
-                                                 "lineUserName": model.customer!.nickName!,
+        var params: Dictionary<String,String> = ["userName": model.customer!.mobile!,
+                                                 "lineUserName": model.customer!.name!,
                                                  "sex": "\(model.customer!.sex!.rawValue - 1)",
             "birthday": "\(model.customer!.birthday!)",
             "lineUserEmail": model.customer!.email!,
-            "lineUserCareer": model.customer!.career!,
-            "channel": model.customer!.channel!,
+//            "lineUserCareer": model.customer!.career!.rawValue as String,
+            "channel": model.customer!.channelCode!,
             "type": "3",
             "uid": "\(DDCStore.sharedStore().user!.id!)"]
         

@@ -22,8 +22,8 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
         case channel
         case channelDetail
         case memberReferral
-        case memberPhone
-        case memberName
+        case introduceMobile
+        case introduceName
         case sales
     }
     
@@ -123,8 +123,8 @@ extension DDCEditClientInfoViewController {
         let customer: DDCCustomerModel = DDCCustomerModel()
         self.model = DDCContractModel()
         self.model?.customer = customer
-        self.model!.customer?.userName = self.models[DDCClientTextFieldType.phone.rawValue].text
-        self.model!.customer?.nickName = self.models[DDCClientTextFieldType.name.rawValue].text
+        self.model!.customer?.mobile = self.models[DDCClientTextFieldType.phone.rawValue].text
+        self.model!.customer?.name = self.models[DDCClientTextFieldType.name.rawValue].text
         //性别
         let genderArray: NSArray = DDCContract.genderArray as NSArray
         self.model!.customer?.sex = DDCGender(rawValue: genderArray.index(of: self.models[DDCClientTextFieldType.sex.rawValue].text as Any))
@@ -140,7 +140,7 @@ extension DDCEditClientInfoViewController {
         self.model!.customer?.email = self.models[DDCClientTextFieldType.email.rawValue].text
         //职业
         let occupationArray: NSArray = DDCContract.occupationArray as NSArray
-        self.model?.customer?.career = String(occupationArray.index(of: self.models[DDCClientTextFieldType.career.rawValue].text as Any))
+//        self.model?.customer?.career = String(occupationArray.index(of: self.models[DDCClientTextFieldType.career.rawValue].text as Any))
         //渠道
         if let channels: NSArray = (self.channels! as NSArray) {
             let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
@@ -150,7 +150,7 @@ extension DDCEditClientInfoViewController {
                 return false
             }
             if idx != NSNotFound {
-                self.model?.customer!.channel = "\(self.channels![idx].name!)"
+                self.model?.customer!.channelCode = "\(self.channels![idx].name!)"
             }
         }
         
@@ -159,9 +159,9 @@ extension DDCEditClientInfoViewController {
         //是否会员介绍
         self.model!.customer?.isReferral = self.models[DDCClientTextFieldType.memberReferral.rawValue].text == "是" ? 0: 1
         //会员手机号
-        self.model!.customer?.memberPhone = self.models[DDCClientTextFieldType.memberPhone.rawValue].text
+        self.model!.customer?.introduceMobile = self.models[DDCClientTextFieldType.introduceMobile.rawValue].text
         //会员姓名
-        self.model!.customer?.memberName = self.models[DDCClientTextFieldType.memberName.rawValue].text
+        self.model!.customer?.introduceName = self.models[DDCClientTextFieldType.introduceName.rawValue].text
         //责任销售
         self.model!.responsibleUsername = self.models[DDCClientTextFieldType.sales.rawValue].text
     }
@@ -353,7 +353,7 @@ extension DDCEditClientInfoViewController {
                 let birthday: Date = self.datePickerView.date
                 self.models[DDCClientTextFieldType.birthday.rawValue].text = dateFormatter.string(from: birthday)
                 let components = Calendar.current.dateComponents([.year], from: birthday, to: Date())
-                self.models[DDCClientTextFieldType.age.rawValue].text = "\(components.year ?? 0)"
+                self.models[DDCClientTextFieldType.age.rawValue].text = "\(components.year ?? 0)岁"
                 self.models[DDCClientTextFieldType.age.rawValue].isFill = true
             }
             break
@@ -397,8 +397,8 @@ extension DDCEditClientInfoViewController {
     @objc func getUserInfo(button: CountButton) {
         DDCTools.showHUD(view: self.view)
         
-        if let textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
-            let phoneNumber: String = "15921516376"//DDCTools.removeWhiteSpace(string: textFieldView.textField.text!)
+        if let _textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
+            let phoneNumber: String = DDCTools.removeWhiteSpace(string: _textFieldView.textField.text!)
             
             guard DDCTools.isPhoneNumber(number: phoneNumber) else {
                 self.view.makeDDCToast(message: "手机号有误，请检查后重试", image: UIImage.init(named: "addCar_icon_fail")!)
@@ -485,7 +485,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         let replaceLength: Int = string.count
         let totalLength: Int = existedLength - selectedLength + replaceLength
         
-        if textField.tag == DDCClientTextFieldType.phone.rawValue || textField.tag == DDCClientTextFieldType.memberPhone.rawValue {
+        if textField.tag == DDCClientTextFieldType.phone.rawValue || textField.tag == DDCClientTextFieldType.introduceMobile.rawValue {
             if (totalLength > 13) {//手机号输入长度不超过11个字符 多两个字符为分割号码用的空格
                 return false
             }
@@ -494,7 +494,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
             if (totalLength > 20) {//渠道详情不超过20字
                 return false
             }
-        } else if textField.tag == DDCClientTextFieldType.memberName.rawValue || textField.tag == DDCClientTextFieldType.sales.rawValue{
+        } else if textField.tag == DDCClientTextFieldType.introduceName.rawValue || textField.tag == DDCClientTextFieldType.sales.rawValue{
             return false
         }
         return true
@@ -506,7 +506,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         if rawValue == DDCClientTextFieldType.phone.rawValue || rawValue == DDCClientTextFieldType.name.rawValue ||
            rawValue == DDCClientTextFieldType.age.rawValue ||
         rawValue == DDCClientTextFieldType.email.rawValue ||
-            rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.memberPhone.rawValue || rawValue == DDCClientTextFieldType.memberName.rawValue {
+            rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue {
             self.models[rawValue].text = textField.text
             self.models[rawValue].isFill = true
         }

@@ -41,7 +41,7 @@ class DDCContractDetailsViewModelFactory: NSObject {
         let statusModel: DDCStatusViewModel = DDCContract.statusPairings[modelStatus]!
         let status: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "订单状态", describe: ((category.model?.status != .all) ? statusModel.title: ""), color: statusModel.color)
         //姓名
-        let name: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "姓名", describe: category.model?.customer?.nickName)
+        let name: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "姓名", describe: category.model?.customer?.name)
         //性别
         let sex: String = (category.model?.customer?.sex != nil) ? DDCContract.genderArray[((category.model?.customer?.sex!.rawValue)!)]: ""
         let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: sex)
@@ -52,9 +52,9 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //生日
         let birthday: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生日", describe: category.model!.customer!.formattedBirthday)
         //手机号码
-        let phoneNumber: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "手机号码", describe: category.model!.customer!.userName)
+        let phoneNumber: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "手机号码", describe: category.model!.customer!.mobile)
         //职业
-        let userCareer: String = (category.model?.customer?.career != nil) ? DDCContract.occupationArray[(Int(category.model!.customer!.career!)!)]: ""
+        let userCareer: String = (category.model?.customer?.career != nil) ? DDCContract.occupationArray[(category.model!.customer!.career?.rawValue)!]: ""
         let career: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "职业", describe:userCareer)
         //邮箱
         let email: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "邮箱", describe:category.model!.customer!.email)
@@ -116,9 +116,9 @@ class DDCContractDetailsViewModelFactory: NSObject {
         var array: [DDCContractDetailsViewModel] = Array()
         
         //当前客户
-        let customer: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前客户", describe: model?.customer?.nickName)
+        let customer: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前客户", describe: model?.customer?.mobile)
         //客户手机
-        let phone: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "客户手机", describe: model?.customer?.userName)
+        let phone: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "客户手机", describe: model?.customer?.name)
         //当前门店
         let store: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前门店", describe: model?.currentStore?.title)
         //销售类型
@@ -132,7 +132,7 @@ class DDCContractDetailsViewModelFactory: NSObject {
         if let array = category.channels{
             let channels: NSArray = array as NSArray
             
-            if let channelId = category.model?.customer?.channel{
+            if let channelId = category.model?.customer?.channelCode{
                 let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
                     if let object = channelModel as? DDCChannelModel{
                         return object.id == Int(channelId)

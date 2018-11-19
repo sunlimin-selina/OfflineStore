@@ -142,7 +142,7 @@ class DDCContractListTableViewCell: UITableViewCell {
     }
     
     func configureCell(model: DDCContractDetailsModel) {
-        let title = "\(model.user!.nickName ?? "") \(model.user!.userName ?? "")"
+        let title = "\(model.user!.name ?? "") \(model.user!.name ?? "")"
         self.titleLabel.text = title
         self.datetime.text = model.info!.createDateString
         

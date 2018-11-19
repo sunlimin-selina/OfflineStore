@@ -23,6 +23,8 @@ class DDCPaymentViewController: DDCChildContractViewController {
         _collectionView.register(DDCRadioHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self))
         _collectionView.register(DDCSectionHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self))
         _collectionView.backgroundColor = UIColor.white
+        _collectionView.delegate = self
+        _collectionView.dataSource = self
         return _collectionView
     }()
     
@@ -73,8 +75,6 @@ extension DDCPaymentViewController {
         DDCPaymentOptionsAPIManager.paymentOptions(contractId: "1414", price: "0.01", successHandler: { (tuple) in
             if let _tuple = tuple {
                 self.result = _tuple
-                self.collectionView.delegate = self
-                self.collectionView.dataSource = self
                 self.collectionView.reloadData()
             }
            
@@ -103,7 +103,7 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
         if section == 3, self.pickedSection == 3,
             let offlineOptions = self.result.offline {
             return offlineOptions.count
-        } else if self.pickedSection < 3 {
+        } else if self.pickedSection < 3 && self.result.wechat != nil && self.result.alipay != nil{
             return 1
         }
         return 0
