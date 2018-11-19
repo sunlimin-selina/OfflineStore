@@ -19,6 +19,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
         var _collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
         _collectionView.showsHorizontalScrollIndicator = false
         _collectionView.register(DDCRadioButtonCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self))
+        _collectionView.register(DDCPaymentQRCodeImageCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self))
         _collectionView.register(DDCRadioHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self))
         _collectionView.register(DDCSectionHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self))
         _collectionView.backgroundColor = UIColor.white
@@ -100,15 +101,30 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
         if section == 3, self.pickedSection == 3,
             let offlineOptions = self.result.offline {
             return offlineOptions.count
+        } else if self.pickedSection < 3 {
+            return 1
         }
         return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self), for: indexPath) as! DDCRadioButtonCollectionViewCell
-        let model = self.result.offline![indexPath.item]
-        cell.configureCell(model: model)
-        return cell
+        if indexPath.section == 3, self.pickedSection == 3{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self), for: indexPath) as! DDCRadioButtonCollectionViewCell
+            let model = self.result.offline![indexPath.item]
+            cell.configureCell(model: model)
+            return cell
+            
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self), for: indexPath) as! DDCPaymentQRCodeImageCollectionViewCell
+            if indexPath.section == 1 {
+                let model: DDCOnlinePaymentOptionModel = self.result.wechat!
+                cell.configureCell(QRCodeURLString: (model.code_url)!, price: "2000.0")//self.model?.contractPrice
+            } else if indexPath.section == 2 {
+                let model: DDCOnlinePaymentOptionModel = self.result.alipay!
+                cell.configureCell(QRCodeURLString: (model.qr_code)!, price: "2000.0")//self.model?.contractPrice
+            }
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -135,6 +151,9 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
 extension DDCPaymentViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.section == self.pickedSection , self.pickedSection != 3 {
+            return CGSize.init(width: DDCAppConfig.width - 40 * 2, height: 500)
+        }
         return CGSize.init(width: DDCAppConfig.width - 40 * 2, height: 40)
     }
     
