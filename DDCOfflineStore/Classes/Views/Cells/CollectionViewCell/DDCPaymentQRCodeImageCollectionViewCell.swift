@@ -15,7 +15,7 @@ class DDCPaymentQRCodeImageCollectionViewCell: UICollectionViewCell {
     public lazy var priceLabel: DDCContractLabel = {
         let _priceLabel: DDCContractLabel = DDCContractLabel()
         _priceLabel.textColor = UIColor.black
-        _priceLabel.font = UIFont.systemFont(ofSize: 40, weight: .medium)
+//        _priceLabel.font = UIFont.init(name: "AshbyBlack", size: 40.0)
         return _priceLabel
     }()
     
@@ -41,28 +41,34 @@ class DDCPaymentQRCodeImageCollectionViewCell: UICollectionViewCell {
     func setupViewConstraints() {
         
         let kQRCodeImageDiameter: CGFloat = 258.0
-        let kQRCodeToTitle: CGFloat = 20.0
+        let kQRCodeToTitle: CGFloat = 30.0
 
         self.qrCodeImageView.snp.makeConstraints({ (make) in
-            make.top.centerX.equalTo(self.contentView)
+            make.centerX.equalTo(self.contentView)
+            make.top.equalTo(self.contentView).offset(102.0)
             make.width.height.equalTo(kQRCodeImageDiameter)
         })
         
         self.priceLabel.snp.makeConstraints({ (make) in
-            make.centerX.bottom.equalTo(self.contentView)
+            make.centerX.equalTo(self.contentView)
             make.top.equalTo(self.qrCodeImageView.snp_bottomMargin).offset(kQRCodeToTitle)
+            make.height.equalTo(40.0)
         })
         
     }
     
     func configureCell(QRCodeURLString: String, price: String) {
         self.loadQRCodeImage(url: QRCodeURLString)
-        self.priceLabel.text = price
+        let attributeString: NSMutableAttributedString = NSMutableAttributedString.init(string: "¥\(price)")
+        attributeString.addAttributes([NSAttributedString.Key.font: UIFont.init(name: "AshbyBlack", size: 40.0)!], range: NSMakeRange(0, attributeString.length))
+        attributeString.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18.0, weight: .medium)], range: NSMakeRange(0, 1))
+
+        self.priceLabel.attributedText = attributeString
     }
     
     override func prepareForReuse() {
         self.qrCodeImageView.image = nil
-        self.priceLabel.text = ""
+        self.priceLabel.attributedText = nil
     }
     
     func loadQRCodeImage(url: String) {

@@ -55,7 +55,7 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
         
         self.textFieldView.snp.makeConstraints({ (make) in
             make.centerX.equalTo(self.contentView)
-            make.width.equalTo(DDCAppConfig.width - kShadowMargin * 2)
+            make.width.equalTo(self.contentView).offset(-10)
             make.bottom.equalTo(self.contentView).offset(-10)
             make.height.equalTo(DDCTitleTextFieldCell.kTextFieldViewHeight)
         })

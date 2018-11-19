@@ -27,6 +27,7 @@
 		D34E287C219D55FD0089D6E4 /* DDCCheckBoxWithTitleCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34E287B219D55FD0089D6E4 /* DDCCheckBoxWithTitleCollectionCell.swift */; };
 		D34E2882219D81350089D6E4 /* DDCAddContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34E2881219D81350089D6E4 /* DDCAddContractInfoViewController.swift */; };
 		D34F1B0221A268D100DBCCAB /* DDCQRCodeGenerateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34F1B0121A268D100DBCCAB /* DDCQRCodeGenerateManager.swift */; };
+		D34F1B0421A2A5C300DBCCAB /* Ashbbl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D34F1B0321A2A5C300DBCCAB /* Ashbbl.ttf */; };
 		D3597CFA2178518B00C4A2F2 /* DDCUserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */; };
 		D35D24AA21943CDA0067CF09 /* DDCDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35D24A921943CDA0067CF09 /* DDCDefaultView.swift */; };
 		D35D24AC219442CF0067CF09 /* DDCBasicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35D24AB219442CF0067CF09 /* DDCBasicViewController.swift */; };
@@ -150,6 +151,7 @@
 		D34E287B219D55FD0089D6E4 /* DDCCheckBoxWithTitleCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DDCCheckBoxWithTitleCollectionCell.swift; path = DDCOfflineStore/Classes/Views/Cells/TableViewCells/DDCCheckBoxWithTitleCollectionCell.swift; sourceTree = SOURCE_ROOT; };
 		D34E2881219D81350089D6E4 /* DDCAddContractInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCAddContractInfoViewController.swift; sourceTree = "<group>"; };
 		D34F1B0121A268D100DBCCAB /* DDCQRCodeGenerateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCQRCodeGenerateManager.swift; sourceTree = "<group>"; };
+		D34F1B0321A2A5C300DBCCAB /* Ashbbl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ashbbl.ttf; sourceTree = "<group>"; };
 		D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCUserStatus.swift; sourceTree = "<group>"; };
 		D35D24A921943CDA0067CF09 /* DDCDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCDefaultView.swift; sourceTree = "<group>"; };
 		D35D24AB219442CF0067CF09 /* DDCBasicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCBasicViewController.swift; sourceTree = "<group>"; };
@@ -440,6 +442,7 @@
 		D3CC64CD216F2C7C00383DD5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D34F1B0321A2A5C300DBCCAB /* Ashbbl.ttf */,
 				D3CC64CE216F2C7C00383DD5 /* Assets.xcassets */,
 				D3CC64CF216F2C7C00383DD5 /* LaunchScreen.storyboard */,
 				D3CC64D1216F2C7C00383DD5 /* Info.plist */,
@@ -746,6 +749,7 @@
 			files = (
 				D3CC64FA216F2C7C00383DD5 /* Assets.xcassets in Resources */,
 				D3CC64FB216F2C7C00383DD5 /* LaunchScreen.storyboard in Resources */,
+				D34F1B0421A2A5C300DBCCAB /* Ashbbl.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,8 +23,6 @@ class DDCPaymentViewController: DDCChildContractViewController {
         _collectionView.register(DDCRadioHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self))
         _collectionView.register(DDCSectionHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self))
         _collectionView.backgroundColor = UIColor.white
-        _collectionView.delegate = self
-        _collectionView.dataSource = self
         return _collectionView
     }()
     
@@ -75,7 +73,11 @@ extension DDCPaymentViewController {
         DDCPaymentOptionsAPIManager.paymentOptions(contractId: "1414", price: "0.01", successHandler: { (tuple) in
             if let _tuple = tuple {
                 self.result = _tuple
+                self.collectionView.delegate = self
+                self.collectionView.dataSource = self
+                self.collectionView.reloadData()
             }
+           
             DDCTools.hideHUD()
         }) { (error) in
             DDCTools.hideHUD()
@@ -118,10 +120,10 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self), for: indexPath) as! DDCPaymentQRCodeImageCollectionViewCell
             if indexPath.section == 1 {
                 let model: DDCOnlinePaymentOptionModel = self.result.wechat!
-                cell.configureCell(QRCodeURLString: (model.code_url)!, price: "2000.0")//self.model?.contractPrice
+                cell.configureCell(QRCodeURLString: model.code_url ?? "", price: "2000.0")//self.model?.contractPrice
             } else if indexPath.section == 2 {
                 let model: DDCOnlinePaymentOptionModel = self.result.alipay!
-                cell.configureCell(QRCodeURLString: (model.qr_code)!, price: "2000.0")//self.model?.contractPrice
+                cell.configureCell(QRCodeURLString: model.qr_code ?? "", price: "2000.0")//self.model?.contractPrice
             }
             return cell
         }
@@ -153,8 +155,10 @@ extension DDCPaymentViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.section == self.pickedSection , self.pickedSection != 3 {
             return CGSize.init(width: DDCAppConfig.width - 40 * 2, height: 500)
+        } else if indexPath.section == 3 {
+            return CGSize.init(width: DDCAppConfig.width - 40 * 2, height: 40)
         }
-        return CGSize.init(width: DDCAppConfig.width - 40 * 2, height: 40)
+        return CGSize.init(width: DDCAppConfig.width - 40 * 2, height: 0.01)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

@@ -31,10 +31,10 @@ class DDCSystemUserLoginAPIManager: NSObject {
     }
     
     class func getUserInfo(phoneNumber: String, successHandler: @escaping((_ user: DDCCustomerModel?) -> ()), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/user/queryByUserName.do")
-        let params: Dictionary<String, Any>? = ["username":phoneNumber]
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/mobile/get.do")
+        let params: Dictionary<String, Any>? = ["mobile":phoneNumber]
         
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)
@@ -46,6 +46,7 @@ class DDCSystemUserLoginAPIManager: NSObject {
             }
         }) { (code) in
             failHandler(code)
-        }
+
+        } 
     }
 }

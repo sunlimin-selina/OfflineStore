@@ -11,13 +11,13 @@ import Alamofire
 import ObjectMapper
 
 class DDCContractListAPIManager: NSObject {
-    class func getContractList(page: UInt,status:UInt ,successHandler: @escaping (_ result: [DDCContractDetailsModel]) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/contract/list.do")
+    class func getContractList(page: UInt,status:UInt, type:UInt ,successHandler: @escaping (_ result: [DDCContractDetailsModel]) -> (), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/contract/list.do")
         let uid:String = String(format:"%d",(DDCStore.sharedStore().user?.id)!)
 
-        let params: Dictionary<String, Any> = ["uid":uid , "currentPage":page ,"status":status , "pageSize": 10]
+        let params: Dictionary<String, Any> = ["createUserId":uid , "currentPage":page ,"status":status , "type": type,  "pageSize": 10]
         
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)

@@ -254,7 +254,7 @@ extension DDCEditClientInfoViewController {
         cell.textFieldView.textField.text = model.text
         cell.textFieldView.textField.tag = indexPath.row
         cell.textFieldView.textField.delegate = self
-        cell.textFieldView.button.addTarget(self, action: #selector(getVerificationCode(button:)), for: .touchUpInside)
+        cell.textFieldView.button.addTarget(self, action: #selector(getUserInfo(button:)), for: .touchUpInside)
     }
     
 }
@@ -394,11 +394,11 @@ extension DDCEditClientInfoViewController {
 
 // MARK: API
 extension DDCEditClientInfoViewController {
-    @objc func getVerificationCode(button: CountButton) {
+    @objc func getUserInfo(button: CountButton) {
         DDCTools.showHUD(view: self.view)
         
         if let textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
-            let phoneNumber: String = DDCTools.removeWhiteSpace(string: textFieldView.textField.text!)
+            let phoneNumber: String = "15921516376"//DDCTools.removeWhiteSpace(string: textFieldView.textField.text!)
             
             guard DDCTools.isPhoneNumber(number: phoneNumber) else {
                 self.view.makeDDCToast(message: "手机号有误，请检查后重试", image: UIImage.init(named: "addCar_icon_fail")!)

@@ -17,7 +17,7 @@ class DDCEditClientInfoModelFactory: NSObject {
         let name: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "姓名", placeholder: "请输入姓名", text: model.nickName ?? "", isRequired: true, tips: "")
         //性别
         let sex: String = (model.sex != nil) ? DDCContract.genderArray[(model.sex!.rawValue)]: ""
-        let gender: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "性别", placeholder: "请选择性别", text: sex, isRequired: true, tips: "")
+        let gender: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "性别", placeholder: "性别", text: sex, isRequired: true, tips: "")
         //生日
         let birthday: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生日", placeholder: "请输入生日", text: model.formattedBirthday ?? "", isRequired: true,  tips: "")
         //年龄

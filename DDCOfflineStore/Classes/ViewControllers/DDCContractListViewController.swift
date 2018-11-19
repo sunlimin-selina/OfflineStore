@@ -34,7 +34,7 @@ class DDCContractListViewController: UIViewController {
         _tableView.delegate = self
         _tableView.dataSource = self
         _tableView.isUserInteractionEnabled = true
-        _tableView.separatorColor = UIColor.white
+        _tableView.separatorColor = UIColor.clear
         _tableView.layer.cornerRadius = 5
         //设置上拉加载的footer动画
         let footer = MJRefreshAutoGifFooter {
@@ -64,7 +64,8 @@ class DDCContractListViewController: UIViewController {
     private var orderingUpdate: ((_ newOrdering: String) -> Void)?
     private var page: UInt = 0
     private var status: DDCContractStatus = .all
-    
+    private var type: DDCContractType = .personalRegular
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.barStyle = .black
@@ -94,6 +95,7 @@ class DDCContractListViewController: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
     }
+   
 }
 
 // MARK: private
@@ -150,7 +152,7 @@ extension DDCContractListViewController {
 // MARK: API
 extension DDCContractListViewController {
     func getData() {
-        DDCContractListAPIManager.getContractList(page: 0, status: 0, successHandler: { (contractList) in
+        DDCContractListAPIManager.getContractList(page: 0, status: 0, type: 0, successHandler: { (contractList) in
             if (contractList.count < 10)
             {
                 //                self.view.collectionHolderView.collectionView.footerHidden = YES 
@@ -180,7 +182,7 @@ extension DDCContractListViewController {
                     weakSelf?.dismiss(animated: true, completion: {
                         blockStatus = .all
                         // 请求后台
-                        weakSelf?.loadContractList(status: blockStatus, completionHandler: { (success) in
+                        weakSelf?.loadContractList(status: blockStatus, type: self.type, completionHandler: { (success) in
                             //                                weakSelf?.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus])
                         })
                     })
@@ -229,10 +231,10 @@ extension DDCContractListViewController: UITableViewDataSource , UITableViewDele
 // MARK: API
 extension DDCContractListViewController {
     @objc func getContractList() {
-        self.loadContractList(status: self.status, completionHandler: nil)
+        self.loadContractList(status: self.status, type: self.type, completionHandler: nil)
     }
     
-    func loadContractList(status: DDCContractStatus,completionHandler:((_ success: Bool) -> Void)?) {
+    func loadContractList(status: DDCContractStatus, type:DDCContractType, completionHandler:((_ success: Bool) -> Void)?) {
         DDCTools.showHUD(view: self.view)
         if status != self.status {
             self.page = 0
@@ -240,7 +242,7 @@ extension DDCContractListViewController {
         
         DDCDefaultView.sharedView().clear()
 
-        DDCContractListAPIManager.getContractList(page: self.page, status: status.rawValue, successHandler: { (contractList) in
+        DDCContractListAPIManager.getContractList(page: self.page, status: status.rawValue, type: type.rawValue, successHandler: { (contractList) in
             if (status != self.status) {
                 self.contractArray = []
                 self.status = status
@@ -304,9 +306,11 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
                 // 获取status值
                 let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
                 let status: DDCContractStatus = DDCContractStatus(rawValue: UInt(statusArray.index(of: _selected as Any)))!
+                let type: DDCContractType = DDCContractType(rawValue: UInt(statusArray.index(of: _selected as Any)))!
+
                 // 关掉弹窗
                 weakSelf?.dismiss(animated: true, completion: {
-                    weakSelf?.loadContractList(status: status, completionHandler: { (success) in
+                    weakSelf?.loadContractList(status: status, type: type, completionHandler: { (success) in
                         callback(selected)
                     })
                 })

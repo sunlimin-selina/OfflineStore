@@ -36,7 +36,7 @@ class DDCAPIManager: NSObject {
     private var DDC_Base_Url = "https://offcourse.daydaycook.com.cn/daydaycook"
     private var DDC_Base_Staging_Url = "https://offline-course-s.daydaycook.com.cn/daydaycook"
     private var DDC_Base_Test_Url = "https://offline-course-t.daydaycook.com.cn/daydaycook"
-    private var DDC_Base_Dev_Url = "http://192.168.18.114:8088/daydaycook"
+    private var DDC_Base_Dev_Url = "http://192.168.18.168:8089/daydaycook"
 
     /// 当前环境
     private(set) var currentNetWork: NetworkEnvironment
@@ -96,7 +96,7 @@ class DDCAPIManager: NSObject {
 fileprivate(set) var DDC_Current_Url = DDCAPIManager.shared().baseUrl
 
 
-/// 成功h回调
+/// 成功回调
 typealias successClosure = (_ result: Dictionary<String, Any>?) -> ()
 
 /// 失败回调
@@ -148,7 +148,13 @@ class DDCHttpSessionsRequest: NSObject {
         var result: (code: Int, model: T?, message: String)
         if let res = response {
             //获取业务码
-            let code = Int(res["code"] as! String)!
+            var code = -10000
+            
+            if res["code"] is Int {
+                code = res["code"] as! Int
+            } else if res["code"] is String {
+                code = Int(res["code"] as! String)!
+            }
             
             //获取数据字典
             let dictData = (res["data"] as? Dictionary<String, Any>)
@@ -177,7 +183,13 @@ class DDCHttpSessionsRequest: NSObject {
         var result: (code: Int, data: AnyObject?, message: String)
         if let res = response {
             //获取业务码
-            let code = Int(res["code"] as! String)!
+            var code = -10000
+            
+            if res["code"] is Int {
+                code = res["code"] as! Int
+            } else if res["code"] is String {
+                code = Int(res["code"] as! String)!
+            }
             
             //获取数据字典
             let dictData = res["data"]
