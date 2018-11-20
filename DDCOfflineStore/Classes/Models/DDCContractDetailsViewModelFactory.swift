@@ -90,23 +90,23 @@ class DDCContractDetailsViewModelFactory: NSObject {
         return array
     }
     
-    class func integrateUserData(category: Array<String>?) -> [DDCContractDetailsViewModel] {
+    class func integrateUserData(model: DDCContractModel) -> [DDCContractDetailsViewModel] {
         var array: [DDCContractDetailsViewModel] = Array()
         
         //当前客户
-        let customer: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前客户", describe: "")
+        let customer: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前客户", describe: model.customer?.name)
         //客户手机
-        let phone: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "客户手机", describe: "")
+        let phone: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "客户手机", describe: model.customer?.mobile)
         //客户类型
-        let type: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "客户类型", describe: "")
+        let type: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "客户类型", describe: model.customer?.type?.rawValue == 1 ? "正式客户" : "潜在客户")
         //进行订单
-        let order: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "进行订单", describe: "")
+        let order: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "进行订单", describe: "\(model.contractUseCount ?? 0)")
         //全部订单
-        let allOrder: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "全部订单", describe: "")
+        let allOrder: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "全部订单", describe: "\(model.contractAllCount ?? 0)")
         //约课次数
-        let times: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "约课次数", describe: "")
+        let times: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "约课次数", describe: "\(model.reservationCount ?? 0) (3个月内)")
         //最后课程
-        let finishCourse: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "最后课程", describe: "")
+        let finishCourse: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "最后课程", describe: model.lastCourseName)
        
         array = [customer, phone, type, order, allOrder, times, finishCourse]
         return array

@@ -67,10 +67,9 @@ class DDCContractOptionsAPIManager: NSObject {
     }
     
     class func getSampleCourse(storeId: Int, successHandler: @escaping (_ result: [DDCCourseModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/contract/getGroupAddressSellingCourse.do")
-        let params: Dictionary<String, Any>? = ["addressId": storeId, "contractType": "2"]
-        
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/master/title/list.do")
+
+        DDCHttpSessionsRequest.callGetRequest(url: url, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)

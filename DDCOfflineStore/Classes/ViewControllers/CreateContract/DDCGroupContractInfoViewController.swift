@@ -321,31 +321,6 @@ extension DDCGroupContractInfoViewController: UICollectionViewDelegate {
 // MARK: API
 extension DDCGroupContractInfoViewController {
     
-    func getPackagesForContract() {
-        DDCTools.showHUD(view: self.view)//(self.model?.currentStore?.id)!
-        DDCContractOptionsAPIManager.packagesForContract(storeId: 4, successHandler: { (array) in
-            DDCTools.hideHUD()
-            if (array?.count)! > 0 {
-                self.package = array!
-            }
-        }) { (error) in
-            DDCTools.hideHUD()
-        }
-    }
-    
-    func getCustomCourse() {
-        DDCTools.showHUD(view: self.view)//(self.model?.currentStore?.id)!
-        DDCContractOptionsAPIManager.getCustomCourse(storeId: 4, successHandler: { (array) in
-            DDCTools.hideHUD()
-            if let models = array {
-                self.items = models
-                self.collectionView.reloadData()
-            }
-        }) { (error) in
-            DDCTools.hideHUD()
-        }
-    }
-    
     func getGroupCourse() {
         DDCTools.showHUD(view: self.view)
         DDCContractOptionsAPIManager.getGroupCourse(storeId: 4, successHandler: { (tuple) in
@@ -428,11 +403,7 @@ extension DDCGroupContractInfoViewController {
                 self.specs = self.package[self.pickerView.selectedRow(inComponent: 0)].skuList!
                 if self.pickerView.selectedRow(inComponent: 0) == 1 {
                     self.isPickedCustom = true
-                    if self.items.count <= 0 {
-                        self.getCustomCourse()
-                    } else {
-                        self.collectionView.reloadData()
-                    }
+                    self.collectionView.reloadData()
                     return
                 }
             }

@@ -12,6 +12,8 @@ import ObjectMapper
 class DDCChannelModel: Mappable {
     var id: Int?
     var name: String?
+    var code: String?
+    var descStatus: Bool?
     
     init() {
     }
@@ -23,6 +25,8 @@ class DDCChannelModel: Mappable {
     func mapping(map: Map) {
         id <- map["id"]
         name <- map["name"]
+        code <- map["code"]
+        descStatus <- map["descStatus"]
     }
     
 }

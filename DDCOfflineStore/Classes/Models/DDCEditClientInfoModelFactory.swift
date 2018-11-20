@@ -9,12 +9,18 @@
 import Foundation
 
 class DDCEditClientInfoModelFactory: NSObject {
+
     class func integrateData(model: DDCCustomerModel, channels:[DDCChannelModel]?) -> [DDCContractInfoViewModel] {
         var array: [DDCContractInfoViewModel] = Array()
         //手机号码
         let phoneNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "手机号码", placeholder: "请输入手机号码", text: model.mobile ?? "", isRequired: true, tips: "创建后无法修改，请谨慎录入")
         //姓名
         let name: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "姓名", placeholder: "请输入姓名", text: model.name ?? "", isRequired: true, tips: "")
+        if model.type == DDCCustomerType.potential {
+            name.descriptions = "意向"
+        } else if model.type == DDCCustomerType.regular {
+            name.descriptions = "会员"
+        } 
         //性别
         let sex: String = (model.sex != nil) ? DDCContract.genderArray[(model.sex!.rawValue)]: ""
         let gender: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "性别", placeholder: "性别", text: sex, isRequired: true, tips: "")
@@ -30,30 +36,33 @@ class DDCEditClientInfoModelFactory: NSObject {
         let careerText: String = model.career != nil ? DDCContract.occupationArray[(model.career?.rawValue)!]: ""
         let career: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "职业", placeholder: "请选择职业", text: careerText, isRequired: false, tips: "")
         //渠道
-        let channel: DDCContractInfoViewModel = DDCEditClientInfoModelFactory.channelViewModel(model: model, channels: channels)
+        let channel: DDCChannelModel? = DDCEditClientInfoModelFactory.channelViewModel(model: model, channels: channels)
+        let userChannel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text: channel != nil ? channel!.name!: "", isRequired: true, tips: "")
+
         //渠道详情
-        let channelDetail: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道详情", placeholder: "请录入详情", text: model.channelDesc ?? "", isRequired: true, tips: "")
+        let channelDetail: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道详情", placeholder: "请录入详情", text: model.channelDesc ?? "", isRequired:  channel != nil ? channel!.descStatus!: false, tips: "")
         //是否会员介绍
-        let memberReferral: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "是否会员介绍", placeholder: "请选择", text:(model.introduceMobile != nil && (model.introduceMobile?.count)! > 0) ? "是" : "否", isRequired: true, tips: "")
+        
+        let memberReferral: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "是否会员介绍", placeholder: "请选择", text: (model.type == DDCCustomerType.regular || model.type == DDCCustomerType.potential) ? ((model.introduceMobile != nil && (model.introduceMobile?.count)! > 0) ? "是" : "否") : "否", isRequired: true, tips: "")
         
         //责任销售
         let dutyUserName: String = (model.dutyUserName != nil ? model.dutyUserName: DDCStore.sharedStore().user?.name)!
         let sales: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "责任销售", placeholder: "责任销售", text:dutyUserName, isRequired: false, tips: "")
         
-        array = [phoneNumber, name, gender, birthday, age, email, career, channel, channelDetail, memberReferral, sales]
+        array = [phoneNumber, name, gender, birthday, age, email, career, userChannel, channelDetail, memberReferral, sales]
         
         return array
     }
     
-    class func reloadData(models: [DDCContractInfoViewModel], isReferral: Bool) -> [DDCContractInfoViewModel] {
+    class func reloadData(models: [DDCContractInfoViewModel], customer: DDCCustomerModel?, isReferral: Bool) -> [DDCContractInfoViewModel] {
         var newModels = models
 
         if isReferral {
             if newModels.count < 12 {
                 //介绍会员电话
-                let memberPhone: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: "请输入会员电话", text:"", isRequired: true, tips: "")
+                let memberPhone: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: "请输入会员电话", text: customer?.mobile ?? "", isRequired: true, tips: "")
                 //介绍会员姓名
-                let memberName: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "介绍会员姓名", placeholder: "请输入会员电话后验证", text:"", isRequired: false, tips: "")
+                let memberName: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "介绍会员姓名", placeholder: "请输入会员电话后验证", text: customer?.name ?? "", isRequired: false, tips: "")
                 
                 newModels.insert(memberPhone, at: 10)
                 newModels.insert(memberName, at: 11)
@@ -68,14 +77,14 @@ class DDCEditClientInfoModelFactory: NSObject {
         return newModels
     }
     
-    class func channelViewModel(model: DDCCustomerModel, channels: [DDCChannelModel]?) -> DDCContractInfoViewModel{
+    class func channelViewModel(model: DDCCustomerModel, channels: [DDCChannelModel]?) -> DDCChannelModel?{
         if let array = channels {
             let channels: NSArray = array as NSArray
-
+            
             if let channelId = model.channelCode{
                 let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
                     if let object = channelModel as? DDCChannelModel{
-                        return object.id == Int(channelId)
+                        return object.code == channelId
                     }
                     return false
                 }
@@ -89,10 +98,10 @@ class DDCEditClientInfoModelFactory: NSObject {
                     } else {
                         string = channel.name ?? ""
                     }
-                    return DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text:channel != nil ? string!: "", isRequired: true, tips: "")
+                    return channel
                 }
             }
         }
-        return DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text:"", isRequired: true, tips: "")
+        return nil
     }
 }

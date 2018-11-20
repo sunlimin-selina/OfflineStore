@@ -32,7 +32,8 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     var currentTextField: UITextField?
     var memberReferral = ["是","否"]
     var showHint: Bool = false
-    
+    var isFilled: Bool = false
+
     private lazy var contentView: UIView = {
         var _contentView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: screen.width, height: screen.height))
         _contentView.backgroundColor = UIColor.white
@@ -123,7 +124,7 @@ extension DDCEditClientInfoViewController {
         let customer: DDCCustomerModel = DDCCustomerModel()
         self.model = DDCContractModel()
         self.model?.customer = customer
-        self.model!.customer?.mobile = self.models[DDCClientTextFieldType.phone.rawValue].text
+        self.model!.customer?.mobile = DDCTools.removeWhiteSpace(string: self.models[DDCClientTextFieldType.phone.rawValue].text!)
         self.model!.customer?.name = self.models[DDCClientTextFieldType.name.rawValue].text
         //性别
         let genderArray: NSArray = DDCContract.genderArray as NSArray
@@ -140,7 +141,7 @@ extension DDCEditClientInfoViewController {
         self.model!.customer?.email = self.models[DDCClientTextFieldType.email.rawValue].text
         //职业
         let occupationArray: NSArray = DDCContract.occupationArray as NSArray
-//        self.model?.customer?.career = String(occupationArray.index(of: self.models[DDCClientTextFieldType.career.rawValue].text as Any))
+        self.model?.customer?.career = DDCOccupation(rawValue: occupationArray.index(of: self.models[DDCClientTextFieldType.career.rawValue].text as Any))
         //渠道
         if let channels: NSArray = (self.channels! as NSArray) {
             let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
@@ -150,20 +151,26 @@ extension DDCEditClientInfoViewController {
                 return false
             }
             if idx != NSNotFound {
-                self.model?.customer!.channelCode = "\(self.channels![idx].name!)"
+                self.model?.customer!.channelCode = "\(self.channels![idx].code!)"
             }
         }
         
         //渠道详情
-        self.model!.customer?.channelDesc = self.models[DDCClientTextFieldType.channelDetail.rawValue].text
+        self.model!.customer?.channelDesc = self.models[DDCClientTextFieldType.channelDetail.rawValue].text ?? ""
         //是否会员介绍
-        self.model!.customer?.isReferral = self.models[DDCClientTextFieldType.memberReferral.rawValue].text == "是" ? 0: 1
-        //会员手机号
-        self.model!.customer?.introduceMobile = self.models[DDCClientTextFieldType.introduceMobile.rawValue].text
-        //会员姓名
-        self.model!.customer?.introduceName = self.models[DDCClientTextFieldType.introduceName.rawValue].text
-        //责任销售
-        self.model!.responsibleUsername = self.models[DDCClientTextFieldType.sales.rawValue].text
+        self.model!.customer?.isReferral = self.models[DDCClientTextFieldType.memberReferral.rawValue].text == "是" ? true : false
+        if (self.model!.customer?.isReferral)! {
+            //会员手机号
+            self.model!.customer?.introduceMobile = self.models[DDCClientTextFieldType.introduceMobile.rawValue].text ?? ""
+            //会员姓名
+            self.model!.customer?.introduceName = self.models[DDCClientTextFieldType.introduceName.rawValue].text ?? ""
+            //责任销售
+            self.model!.responsibleUsername = self.models[DDCClientTextFieldType.sales.rawValue].text
+        } else {
+            //责任销售
+            self.model!.responsibleUsername = self.models[DDCClientTextFieldType.sales.rawValue - 2].text
+        }
+        
     }
     
     func forwardNextPage() {
@@ -208,10 +215,10 @@ extension DDCEditClientInfoViewController {
         DDCEditClientInfoAPIManager.uploadUserInfo(model: self.model!, successHandler: { (model) in
             DDCTools.hideHUD()
             
+            self.delegate?.nextPage(model: model!)
         }) { (error) in
             DDCTools.hideHUD()
         }
-        self.delegate?.nextPage(model: self.model!)
     }
     
     func configureCell(cell: DDCTitleTextFieldCell, model: DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
@@ -227,7 +234,7 @@ extension DDCEditClientInfoViewController {
             cell.textFieldView.button.setTitle("获取用户信息", for: .normal)
         } else if (indexPath.item == 1 && model.text!.count > 0) {
             cell.textFieldView.type = .labelButton
-            cell.subtitle.text = "会员"//model.descriptions
+            cell.subtitle.text = model.descriptions
             cell.textFieldView.addSubview(cell.subtitle)
             cell.textFieldView.button.isHidden = true
             cell.subtitle.snp.makeConstraints { (make) in
@@ -375,8 +382,7 @@ extension DDCEditClientInfoViewController {
                 self.models[DDCClientTextFieldType.memberReferral.rawValue].text = isMemberReferral
                 self.models[DDCClientTextFieldType.memberReferral.rawValue].isFill = true
                 //是否为会员推荐
-                self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, isReferral: (isMemberReferral == "是") ? true: false)
-                self.collectionView.reloadData()
+                self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, customer: nil, isReferral: (isMemberReferral == "是") ? true: false)
             }
         default:
             break
@@ -395,8 +401,11 @@ extension DDCEditClientInfoViewController {
 // MARK: API
 extension DDCEditClientInfoViewController {
     @objc func getUserInfo(button: CountButton) {
+        if self.isFilled {
+            return
+        }
         DDCTools.showHUD(view: self.view)
-        
+        self.resignFirstResponder()
         if let _textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
             let phoneNumber: String = DDCTools.removeWhiteSpace(string: _textFieldView.textField.text!)
             
@@ -409,18 +418,27 @@ extension DDCEditClientInfoViewController {
             DDCSystemUserLoginAPIManager.getUserInfo(phoneNumber: phoneNumber, successHandler: { (model) in
                 DDCTools.hideHUD()
                 if let _model = model {
-                    self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
-                    self.models = DDCEditClientInfoModelFactory.integrateData(model:  _model, channels: self.channels)
-                    self.collectionView.reloadData()
+                    if _textFieldView.textField.tag == 0 {
+                        self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
+                        self.models = DDCEditClientInfoModelFactory.integrateData(model:  _model, channels: self.channels)
+                        self.isFilled = true
+                        self.update()
+                        self.model?.customer?.type = _model.type
+                        self.collectionView.reloadData()
+                        
+                    } else {
+                        self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, customer: model, isReferral: true)
+                    }
+                    
                 } else {
                     self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
+                    self.model?.customer?.type = DDCCustomerType.new
                 }
             }) { (error) in
                 DDCTools.hideHUD()
                 self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
             }
         }
-        
     }
     
     func getChannels() {
@@ -475,6 +493,13 @@ extension DDCEditClientInfoViewController: UIPickerViewDelegate, UIPickerViewDat
 extension DDCEditClientInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.currentTextField = textField
+        let rawValue: Int = textField.tag
+        if (self.model?.customer?.type == DDCCustomerType.potential || self.model?.customer?.type == DDCCustomerType.regular) && (
+                rawValue == DDCClientTextFieldType.age.rawValue ||
+                rawValue == DDCClientTextFieldType.channel.rawValue ||
+                rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue || rawValue == DDCClientTextFieldType.memberReferral.rawValue || textField.tag == DDCClientTextFieldType.sales.rawValue) {
+            return false
+        }
         return true
     }
     
@@ -494,8 +519,6 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
             if (totalLength > 20) {//渠道详情不超过20字
                 return false
             }
-        } else if textField.tag == DDCClientTextFieldType.introduceName.rawValue || textField.tag == DDCClientTextFieldType.sales.rawValue{
-            return false
         }
         return true
     }
@@ -506,7 +529,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         if rawValue == DDCClientTextFieldType.phone.rawValue || rawValue == DDCClientTextFieldType.name.rawValue ||
            rawValue == DDCClientTextFieldType.age.rawValue ||
         rawValue == DDCClientTextFieldType.email.rawValue ||
-            rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue {
+            rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue || rawValue == DDCClientTextFieldType.memberReferral.rawValue {
             self.models[rawValue].text = textField.text
             self.models[rawValue].isFill = true
         }

@@ -11,7 +11,10 @@ import UIKit
 class DDCSelectStoreViewController: DDCChildContractViewController {
     var models: [DDCContractModel]?  = Array()
     var stores: [DDCCheckBoxModel]?  = Array()
-    var userInfo: [DDCContractDetailsViewModel] = DDCContractDetailsViewModelFactory.integrateUserData(category: nil)
+    var selectedStore: DDCCheckBoxModel?
+    var selectedType: DDCCheckBoxModel?
+    
+    var userInfo: [DDCContractDetailsViewModel] = Array()
     var saleTypes: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "体验课订单", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "普通合同", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "团体合同", isSelected: false)]
     
     lazy var collectionView: UICollectionView! = {
@@ -35,7 +38,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
             //            self.forwardNextPage()
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .forbidden, handler: {
-//            self.forwardNextPage()
+            self.forwardNextPage()
         }))
         return _bottomBar
     }()
@@ -47,6 +50,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
         self.setupViewConstraints()
         self.getStoresAndContractTypes()
         self.automaticallyAdjustsScrollViewInsets = false
+        self.userInfo = DDCContractDetailsViewModelFactory.integrateUserData(model: self.model!)
     }
     
 }
@@ -67,6 +71,24 @@ extension DDCSelectStoreViewController {
         })
     }
     
+    func forwardNextPage() {
+//        self.bottomBar.buttonArray![1].isEnabled = false
+        var canForward: Bool = true
+        
+//        if !canForward {
+//            self.bottomBar.buttonArray![0].isEnabled = true
+//            DDCTools.showHUD(view: self.view)
+//        }
+        
+        DDCTools.showHUD(view: self.view)
+        DDCEditClientInfoAPIManager.uploadUserInfo(model: self.model!, successHandler: { (model) in
+            DDCTools.hideHUD()
+            
+            self.delegate?.nextPage(model: model!)
+        }) { (error) in
+            DDCTools.hideHUD()
+        }
+    }
 }
 
 // MARK: API
@@ -191,12 +213,14 @@ extension DDCSelectStoreViewController: UICollectionViewDelegateFlowLayout {
 
 extension DDCSelectStoreViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
         if indexPath.section == 1 {
             var store: DDCCheckBoxModel?
             for index in 0...((self.stores?.count)! - 1) {
                 store = self.stores![index]
                 if indexPath.row == index {
                     store!.isSelected = true
+                    selectedStore = store
                 } else {
                     store!.isSelected = false
                 }
@@ -207,10 +231,15 @@ extension DDCSelectStoreViewController: UICollectionViewDelegate {
                 type = self.saleTypes[index]
                 if indexPath.row == index {
                     type!.isSelected = true
+                    selectedType = type
                 } else {
                     type!.isSelected = false
                 }
             }
+        }
+        if selectedStore != nil && selectedType != nil {
+            self.bottomBar.buttonArray![1].isEnabled = true
+            self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
         }
         self.collectionView.reloadSections([indexPath.section])
     }

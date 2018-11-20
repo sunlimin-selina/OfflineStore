@@ -59,8 +59,10 @@ class DDCTools: NSObject{
         
         let date: Date = _dateFormatter.date(from: dateString)!
         let timeInterval: TimeInterval = date.timeIntervalSince1970
+
         let timeStamp: Int = Int(timeInterval)
-        return timeStamp
+        let timeIntervalS: String = "\(timeStamp)000"
+        return Int(timeIntervalS)!
     }
     
     class func validateString(string: String) -> Bool {

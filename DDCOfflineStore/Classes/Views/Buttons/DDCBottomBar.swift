@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class DDCBottomBar: UIView {
-    var buttonArray: Array<UIButton>? = Array()
+    var buttonArray: [DDCBarButton]? = Array()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

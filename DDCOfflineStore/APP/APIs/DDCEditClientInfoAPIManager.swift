@@ -12,9 +12,9 @@ import ObjectMapper
 
 class DDCEditClientInfoAPIManager: NSObject {
     class func availableChannels(successHandler: @escaping (_ result: [DDCChannelModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/contract/userChannelList.do")
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/channel/list.do")
         
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: nil, success: { (response) in
+        DDCHttpSessionsRequest.callGetRequest(url: url, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)
@@ -38,16 +38,19 @@ class DDCEditClientInfoAPIManager: NSObject {
     }
     
     class func uploadUserInfo(model: DDCContractModel, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/user/registerLineUser.do")
-        var params: Dictionary<String,String> = ["userName": model.customer!.mobile!,
-                                                 "lineUserName": model.customer!.name!,
-                                                 "sex": "\(model.customer!.sex!.rawValue - 1)",
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/register.do")
+        let params: Dictionary<String,Any> = ["mobile": model.customer!.mobile!,
+                                                 "name": model.customer!.name!,
+                                                 "sex": 1,
             "birthday": "\(model.customer!.birthday!)",
-            "lineUserEmail": model.customer!.email!,
-//            "lineUserCareer": model.customer!.career!.rawValue as String,
-            "channel": model.customer!.channelCode!,
-            "type": "3",
-            "uid": "\(DDCStore.sharedStore().user!.id!)"]
+            "career": model.customer!.career!.rawValue + 1,
+            "email": model.customer!.email!,
+            "channelCode": model.customer!.channelCode!,
+            "channelDesc": model.customer!.channelDesc!,
+            "isIntroduce": model.customer!.isReferral,
+            "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile as Any : "",
+            "introduceName": (model.customer!.introduceName != nil) ? model.customer!.introduceName as Any : "",
+            "dutyUserId": (model.customer!.dutyUserId != nil) ? model.customer!.dutyUserId as Any : DDCStore.sharedStore().user?.id as Any]
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
@@ -57,11 +60,13 @@ class DDCEditClientInfoAPIManager: NSObject {
             }
             if let data = tuple.data {
                 if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                    let model: DDCContractModel = DDCContractModel(JSON: _data)!
+                    let response: DDCContractModel = DDCContractModel(JSON: _data)!
+                    model.customer!.userid = (_data["userId"] as! Int)
+                    model.contractUseCount = response.contractUseCount
+                    model.contractAllCount = response.contractAllCount
                     successHandler(model)
+                    return
                 }
-                successHandler(nil)
-                return
             }
             successHandler(nil)
         }) { (error) in

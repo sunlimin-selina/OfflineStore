@@ -18,6 +18,12 @@ enum DDCContractStatus: UInt , Codable{
     case cancel //已取消        -> 新增 5:取消
 }
 
+enum DDCCustomerType: Int , Codable{
+    case new //新用户
+    case regular  //正式客户
+    case potential //潜在客户
+}
+
 enum DDCContractType: UInt , Codable{
     case personalRegular //个人正式课
     case personalSample //个人体验课

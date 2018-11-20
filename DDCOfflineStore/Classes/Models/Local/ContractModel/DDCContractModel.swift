@@ -30,6 +30,12 @@ class DDCContractModel: Mappable {
     var signedUsername: String?
     var responsibleUsername: String?
     
+    //当前订单状态
+    var contractUseCount: Int?
+    var contractAllCount: Int?
+    var reservationCount: Int?
+    var lastCourseName: String?
+    
     let payMethodTransform = TransformOf<DDCPayMethod, String>(fromJSON: { (value: String?) -> DDCPayMethod? in
         if let _value = value {
             let intValue = Int(value!)
@@ -69,6 +75,11 @@ class DDCContractModel: Mappable {
         createdUsername <- map["realCreateUserName"]
         signedUsername <- map["belongCreateUserName"]
         responsibleUsername <- map["createUser.name"]
+        
+        contractUseCount <- map["contractUseCount"]
+        contractAllCount <- map["contractAllCount"]
+        reservationCount <- map["reservationCount"]
+        lastCourseName <- map["lastCourseName"]
     }
     
 }

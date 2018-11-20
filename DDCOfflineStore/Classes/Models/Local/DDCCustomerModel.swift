@@ -10,7 +10,7 @@ import Foundation
 import ObjectMapper
 
 class DDCCustomerModel: Mappable {
-    var id: Int?
+    var userid: Int?
     var mobile: String?
     var name: String?
     var age: String?
@@ -20,14 +20,14 @@ class DDCCustomerModel: Mappable {
     var career: DDCOccupation?
     var channelCode: String?
     var channelDesc: String?
-    var type: DDCContractType?
+    var type: DDCCustomerType?
     
     var introduceMobile: String?
     var introduceName: String?
     var dutyUserName: String?
     var dutyUserId: Int?
 
-    var isReferral: Int?
+    var isReferral: Bool = false
     var formattedBirthday: String?
 
     init() {
@@ -39,11 +39,12 @@ class DDCCustomerModel: Mappable {
     // Mappable
     func mapping(map: Map) {
         
-        id <- map["id"]
+        userid <- map["userid"]
         mobile <- map["mobile"]
         name <- map["name"]
         email <- map["email"]
         sex <- map["sex"]
+        type <- map["type"]
         birthday <- map["birthday"]
         career <- map["career"]
         channelCode <- map["channelCode"]
@@ -52,6 +53,7 @@ class DDCCustomerModel: Mappable {
         introduceName <- map["introduceName"]
         dutyUserId <- map["dutyUserId"]
         dutyUserName <- map["dutyUserName"]
+
         if let _birthday = birthday {
             self.formattedBirthday = DDCTools.date(from: _birthday)
         }

@@ -82,7 +82,7 @@ class DDCContractDetailsAPIManager: NSObject {
     }
     
     class func getContractDetails(detailId: Int ,successHandler: @escaping (_ result: DDCContractModel) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/contract/detail.do")
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/contract/detail.do")
         let param: Dictionary = ["id":detailId]
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: param, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
