@@ -28,13 +28,9 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
     var items: [DDCCourseModel] = Array()
     var package: [DDCContractPackageModel] = Array()
     var specs: [DDCContractPackageCategoryModel] = Array()
-    var contractType: DDCCourseType {
-        get {
-            return .sample //self.model.contractType.id
-        }
-    }
+
     var checkBoxControls: [DDCCheckBoxCellControl] = Array()
-    var isPickedPackage: Bool = false
+    var pickedPackage: Int?
     var isPickedCustom: Bool = false
     var orderRule = ["跳过","遵守"]
     
@@ -97,7 +93,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
-        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.contractType)
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType!)
         
         self.getPackagesForContract()
     }
@@ -205,8 +201,8 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             return CGSize.init(width: DDCAppConfig.width, height: 20)
         }  else if self.items.count > 0 && indexPath.section == 3 {
             return CGSize.init(width: DDCAppConfig.width, height: self.checkBoxControls.count > 0 ?self.checkBoxControls[indexPath.item].cellHeight(): 30)
-        } else if self.contractType == DDCCourseType.sample && indexPath.section == 1 {
-            return CGSize.zero
+        } else if self.model!.courseType! == DDCCourseType.sample && indexPath.section == 1 {
+            return CGSize.init(width: DDCAppConfig.width, height: 0.01)
         }
         return CGSize.init(width: DDCAppConfig.width, height: 100)
     }
@@ -285,8 +281,8 @@ extension DDCAddContractInfoViewController: UICollectionViewDelegate {
 extension DDCAddContractInfoViewController {
     
     func getPackagesForContract() {
-        DDCTools.showHUD(view: self.view)//(self.model?.currentStore?.id)!
-        DDCContractOptionsAPIManager.packagesForContract(storeId: 4, successHandler: { (array) in
+        DDCTools.showHUD(view: self.view)
+        DDCContractOptionsAPIManager.packagesForContract(storeId: self.model!.currentStore!.id!, successHandler: { (array) in
             DDCTools.hideHUD()
             if (array?.count)! > 0 {
                 self.package = array!
@@ -297,8 +293,8 @@ extension DDCAddContractInfoViewController {
     }
     
     func getCustomCourse() {
-        DDCTools.showHUD(view: self.view)//(self.model?.currentStore?.id)!
-        DDCContractOptionsAPIManager.getCustomCourse(storeId: 4, successHandler: { (array) in
+        DDCTools.showHUD(view: self.view)
+        DDCContractOptionsAPIManager.getCustomCourse(storeId: self.model!.currentStore!.id!, successHandler: { (array) in
             DDCTools.hideHUD()
             if let models = array {
                 self.items = models
@@ -309,6 +305,20 @@ extension DDCAddContractInfoViewController {
         }
     }
     
+    func getCourseSpec() {
+        guard self.pickedPackage != nil else {
+            return
+        }
+        DDCTools.showHUD(view: self.view)
+        DDCContractOptionsAPIManager.getCourseSpec(packageId: self.pickedPackage! , successHandler: { (array) in
+            DDCTools.hideHUD()
+            if let models = array {
+                self.specs = models
+            }
+        }) { (error) in
+            DDCTools.hideHUD()
+        }
+    }
 }
 
 // MARK: PickerView
@@ -323,7 +333,7 @@ extension DDCAddContractInfoViewController: UIPickerViewDelegate, UIPickerViewDa
             return self.package.count
         case DDCAddContractTextFieldType.spec.rawValue:
             do {
-                guard self.isPickedPackage else {
+                guard self.pickedPackage != nil else {
                     return 1
                 }
                 return self.specs.count
@@ -341,7 +351,7 @@ extension DDCAddContractInfoViewController: UIPickerViewDelegate, UIPickerViewDa
             return self.package[row].name
         case DDCAddContractTextFieldType.spec.rawValue:
             do {
-                guard self.isPickedPackage else {
+                guard self.pickedPackage != nil else {
                     return "请先选择套餐"
                 }
                 return "\(self.specs[row].name ?? "") - \(self.specs[row].costPrice ?? 0)"
@@ -359,7 +369,7 @@ extension DDCAddContractInfoViewController: UIPickerViewDelegate, UIPickerViewDa
 extension DDCAddContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.currentTextField = textField
-        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && !self.isPickedPackage) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
+        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && self.pickedPackage != nil) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
             return false
         }
         return true
@@ -374,11 +384,15 @@ extension DDCAddContractInfoViewController {
         switch section {
         case DDCAddContractTextFieldType.package.rawValue:
             do {
+                guard self.package.count > 0 else {
+                    return
+                }
                 self.models[DDCAddContractTextFieldType.package.rawValue].text = self.package[self.pickerView.selectedRow(inComponent: 0)].name
                 self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
-                self.isPickedPackage = true
+                self.pickedPackage = self.package[self.pickerView.selectedRow(inComponent: 0)].id
+                self.models[DDCAddContractTextFieldType.spec.rawValue].text = ""
+                self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = false
                 self.isPickedCustom = false
-                self.specs = self.package[self.pickerView.selectedRow(inComponent: 0)].skuList!
                 if self.pickerView.selectedRow(inComponent: 0) == 1 {
                     self.isPickedCustom = true
                     if self.items.count <= 0 {
@@ -387,11 +401,13 @@ extension DDCAddContractInfoViewController {
                         self.collectionView.reloadData()
                     }
                     return
+                } else {
+                    self.getCourseSpec()
                 }
             }
         case DDCAddContractTextFieldType.spec.rawValue:
             do {
-                guard self.isPickedPackage else {
+                guard self.pickedPackage != nil else {
                     self.cancel()
                     return
                 }

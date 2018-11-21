@@ -9,17 +9,17 @@
 import Foundation
 import ObjectMapper
 
-class DDCStoreModel: Mappable {
+class DDCStoreModel: DDCCheckBoxModel {
     
-    var id: Int?
-    var title: String?
-    
-    required init?(map: Map) {
-    }
-    
-    func mapping(map: Map) {
-        id <- map["id"]
-        title <- map["name"]
-    }
+//    var id: Int?
+//    var title: String?
+//    
+//    required init?(map: Map) {
+//    }
+//    
+//    func mapping(map: Map) {
+//        id <- map["id"]
+//        title <- map["name"]
+//    }
 
 }

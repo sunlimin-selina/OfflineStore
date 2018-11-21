@@ -31,10 +31,9 @@ enum DDCContractType: UInt , Codable{
     case groupSample //团体体验课
 }
 
-enum DDCCourseType {
-    case none
-    case regular // 正式课程
+enum DDCCourseType: Int , Codable {
     case sample  // 体验课程
+    case regular // 正式课程
     case group  // 团体课程
 }
 

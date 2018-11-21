@@ -9,13 +9,12 @@
 import Foundation
 
 enum DDCGender: Int{
-    case unknown
     case male
     case female
+    case unknown
 }
 
 enum DDCOccupation: Int {
-    case none
     case employee
     case mother
     case freelancer

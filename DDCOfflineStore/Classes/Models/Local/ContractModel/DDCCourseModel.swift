@@ -19,7 +19,7 @@ class DDCCourseModel: DDCCheckBoxModel {
     override func mapping(map: Map) {
         courseid <- map["id"]
         categoryName <- map["categoryName"]
-        attributes <- map["optionAttributeValueList"]
+        attributes <- map["attribute"]
         courseName <- map["courseName"]
     }
     

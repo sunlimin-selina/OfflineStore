@@ -12,10 +12,10 @@ import ObjectMapper
 
 class DDCContractOptionsAPIManager: NSObject {
     class func packagesForContract(storeId: Int, successHandler: @escaping (_ result: [DDCContractPackageModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/contract/contractPackageSku.do")
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/package/list.do")
         let params = ["addressId": storeId]
         
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)
@@ -39,11 +39,39 @@ class DDCContractOptionsAPIManager: NSObject {
         }
     }
     
+    class func getCourseSpec(packageId: Int, successHandler: @escaping (_ result: [DDCContractPackageCategoryModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/package/sku/list.do")
+        let params = ["packageId": packageId]
+        
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
+            print(tuple.data)
+            var array: Array<DDCContractPackageCategoryModel> = Array()
+            if case let courses as Array<Any> = tuple.data {
+                for data in courses {
+                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
+                        let model: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel(JSON: _data)!
+                        array.append(model)
+                    }
+                }
+                successHandler(array)
+                return
+            }
+            successHandler(nil)
+        }) { (error) in
+            failHandler(error)
+        }
+    }
+    
     class func getCustomCourse(storeId: Int, successHandler: @escaping (_ result: [DDCCourseModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/contract/categorylist.do")
+        let url:String = DDC_Current_Url.appendingFormat("/server/customer/category/list.do")
         let params = ["addressId": storeId]
         
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)

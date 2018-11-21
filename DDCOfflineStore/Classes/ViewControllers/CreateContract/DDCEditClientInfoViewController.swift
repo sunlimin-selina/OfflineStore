@@ -277,7 +277,10 @@ extension DDCEditClientInfoViewController: UICollectionViewDelegate, UICollectio
         let model: DDCContractInfoViewModel = self.models[indexPath.item]
         self.configureCell(cell: cell, model: model, indexPath: indexPath, showHint: self.showHint)
         self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
-    
+        if (self.model?.customer?.type == DDCCustomerType.potential || self.model?.customer?.type == DDCCustomerType.regular) && indexPath.item > 6 {
+            cell.textFieldView.textField.clearButtonMode = .never
+            model.isFill = true
+        }
         return cell
     }
     
@@ -401,39 +404,50 @@ extension DDCEditClientInfoViewController {
 // MARK: API
 extension DDCEditClientInfoViewController {
     @objc func getUserInfo(button: CountButton) {
-        if self.isFilled {
-            return
-        }
-        DDCTools.showHUD(view: self.view)
         self.resignFirstResponder()
         if let _textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
             let phoneNumber: String = DDCTools.removeWhiteSpace(string: _textFieldView.textField.text!)
-            
             guard DDCTools.isPhoneNumber(number: phoneNumber) else {
                 self.view.makeDDCToast(message: "手机号有误，请检查后重试", image: UIImage.init(named: "addCar_icon_fail")!)
-                DDCTools.hideHUD()
                 return
             }
             
+            //判断介绍会员是否为当前用户
+            if phoneNumber == self.model?.customer?.mobile {
+                if _textFieldView.textField.tag != 0 {
+                    self.view.makeDDCToast(message: "介绍会员不能为当前客户", image: UIImage.init(named: "addCar_icon_fail")!)
+                }
+                return
+            }
+            
+            DDCTools.showHUD(view: self.view)
+
             DDCSystemUserLoginAPIManager.getUserInfo(phoneNumber: phoneNumber, successHandler: { (model) in
                 DDCTools.hideHUD()
                 if let _model = model {
                     if _textFieldView.textField.tag == 0 {
                         self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
-                        self.models = DDCEditClientInfoModelFactory.integrateData(model:  _model, channels: self.channels)
-                        self.isFilled = true
-                        self.update()
+                        self.model = DDCEditClientInfoModelFactory.update(customer: _model)
                         self.model?.customer?.type = _model.type
-                        self.collectionView.reloadData()
-                        
+                        self.models = DDCEditClientInfoModelFactory.integrateData(model: self.model!.customer!, channels: self.channels)
                     } else {
-                        self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, customer: model, isReferral: true)
+                        let customer: DDCCustomerModel = DDCCustomerModel.init()
+                        customer.introduceMobile = model?.mobile
+                        customer.introduceName = model?.name
+                        self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, customer: customer, isReferral: true)
                     }
-                    
                 } else {
-                    self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
-                    self.model?.customer?.type = DDCCustomerType.new
+                    if _textFieldView.textField.tag == 0 {
+                        self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
+                        self.models = DDCEditClientInfoModelFactory.integrateData(model: DDCCustomerModel(), channels: self.channels)
+                        self.model = DDCEditClientInfoModelFactory.update(customer: DDCCustomerModel())
+                        self.model?.customer?.mobile = phoneNumber
+                        self.model?.customer?.type = DDCCustomerType.new
+                    } else {
+                        self.view.makeDDCToast(message: "无法找到对应客户，请检查", image: UIImage.init(named: "addCar_icon_fail")!)
+                    }
                 }
+                self.collectionView.reloadData()
             }) { (error) in
                 DDCTools.hideHUD()
                 self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
@@ -497,7 +511,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         if (self.model?.customer?.type == DDCCustomerType.potential || self.model?.customer?.type == DDCCustomerType.regular) && (
                 rawValue == DDCClientTextFieldType.age.rawValue ||
                 rawValue == DDCClientTextFieldType.channel.rawValue ||
-                rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue || rawValue == DDCClientTextFieldType.memberReferral.rawValue || textField.tag == DDCClientTextFieldType.sales.rawValue) {
+                rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue || rawValue == DDCClientTextFieldType.memberReferral.rawValue || rawValue == DDCClientTextFieldType.sales.rawValue ) {
             return false
         }
         return true
@@ -529,7 +543,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         if rawValue == DDCClientTextFieldType.phone.rawValue || rawValue == DDCClientTextFieldType.name.rawValue ||
            rawValue == DDCClientTextFieldType.age.rawValue ||
         rawValue == DDCClientTextFieldType.email.rawValue ||
-            rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue || rawValue == DDCClientTextFieldType.memberReferral.rawValue {
+            rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue  {
             self.models[rawValue].text = textField.text
             self.models[rawValue].isFill = true
         }

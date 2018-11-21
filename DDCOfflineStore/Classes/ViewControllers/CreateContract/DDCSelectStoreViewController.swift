@@ -12,7 +12,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
     var models: [DDCContractModel]?  = Array()
     var stores: [DDCCheckBoxModel]?  = Array()
     var selectedStore: DDCCheckBoxModel?
-    var selectedType: DDCCheckBoxModel?
+    var selectedType: Int?
     
     var userInfo: [DDCContractDetailsViewModel] = Array()
     var saleTypes: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "体验课订单", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "普通合同", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "团体合同", isSelected: false)]
@@ -40,6 +40,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
         _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .forbidden, handler: {
             self.forwardNextPage()
         }))
+        _bottomBar.buttonArray![1].isEnabled = false
         return _bottomBar
     }()
     
@@ -51,6 +52,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
         self.getStoresAndContractTypes()
         self.automaticallyAdjustsScrollViewInsets = false
         self.userInfo = DDCContractDetailsViewModelFactory.integrateUserData(model: self.model!)
+        
     }
     
 }
@@ -81,13 +83,10 @@ extension DDCSelectStoreViewController {
 //        }
         
         DDCTools.showHUD(view: self.view)
-        DDCEditClientInfoAPIManager.uploadUserInfo(model: self.model!, successHandler: { (model) in
-            DDCTools.hideHUD()
-            
-            self.delegate?.nextPage(model: model!)
-        }) { (error) in
-            DDCTools.hideHUD()
-        }
+        self.model!.currentStore = (self.selectedStore as! DDCStoreModel)
+        self.model!.courseType = DDCCourseType(rawValue: self.selectedType!)
+        
+        self.delegate?.nextPage(model: self.model!)
     }
 }
 
@@ -98,7 +97,7 @@ extension DDCSelectStoreViewController {
         DDCTools.showHUD(view: self.view)
         DDCStoreAndContractTypeAPIManager.getStoresAndContractTypes(successHandler: { (array) in
             DDCTools.hideHUD()
-            self.stores = DDCCheckBoxModel.modelTransformation(models: array)
+            self.stores = array
             self.collectionView.reloadData()
         }) { (error) in
             DDCTools.hideHUD()
@@ -231,7 +230,7 @@ extension DDCSelectStoreViewController: UICollectionViewDelegate {
                 type = self.saleTypes[index]
                 if indexPath.row == index {
                     type!.isSelected = true
-                    selectedType = type
+                    selectedType = index
                 } else {
                     type!.isSelected = false
                 }

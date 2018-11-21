@@ -35,7 +35,7 @@ class DDCCircularTextFieldView: UIView {
         _textField.autocapitalizationType = .none
         _textField.clearButtonMode = .always
         _textField.adjustsFontSizeToFitWidth = true
-        _textField.keyboardType = .numberPad
+        _textField.keyboardType = .default
         _textField.keyboardAppearance = .default
         _textField.font = UIFont.systemFont(ofSize: 20.0)
         return _textField

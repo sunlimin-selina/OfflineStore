@@ -41,7 +41,7 @@ class DDCCreateContractViewController: UIViewController{
     
     var subviewControllers: [DDCChildContractViewController] {
         get {
-            return self.createChildViewControllers(type: .groupRegular)
+            return self.createChildViewControllers(type: .group)
         }
     }
     
@@ -141,7 +141,7 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
         self.pageViewController.setViewControllers([viewController], direction: .reverse, animated: true, completion: nil)
     }
     
-    func createChildViewControllers(type: DDCContractType) -> [DDCChildContractViewController] {
+    func createChildViewControllers(type: DDCCourseType) -> [DDCChildContractViewController] {
         var subviewControllers: [DDCChildContractViewController] = Array()
         
         let customerViewController: DDCEditClientInfoViewController  = DDCEditClientInfoViewController()
@@ -154,12 +154,11 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
         storeViewController.delegate = self
         subviewControllers.append(storeViewController)
         
-        if type == DDCContractType.groupSample || type == DDCContractType.groupRegular { //判断课程类型
+        if type == DDCCourseType.group { //判断课程类型
             let groupContractViewController: DDCGroupContractInfoViewController = DDCGroupContractInfoViewController()
             groupContractViewController.index = 2
             groupContractViewController.delegate = self
             subviewControllers.append(groupContractViewController)
-
         } else {
             let contractViewController: DDCAddContractInfoViewController = DDCAddContractInfoViewController()
             contractViewController.index = 2

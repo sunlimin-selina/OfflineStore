@@ -11,7 +11,7 @@ import ObjectMapper
 
 class DDCCheckBoxModel: Mappable {
     
-    var id: Int?
+    var id: CLong?
     var title: String?
     var discription: String?
     var isSelected: Bool = false
@@ -40,16 +40,16 @@ class DDCCheckBoxModel: Mappable {
         title <- map["name"]
     }
     
-    class func  modelTransformation(models: [DDCStoreModel]?) -> [DDCCheckBoxModel] {
-        var array: [DDCCheckBoxModel] = []
-        
-        if let stores = models,
-            models!.count > 0{
-            for store in stores {
-                let model: DDCCheckBoxModel = DDCCheckBoxModel.init(id: store.id, title: store.title, isSelected: false)
-                array.append(model)
-            }
-        }
-        return array
-    }
+//    class func  modelTransformation(models: [DDCStoreModel]?) -> [DDCCheckBoxModel] {
+//        var array: [DDCCheckBoxModel] = []
+//        
+//        if let stores = models,
+//            models!.count > 0{
+//            for store in stores {
+//                let model: DDCCheckBoxModel = DDCCheckBoxModel.init(id: store.id, title: store.title, isSelected: false)
+//                array.append(model)
+//            }
+//        }
+//        return array
+//    }
 }

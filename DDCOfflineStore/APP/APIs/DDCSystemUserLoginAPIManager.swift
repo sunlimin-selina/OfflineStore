@@ -41,6 +41,7 @@ class DDCSystemUserLoginAPIManager: NSObject {
                 return 
             }
             if case let data as Dictionary<String, Any> = tuple.data {
+                print(data)
                 let user: DDCCustomerModel = DDCCustomerModel(JSON: data)!
                 successHandler(user)
                 return

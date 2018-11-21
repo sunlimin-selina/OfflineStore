@@ -122,7 +122,13 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //当前门店
         let store: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前门店", describe: model?.currentStore?.title)
         //销售类型
-        let contractType: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "销售类型", describe: "")
+        var courseType: String = "新建体验课订单"
+        if model?.courseType == .regular {
+            courseType = "新建正式课电子合同"
+        } else if model?.courseType == .group{
+            courseType = "新建团体课电子合同"
+        }
+        let contractType: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "销售类型", describe: courseType)
         
         array = [customer, phone, store, contractType]
         return array

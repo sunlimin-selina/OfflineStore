@@ -400,7 +400,7 @@ extension DDCGroupContractInfoViewController {
                 self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
                 self.isPickedPackage = true
                 self.isPickedCustom = false
-                self.specs = self.package[self.pickerView.selectedRow(inComponent: 0)].skuList!
+//                self.specs = self.package[self.pickerView.selectedRow(inComponent: 0)].skuList!
                 if self.pickerView.selectedRow(inComponent: 0) == 1 {
                     self.isPickedCustom = true
                     self.collectionView.reloadData()

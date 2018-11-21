@@ -43,7 +43,7 @@ class DDCEditClientInfoAPIManager: NSObject {
                                                  "name": model.customer!.name!,
                                                  "sex": 1,
             "birthday": "\(model.customer!.birthday!)",
-            "career": model.customer!.career!.rawValue + 1,
+            "career": model.customer!.career != nil ? model.customer!.career!.rawValue + 1 : 7,
             "email": model.customer!.email!,
             "channelCode": model.customer!.channelCode!,
             "channelDesc": model.customer!.channelDesc!,

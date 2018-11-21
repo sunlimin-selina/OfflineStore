@@ -18,65 +18,79 @@ class DDCContractPackageModel: DDCCheckBoxModel {
         case aging // 按时效
     }
 
+    var code: String?
     var name: String?
+    var courseType: DDCCourseType?
+    var startUseTime: CLong?
+    var brand: Int?
+    
     var packageType: DDCRegularCoursePurchaseType?
     var customSkuConfig: Int?//自选套餐标志(1自选)
     var modifySkuPrice: Bool?//修改金额标志
-    var addressUseType: Bool?//是否单店有效标志，0是单店
 
-    var virtualSkuList: Array<Any>?
-    var startUseTime: CLong?
-    var beginDate: NSDate?
     var upgradeLimit: Int?
-    var courseType: DDCCourseType?//课程类型，正式课程1，体验课程2
-    var skuList: [DDCContractPackageCategoryModel]?
+    var courseLimit: Int?
+    var addressUseType: Int?
 
     override func mapping(map: Map) {
+        id <- map["id"]
+        code <- map["code"]
         name <- map["name"]
+        courseType <- map["type"]
+        startUseTime <- map["startUseTime"]
+        brand <- map["brand"]
+
         packageType <- map["packageType"]
         customSkuConfig <- map["customSkuConfig"]
         modifySkuPrice <- map["modifySkuPrice"]
         addressUseType <- map["addressUseType"]
         
-        virtualSkuList <- map["virtualSkuList"]
-        startUseTime <- map["startUseTime"]
-        beginDate <- map["beginDate"]
         upgradeLimit <- map["upgradeLimit"]
-        
-        courseType <- map["courseType"]
-        
-        skuList = self.getVirtualSkuList(array: virtualSkuList)
+        courseLimit <- map["courseLimit"]
     }
-    
-    func getVirtualSkuList(array: Array<Any>?) -> [DDCContractPackageCategoryModel] {
-        if array!.count > 0 {
-            var list: Array<Any> = Array()
-            for data in array! {
-                if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                    let model: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel(JSON: _data)!
-                    list.append(model)
-                }
-            }
-            return list as! [DDCContractPackageCategoryModel]
-        }
-       return []
-    }
+//
+//    func getVirtualSkuList(array: Array<Any>?) -> [DDCContractPackageCategoryModel] {
+//        if array!.count > 0 {
+//            var list: Array<Any> = Array()
+//            for data in array! {
+//                if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
+//                    let model: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel(JSON: _data)!
+//                    list.append(model)
+//                }
+//            }
+//            return list as! [DDCContractPackageCategoryModel]
+//        }
+//       return []
+//    }
 }
 
 class DDCContractPackageCategoryModel: DDCCheckBoxModel {
     var name: String?
-    var effectiveCount: Int?
+    var code: String?
+
+    var salePrice: Int?
+    var activityPrice: Int?
     var costPrice: Int?
+    
+    var effectiveCount: Int?
+    var haveTimeLimit: Int?
     var validPeriod: Int?
+    var validPeriodType: Int?
     var haveUseRule: Int?
 
     override func mapping(map: Map) {
-        id <- map["id"]
         name <- map["name"]
-        effectiveCount <- map["effectiveCount"]
+        code <- map["code"]
+
+        salePrice <- map["salePrice"]
+        activityPrice <- map["activityPrice"]
         costPrice <- map["costPrice"]
+
+        effectiveCount <- map["effectiveCount"]
         validPeriod <- map["validPeriod"]
         haveUseRule <- map["haveUseRule"]
+        validPeriodType <- map["validPeriodType"]
+        haveTimeLimit <- map["haveTimeLimit"]
         
         costPrice = costPrice! / 100
     }
