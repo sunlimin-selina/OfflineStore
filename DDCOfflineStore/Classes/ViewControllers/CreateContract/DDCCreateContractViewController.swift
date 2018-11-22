@@ -18,6 +18,41 @@ class DDCCreateContractViewController: UIViewController{
         case finishContract//创建成功
     }
     
+    lazy var customerViewController: DDCEditClientInfoViewController = {
+        let _customerViewController: DDCEditClientInfoViewController  = DDCEditClientInfoViewController()
+        _customerViewController.index = 0
+        _customerViewController.delegate = self
+        return _customerViewController
+    }()
+    
+    lazy var storeViewController: DDCSelectStoreViewController = {
+        let _storeViewController: DDCSelectStoreViewController = DDCSelectStoreViewController()
+        _storeViewController.index = 1
+        _storeViewController.delegate = self
+        return _storeViewController
+    }()
+    
+    lazy var groupContractViewController: DDCGroupContractInfoViewController = {
+        let _groupContractViewController: DDCGroupContractInfoViewController = DDCGroupContractInfoViewController()
+        _groupContractViewController.index = 2
+        _groupContractViewController.delegate = self
+        return _groupContractViewController
+    }()
+    
+    lazy var contractViewController: DDCAddContractInfoViewController = {
+        let _contractViewController: DDCAddContractInfoViewController = DDCAddContractInfoViewController()
+        _contractViewController.index = 2
+        _contractViewController.delegate = self
+        return _contractViewController
+    }()
+    
+    lazy var paymentViewController: DDCPaymentViewController = {
+        let _paymentViewController: DDCPaymentViewController = DDCPaymentViewController()
+        _paymentViewController.index = 3
+        _paymentViewController.delegate = self
+        return _paymentViewController
+    }()
+
     var progress: DDCContractProgress? {
         didSet {
             let interval: UInt = progress!.rawValue - DDCContractProgress.editClientInformation.rawValue
@@ -125,6 +160,9 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
         selectedIndex += 1
         self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
         
+        if selectedIndex == 2 && model.courseType == DDCCourseType.group {
+            selectedIndex = 4
+        }
         let viewController: DDCChildContractViewController = self.subviewControllers[selectedIndex]
         viewController.model = model
         self.pageViewController.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
@@ -144,33 +182,12 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
     func createChildViewControllers(type: DDCCourseType) -> [DDCChildContractViewController] {
         var subviewControllers: [DDCChildContractViewController] = Array()
         
-        let customerViewController: DDCEditClientInfoViewController  = DDCEditClientInfoViewController()
-        customerViewController.index = 0
-        customerViewController.delegate = self
-        subviewControllers.append(customerViewController)
-        
-        let storeViewController: DDCSelectStoreViewController = DDCSelectStoreViewController()
-        storeViewController.index = 1
-        storeViewController.delegate = self
-        subviewControllers.append(storeViewController)
-        
-        if type == DDCCourseType.group { //判断课程类型
-            let groupContractViewController: DDCGroupContractInfoViewController = DDCGroupContractInfoViewController()
-            groupContractViewController.index = 2
-            groupContractViewController.delegate = self
-            subviewControllers.append(groupContractViewController)
-        } else {
-            let contractViewController: DDCAddContractInfoViewController = DDCAddContractInfoViewController()
-            contractViewController.index = 2
-            contractViewController.delegate = self
-            subviewControllers.append(contractViewController)
-        }
-        
-        let paymentViewController: DDCPaymentViewController = DDCPaymentViewController()
-        paymentViewController.index = 3
-        paymentViewController.delegate = self
-        subviewControllers.append(paymentViewController)
-        
+        subviewControllers.append(self.customerViewController)
+        subviewControllers.append(self.storeViewController)
+        subviewControllers.append(self.contractViewController)
+        subviewControllers.append(self.paymentViewController)
+        subviewControllers.append(self.groupContractViewController)
+
         if self.model != nil {
             let viewController: DDCChildContractViewController = self.subviewControllers[Int(self.progress!.rawValue)]
             viewController.model = self.model

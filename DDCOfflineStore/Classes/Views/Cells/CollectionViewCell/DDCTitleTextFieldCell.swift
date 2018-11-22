@@ -64,6 +64,9 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
     
     func configureCell(model: DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
         let _showHint = showHint
+        if indexPath.section == 1 {
+            self.textFieldView.type = .labelButton
+        }
         self.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.tips!, isShowTips:_showHint)
         self.textFieldView.textField.attributedPlaceholder = NSAttributedString.init(string:model.placeholder!, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18.0)])
         self.textFieldView.textField.text = model.text

@@ -12,4 +12,5 @@ target 'DDCOfflineStore’ do
   pod 'Kingfisher'
   pod 'ObjectMapper'
   pod 'MJRefresh'
+  pod 'QRCodeReader.swift', '~> 9.0.1'
 end
