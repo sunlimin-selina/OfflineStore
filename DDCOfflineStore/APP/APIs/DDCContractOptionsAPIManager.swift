@@ -12,7 +12,7 @@ import ObjectMapper
 
 class DDCContractOptionsAPIManager: NSObject {
     class func packagesForContract(storeId: Int, successHandler: @escaping (_ result: [DDCContractPackageModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/customer/package/list.do")
+        let url:String = DDC_Current_Url.appendingFormat("/package/list.do")
         let params = ["addressId": storeId]
         
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
@@ -40,7 +40,7 @@ class DDCContractOptionsAPIManager: NSObject {
     }
     
     class func getCourseSpec(packageId: Int, successHandler: @escaping (_ result: [DDCContractPackageCategoryModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/customer/package/sku/list.do")
+        let url:String = DDC_Current_Url.appendingFormat("/package/sku/list.do")
         let params = ["packageId": packageId]
         
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
@@ -68,7 +68,7 @@ class DDCContractOptionsAPIManager: NSObject {
     }
     
     class func getCustomCourse(storeId: Int, successHandler: @escaping (_ result: [DDCCourseModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/customer/category/list.do")
+        let url:String = DDC_Current_Url.appendingFormat("/category/shop-list.do")
         let params = ["addressId": storeId]
         
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
@@ -95,7 +95,7 @@ class DDCContractOptionsAPIManager: NSObject {
     }
     
     class func getSampleCourse(storeId: Int, successHandler: @escaping (_ result: [DDCCourseModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/customer/master/title/list.do")
+        let url:String = DDC_Current_Url.appendingFormat("/course/experience-list.do")
 
         DDCHttpSessionsRequest.callGetRequest(url: url, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)

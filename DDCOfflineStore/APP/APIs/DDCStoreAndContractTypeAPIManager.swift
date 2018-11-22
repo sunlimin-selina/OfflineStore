@@ -12,7 +12,7 @@ import ObjectMapper
 
 class DDCStoreAndContractTypeAPIManager: NSObject {
     class func getStoresAndContractTypes(successHandler: @escaping (_ result: [DDCStoreModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/customer/address/list.do")
+        let url:String = DDC_Current_Url.appendingFormat("/shop/list.do")
         
         DDCHttpSessionsRequest.callGetRequest(url: url, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)

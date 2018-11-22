@@ -12,7 +12,7 @@ import ObjectMapper
 
 class DDCEditClientInfoAPIManager: NSObject {
     class func availableChannels(successHandler: @escaping (_ result: [DDCChannelModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/customer/channel/list.do")
+        let url:String = DDC_Current_Url.appendingFormat("/user/channel/list.do")
         
         DDCHttpSessionsRequest.callGetRequest(url: url, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
@@ -38,7 +38,7 @@ class DDCEditClientInfoAPIManager: NSObject {
     }
     
     class func uploadUserInfo(model: DDCContractModel, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/customer/register.do")
+        let url:String = DDC_Current_Url.appendingFormat("/user/register.do")
         let params: Dictionary<String,Any> = ["mobile": model.customer!.mobile!,
                                                  "name": model.customer!.name!,
                                                  "sex": 1,

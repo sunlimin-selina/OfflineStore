@@ -93,7 +93,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
-        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType!)
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
         
         self.getPackagesForContract()
     }
@@ -201,7 +201,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             return CGSize.init(width: DDCAppConfig.width, height: 20)
         }  else if self.items.count > 0 && indexPath.section == 3 {
             return CGSize.init(width: DDCAppConfig.width, height: self.checkBoxControls.count > 0 ?self.checkBoxControls[indexPath.item].cellHeight(): 30)
-        } else if self.model!.courseType! == DDCCourseType.sample && indexPath.section == 1 {
+        } else if self.model!.courseType == DDCCourseType.sample && indexPath.section == 1 {
             return CGSize.init(width: DDCAppConfig.width, height: 0.01)
         }
         return CGSize.init(width: DDCAppConfig.width, height: 100)

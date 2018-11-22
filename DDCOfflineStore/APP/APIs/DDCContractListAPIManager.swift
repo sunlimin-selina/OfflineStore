@@ -12,7 +12,7 @@ import ObjectMapper
 
 class DDCContractListAPIManager: NSObject {
     class func getContractList(page: UInt,status:UInt, type:UInt ,successHandler: @escaping (_ result: [DDCContractDetailsModel]) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/customer/contract/list.do")
+        let url:String = DDC_Current_Url.appendingFormat("/user/contract/list.do")
         let uid:String = String(format:"%d",(DDCStore.sharedStore().user?.id)!)
 
         let params: Dictionary<String, Any> = ["createUserId":uid , "currentPage":page ,"status":status , "type": type,  "pageSize": 10]

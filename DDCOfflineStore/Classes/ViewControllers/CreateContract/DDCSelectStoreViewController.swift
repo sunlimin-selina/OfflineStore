@@ -84,7 +84,7 @@ extension DDCSelectStoreViewController {
         
         DDCTools.showHUD(view: self.view)
         self.model!.currentStore = (self.selectedStore as! DDCStoreModel)
-        self.model!.courseType = DDCCourseType(rawValue: self.selectedType!)
+        self.model!.courseType = DDCCourseType(rawValue: self.selectedType!)!
         
         self.delegate?.nextPage(model: self.model!)
     }

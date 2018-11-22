@@ -24,7 +24,7 @@ class DDCContractModel: Mappable {
     var packageModel: DDCContractPackageModel?
     var packageCategoryModel: DDCContractPackageCategoryModel?
 
-    var courseType: DDCCourseType?
+    var courseType: DDCCourseType = .regular
     var contractPrice: String?
     var createdUsername: String?
     var signedUsername: String?

@@ -20,7 +20,7 @@ class DDCContractPackageModel: DDCCheckBoxModel {
 
     var code: String?
     var name: String?
-    var courseType: DDCCourseType?
+    var courseType: DDCCourseType = .regular
     var startUseTime: CLong?
     var brand: Int?
     
