@@ -42,5 +42,9 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>小煮想要访问你的相册</string>
+    <key>NSCameraUsageDescription</key>
+    <string>小煮想要使用你的相机</string>
 </dict>
 </plist>

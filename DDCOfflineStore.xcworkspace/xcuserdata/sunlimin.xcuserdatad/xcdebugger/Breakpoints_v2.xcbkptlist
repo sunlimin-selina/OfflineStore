@@ -13,5 +13,85 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/APP/APIs/DDCStoreOptionsAPIManager.swift"
+            timestampString = "564592189.14669"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "getRelationShopOptions(currentStoreId:successHandler:failHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/Classes/Models/DDCAddContractInfoModelFactory.swift"
+            timestampString = "564592189.147078"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "packData(model:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/APP/APIs/DDCCreateContractAPIManager.swift"
+            timestampString = "564592189.14756"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "saveContract(model:successHandler:failHandler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static DDCOfflineStore.DDCCreateContractAPIManager.saveContract(model: DDCOfflineStore.DDCContractModel, successHandler: (Swift.Optional&lt;Swift.Bool&gt;) -&gt; (), failHandler: (Swift.String) -&gt; ()) -&gt; ()"
+                  moduleName = "DDCOfflineStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCCreateContractAPIManager.swift"
+                  timestampString = "564592189.343791"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "489">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;) -&gt; () in static DDCOfflineStore.DDCCreateContractAPIManager.saveContract(model: DDCOfflineStore.DDCContractModel, successHandler: (Swift.Optional&lt;Swift.Bool&gt;) -&gt; (), failHandler: (Swift.String) -&gt; ()) -&gt; ()"
+                  moduleName = "DDCOfflineStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCCreateContractAPIManager.swift"
+                  timestampString = "564592189.347316"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

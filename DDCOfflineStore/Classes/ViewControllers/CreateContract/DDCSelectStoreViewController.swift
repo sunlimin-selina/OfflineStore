@@ -35,7 +35,7 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
-            //            self.forwardNextPage()
+            self.delegate?.previousPage(model: self.model!)
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .forbidden, handler: {
             self.forwardNextPage()
@@ -82,7 +82,6 @@ extension DDCSelectStoreViewController {
 //            DDCTools.showHUD(view: self.view)
 //        }
         
-        DDCTools.showHUD(view: self.view)
         self.model!.currentStore = (self.selectedStore as! DDCStoreModel)
         self.model!.courseType = DDCCourseType(rawValue: self.selectedType!)!
         
@@ -94,6 +93,9 @@ extension DDCSelectStoreViewController {
 extension DDCSelectStoreViewController {
     
     func getStoresAndContractTypes() {
+        if (self.stores?.count)! > 0 {
+            return
+        }
         DDCTools.showHUD(view: self.view)
         DDCStoreAndContractTypeAPIManager.getStoresAndContractTypes(successHandler: { (array) in
             DDCTools.hideHUD()

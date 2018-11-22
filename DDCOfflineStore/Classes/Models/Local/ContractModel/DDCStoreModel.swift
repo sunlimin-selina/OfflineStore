@@ -11,15 +11,14 @@ import ObjectMapper
 
 class DDCStoreModel: DDCCheckBoxModel {
     
-//    var id: Int?
-//    var title: String?
-//    
-//    required init?(map: Map) {
-//    }
-//    
-//    func mapping(map: Map) {
-//        id <- map["id"]
-//        title <- map["name"]
-//    }
+    var shopId: Int?
+    var shopName: String?
+    
+    override func mapping(map: Map) {
+        id <- map["id"]
+        title <- map["name"]
+        shopId <- map["shopId"]
+        shopName <- map["shopName"]
+    }
 
 }

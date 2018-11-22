@@ -174,6 +174,9 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
         selectedIndex -= 1
         self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
 
+        if selectedIndex == 3 && model.courseType == DDCCourseType.group {
+            selectedIndex = 4
+        }
         let viewController: DDCChildContractViewController = self.subviewControllers[selectedIndex]
         viewController.model = model
         self.pageViewController.setViewControllers([viewController], direction: .reverse, animated: true, completion: nil)

@@ -11,7 +11,7 @@ import ObjectMapper
 
 class DDCContractPackageModel: DDCCheckBoxModel {
     
-    enum DDCRegularCoursePurchaseType {
+    enum DDCRegularCoursePurchaseType: Int {
         case none
         case category // 按分类
         case frequency  // 按次数
@@ -22,6 +22,8 @@ class DDCContractPackageModel: DDCCheckBoxModel {
     var name: String?
     var courseType: DDCCourseType = .regular
     var startUseTime: CLong?
+    var endEffectiveTime: CLong?
+
     var brand: Int?
     
     var packageType: DDCRegularCoursePurchaseType?

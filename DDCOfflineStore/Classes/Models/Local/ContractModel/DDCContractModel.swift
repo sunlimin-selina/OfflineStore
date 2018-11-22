@@ -29,6 +29,7 @@ class DDCContractModel: Mappable {
     var createdUsername: String?
     var signedUsername: String?
     var responsibleUsername: String?
+    var relationShops: [DDCStoreModel]?
     
     //当前订单状态
     var contractUseCount: Int?

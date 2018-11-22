@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVFoundation
+import QRCodeReader
 
 class DDCGroupContractInfoViewController: DDCChildContractViewController {
     enum DDCAddContractTextFieldType: Int{
@@ -41,12 +43,27 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
     
     var isPickedPackage: Bool = false
     var isPickedCustom: Bool = false
-    var orderRule = ["跳过","遵守"]
+    var orderRule: NSArray = ["跳过","遵守"]
+    
+    lazy var qrCodeReader: QRCodeReaderViewController = {
+        let builder = QRCodeReaderViewControllerBuilder {
+            $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
+        }
+        return QRCodeReaderViewController(builder: builder)
+    }()
     
     private lazy var datePickerView: UIDatePicker = {
         let _datePickerView = UIDatePicker.init(frame: CGRect.zero)
         _datePickerView.datePickerMode = .date
-        _datePickerView.maximumDate = Date()
+        //可修改期间范围为前2个月+后4个月
+        var calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+        var components: DateComponents = DateComponents.init()
+        components.setValue(-2, for: .month)
+        var minDate: Date = calendar.date(byAdding: components, to: Date())!
+        components.setValue(4, for: .month)
+        var maxDate: Date = calendar.date(byAdding: components, to: Date())!
+        _datePickerView.minimumDate = minDate
+        _datePickerView.maximumDate = maxDate
         return _datePickerView
     }()
     
@@ -71,6 +88,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
         _collectionView.showsHorizontalScrollIndicator = false
         _collectionView.register(DDCContractDetailsCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCContractDetailsCollectionViewCell.self))
         _collectionView.register(DDCTitleTextFieldCell.self, forCellWithReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
+        _collectionView.register(DDCTextFieldButtonCell.self, forCellWithReuseIdentifier: String(describing: DDCTextFieldButtonCell.self))
         _collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self))
         _collectionView.register(DDCCheckBoxWithTitleCollectionCell.self, forCellWithReuseIdentifier: String(describing: DDCCheckBoxWithTitleCollectionCell.self))
         _collectionView.register(DDCContractHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self))
@@ -87,7 +105,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
-            //            self.forwardNextPage()
+            self.delegate?.previousPage(model: self.model!)
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .forbidden, handler: {
             //            self.forwardNextPage()
@@ -105,6 +123,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
         self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.contractType)
         self.getGroupCourse()
+        self.getRelationShopOptions()
     }
 }
 
@@ -258,14 +277,14 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
         if section == 0 {
             return CGSize.init(width: DDCAppConfig.width, height: 70.0)
         }
-        return CGSize.zero
+        return CGSize.init(width: DDCAppConfig.width, height: 0.01)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if  section == 2 || section == 3 {
             return CGSize.init(width: DDCAppConfig.width, height: section == 2 ? 80.0 : 60.0)
         }
-        return CGSize.zero
+        return CGSize.init(width: DDCAppConfig.width, height: 0.01)
     }
     
     func collectionViewGroupCell(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell  {
@@ -275,6 +294,15 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             let control = DDCCheckBoxCellControl.init(cell: cell)
             control.configureCell(model: model, indexPath: indexPath)
             self.customCoursesControls.insert(control, at: indexPath.item)
+            return cell
+        } else if indexPath.section == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTextFieldButtonCell.self), for: indexPath) as! DDCTextFieldButtonCell
+            let model: DDCContractInfoViewModel = self.models[indexPath.section]
+            cell.configureCell(model: model, indexPath: indexPath, showHint: false)
+            self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
+            cell.textFieldView.textField.tag = indexPath.section
+            cell.textFieldView.textField.delegate = self
+            cell.button.addTarget(self, action: #selector(scanAction(_:)), for: .touchUpInside)
             return cell
         } else if indexPath.section == 3 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
@@ -331,6 +359,14 @@ extension DDCGroupContractInfoViewController {
             DDCTools.hideHUD()
         }
     }
+    
+    func getRelationShopOptions() {
+        DDCStoreOptionsAPIManager.getRelationShopOptions(currentStoreId: (self.model?.currentStore?.id)!, successHandler: { (stores) in
+            
+        }) { (error) in
+            
+        }
+    }
 }
 
 // MARK: PickerView
@@ -369,7 +405,7 @@ extension DDCGroupContractInfoViewController: UIPickerViewDelegate, UIPickerView
                 return "\(self.specs[row].name ?? "") - \(self.specs[row].costPrice ?? 0)"
             }
         case DDCAddContractTextFieldType.rule.rawValue:
-            return self.orderRule[row]
+            return self.orderRule[row] as! String
         default:
             return ""
         }
@@ -383,6 +419,9 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
         self.currentTextField = textField
         if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && !self.isPickedPackage) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
             return false
+        }
+        if textField.tag == DDCAddContractTextFieldType.rule.rawValue {
+            self.pickerView.selectRow(self.orderRule.index(of: textField.text as Any), inComponent: 0, animated: true)
         }
         return true
     }
@@ -419,7 +458,7 @@ extension DDCGroupContractInfoViewController {
                 self.models[DDCAddContractTextFieldType.money.rawValue].isFill = true
             }
         case DDCAddContractTextFieldType.rule.rawValue:
-            self.models[DDCAddContractTextFieldType.rule.rawValue].text = self.orderRule[self.pickerView.selectedRow(inComponent: 0)]
+            self.models[DDCAddContractTextFieldType.rule.rawValue].text = self.orderRule[self.pickerView.selectedRow(inComponent: 0)] as! String
             self.models[DDCAddContractTextFieldType.rule.rawValue].isFill = true
         case DDCAddContractTextFieldType.startDate.rawValue:
             do {
@@ -452,5 +491,34 @@ extension DDCGroupContractInfoViewController {
             }
         }
         self.collectionView.reloadData()
+    }
+    
+    @objc func scanAction(_ sender: AnyObject) {
+        self.qrCodeReader.delegate = self
+        
+        self.qrCodeReader.completionBlock = { (result: QRCodeReaderResult?) in
+            self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].text = result?.value
+            self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].isFill = true
+            self.collectionView.reloadSections([1])
+        }
+        
+        // Presents the readerVC as modal form sheet
+        self.qrCodeReader.modalPresentationStyle = .overFullScreen
+        present(self.qrCodeReader, animated: true, completion: nil)
+    }
+}
+
+// MARK: - QRCodeReaderViewController Delegate
+extension DDCGroupContractInfoViewController: QRCodeReaderViewControllerDelegate {
+    func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
+        reader.stopScanning()
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func readerDidCancel(_ reader: QRCodeReaderViewController) {
+        reader.stopScanning()
+        
+        dismiss(animated: true, completion: nil)
     }
 }
