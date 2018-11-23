@@ -20,67 +20,64 @@ class DDCAddContractInfoModelFactory: NSObject {
         }
         
     }
-    
+    //团体课程
     class func getGroupData(_ model: DDCContractModel?) -> [DDCContractInfoViewModel]? {
         var array: [DDCContractInfoViewModel] = Array()
         //默认信息
         let defaultInfo: DDCContractInfoViewModel = DDCContractInfoViewModel()
         //合同编号
-        let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: "请扫描合同编号", text: "", isRequired: true, tips: "")
+        let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: "请扫描合同编号", text: model?.code ?? "", isRequired: true, tips: "")
         //产品规格-正式课
         let specification: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "购买正式课程", text: "", isRequired: true, tips: "")
         //产品规格-体验课
         let sample: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "购买体验课程", text: "", isRequired: true, tips: "")
-        //课程进阶规则
-        let upgradeLimit: String = (model?.packageModel?.upgradeLimit == 1) ? "遵守":"跳过"
-        let orderRule: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "课程进阶规则", placeholder: "请选择课程进阶规则", text: "", isRequired: true,  tips: "")
-        //合同金额
-        let money: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: "", isRequired: true, tips: "")
-        //生效日期
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: dateFormatter.string(from: Date()), text: "", isRequired: false, tips: "")
-        //结束日期
-        let endDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "结束日期", placeholder: "根据课程购买数量自动计算得出", text: "", isRequired: false, tips: "")
-        //有效时间(有效时间≦本月剩余天数+48个月)
-        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: "根据课程购买数量自动计算得出", text:"", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
-        //有效门店
-        let store: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效门店", placeholder: DDCAddContractInfoModelFactory.getRelationShop(array: model?.relationShops), text: "", isRequired: false, tips: "")
-        
-        array = [defaultInfo, contractNumber, specification, sample, orderRule, money, startDate, endDate, effectiveTime, store]
-        return array
 
+        array = [defaultInfo, contractNumber, specification, sample]
+        return DDCAddContractInfoModelFactory.appendLatterPart(model: model, array: array)
     }
     
+    //正式和体验课程
     class func getRegularOrSampleData(model: DDCContractModel? , type: DDCCourseType) -> [DDCContractInfoViewModel]? {
         var array: [DDCContractInfoViewModel] = Array()
         //默认信息
         let defaultInfo: DDCContractInfoViewModel = DDCContractInfoViewModel()
         //合同编号
-        let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: "请扫描合同编号", text: "", isRequired: true, tips: "")
+        let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: "请扫描合同编号", text: model?.code ?? "", isRequired: true, tips: "")
         //产品套餐
         let title: String = (type == DDCCourseType.sample) ? "体验课课产品" : "正式课产品套餐"
-        let package: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: title, placeholder: "请选择产品套餐", text: "", isRequired: true, tips: "")//体验课
+        let package: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: title, placeholder: "请选择产品套餐", text: model?.packageModel?.name ?? "", isRequired: true, tips: "")
+        package.isFill = model?.packageModel?.name != nil ? true : false
         //产品规格
-        let specification: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "请选择产品规格", text: "", isRequired: true, tips: "")
+        let spec = ((model?.specs?.name) != nil) ? "\(model?.specs?.name ?? "") - \(model?.specs?.costPrice ?? 0)" : ""
+        let specification: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "请选择产品规格", text: spec, isRequired: true, tips: "")
+        specification.isFill = model?.specs?.name != nil ? true : false
+        
+        array = [defaultInfo, contractNumber, package, specification]
+        return DDCAddContractInfoModelFactory.appendLatterPart(model: model, array: array)
+    }
+    
+    //相同部分的model加载
+    class func appendLatterPart(model: DDCContractModel? , array: [DDCContractInfoViewModel]) -> [DDCContractInfoViewModel]?  {
+        let mutableArray: NSMutableArray = NSMutableArray.init(array: array)
         //课程进阶规则
         let upgradeLimit: String = (model?.packageModel?.upgradeLimit == 1) ? "遵守":"跳过"
         let orderRule: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "课程进阶规则", placeholder: "请选择课程进阶规则", text: upgradeLimit, isRequired: true,  tips: "")
         //合同金额
-        let money: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: "", isRequired: true, tips: "")
+        let money = ((model?.specs?.costPrice) != nil) ? "\(model?.specs?.costPrice ?? 0)" : ""
+        let costPrice: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: money, isRequired: true, tips: "")
+        costPrice.isFill = model?.specs?.costPrice != nil ? true : false
         //生效日期(今日生效)
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
-        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: dateFormatter.string(from: Date()), text: "", isRequired: false, tips: "(今日生效)")
-        //结束日期
-        let endDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "结束日期", placeholder: "根据课程购买数量自动计算得出", text: "", isRequired: false, tips: "")
+        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime), text: "", isRequired: false, tips: "(今日生效)")
         //有效时间(有效时间≦本月剩余天数+48个月)
-        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: "根据课程购买数量自动计算得出", text:"", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
+        let validPeriod = (model?.specs != nil) ? "\(model?.specs!.validPeriod ?? 0)月" : ""
+        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: validPeriod.count <= 0 ? "根据课程购买数量自动计算得出" : validPeriod, text: "", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
+        //结束日期
+        let endDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "结束日期", placeholder: model?.packageModel?.endEffectiveTime != nil ? DDCTools.date(from: (model?.packageModel?.endEffectiveTime)!) : "根据课程购买数量自动计算得出", text: "", isRequired: false, tips: "")
         //有效门店
         let store: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效门店", placeholder: DDCAddContractInfoModelFactory.getRelationShop(array: model?.relationShops), text: "", isRequired: false, tips: "")
-        
-        array = [defaultInfo, contractNumber, package, specification, orderRule, money, startDate, endDate, effectiveTime, store]
-        return array
+        let arr = [orderRule, costPrice, startDate, endDate, effectiveTime, store]
+        mutableArray.addObjects(from: arr)
+        return (mutableArray.copy() as! [DDCContractInfoViewModel])
     }
     
     class func getRelationShop(array: [DDCStoreModel]?) -> String {
@@ -105,28 +102,29 @@ extension DDCAddContractInfoModelFactory {
         let dictionary: Dictionary<String, Any> = [ "beginEffectiveTime": model.packageModel?.startUseTime as Any,
                                                     "channel": "",
                                                     "code":model.code as Any,
-                                                    "courseUseType": model.packageModel!.packageType as Any,
-                                                    "createUserId": model.customer?.dutyUserId as Any,
-                                                    "dealPrice":model.contractPrice as Any,
+                                                    "courseUseType": model.packageModel!.packageType?.rawValue as Any,
+                                                    "createUserId": (model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id)as Any,
+                                                    "dealPrice":model.specs?.costPrice as Any,
                                                     "dealShopId":model.currentStore?.id as Any,
-                                                    "dealUserId":model.customer?.dutyUserId as Any,
+                                                    "dealUserId":(model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id) as Any,
                                                     "endEffectiveTime":model.packageModel?.endEffectiveTime as Any,
             "operateBizType":"COURSE",
-            "operateUserId":model.customer?.dutyUserId as Any,
+            "operateUserId":(model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id) as Any,
             "operateUserType":2,
             "packageId":model.packageModel?.id as Any,
             "paltform":1,
             "paperBeginTime":model.packageModel?.startUseTime as Any,
             "paperEndTime":model.packageModel?.endEffectiveTime as Any,
-            "relationShops": model.relationShops as Any,//c转成数字z数组
+            "relationShops": DDCAddContractInfoModelFactory.getRelationShops(shops: model.relationShops!) as Any,
             "useInfos": DDCAddContractInfoModelFactory.getUserInfos(model: model),
             "remark":"",
             "sourcePaltform":1,
             "type":1,//合同类型（1, "个人正式课合同" 2, "个人体验课合同" 3, "团体正式课合同" 4, "团体体验课合同"）
             "upgradeLimit":1,//－－进阶规则（0, "不限制" 1, "限制"）
             "userId":model.customer?.userid as Any,
-            "virtualSkuId":model.packageCategoryModel?.id as Any
+            "virtualSkuId":model.specs?.id as Any
         ]
+        print(dictionary)
         return dictionary
     }
     
@@ -134,5 +132,27 @@ extension DDCAddContractInfoModelFactory {
         let dictionary: Dictionary<String, Any> = Dictionary()
         
         return [dictionary]
+    }
+    
+    class func getStartDate(datetime: Int?) -> String {
+        if datetime == nil {
+            return ""
+        }
+        let date = DDCTools.datetime(from: datetime)
+        var startDate: Date = Date()
+        if date.compare(Date()) == .orderedDescending {
+            startDate = date
+        }
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        return dateFormatter.string(from: startDate)
+    }
+    
+    class func getRelationShops(shops: [DDCStoreModel]) -> [Int]{
+        var shopIds: [Int] = Array()
+        for item in shops {
+            shopIds.append(item.shopId!)
+        }
+        return shopIds
     }
 }

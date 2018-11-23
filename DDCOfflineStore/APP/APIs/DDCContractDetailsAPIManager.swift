@@ -27,23 +27,23 @@ class DDCContractDetailsAPIManager: NSObject {
         
         workingGroup.enter()
         workingQueue.async {
-            DDCContractDetailsAPIManager.getContractDetails(detailId: detailId, successHandler: { (response)  in
-                model = response
-                if let modelId = response.currentStore?.id {
-                    DDCStoreOptionsAPIManager.getStoreOptions(currentStoreId: modelId, successHandler: { (array) in
-                        stores = array
-                        workingGroup.leave()
-                    }, failHandler: { (error) in
-                        errorMessage = error
-                        workingGroup.leave()
-                    })
-                } else {
-                    workingGroup.leave()
-                }
-            }, failHandler: { (error) in
-                errorMessage = error
-                workingGroup.leave()
-            })
+//            DDCContractDetailsAPIManager.getContractDetails(detailId: detailId, successHandler: { (response)  in
+//                model = response
+//                if let modelId = response.currentStore?.id {
+//                    DDCStoreOptionsAPIManager.getStoreOptions(currentStoreId: modelId, successHandler: { (array) in
+//                        stores = array
+//                        workingGroup.leave()
+//                    }, failHandler: { (error) in
+//                        errorMessage = error
+//                        workingGroup.leave()
+//                    })
+//                } else {
+//                    workingGroup.leave()
+//                }
+//            }, failHandler: { (error) in
+//                errorMessage = error
+//                workingGroup.leave()
+//            })
         }
         
         workingGroup.enter()
@@ -81,7 +81,7 @@ class DDCContractDetailsAPIManager: NSObject {
         }
     }
     
-    class func getContractDetails(detailId: Int ,successHandler: @escaping (_ result: DDCContractModel) -> (), failHandler: @escaping (_ error: String) -> ()) {
+    class func getContractDetails(detailId: Int ,successHandler: @escaping (_ result: DDCContractDetailModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/user/contract/detail.do")
         let param: Dictionary = ["id":detailId]
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: param, success: { (response) in
@@ -91,11 +91,11 @@ class DDCContractDetailsAPIManager: NSObject {
                 return
             }
             if case let data as Dictionary<String, Any> = tuple.data!["userContract"] {
-                let contractDetail: DDCContractModel = DDCContractModel(JSON: data)!
-                let subContract: DDCSubContractModel = DDCSubContractModel(JSON: data)!
-                contractDetail.subContract = subContract
+                let contractDetail: DDCContractDetailModel = DDCContractDetailModel(JSON: data)!
                 successHandler(contractDetail)
+                return
             }
+            successHandler(nil)
         }) { (error) in
             failHandler(error)
         }

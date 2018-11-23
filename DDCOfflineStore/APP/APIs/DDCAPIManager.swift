@@ -119,7 +119,12 @@ class DDCHttpSessionsRequest: NSObject {
     
     private static func callRequest(url: String, method: HTTPMethod, parameters: [String: Any]? = nil, success:@escaping successClosure, fail: @escaping failClosure) -> Void {
         
-        Alamofire.request(url, method: method, parameters: parameters).responseJSON { (response) in
+        var encoding: ParameterEncoding = URLEncoding.default
+        
+        if method == .post {
+            encoding = JSONEncoding.default
+        }
+        Alamofire.request(url, method: method, parameters: parameters, encoding: encoding).responseJSON { (response) in
             
             if response.result.isSuccess {
                 if let data = response.value {

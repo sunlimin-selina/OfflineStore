@@ -31,11 +31,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
     var groupItems: (customCourses: [DDCCourseModel]?, sampleCourses: [DDCCourseModel]?)?
     var package: [DDCContractPackageModel] = Array()
     var specs: [DDCContractPackageCategoryModel] = Array()
-    var contractType: DDCCourseType {
-        get {
-            return .group//self.model.contractType.id
-        }
-    }
+
     var groupCourses: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "购买正式课程", discription: "", isSelected: false) ,DDCCheckBoxModel.init(id: nil, title: "购买体验课程", discription: "", isSelected: false)]
     var pickedSection: Int = 999
     
@@ -121,7 +117,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
-        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.contractType)
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
         self.getGroupCourse()
         self.getRelationShopOptions()
     }
@@ -482,6 +478,11 @@ extension DDCGroupContractInfoViewController {
         var course: DDCCheckBoxModel?
         let index = (gesture.view?.tag)! - 2
         self.pickedSection = index
+        if index == 0 {
+            self.model?.contractType = .groupRegular
+        } else {
+            self.model?.contractType = .groupSample
+        }
         for idx in 0...(self.groupCourses.count - 1) {
             course = self.groupCourses[idx]
             if index == idx {

@@ -78,7 +78,7 @@ class DDCContractListViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = rightItem
         self.page = 0
 
-//        self.reloadPage()
+        self.reloadPage()
     }
     
     override func viewDidLoad() {

@@ -65,6 +65,14 @@ class DDCTools: NSObject{
         return Int(timeIntervalS)!
     }
     
+    class func dateToTimeInterval(from date: Date) -> Int {
+        let timeInterval: TimeInterval = date.timeIntervalSince1970
+        
+        let timeStamp: Int = Int(timeInterval)
+        let timeIntervalS: String = "\(timeStamp)000"
+        return Int(timeIntervalS)!
+    }
+    
     class func validateString(string: String) -> Bool {
         let rule: String = "[\\u4e00-\\u9fa5a-zA-Z]+[\\u4e00-\\u9fa5a-zA-Z\\s]*[\\u4e00-\\u9fa5a-zA-Z]+"
         return NSPredicate.init(format: "SELF MATCHES %@", rule).evaluate(with: string)

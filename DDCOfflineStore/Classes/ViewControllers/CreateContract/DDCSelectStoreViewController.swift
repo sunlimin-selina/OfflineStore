@@ -84,6 +84,11 @@ extension DDCSelectStoreViewController {
         
         self.model!.currentStore = (self.selectedStore as! DDCStoreModel)
         self.model!.courseType = DDCCourseType(rawValue: self.selectedType!)!
+        if self.model!.courseType == .regular {
+            self.model!.contractType = .personalRegular
+        } else if self.model!.courseType == .sample{
+            self.model!.contractType = .personalSample
+        }
         
         self.delegate?.nextPage(model: self.model!)
     }
@@ -221,7 +226,7 @@ extension DDCSelectStoreViewController: UICollectionViewDelegate {
                 store = self.stores![index]
                 if indexPath.row == index {
                     store!.isSelected = true
-                    selectedStore = store
+                    self.selectedStore = store
                 } else {
                     store!.isSelected = false
                 }
@@ -232,7 +237,7 @@ extension DDCSelectStoreViewController: UICollectionViewDelegate {
                 type = self.saleTypes[index]
                 if indexPath.row == index {
                     type!.isSelected = true
-                    selectedType = index
+                    self.selectedType = index
                 } else {
                     type!.isSelected = false
                 }

@@ -18,12 +18,12 @@ class DDCContractModel: Mappable {
     var payMethod: DDCPayMethod?
     
     var customer: DDCCustomerModel?
-    var contractType: DDCContractTypeModel?
     var currentStore: DDCStoreModel?
     var subContract: DDCSubContractModel?
     var packageModel: DDCContractPackageModel?
-    var packageCategoryModel: DDCContractPackageCategoryModel?
+    var specs: DDCContractPackageCategoryModel?
 
+    var contractType: DDCContractType?
     var courseType: DDCCourseType = .regular
     var contractPrice: String?
     var createdUsername: String?
@@ -69,7 +69,7 @@ class DDCContractModel: Mappable {
         
         subContract <- map["subContract"]
         packageModel <- map["packageModel"]
-        packageCategoryModel <- map["packageCategoryModel"]
+        specs <- map["packageCategoryModel"]
         courseType <- map["courseType"]
         contractPrice <- map["contractPrice"]
         

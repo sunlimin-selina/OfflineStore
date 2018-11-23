@@ -12,7 +12,7 @@ import ObjectMapper
 
 class DDCCreateContractAPIManager: NSObject {
     class func saveContract(model:DDCContractModel, successHandler: @escaping (_ success: Bool?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/daydaycook/contract/save.do")
+        let url:String = DDC_Current_Url.appendingFormat("/contract/save.do")
         let params: Dictionary<String, Any>? = DDCAddContractInfoModelFactory.packData(model: model)
         
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in

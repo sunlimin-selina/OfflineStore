@@ -32,7 +32,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
     var specs: [DDCContractPackageCategoryModel] = Array()
 
     var checkBoxControls: [DDCCheckBoxCellControl] = Array()
-    var pickedPackage: Int?
+    var pickedPackage: DDCContractPackageModel?
     var isPickedCustom: Bool = false
     var orderRule: NSArray = ["跳过","遵守"]
     
@@ -111,7 +111,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         self.setupViewConstraints()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
         self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
-        
+
         self.getPackagesForContract()
         self.getRelationShopOptions()
     }
@@ -313,6 +313,7 @@ extension DDCAddContractInfoViewController {
             DDCTools.hideHUD()
             if (array?.count)! > 0 {
                 self.package = array!
+                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
             }
         }) { (error) in
             DDCTools.hideHUD()
@@ -337,7 +338,7 @@ extension DDCAddContractInfoViewController {
             return
         }
         DDCTools.showHUD(view: self.view)
-        DDCContractOptionsAPIManager.getCourseSpec(packageId: self.pickedPackage! , successHandler: { (array) in
+        DDCContractOptionsAPIManager.getCourseSpec(packageId: (self.pickedPackage?.id)! , successHandler: { (array) in
             DDCTools.hideHUD()
             if let models = array {
                 self.specs = models
@@ -426,12 +427,14 @@ extension DDCAddContractInfoViewController {
                 guard self.package.count > 0 else {
                     return
                 }
-                self.models[DDCAddContractTextFieldType.package.rawValue].text = self.package[self.pickerView.selectedRow(inComponent: 0)].name
-                self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
-                self.pickedPackage = self.package[self.pickerView.selectedRow(inComponent: 0)].id
+                self.pickedPackage = self.package[self.pickerView.selectedRow(inComponent: 0)]
+                self.model!.packageModel = self.pickedPackage
+                self.model!.packageModel?.startUseTime = DDCTools.date(from: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime))
+                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
                 self.models[DDCAddContractTextFieldType.spec.rawValue].text = ""
                 self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = false
                 self.isPickedCustom = false
+
                 if self.pickerView.selectedRow(inComponent: 0) == 1 {
                     self.isPickedCustom = true
                     if self.items.count <= 0 {
@@ -450,10 +453,15 @@ extension DDCAddContractInfoViewController {
                     self.cancel()
                     return
                 }
-                self.models[DDCAddContractTextFieldType.spec.rawValue].text = "\(self.specs[self.pickerView.selectedRow(inComponent: 0)].name ?? "") - \(self.specs[self.pickerView.selectedRow(inComponent: 0)].costPrice ?? 0)"
-                self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
-                self.models[DDCAddContractTextFieldType.money.rawValue].text = "\(self.specs[self.pickerView.selectedRow(inComponent: 0)].costPrice ?? 0)"
-                self.models[DDCAddContractTextFieldType.money.rawValue].isFill = true
+                let spec: DDCContractPackageCategoryModel = self.specs[self.pickerView.selectedRow(inComponent: 0)]
+                self.model?.specs = spec
+                let endTime = (spec != nil) ? spec.validPeriod : 0
+                let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+                var components: DateComponents = DateComponents.init()
+                components.setValue(endTime, for: .month)
+                let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: model?.packageModel?.startUseTime))!
+                self.model?.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
             }
         case DDCAddContractTextFieldType.rule.rawValue:
             self.models[DDCAddContractTextFieldType.rule.rawValue].text = self.orderRule[self.pickerView.selectedRow(inComponent: 0)] as! String
@@ -505,6 +513,7 @@ extension DDCAddContractInfoViewController {
         self.qrCodeReader.completionBlock = { (result: QRCodeReaderResult?) in
             self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].text = result?.value
             self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].isFill = true
+            self.model?.code = result?.value
             self.collectionView.reloadSections([1])
         }
         

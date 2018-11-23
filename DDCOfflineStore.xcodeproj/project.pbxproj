@@ -106,6 +106,7 @@
 		D3ED086C2195525B001763E2 /* DDCRadioButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ED086B2195525B001763E2 /* DDCRadioButtonCollectionViewCell.swift */; };
 		D3ED086E219556D2001763E2 /* DDCSectionHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ED086D219556D2001763E2 /* DDCSectionHeaderFooterView.swift */; };
 		D3EEAE40217D7B8A0078737A /* DDCOrderingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EEAE3F217D7B8A0078737A /* DDCOrderingHeaderView.swift */; };
+		D3F6D46221A7FA5C00F57A34 /* DDCContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F6D46121A7FA5C00F57A34 /* DDCContractInfoViewController.swift */; };
 		D3F88199215F2A950091C61A /* DDCOfflineStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F88198215F2A950091C61A /* DDCOfflineStoreTests.swift */; };
 		D3F881A4215F2A950091C61A /* DDCOfflineStoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F881A3215F2A950091C61A /* DDCOfflineStoreUITests.swift */; };
 		D3F912C921A3ED5100E6373A /* DDCContractDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F912C821A3ED5100E6373A /* DDCContractDetailModel.swift */; };
@@ -235,6 +236,7 @@
 		D3ED086B2195525B001763E2 /* DDCRadioButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCRadioButtonCollectionViewCell.swift; sourceTree = "<group>"; };
 		D3ED086D219556D2001763E2 /* DDCSectionHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSectionHeaderFooterView.swift; sourceTree = "<group>"; };
 		D3EEAE3F217D7B8A0078737A /* DDCOrderingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOrderingHeaderView.swift; sourceTree = "<group>"; };
+		D3F6D46121A7FA5C00F57A34 /* DDCContractInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractInfoViewController.swift; sourceTree = "<group>"; };
 		D3F88180215F2A930091C61A /* DDCOfflineStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDCOfflineStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F88194215F2A950091C61A /* DDCOfflineStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDCOfflineStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F88198215F2A950091C61A /* DDCOfflineStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOfflineStoreTests.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				D3AE110A2181A13100E61E08 /* DDCSelectStoreViewController.swift */,
 				D34E2881219D81350089D6E4 /* DDCAddContractInfoViewController.swift */,
 				D3AE110D2181A13100E61E08 /* DDCGroupContractInfoViewController.swift */,
+				D3F6D46121A7FA5C00F57A34 /* DDCContractInfoViewController.swift */,
 				D3AE110B2181A13100E61E08 /* DDCPaymentViewController.swift */,
 			);
 			path = CreateContract;
@@ -957,6 +960,7 @@
 				D3FDEBA12186DEDD00856581 /* DDCEditClientInfoModelFactory.swift in Sources */,
 				D3184D2421901843006AAC2D /* DDCRadioWithImageView.swift in Sources */,
 				D3B607FF217499C20086387B /* DDCCircularTextFieldWithExtraButtonView.swift in Sources */,
+				D3F6D46221A7FA5C00F57A34 /* DDCContractInfoViewController.swift in Sources */,
 				D3DE3089217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift in Sources */,
 				D3276D812188425700D04E9F /* DDCToolbar.swift in Sources */,
 			);
