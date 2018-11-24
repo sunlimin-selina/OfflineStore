@@ -47,7 +47,7 @@ class DDCEditClientInfoAPIManager: NSObject {
             "email": model.customer!.email!,
             "channelCode": model.customer!.channelCode!,
             "channelDesc": model.customer!.channelDesc!,
-            "isIntroduce": model.customer!.isReferral,
+            "isIntroduce": model.customer!.isReferral ? 1 : 0,
             "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile as Any : "",
             "introduceName": (model.customer!.introduceName != nil) ? model.customer!.introduceName as Any : "",
             "dutyUserId": (model.customer!.dutyUserId != nil) ? model.customer!.dutyUserId as Any : DDCStore.sharedStore().user?.id as Any]

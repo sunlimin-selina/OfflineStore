@@ -485,7 +485,7 @@ extension DDCAddContractInfoViewController {
     }
    
     func forwardNextPage() {
-//        self.bottomBar.buttonArray![1].isEnabled = false
+        self.bottomBar.buttonArray![1].isEnabled = false
         
         for index in 1...(self.models.count - 1) {
             let model: DDCContractInfoViewModel = self.models[index]
@@ -503,6 +503,7 @@ extension DDCAddContractInfoViewController {
             self.delegate?.nextPage(model: self.model!)
         }) { (error) in
             DDCTools.hideHUD()
+            self.bottomBar.buttonArray![1].isEnabled = true
         }
 
     }

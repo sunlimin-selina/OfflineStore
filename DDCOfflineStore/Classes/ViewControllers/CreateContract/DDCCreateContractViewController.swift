@@ -138,6 +138,7 @@ class DDCCreateContractViewController: UIViewController{
         super.viewDidLoad()
         self.setupViewConstraint()
         self.title = "创建新订单"
+        self.navigationController!.interactivePopGestureRecognizer?.delegate = self
     }
 
     init(progress: DDCContractProgress, model: DDCContractModel?) {
@@ -153,6 +154,9 @@ class DDCCreateContractViewController: UIViewController{
 
 // MARK: Private
 extension DDCCreateContractViewController: DDCChildContractViewControllerDelegate{
+    override func navigationShouldPopMethod(){
+        self.goBack()
+    }
     
     func nextPage(model: DDCContractModel) {
         if self.progress!.rawValue >= self.subviewControllers.count {return}
@@ -256,4 +260,14 @@ extension DDCCreateContractViewController :UIPageViewControllerDelegate, UIPageV
         return self.subviewControllers[index]
     }
 
+}
+
+extension DDCCreateContractViewController: UIGestureRecognizerDelegate {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if children.count == 1 {
+            return false
+        }else{
+            return true
+        }
+    }
 }
