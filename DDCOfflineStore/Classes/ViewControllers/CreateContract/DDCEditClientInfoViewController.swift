@@ -214,8 +214,9 @@ extension DDCEditClientInfoViewController {
         DDCTools.showHUD(view: self.view)
         DDCEditClientInfoAPIManager.uploadUserInfo(model: self.model!, successHandler: { (model) in
             DDCTools.hideHUD()
-            
-            self.delegate?.nextPage(model: model!)
+            if let _model = model {
+                self.delegate?.nextPage(model: _model)
+            }
         }) { (error) in
             DDCTools.hideHUD()
         }

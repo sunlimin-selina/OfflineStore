@@ -58,18 +58,39 @@ class DDCEditClientInfoAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
+            DDCEditClientInfoAPIManager.getUserContractInfo(model: model, successHandler: { (model) in
+                successHandler(model)
+            }, failHandler: { (error) in
+                successHandler(nil)
+            })
+        }) { (error) in
+            failHandler(error)
+        }
+    }
+    
+    class func getUserContractInfo(model: DDCContractModel, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/user/contract_course_info.do")
+        let params: Dictionary<String,Any> = ["userId": model.customer!.userid,
+                                              "name": model.customer!.name!,
+                                              "mobile": model.customer!.mobile!]
+        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
             if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
-                case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
-                    let response: DDCContractModel = DDCContractModel(JSON: _data)!
-                    model.customer!.userid = (_data["userId"] as! Int)
-                    model.contractUseCount = response.contractUseCount
-                    model.contractAllCount = response.contractAllCount
-                    successHandler(model)
-                    return
-                }
+                case let _data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
+                let customer: DDCCustomerModel = DDCCustomerModel(JSON: _data)!
+                let contract: DDCContractModel = DDCContractModel(JSON: _data)!
+                contract.customer = customer
+                successHandler(contract)
+                return
+            }
             successHandler(nil)
         }) { (error) in
             failHandler(error)
+
         }
     }
 }

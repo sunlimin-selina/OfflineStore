@@ -100,7 +100,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCPaymentViewController.swift"
-                  timestampString = "565007585.562611"
+                  timestampString = "565009430.1106631"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "247"
@@ -115,7 +115,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCPaymentViewController.swift"
-                  timestampString = "565007585.5656689"
+                  timestampString = "565009430.112446"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "247"
@@ -148,7 +148,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCPaymentViewController.swift"
-                  timestampString = "565007585.575241"
+                  timestampString = "565009430.11833"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "107"
@@ -163,7 +163,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCPaymentViewController.swift"
-                  timestampString = "565007585.578925"
+                  timestampString = "565009430.120199"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "109"
@@ -196,7 +196,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCPaymentOptionsAPIManager.swift"
-                  timestampString = "565007585.589313"
+                  timestampString = "565009430.12616"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "96"
@@ -211,7 +211,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCPaymentOptionsAPIManager.swift"
-                  timestampString = "565007585.593155"
+                  timestampString = "565009430.127982"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "97"
@@ -320,23 +320,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-            timestampString = "565007585.133436"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "427"
-            endingLineNumber = "427"
-            landmarkName = "getUserInfo(button:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DDCOfflineStore/APP/APIs/DDCSystemUserLoginAPIManager.swift"
