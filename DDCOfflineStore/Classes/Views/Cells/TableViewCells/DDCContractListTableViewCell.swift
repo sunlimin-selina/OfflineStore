@@ -35,7 +35,6 @@ class DDCContractListTableViewCell: UITableViewCell {
     
     private lazy var contractSNLabel: UILabel = {
         let _contractSNLabel: UILabel = UILabel()
-        _contractSNLabel.text = "KC-020021802-151722255251"
         _contractSNLabel.textColor = DDCColor.fontColor.lightGray
         _contractSNLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         return _contractSNLabel
@@ -50,7 +49,6 @@ class DDCContractListTableViewCell: UITableViewCell {
     
     private lazy var contractNameLabel: UILabel = {
         let _contractNameLabel: UILabel = UILabel()
-        _contractNameLabel.text = "套餐名-规格名-29999"
         _contractNameLabel.textColor = DDCColor.fontColor.lightGray
         _contractNameLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         return _contractNameLabel
@@ -89,7 +87,7 @@ class DDCContractListTableViewCell: UITableViewCell {
     func setupViewConstraints() {
         let kMargin: CGFloat = 20.0
         let kHeight: CGFloat = 30.0
-        let kLabelHeight: CGFloat = 20.0
+        let kLabelHeight: CGFloat = 25.0
         let kOffset: CGFloat = 16.0
         let kLeftPadding: CGFloat = 10.0
         let kCenterOffset: CGFloat = 14.0
@@ -141,12 +139,15 @@ class DDCContractListTableViewCell: UITableViewCell {
         
     }
     
-    func configureCell(model: DDCContractDetailsModel) {
-        let title = "\(model.user!.name ?? "") \(model.user!.name ?? "")"
+    func configureCell(model: DDCContractListModel) {
+        let title = "\(model.lineUserName ?? "") \(model.mobile ?? "")"
         self.titleLabel.text = title
-        self.datetime.text = model.info!.createDateString
-        
-        let status: DDCStatusViewModel = DDCContract.statusPairings[(model.showStatus?.rawValue)!]!
+        self.datetime.text = DDCTools.date(from: model.createTime!)
+        let contractId: String = model.contractId != nil ? "\(model.title ?? "")-\(model.contractId!)" : "\(model.title ?? "")"
+        self.contractNameLabel.text = contractId
+        self.contractSNLabel.text = model.code
+
+        let status: DDCStatusViewModel = DDCContract.statusPairings[(model.status!.rawValue)]!
         self.subtitleLabel.text = status.title
         self.subtitleLabel.textColor = status.color
         self.icon.image = UIImage.init(named: status.imageName!)

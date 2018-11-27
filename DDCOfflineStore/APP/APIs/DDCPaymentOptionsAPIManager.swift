@@ -11,63 +11,6 @@ import Alamofire
 import ObjectMapper
 
 class DDCPaymentOptionsAPIManager: NSObject {
-    class func paymentOptions(contractId: String, price: String, successHandler: @escaping (_ result: (wechat: DDCOnlinePaymentOptionModel?, alipay: DDCOnlinePaymentOptionModel?, offline: [DDCPaymentOptionModel]?)?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let workingGroup = DispatchGroup()
-        let workingQueue = DispatchQueue(label: "request_queue")
-        
-        var result: (wechat: DDCOnlinePaymentOptionModel?, alipay: DDCOnlinePaymentOptionModel?, offline: [DDCPaymentOptionModel]?)
-        var wechat: DDCOnlinePaymentOptionModel?
-        var alipay: DDCOnlinePaymentOptionModel?
-        var offline: [DDCPaymentOptionModel]? = Array()
-        var errorMessage: String?
-
-        workingGroup.enter()
-        workingQueue.async {
-            DDCPaymentOptionsAPIManager.wechatPayment(contractId: contractId, price: price, successHandler: { (wechatModel) in
-                wechat = wechatModel
-                workingGroup.leave()
-            }, failHandler: { (error) in
-                errorMessage = error
-                workingGroup.leave()
-            })
-        }
-        
-        workingGroup.enter()
-        workingQueue.async {
-            DDCPaymentOptionsAPIManager.alipayPayment(contractId: contractId, price: price, successHandler: { (alipayModel) in
-                alipay = alipayModel
-                workingGroup.leave()
-            }, failHandler: { (error) in
-                errorMessage = error
-                workingGroup.leave()
-            })
-        }
-        
-        workingGroup.enter()
-        workingQueue.async {
-            DDCPaymentOptionsAPIManager.offlinePayment(successHandler: { (models) in
-                offline = models
-                workingGroup.leave()
-            }, failHandler: { (error) in
-                errorMessage = error
-                workingGroup.leave()
-            })
-        }
-        
-        workingGroup.notify(queue: workingQueue) {
-            DispatchQueue.main.async {
-                // 主线程中
-                if let _wechat = wechat,
-                    let _alipay = alipay,
-                    (offline?.count)! > 0 {
-                    result = (_wechat, _alipay, offline)
-                    successHandler(result)
-                } else {
-                    failHandler(errorMessage ?? "")
-                }
-            }
-        }
-    }
     
     class func wechatPayment(contractId: String, price: String, successHandler: @escaping (_ result: DDCOnlinePaymentOptionModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/server/payment/wxPaySign.do")
@@ -115,25 +58,55 @@ class DDCPaymentOptionsAPIManager: NSObject {
         }
     }
     
-    class func offlinePayment(successHandler: @escaping (_ result: [DDCPaymentOptionModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/offline/option/list.do")
+    class func paymentOption(phone: String, successHandler: @escaping(_ result: (online: DDCPaymentOptionModel?, offline: DDCPaymentOptionModel?)?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/pay/style/list.do")
+        let params: Dictionary<String, Any>? = ["platform": phone, "appType": ""]
+        var result: (online: DDCPaymentOptionModel?, offline: DDCPaymentOptionModel?)
         
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: nil, success: { (response) in
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)
                 return
             }
-            var array: [DDCPaymentOptionModel] = Array()
             if case let payments as Array<Any> = tuple.data {
                 for data in payments {
                     if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
                         let model: DDCPaymentOptionModel = DDCPaymentOptionModel(JSON: _data)!
-                        array.append(model)
+                        if model.code == "2" {
+                            result.offline = model
+                        } else {
+                            result.online = model
+                        }
                     }
                 }
-                successHandler(array)
+                successHandler(result)
                 return
+            }
+            successHandler(nil)
+        }) { (error) in
+            failHandler(error)
+        }
+    }
+    
+    class func createPaymentOption(model: DDCContractModel?, payChannel: String, payStyle: Int, successHandler: @escaping(_ result: DDCOnlinePaymentOptionModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/pay/order/create_pay.do")
+        let params: Dictionary<String, Any>? = ["amount": 10000, "contractNo": "www-ddc-000", "operateBizType":"COURSE", "operateUserId": 1, "operateUserType": 2, "payChannel": payChannel, "payStyle": payStyle, "sourcePaltform": 1]//model.contractPrice as Any
+        
+        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
+            if case let payments as Array<Any> = tuple.data {
+                for data in payments {
+                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
+                        let model: DDCOnlinePaymentOptionModel = DDCOnlinePaymentOptionModel(JSON: _data)!
+                        successHandler(model)
+                        return
+                    }
+                }
             }
             successHandler(nil)
         }) { (error) in

@@ -22,7 +22,8 @@ class DDCStoreAndContractTypeAPIManager: NSObject {
             }
             var array: Array<DDCStoreModel> = Array()
             
-            if case let stores as Array<Any> = tuple.data {
+            if tuple.data != nil ,
+                case let stores as Array<Any> = tuple.data {
                 for data in stores {
                     if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
                         let storeModel: DDCStoreModel = DDCStoreModel(JSON: _data)!

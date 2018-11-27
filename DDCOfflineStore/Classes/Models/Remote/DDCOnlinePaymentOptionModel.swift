@@ -10,17 +10,20 @@ import Foundation
 import ObjectMapper
 
 class DDCOnlinePaymentOptionModel: Mappable {
-    var code_url: String?
+    var contractNo: String?
     var out_trade_no: String?
     var qr_code: String?
-
+    var payOrderNo: String?
+    
+    
     required init?(map: Map) {
     }
     
     // Mappable
     func mapping(map: Map) {
-        code_url <- map["code_url"]
+        contractNo <- map["contractNo"]
         out_trade_no <- map["out_trade_no"]
         qr_code <- map["qr_code"]
+        payOrderNo <- map["payOrderNo"]
     }
 }

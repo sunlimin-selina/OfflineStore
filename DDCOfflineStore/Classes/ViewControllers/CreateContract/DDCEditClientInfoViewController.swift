@@ -424,7 +424,7 @@ extension DDCEditClientInfoViewController {
 
             DDCSystemUserLoginAPIManager.getUserInfo(phoneNumber: phoneNumber, successHandler: { (model) in
                 DDCTools.hideHUD()
-                if let _model = model {
+                if let _model = model { 
                     if _textFieldView.textField.tag == 0 {
                         self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
                         self.model = DDCEditClientInfoModelFactory.update(customer: _model)

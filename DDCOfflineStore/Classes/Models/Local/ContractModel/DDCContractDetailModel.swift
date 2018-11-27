@@ -13,9 +13,10 @@ class DDCContractDetailModel: Mappable {
     var code: String?
     var title: String?
     
-    var salePrice: String?
+    var salePrice: Int?
     var beginEffectiveTime: String?
     var endEffectiveTime: String?
+    var validPeriod: String?
     
     var channelName: String?
     var dealShopName: String?
@@ -25,12 +26,12 @@ class DDCContractDetailModel: Mappable {
     var dealUserName: String?
     var realUserName: String?
     
-    var tradeStatus: String?
+    var tradeStatus: DDCContractStatus?
     var payStyle: String?
     var lineUserName: String?
     
     var sex: String?
-    var birthday: String?
+    var birthday: Int?
     var username: String?
     
     var lineUserCareer: String?
@@ -54,6 +55,7 @@ class DDCContractDetailModel: Mappable {
         salePrice <- map["salePrice"]
         beginEffectiveTime <- map["beginEffectiveTime"]
         endEffectiveTime <- map["endEffectiveTime"]
+        validPeriod <- map["validPeriod"]
   
         channelName <- map["channelName"]
         dealShopName <- map["dealShopName"]

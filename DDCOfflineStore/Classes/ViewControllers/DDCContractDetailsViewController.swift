@@ -18,7 +18,7 @@ class DDCContractDetailsViewController: UIViewController {
     
     public var detailsID: Int?
     var modelArray: [DDCContractDetailsViewModel]? = Array()
-    var categorys: Categorys
+    var model: DDCContractDetailModel?
     
     private lazy var barBackgroundView: DDCBarBackgroundView = {
         let _barBackgroundView: DDCBarBackgroundView = DDCBarBackgroundView.init(frame: CGRect.init(x: constant.kMargin, y: screen.navigationBarHeight + screen.statusBarHeight + 32, width: screen.width - constant.kMargin * 2, height: screen.height - constant.kMargin - 32))
@@ -33,7 +33,7 @@ class DDCContractDetailsViewController: UIViewController {
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "继续编辑", style: .highlighted, handler: {
-            let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .storeAndContractType, model: self.categorys.model)
+            let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .storeAndContractType, model: DDCContractDetailsViewModelFactory.convertModel(model: self.model!))
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar
@@ -88,20 +88,20 @@ extension DDCContractDetailsViewController {
         
         weak var weakSelf = self
         if let detailId = self.detailsID {
-            DDCContractDetailsAPIManager.fetchContractDetails(detailId: detailId, successHandler: { (response) in
+            DDCContractDetailsAPIManager.getContractDetails(detailId: detailId, successHandler: { (response) in
                 DDCTools.hideHUD()
                 if let _response = response {
-                    weakSelf!.categorys = _response
-                    weakSelf!.modelArray = DDCContractDetailsViewModelFactory.integrateData(category: _response)
+                    weakSelf!.model = _response
+                    weakSelf!.modelArray = DDCContractDetailsViewModelFactory.integrateData(model: _response)
+                    if weakSelf!.model!.tradeStatus == DDCContractStatus.inComplete {
+                        weakSelf!.view.addSubview(weakSelf!.bottomBar)
+                    }
                 }
                 weakSelf!.barBackgroundView.tableView.reloadData()
-                if weakSelf!.categorys.model?.status == DDCContractStatus.inComplete {
-                    weakSelf!.view.addSubview(weakSelf!.bottomBar)
-                }
-            }) { (error) in
-                DDCTools.hideHUD()
 
-            }
+            }, failHandler: { (error) in
+                DDCTools.hideHUD()
+            })
         }
 
     }
@@ -134,7 +134,7 @@ extension DDCContractDetailsViewController: UITableViewDataSource , UITableViewD
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCContractDetailsHeaderView.self))) as! DDCContractDetailsHeaderView
-        headerView.status = self.categorys.model?.status
+        headerView.status = self.model?.tradeStatus
         return headerView
     }
 }

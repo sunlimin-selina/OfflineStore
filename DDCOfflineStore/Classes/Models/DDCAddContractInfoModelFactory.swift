@@ -67,7 +67,8 @@ class DDCAddContractInfoModelFactory: NSObject {
         let costPrice: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: money, isRequired: true, tips: "")
         costPrice.isFill = model?.specs?.costPrice != nil ? true : false
         //生效日期(今日生效)
-        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime), text: "", isRequired: false, tips: "(今日生效)")
+        let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())
+        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: DDCAddContractInfoModelFactory.getStartDate(datetime: startTime), text: "", isRequired: false, tips: "(今日生效)")
         //有效时间(有效时间≦本月剩余天数+48个月)
         let validPeriod = (model?.specs != nil) ? "\(model?.specs!.validPeriod ?? 0)月" : ""
         let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: validPeriod.count <= 0 ? "根据课程购买数量自动计算得出" : validPeriod, text: "", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
@@ -104,23 +105,23 @@ extension DDCAddContractInfoModelFactory {
                                                     "code":model.code as Any,
                                                     "courseUseType": model.packageModel!.packageType?.rawValue as Any,
                                                     "createUserId": (model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id)as Any,
-                                                    "dealPrice":model.specs?.costPrice as Any,
+                                                    "dealPrice":model.specs?.costPrice ?? model.contractPrice as Any,
                                                     "dealShopId":model.currentStore?.id as Any,
                                                     "dealUserId":(model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id) as Any,
-                                                    "endEffectiveTime":model.packageModel?.endEffectiveTime as Any,
+                                                    "endEffectiveTime": model.packageModel?.endEffectiveTime as Any,
             "operateBizType":"COURSE",
             "operateUserId":(model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id) as Any,
             "operateUserType":2,
             "packageId":model.packageModel?.id as Any,
             "paltform":1,
             "paperBeginTime":model.packageModel?.startUseTime as Any,
-            "paperEndTime":model.packageModel?.endEffectiveTime as Any,
+            "paperEndTime": model.packageModel?.endEffectiveTime as Any,
             "relationShops": DDCAddContractInfoModelFactory.getRelationShops(shops: model.relationShops!) as Any,
             "useInfos": DDCAddContractInfoModelFactory.getUserInfos(model: model),
             "remark":"",
             "sourcePaltform":1,
-            "type":1,//合同类型（1, "个人正式课合同" 2, "个人体验课合同" 3, "团体正式课合同" 4, "团体体验课合同"）
-            "upgradeLimit":1,//－－进阶规则（0, "不限制" 1, "限制"）
+            "type": (model.contractType?.rawValue)! + 1,//合同类型（1, "个人正式课合同" 2, "个人体验课合同" 3, "团体正式课合同" 4, "团体体验课合同"）
+            "upgradeLimit":model.packageModel?.upgradeLimit as Any,//－－进阶规则（0, "不限制" 1, "限制"）
             "userId":model.customer?.userid as Any,
             "virtualSkuId":model.specs?.id as Any
         ]
@@ -129,22 +130,31 @@ extension DDCAddContractInfoModelFactory {
     }
     
     class func getUserInfos(model: DDCContractModel) -> [Dictionary<String, Any>]{
-        let dictionary: Dictionary<String, Any> = Dictionary()
-        
-        return [dictionary]
+        var dictionary: Dictionary<String, Any> = Dictionary()
+        var array: [Dictionary<String, Any>] = Array()
+        if let customs = model.customItems {
+            for item in customs {
+                for attribute in item.attributes! {
+                    dictionary = ["categoryId": attribute.categoryId as Any, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": attribute.attributeValueId as Any,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": attribute.totalCount as Any, "useCount": attribute.totalCount as Any]
+                    array.append(dictionary)
+                }
+            }
+        }
+        print(array)
+        return array
     }
     
     class func getStartDate(datetime: Int?) -> String {
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
         if datetime == nil {
-            return ""
+            return dateFormatter.string(from: Date())
         }
         let date = DDCTools.datetime(from: datetime)
         var startDate: Date = Date()
         if date.compare(Date()) == .orderedDescending {
             startDate = date
         }
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy/MM/dd"
         return dateFormatter.string(from: startDate)
     }
     

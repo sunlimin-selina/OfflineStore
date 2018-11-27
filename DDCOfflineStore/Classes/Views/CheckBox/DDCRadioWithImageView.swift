@@ -101,6 +101,7 @@ class DDCRadioWithImageView: UIControl {
     }
     
     func setupLayoutConstraints() {
+        
         self.button.snp.makeConstraints({ (make) in
             make.left.equalTo(self)
             make.right.equalTo(self.textField.snp_leftMargin)
@@ -116,4 +117,5 @@ class DDCRadioWithImageView: UIControl {
             make.centerY.equalTo(self)
         })
     }
+    
 }

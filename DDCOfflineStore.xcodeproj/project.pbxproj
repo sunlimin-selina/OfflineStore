@@ -69,6 +69,7 @@
 		D3B60801217499C20086387B /* DDCBarBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F4217499C10086387B /* DDCBarBackgroundView.swift */; };
 		D3BBBBF0217710B600FC5E23 /* DDCContractInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */; };
 		D3BBBBF2217711E700FC5E23 /* DDCPayMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BBBBF1217711E700FC5E23 /* DDCPayMethod.swift */; };
+		D3BEACBF21ABDDC00006A5A5 /* DDCContractListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BEACBE21ABDDC00006A5A5 /* DDCContractListModel.swift */; };
 		D3CC64FA216F2C7C00383DD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3CC64CE216F2C7C00383DD5 /* Assets.xcassets */; };
 		D3CC64FB216F2C7C00383DD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3CC64CF216F2C7C00383DD5 /* LaunchScreen.storyboard */; };
 		D3CC64FD216F2C7C00383DD5 /* DDCContractListAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64D4216F2C7C00383DD5 /* DDCContractListAPIManager.swift */; };
@@ -84,7 +85,6 @@
 		D3CC6507216F2C7C00383DD5 /* DDCUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64E0216F2C7C00383DD5 /* DDCUserDefaults.swift */; };
 		D3CC6508216F2C7C00383DD5 /* DDCStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64E1216F2C7C00383DD5 /* DDCStore.swift */; };
 		D3CC6509216F2C7C00383DD5 /* DDCUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64E5216F2C7C00383DD5 /* DDCUserModel.swift */; };
-		D3CC650A216F2C7C00383DD5 /* DDCContractDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC64E7216F2C7C00383DD5 /* DDCContractDetailsModel.swift */; };
 		D3D2559B2199571B009C72B0 /* DDCContractDetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2559A2199571B009C72B0 /* DDCContractDetailsCollectionViewCell.swift */; };
 		D3D2559D219962B2009C72B0 /* DDCAddContractInfoModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2559C219962B2009C72B0 /* DDCAddContractInfoModelFactory.swift */; };
 		D3D2559F21996BD7009C72B0 /* DDCContractHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2559E21996BD7009C72B0 /* DDCContractHeaderFooterView.swift */; };
@@ -198,6 +198,7 @@
 		D3B607F4217499C10086387B /* DDCBarBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCBarBackgroundView.swift; sourceTree = "<group>"; };
 		D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractInfoModel.swift; sourceTree = "<group>"; };
 		D3BBBBF1217711E700FC5E23 /* DDCPayMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCPayMethod.swift; sourceTree = "<group>"; };
+		D3BEACBE21ABDDC00006A5A5 /* DDCContractListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractListModel.swift; sourceTree = "<group>"; };
 		D3CC64CE216F2C7C00383DD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3CC64D0216F2C7C00383DD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D3CC64D1216F2C7C00383DD5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -214,7 +215,6 @@
 		D3CC64E0216F2C7C00383DD5 /* DDCUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCUserDefaults.swift; sourceTree = "<group>"; };
 		D3CC64E1216F2C7C00383DD5 /* DDCStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCStore.swift; sourceTree = "<group>"; };
 		D3CC64E5216F2C7C00383DD5 /* DDCUserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCUserModel.swift; sourceTree = "<group>"; };
-		D3CC64E7216F2C7C00383DD5 /* DDCContractDetailsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsModel.swift; sourceTree = "<group>"; };
 		D3D2559A2199571B009C72B0 /* DDCContractDetailsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsCollectionViewCell.swift; sourceTree = "<group>"; };
 		D3D2559C219962B2009C72B0 /* DDCAddContractInfoModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCAddContractInfoModelFactory.swift; sourceTree = "<group>"; };
 		D3D2559E21996BD7009C72B0 /* DDCContractHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractHeaderFooterView.swift; sourceTree = "<group>"; };
@@ -555,7 +555,7 @@
 		D3CC64E6216F2C7C00383DD5 /* Remote */ = {
 			isa = PBXGroup;
 			children = (
-				D3CC64E7216F2C7C00383DD5 /* DDCContractDetailsModel.swift */,
+				D3BEACBE21ABDDC00006A5A5 /* DDCContractListModel.swift */,
 				D30061EB219EAEDF007F1EE0 /* DDCOnlinePaymentOptionModel.swift */,
 				D30061ED219EB505007F1EE0 /* DDCPaymentOptionModel.swift */,
 			);
@@ -888,7 +888,6 @@
 				D3B607F9217499C20086387B /* DDCBottomBar.swift in Sources */,
 				D3CC6500216F2C7C00383DD5 /* UIView+DDCToast.swift in Sources */,
 				D32D2FE821786A0600CA3E42 /* DDCOffLineStoreModel.swift in Sources */,
-				D3CC650A216F2C7C00383DD5 /* DDCContractDetailsModel.swift in Sources */,
 				D3AE11132181A13100E61E08 /* EnviromentSwitchViewController.swift in Sources */,
 				D3BBBBF0217710B600FC5E23 /* DDCContractInfoModel.swift in Sources */,
 				D30061F0219ED420007F1EE0 /* DDCPaymentQRCodeImageCollectionViewCell.swift in Sources */,
@@ -955,6 +954,7 @@
 				D3B607CF21745A6D0086387B /* DDCCustomerModel.swift in Sources */,
 				D3B607FB217499C20086387B /* DDCCountButton.swift in Sources */,
 				D3B607F6217499C20086387B /* DDCContractListTableHeaderView.swift in Sources */,
+				D3BEACBF21ABDDC00006A5A5 /* DDCContractListModel.swift in Sources */,
 				D3AE11152181A13100E61E08 /* DDCChildContractViewController.swift in Sources */,
 				D3ABC4FC218BFCFE00B1B2A8 /* DDCEditSignatureView.swift in Sources */,
 				D3FDEBA12186DEDD00856581 /* DDCEditClientInfoModelFactory.swift in Sources */,

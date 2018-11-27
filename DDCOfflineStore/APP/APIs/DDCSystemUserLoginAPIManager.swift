@@ -40,8 +40,8 @@ class DDCSystemUserLoginAPIManager: NSObject {
                 failHandler(tuple.message)
                 return 
             }
-            if case let data as Dictionary<String, Any> = tuple.data {
-                print(data)
+            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+                case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 let user: DDCCustomerModel = DDCCustomerModel(JSON: data)!
                 successHandler(user)
                 return

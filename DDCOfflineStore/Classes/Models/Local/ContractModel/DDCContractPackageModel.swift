@@ -81,6 +81,8 @@ class DDCContractPackageCategoryModel: DDCCheckBoxModel {
     var haveUseRule: Int?
 
     override func mapping(map: Map) {
+        id <- map["id"]
+
         name <- map["name"]
         code <- map["code"]
 

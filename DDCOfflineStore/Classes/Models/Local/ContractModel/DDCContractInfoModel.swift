@@ -40,7 +40,7 @@ class DDCContractInfoModel: Mappable {
         realCreateUserName <- map["realCreateUserName"]
         belongCreateUserName <- map["belongCreateUserName"]
         
-        self.createDateString = DDCTools.date(from: self.createDate!)
+//        self.createDateString = DDCTools.date(from: self.createDate!)
     }
     
 }

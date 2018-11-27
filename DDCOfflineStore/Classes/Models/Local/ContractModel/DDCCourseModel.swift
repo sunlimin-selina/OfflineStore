@@ -15,6 +15,7 @@ class DDCCourseModel: DDCCheckBoxModel {
     var categoryName: String?
     var attributes: [DDCCourseAttributeModel]?
     var courseName: String?
+    var totalCount: Int = 0
 
     override func mapping(map: Map) {
         courseid <- map["id"]

@@ -45,7 +45,7 @@ class DDCEditClientInfoAPIManager: NSObject {
             "birthday": "\(model.customer!.birthday!)",
             "career": model.customer!.career != nil ? model.customer!.career!.rawValue + 1 : 7,
             "email": model.customer!.email!,
-            "channelCode": model.customer!.channelCode!,
+            "channelCode": model.customer!.channelCode ?? "",
             "channelDesc": model.customer!.channelDesc!,
             "isIntroduce": model.customer!.isReferral ? 1 : 0,
             "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile as Any : "",
@@ -58,8 +58,8 @@ class DDCEditClientInfoAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            if let data = tuple.data {
-                if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
+            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+                case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                     let response: DDCContractModel = DDCContractModel(JSON: _data)!
                     model.customer!.userid = (_data["userId"] as! Int)
                     model.contractUseCount = response.contractUseCount
@@ -67,7 +67,6 @@ class DDCEditClientInfoAPIManager: NSObject {
                     successHandler(model)
                     return
                 }
-            }
             successHandler(nil)
         }) { (error) in
             failHandler(error)

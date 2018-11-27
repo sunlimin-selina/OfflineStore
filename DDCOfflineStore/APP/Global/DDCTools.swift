@@ -66,11 +66,11 @@ class DDCTools: NSObject{
     }
     
     class func dateToTimeInterval(from date: Date) -> Int {
-        let timeInterval: TimeInterval = date.timeIntervalSince1970
-        
-        let timeStamp: Int = Int(timeInterval)
-        let timeIntervalS: String = "\(timeStamp)000"
-        return Int(timeIntervalS)!
+        let _dateFormatter: DateFormatter = DateFormatter()
+        _dateFormatter.dateFormat = "yyyy/MM/dd"
+        let dateString = _dateFormatter.string(from: date as Date)
+        let timeStamp: Int = Int(DDCTools.date(from: dateString))
+        return timeStamp
     }
     
     class func validateString(string: String) -> Bool {
@@ -99,5 +99,15 @@ class DDCTools: NSObject{
     class func removeWhiteSpace(string: String) -> String {
         let noBlankString: String = string.replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
         return noBlankString
+    }
+    
+    class func isQualifiedCode(qrCode: String?) -> Bool {
+        if let _qrCode = qrCode {
+            let array = _qrCode.components(separatedBy:"-")
+            if array.count > 2 {
+                return true
+            }
+        }
+        return false
     }
 }

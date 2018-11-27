@@ -188,7 +188,7 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
     
     func createChildViewControllers(type: DDCCourseType) -> [DDCChildContractViewController] {
         var subviewControllers: [DDCChildContractViewController] = Array()
-        
+
         subviewControllers.append(self.customerViewController)
         subviewControllers.append(self.storeViewController)
         subviewControllers.append(self.contractViewController)

@@ -207,13 +207,16 @@ extension DDCContractListViewController: UITableViewDataSource , UITableViewDele
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListTableViewCell.self), for: indexPath)) as! DDCContractListTableViewCell
         cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.complementaryColor.backgroundColor: UIColor.white
-        cell.configureCell(model: self.contractArray![indexPath.row] as! DDCContractDetailsModel)
+        cell.configureCell(model: self.contractArray![indexPath.row] as! DDCContractListModel)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let model: DDCContractDetailsModel = self.contractArray![indexPath.item] as! DDCContractDetailsModel
-        let viewController: DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: (model.info?.id)!)
+        let model: DDCContractListModel = self.contractArray![indexPath.item] as! DDCContractListModel
+        guard model.contractId != nil else {
+            return
+        }
+        let viewController: DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: model.contractId!)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

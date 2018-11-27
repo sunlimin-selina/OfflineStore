@@ -31,61 +31,58 @@ class DDCContractDetailsViewModel: NSObject {
 
 class DDCContractDetailsViewModelFactory: NSObject {
     
-    class func integrateData(category: Categorys) -> [DDCContractDetailsViewModel] {
+    class func integrateData(model: DDCContractDetailModel) -> [DDCContractDetailsViewModel] {
         var array: [DDCContractDetailsViewModel] = Array()
-
+        
         //订单编号
-        let code: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "订单编号", describe: category.model?.code)
+        let code: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "订单编号", describe: model.code)
         //订单状态
-        let modelStatus: UInt = UInt((category.model?.status)!.rawValue)
+        let modelStatus: UInt = model.tradeStatus!.rawValue
         let statusModel: DDCStatusViewModel = DDCContract.statusPairings[modelStatus]!
-        let status: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "订单状态", describe: ((category.model?.status != .all) ? statusModel.title: ""), color: statusModel.color)
+        let status: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "订单状态", describe: ((model.tradeStatus != .all) ? statusModel.title: ""), color: statusModel.color)
         //姓名
-        let name: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "姓名", describe: category.model?.customer?.name)
+        let name: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "姓名", describe: model.lineUserName)
         //性别
-        let sex: String = (category.model?.customer?.sex != nil) ? DDCContract.genderArray[((category.model?.customer?.sex!.rawValue)!)]: ""
-        let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: sex)
+        let gender: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "性别", describe: model.sex)
         //年龄
-        let birthdayD = DDCTools.datetime(from: category.model!.customer!.birthday!)
+        let birthdayD = DDCTools.datetime(from: model.birthday)
         let components = Calendar.current.dateComponents([.year], from: birthdayD, to: Date())
         let age: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "年龄", describe: (components.year != nil) ? "\(components.year!)岁": "")
         //生日
-        let birthday: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生日", describe: category.model!.customer!.formattedBirthday)
+        let birthday: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生日", describe: DDCTools.date(from: model.birthday!))
         //手机号码
-        let phoneNumber: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "手机号码", describe: category.model!.customer!.mobile)
+        let phoneNumber: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "手机号码", describe: model.username)
         //职业
-        let userCareer: String = (category.model?.customer?.career != nil) ? DDCContract.occupationArray[(category.model!.customer!.career?.rawValue)!]: ""
-        let career: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "职业", describe:userCareer)
+        let career: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "职业", describe: model.lineUserCareer)
         //邮箱
-        let email: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "邮箱", describe:category.model!.customer!.email)
+        let email: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "邮箱", describe: model.lineUserEmail)
         //顾客渠道
-        let channel: DDCContractDetailsViewModel = DDCContractDetailsViewModelFactory.channelViewModel(category: category)
+        let channel: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "顾客渠道", describe: model.channelName)// DDCContractDetailsViewModelFactory.channelViewModel(category: )
         //介绍会员
-        let recommendUser: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "介绍会员", describe: category.package?.packageName ?? "")
+        let recommendUser: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "介绍会员", describe: "\(model.introduceName ?? "") \(model.introduceMobile ?? "")")
         //产品套餐
-        let package: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品套餐", describe: category.package?.packageName ?? "")
+        let package: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品套餐", describe: model.title)
         //产品规格
-        let course: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品规格", describe: category.package?.packageCategoryName ?? "")
+        let course: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品规格", describe: model.skuName)
         //生效期限
-        let term: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生效期限", describe:"\(category.model!.subContract!.startTime!) -\(category.model!.subContract!.endTime!)")
+        let term: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生效期限", describe:"\(DDCTools.date(from: model.beginEffectiveTime ?? "")) -\(DDCTools.date(from: model.endEffectiveTime ?? ""))")
         //有效时间
-        let effectiveTime: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "有效时间", describe:category.model!.subContract?.effectiveTime)
+        let effectiveTime: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "有效时间", describe:"")
         //有效门店
-        let store: DDCContractDetailsViewModel = DDCContractDetailsViewModelFactory.effectiveStoresViewModel(stores: category.stores)
+        let store: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "有效门店", describe: model.effectiveShopName) //DDCContractDetailsViewModelFactory.effectiveStoresViewModel(stores: category.stores)
         //支付方式
-        let payIndex: Int = (category.model!.payMethod != nil) ? category.model!.payMethod!.rawValue: 0
-        let payMethod: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付方式", describe:DDCContract.payMethodArray[payIndex])
+        let payMethod: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付方式", describe: model.payStyle)
         //当前门店
-        let currentStore: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前门店", describe:(category.model!.currentStore != nil && category.model!.currentStore!.title != nil) ? category.model!.currentStore!.title: "")
+        let currentStore: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前门店", describe: model.dealShopName)
         //支付金额
-        let price: String = "¥\(category.model!.contractPrice ?? "")"
+        let price: String = model.salePrice != nil ? "¥\(model.salePrice!)" : ""
         let contractPrice: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付金额", describe:price)
         //签单员工
-        let signedUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "签单员工", describe:category.model!.signedUsername)
+        let signedUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "签单员工", describe: model.dealUserName)
         //责任销售
-        let responsibleUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "责任销售", describe:category.model!.responsibleUsername)
+        let responsibleUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "责任销售", describe: model.dealUserName)
         //业绩归属
-        let createdUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "业绩归属", describe:category.model!.createdUsername)
+        let createdUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "业绩归属", describe: model.realUserName)
         array = [code, status, name, gender, age, birthday, phoneNumber, career, email, channel, recommendUser, package, course, term, effectiveTime, store, payMethod, contractPrice, currentStore, signedUsername, responsibleUsername, createdUsername]
         return array
     }
@@ -178,5 +175,53 @@ class DDCContractDetailsViewModelFactory: NSObject {
         }
  
         return DDCContractDetailsViewModel.init(title: "有效门店", describe: "")
+    }
+    
+    class func convertModel(model: DDCContractDetailModel) -> DDCContractModel {
+        let customer: DDCCustomerModel = DDCCustomerModel()
+        let contractModel = DDCContractModel()
+        customer.mobile = model.username
+        customer.name = model.lineUserName
+        //性别
+        let genderArray: NSArray = DDCContract.genderArray as NSArray
+        customer.sex = DDCGender(rawValue: genderArray.index(of: model.sex as Any))
+        //生日
+        customer.birthday = model.birthday
+        //邮箱
+        customer.email = model.lineUserEmail
+        //职业
+        let occupationArray: NSArray = DDCContract.occupationArray as NSArray
+        customer.career = DDCOccupation(rawValue: occupationArray.index(of: model.lineUserCareer as Any))
+        //渠道
+//        if let channels: NSArray = (self.channels! as NSArray) {
+//            let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
+//                if let object = channelModel as? DDCChannelModel{
+//                    return object.name == models[DDCClientTextFieldType.channel.rawValue].text
+//                }
+//                return false
+//            }
+//            if idx != NSNotFound {
+//                model?.customer!.channelCode = "\(self.channels![idx].code!)"
+//            }
+//        }
+
+        //渠道详情
+//        customer.channelDesc = models[DDCClientTextFieldType.channelDetail.rawValue].text ?? ""
+        //是否会员介绍
+        customer.isReferral = model.introduceMobile != nil ? true : false
+        //会员手机号
+        customer.introduceMobile = model.introduceMobile
+        //会员姓名
+        customer.introduceName = model.introduceName
+        //责任销售
+        customer.dutyUserName = model.dealUserName
+        
+        let package: DDCContractPackageModel = DDCContractPackageModel()
+
+        package.upgradeLimit = Int(model.upgradeLimit!)
+        contractModel.customer = customer
+        contractModel.packageModel = package
+
+        return contractModel
     }
 }

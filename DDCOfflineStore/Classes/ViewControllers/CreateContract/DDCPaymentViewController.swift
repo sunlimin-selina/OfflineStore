@@ -9,8 +9,8 @@
 import UIKit
 
 class DDCPaymentViewController: DDCChildContractViewController {
-    var payments: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "微信支付", discription: "", isSelected: false) ,DDCCheckBoxModel.init(id: nil, title: "支付宝支付", discription: "", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "已完成线下支付", discription: "(请在确认收到款项后勾选此项)", isSelected: false)]
-    var result: (wechat: DDCOnlinePaymentOptionModel?, alipay: DDCOnlinePaymentOptionModel?, offline: [DDCPaymentOptionModel]?)
+    var payments: [DDCCheckBoxModel] = Array()
+    var result: (online: DDCPaymentOptionModel?, offline: DDCPaymentOptionModel?)
     var pickedSection: Int = 999
 
     lazy var collectionView: UICollectionView! = {
@@ -36,7 +36,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
         return _bottomBar
     }()
     
-    lazy var images: Array<String> = ["icon_pay_wechat", "icon_pay_alipay", "icon_pay_offline"]
+    lazy var images: Array<String> = ["icon_pay_alipay", "icon_pay_wechat", "icon_pay_offline"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,22 +65,48 @@ extension DDCPaymentViewController {
         })
     }
     
+    func integratePaymentData() -> [DDCCheckBoxModel]{
+        var array: [DDCCheckBoxModel] = Array()
+
+        for item in (self.result.online?.channels)! {
+            let model: DDCCheckBoxModel = DDCCheckBoxModel.init(id: nil, title: item.title, discription: "", isSelected: false) 
+            array.append(model)
+        }
+        
+        array.append(DDCCheckBoxModel.init(id: nil, title: "已完成线下支付", discription: "(请在确认收到款项后勾选此项)", isSelected: false))
+        return array
+    }
 }
 
 // MARK: API
 extension DDCPaymentViewController {
     
     func getPaymentOptions() {
+//        guard self.model?.customer?.mobile != nil else {
+//            return
+//        }
         DDCTools.showHUD(view: self.view)
-        DDCPaymentOptionsAPIManager.paymentOptions(contractId: "1414", price: "0.01", successHandler: { (tuple) in
+        DDCPaymentOptionsAPIManager.paymentOption(phone: "15921516376", successHandler: { (tuple) in
             if let _tuple = tuple {
                 self.result = _tuple
+                self.payments = self.integratePaymentData()
                 self.collectionView.reloadData()
             }
-           
             DDCTools.hideHUD()
-        }) { (error) in
+        }, failHandler: { (error) in
             DDCTools.hideHUD()
+        })
+        
+
+    }
+    
+    func createPaymentOption(payment: DDCPaymentItemModel) {
+        if let _payment: DDCPaymentItemModel = payment {
+            DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: 1, successHandler: { (model) in
+                
+            }) { (error) in
+                
+            }
         }
     }
 }
@@ -96,35 +122,30 @@ extension DDCPaymentViewController {
 // MARK: UICollectionViewDelegate
 extension DDCPaymentViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return self.payments.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 3, self.pickedSection == 3,
-            let offlineOptions = self.result.offline {
+            let offlineOptions = self.result.offline?.channels {
             return offlineOptions.count
-        } else if self.pickedSection < 3 && self.result.wechat != nil && self.result.alipay != nil{
-            return 1
         }
+//        else if self.pickedSection < 3 && self.result.online?.channels[section] {
+//            return 1
+//        }
         return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 3, self.pickedSection == 3{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCRadioButtonCollectionViewCell.self), for: indexPath) as! DDCRadioButtonCollectionViewCell
-            let model = self.result.offline![indexPath.item]
-            cell.configureCell(model: model)
+            let model = self.result.offline?.channels![indexPath.item]
+            cell.configureCell(model: model!)
             return cell
-            
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self), for: indexPath) as! DDCPaymentQRCodeImageCollectionViewCell
-            if indexPath.section == 1 {
-                let model: DDCOnlinePaymentOptionModel = self.result.wechat!
-                cell.configureCell(QRCodeURLString: model.code_url ?? "", price: "2000.0")//self.model?.contractPrice
-            } else if indexPath.section == 2 {
-                let model: DDCOnlinePaymentOptionModel = self.result.alipay!
-                cell.configureCell(QRCodeURLString: model.qr_code ?? "", price: "2000.0")//self.model?.contractPrice
-            }
+//            let model: DDCOnlinePaymentOptionModel = self.result.online?.channels![indexPath.item]
+//            cell.configureCell(QRCodeURLString: model.code_url ?? "", price: "2000.0")//self.model?.contractPrice
             return cell
         }
     }
@@ -193,8 +214,8 @@ extension DDCPaymentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 3 {
             var item: DDCCheckBoxModel?
-            for index in 0...((self.result.offline!.count) - 1) {
-                item = self.result.offline![index]
+            for index in 0...((self.result.offline!.channels!.count) - 1) {
+                item = self.result.offline!.channels![index]
                 if indexPath.item == index {
                     item!.isSelected = true
                 } else {
@@ -221,6 +242,9 @@ extension DDCPaymentViewController {
             } else {
                 offlineOptions!.isSelected = false
             }
+        }
+        if self.pickedSection != 3 {
+            self.createPaymentOption(payment: (self.result.online?.channels![index])!)
         }
         self.collectionView.reloadData()
     }
