@@ -100,7 +100,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
     }()
     
     private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: screen.width, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
             self.delegate?.previousPage(model: self.model!)
         }))
@@ -129,8 +129,7 @@ extension DDCGroupContractInfoViewController {
     func configureInputView(textField: UITextField, indexPath: IndexPath) {
         switch indexPath.section {
         case DDCAddContractTextFieldType.package.rawValue,
-             DDCAddContractTextFieldType.spec.rawValue,
-             DDCAddContractTextFieldType.rule.rawValue:
+             DDCAddContractTextFieldType.spec.rawValue:
             do {
                 textField.inputAssistantItem.leadingBarButtonGroups = []
                 textField.inputAssistantItem.trailingBarButtonGroups = []
@@ -421,7 +420,7 @@ extension DDCGroupContractInfoViewController: UIPickerViewDelegate, UIPickerView
 extension DDCGroupContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.currentTextField = textField
-        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
+        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue || textField.tag == DDCAddContractTextFieldType.rule.rawValue{
             return false
         } else if textField.tag == DDCAddContractTextFieldType.rule.rawValue {
             self.pickerView.selectRow(self.orderRule.index(of: textField.text as Any), inComponent: 0, animated: true)
@@ -463,8 +462,9 @@ extension DDCGroupContractInfoViewController {
         }
         
         DDCTools.showHUD(view: self.view)
-        DDCCreateContractAPIManager.saveContract(model: self.model!, successHandler: { (model) in
+        DDCCreateContractAPIManager.saveContract(model: self.model!, successHandler: { (code) in
             DDCTools.hideHUD()
+            self.model?.code = code
             self.delegate?.nextPage(model: self.model!)
         }) { (error) in
             DDCTools.hideHUD()
@@ -499,9 +499,6 @@ extension DDCGroupContractInfoViewController {
 //                self.models[DDCAddContractTextFieldType.money.rawValue].text = "\(self.specs[self.pickerView.selectedRow(inComponent: 0)].costPrice ?? 0)"
 //                self.models[DDCAddContractTextFieldType.money.rawValue].isFill = true
 //            }
-        case DDCAddContractTextFieldType.rule.rawValue:
-            self.models[DDCAddContractTextFieldType.rule.rawValue].text = self.orderRule[self.pickerView.selectedRow(inComponent: 0)] as! String
-            self.models[DDCAddContractTextFieldType.rule.rawValue].isFill = true
         case DDCAddContractTextFieldType.startDate.rawValue:
             do {
                 let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")

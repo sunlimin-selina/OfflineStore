@@ -60,7 +60,10 @@ class DDCAddContractInfoModelFactory: NSObject {
     class func appendLatterPart(model: DDCContractModel? , array: [DDCContractInfoViewModel]) -> [DDCContractInfoViewModel]?  {
         let mutableArray: NSMutableArray = NSMutableArray.init(array: array)
         //课程进阶规则
-        let upgradeLimit: String = (model?.packageModel?.upgradeLimit == 1) ? "遵守":"跳过"
+        var upgradeLimit: String = (model?.packageModel?.upgradeLimit == 1) ? "遵守":"跳过"
+        if model?.contractType == .groupRegular || model?.contractType == .groupSample {
+            upgradeLimit = "跳过"
+        }
         let orderRule: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "课程进阶规则", placeholder: "请选择课程进阶规则", text: upgradeLimit, isRequired: true,  tips: "")
         //合同金额
         let money = ((model?.specs?.costPrice) != nil) ? "\(model?.specs?.costPrice ?? 0)" : ""

@@ -36,6 +36,12 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
     var isPickedCustom: Bool = false
     var orderRule: NSArray = ["跳过","遵守"]
     var checkBoxFilled: Bool = false
+    var modifySkuPrice: Bool = false
+    var isCodeFilled: Bool {
+        get {
+            return (self.model?.courseType == .sample) ? true : self.model?.code != nil
+        }
+    }
 
     lazy var qrCodeReader: QRCodeReaderViewController = {
         let builder = QRCodeReaderViewControllerBuilder {
@@ -94,7 +100,7 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
     }()
     
     private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: screen.width, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
             self.delegate?.previousPage(model: self.model!)
         }))
@@ -402,7 +408,7 @@ extension DDCAddContractInfoViewController: UIPickerViewDelegate, UIPickerViewDa
 extension DDCAddContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.currentTextField = textField
-        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && self.pickedPackage != nil && !self.isPickedCustom) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
+        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && self.pickedPackage != nil && !self.isPickedCustom && !self.modifySkuPrice) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
             return false
         }
         if textField.tag == DDCAddContractTextFieldType.rule.rawValue {
@@ -434,6 +440,7 @@ extension DDCAddContractInfoViewController {
                     return
                 }
                 self.pickedPackage = self.package[self.pickerView.selectedRow(inComponent: 0)]
+                self.modifySkuPrice = self.pickedPackage!.modifySkuPrice != nil ? self.pickedPackage!.modifySkuPrice! : false
                 self.model!.packageModel = self.pickedPackage
                 self.model!.packageModel?.startUseTime = DDCTools.date(from: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime))
                 self.model?.specs = nil //清空规格
@@ -482,6 +489,7 @@ extension DDCAddContractInfoViewController {
         default:
             return
         }
+        self.formFilled()
         self.collectionView.reloadData()
         self.resignFirstResponder()
     }
@@ -526,6 +534,9 @@ extension DDCAddContractInfoViewController {
         
         for index in 1...(self.models.count - 1) {
             let model: DDCContractInfoViewModel = self.models[index]
+            if self.isCodeFilled , index == 1 {
+                continue
+            }
             if model.isRequired! ,
                 (!model.isFill! && (model.text?.count)! <= 0) {
                 self.bottomBar.buttonArray![0].isEnabled = true
@@ -535,8 +546,9 @@ extension DDCAddContractInfoViewController {
         }
 
         DDCTools.showHUD(view: self.view)
-        DDCCreateContractAPIManager.saveContract(model: self.model!, successHandler: { (model) in
+        DDCCreateContractAPIManager.saveContract(model: self.model!, successHandler: { (code) in
             DDCTools.hideHUD()
+            self.model?.code = code
             self.delegate?.nextPage(model: self.model!)
         }) { (error) in
             DDCTools.hideHUD()
@@ -601,7 +613,7 @@ extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
     }
     
     func formFilled() {
-        if self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) && self.model?.code != nil {
+        if self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) &&  self.isCodeFilled {
             self.bottomBar.buttonArray![1].isEnabled = true
             self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
         } else {

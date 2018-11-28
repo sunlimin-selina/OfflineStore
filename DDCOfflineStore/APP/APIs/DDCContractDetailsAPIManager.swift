@@ -36,4 +36,18 @@ class DDCContractDetailsAPIManager: NSObject {
         }
     }
    
+    class func cancelContract(model: DDCContractDetailModel ,successHandler: @escaping (_ result: Bool) -> (), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/contract/cancel.do")
+        let param: Dictionary<String, Any> = ["contractNo": model.code as Any, "operateBizType":"COURSE", "operateUserId":DDCStore.sharedStore().user?.id as Any, "operateUserType":2, "sourcePaltform":1]
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: param, success: { (response) in
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
+            successHandler(true)
+        }) { (error) in
+            failHandler(error)
+        }
+    }
 }

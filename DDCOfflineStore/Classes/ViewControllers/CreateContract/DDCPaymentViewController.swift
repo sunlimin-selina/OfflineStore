@@ -35,7 +35,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
     }()
     
     private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: screen.width, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "提交", style: .highlighted, handler: {
             self.commitForm()
         }))
@@ -46,11 +46,16 @@ class DDCPaymentViewController: DDCChildContractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(self.collectionView)
-        self.view.addSubview(self.bottomBar)
-        self.setupViewConstraints()
-        self.getPaymentOptions()
-        self.automaticallyAdjustsScrollViewInsets = false
+        if (self.model!.specs?.costPrice == nil || self.model!.specs?.costPrice == 0) && (self.model!.contractPrice == nil || self.model!.contractPrice == 0) { //0元订单
+            DDCDefaultView.sharedView().showDefaultView(view: self.view, title: "该合同无需付款，请点击‘完成’直接提交", image: UIImage.init(named: "chuangjianxindingdan_queshengtu")!)
+        } else {
+            self.view.addSubview(self.collectionView)
+            self.view.addSubview(self.bottomBar)
+            self.setupViewConstraints()
+            self.getPaymentOptions()
+            self.automaticallyAdjustsScrollViewInsets = false
+        }
+        
     }
     
 }
@@ -183,8 +188,14 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
                 let model: DDCCheckBoxModel = self.payments[indexPath.section - 1]
                 headerView.radioButton.button.setTitle(model.title, for: .normal)
                 headerView.radioButton.button.isSelected = model.isSelected
-//                if model.title == ""
-                headerView.radioButton.imageView.image = UIImage.init(named: self.images[indexPath.section - 1] as String)
+                
+                var image: UIImage = UIImage.init(named: "icon_pay_offline")!
+                if model.title == "支付宝" {
+                    image = UIImage.init(named: "icon_pay_alipay")!
+                } else if model.title == "微信" {
+                    image = UIImage.init(named: "icon_pay_wechat")!
+                }
+                headerView.radioButton.imageView.image = image
                 headerView.tag = indexPath.section
                 headerView.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(headerSelected(gesture:))))
                 return headerView

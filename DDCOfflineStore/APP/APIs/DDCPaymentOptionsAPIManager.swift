@@ -68,7 +68,6 @@ class DDCPaymentOptionsAPIManager: NSObject {
     class func updatePaymentState(model: DDCOnlinePaymentOptionModel?, successHandler: @escaping(_ result: DDCPaymentStatus) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/contract/status/check_tradestatus.do")
         let params: Dictionary<String, Any>? = ["contractNo": model?.contractNo as Any]
-        print(params)
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{

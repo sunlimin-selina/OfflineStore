@@ -33,7 +33,12 @@ class DDCContractDetailsViewController: UIViewController {
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "取消支付", style: .forbidden, handler: {
-            self.cancelContract()
+            let alertController: UIAlertController = UIAlertController.init(title: "您确定要取消当前订单吗？", message: nil, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction.init(title: "取消订单", style: .default, handler: { (action) in
+                self.cancelContract()
+            }))
+            alertController.addAction(UIAlertAction.init(title: "再想想", style: .default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "去支付", style: .highlighted, handler: {
             let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(toPaymentView: DDCContractDetailsViewModelFactory.convertModel(model: self.model!))
@@ -106,7 +111,17 @@ extension DDCContractDetailsViewController {
     }
     
     func cancelContract() {
+        DDCTools.showHUD(view: self.view)
         
+        weak var weakSelf = self
+        DDCContractDetailsAPIManager.cancelContract(model: self.model!, successHandler: { (success) in
+            if success {
+                self.view.makeDDCToast(message: "订单已取消", image: UIImage.init(named: "addCar_icon_fail")!)
+                self.navigationController?.popViewController(animated: true)
+            }
+        }) { (error) in
+            
+        }
     }
 }
 

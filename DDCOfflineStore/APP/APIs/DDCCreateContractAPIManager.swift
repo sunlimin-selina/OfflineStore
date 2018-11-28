@@ -11,7 +11,7 @@ import Alamofire
 import ObjectMapper
 
 class DDCCreateContractAPIManager: NSObject {
-    class func saveContract(model:DDCContractModel, successHandler: @escaping (_ success: Bool?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+    class func saveContract(model:DDCContractModel, successHandler: @escaping (_ success: String?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/contract/save.do")
         let params: Dictionary<String, Any>? = DDCAddContractInfoModelFactory.packData(model: model)
         
@@ -21,7 +21,7 @@ class DDCCreateContractAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            successHandler(true)
+            successHandler(tuple.data as! String)
         }) { (error) in
             failHandler(error)
         }

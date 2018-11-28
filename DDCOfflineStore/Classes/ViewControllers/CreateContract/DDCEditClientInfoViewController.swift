@@ -41,7 +41,7 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     }()
     
     private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: screen.width, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .highlighted, handler: {
             self.forwardNextPage()
         }))
