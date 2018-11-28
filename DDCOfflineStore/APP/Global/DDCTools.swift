@@ -54,14 +54,19 @@ class DDCTools: NSObject{
     }
     
     class func date(from dateString: String) -> Int {
-        let _dateFormatter: DateFormatter = DateFormatter()
-        _dateFormatter.dateFormat = "yyyy/MM/dd"
+        var date: Date = Date()
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.year,.month, .day], from: date)
+        date = calendar.date(from: dateComponents)!
         
-        let date: Date = _dateFormatter.date(from: dateString)!
+        if dateString.count > 0 {
+            let _dateFormatter: DateFormatter = DateFormatter()
+            _dateFormatter.dateFormat = "yyyy/MM/dd"
+            date = _dateFormatter.date(from: dateString)!
+        }
         let timeInterval: TimeInterval = date.timeIntervalSince1970
-
         let timeStamp: Int = Int(timeInterval)
-        let timeIntervalS: String = "\(timeStamp)000"
+        let timeIntervalS: String = "\(timeStamp * 1000)"
         return Int(timeIntervalS)!
     }
     
@@ -73,6 +78,16 @@ class DDCTools: NSObject{
         return timeStamp
     }
     
+//    class func dateFormattedDifference(from date: Date, to date: Date) -> String{
+//        let _dateFormatter: DateFormatter = DateFormatter()
+//        _dateFormatter.dateFormat = "yyyy/MM/dd"
+//        
+//        let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+//        var components: DateComponents = DateComponents.init()
+//        let components = Calendar.current.dateComponents([.day], from: self, to: toDate)
+//        return components.day ?? 0
+//    }
+//    
     class func validateString(string: String) -> Bool {
         let rule: String = "[\\u4e00-\\u9fa5a-zA-Z]+[\\u4e00-\\u9fa5a-zA-Z\\s]*[\\u4e00-\\u9fa5a-zA-Z]+"
         return NSPredicate.init(format: "SELF MATCHES %@", rule).evaluate(with: string)

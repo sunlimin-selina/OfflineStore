@@ -32,8 +32,11 @@ class DDCContractDetailsViewController: UIViewController {
     
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "继续编辑", style: .highlighted, handler: {
-            let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .storeAndContractType, model: DDCContractDetailsViewModelFactory.convertModel(model: self.model!))
+        _bottomBar.addButton(button:DDCBarButton.init(title: "取消支付", style: .forbidden, handler: {
+            self.cancelContract()
+        }))
+        _bottomBar.addButton(button:DDCBarButton.init(title: "去支付", style: .highlighted, handler: {
+            let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(toPaymentView: DDCContractDetailsViewModelFactory.convertModel(model: self.model!))
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar
@@ -79,10 +82,6 @@ class DDCContractDetailsViewController: UIViewController {
 // MARK: Private
 extension DDCContractDetailsViewController {
     
-    func reloadData() {
-        
-    }
-    
     func getData() {
         DDCTools.showHUD(view: self.view)
         
@@ -93,7 +92,7 @@ extension DDCContractDetailsViewController {
                 if let _response = response {
                     weakSelf!.model = _response
                     weakSelf!.modelArray = DDCContractDetailsViewModelFactory.integrateData(model: _response)
-                    if weakSelf!.model!.tradeStatus == DDCContractStatus.inComplete {
+                    if weakSelf!.model!.tradeStatus == DDCContractStatus.effective {//DDCContractStatus.inComplete
                         weakSelf!.view.addSubview(weakSelf!.bottomBar)
                     }
                 }
@@ -104,6 +103,10 @@ extension DDCContractDetailsViewController {
             })
         }
 
+    }
+    
+    func cancelContract() {
+        
     }
 }
 

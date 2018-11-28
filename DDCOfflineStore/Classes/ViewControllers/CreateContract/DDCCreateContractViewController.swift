@@ -18,6 +18,9 @@ class DDCCreateContractViewController: UIViewController{
         case finishContract//创建成功
     }
     
+    var onlyForPayment: Bool = false
+    
+    
     lazy var customerViewController: DDCEditClientInfoViewController = {
         let _customerViewController: DDCEditClientInfoViewController  = DDCEditClientInfoViewController()
         _customerViewController.index = 0
@@ -52,7 +55,7 @@ class DDCCreateContractViewController: UIViewController{
         _paymentViewController.delegate = self
         return _paymentViewController
     }()
-
+    
     var progress: DDCContractProgress? {
         didSet {
             let interval: UInt = progress!.rawValue - DDCContractProgress.editClientInformation.rawValue
@@ -128,7 +131,7 @@ class DDCCreateContractViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 20.0, weight: .medium)]
-
+        
         let leftItem = UIBarButtonItem.init(image: UIImage.init(named: "icon_back"), style: .plain, target: self, action: #selector(goBack))
         leftItem.tintColor = UIColor.black
         self.navigationItem.leftBarButtonItem = leftItem
@@ -140,11 +143,18 @@ class DDCCreateContractViewController: UIViewController{
         self.title = "创建新订单"
         self.navigationController!.interactivePopGestureRecognizer?.delegate = self
     }
-
+    
     init(progress: DDCContractProgress, model: DDCContractModel?) {
         super.init(nibName: nil, bundle: nil)
         self.progress = progress
         self.model = model
+    }
+    
+    init(toPaymentView model: DDCContractModel?) {
+        super.init(nibName: nil, bundle: nil)
+        self.progress = .finishContract
+        self.model = model
+        self.onlyForPayment = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -177,7 +187,7 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
         var selectedIndex: Int = Int(self.progress!.rawValue)
         selectedIndex -= 1
         self.progress = DDCCreateContractViewController.DDCContractProgress(rawValue: UInt(selectedIndex))!
-
+        
         if selectedIndex == 3 && model.courseType == DDCCourseType.group {
             selectedIndex = 4
         }
@@ -188,18 +198,23 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
     
     func createChildViewControllers(type: DDCCourseType) -> [DDCChildContractViewController] {
         var subviewControllers: [DDCChildContractViewController] = Array()
-
-        subviewControllers.append(self.customerViewController)
-        subviewControllers.append(self.storeViewController)
-        subviewControllers.append(self.contractViewController)
-        subviewControllers.append(self.paymentViewController)
-        subviewControllers.append(self.groupContractViewController)
-
-        if self.model != nil {
-            let viewController: DDCChildContractViewController = self.subviewControllers[Int(self.progress!.rawValue)]
-            viewController.model = self.model
-        }
         
+        if self.onlyForPayment {
+            self.paymentViewController.model = self.model
+            subviewControllers.append(self.paymentViewController)
+        } else {
+            
+            subviewControllers.append(self.customerViewController)
+            subviewControllers.append(self.storeViewController)
+            subviewControllers.append(self.contractViewController)
+            subviewControllers.append(self.paymentViewController)
+            subviewControllers.append(self.groupContractViewController)
+            
+            if self.model != nil {
+                let viewController: DDCChildContractViewController = self.subviewControllers[Int(self.progress!.rawValue)]
+                viewController.model = self.model
+            }
+        }
         return subviewControllers
     }
     
@@ -226,8 +241,12 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
         }
         self.addChild(self.pageViewController)
         
-        self.pageViewController.setViewControllers([self.subviewControllers[Int(self.progress!.rawValue)]], direction: .forward, animated: true, completion: nil)
-        
+        if self.onlyForPayment {
+            self.pageViewController.setViewControllers([self.subviewControllers[0]], direction: .forward, animated: true, completion: nil)
+            
+        } else {
+            self.pageViewController.setViewControllers([self.subviewControllers[Int(self.progress!.rawValue)]], direction: .forward, animated: true, completion: nil)
+        }
     }
     
     @objc func goBack() {
@@ -259,7 +278,7 @@ extension DDCCreateContractViewController :UIPageViewControllerDelegate, UIPageV
         if index >= (self.subviewControllers.count) { return nil }
         return self.subviewControllers[index]
     }
-
+    
 }
 
 extension DDCCreateContractViewController: UIGestureRecognizerDelegate {

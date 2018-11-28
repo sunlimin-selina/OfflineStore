@@ -294,13 +294,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
 extension DDCAddContractInfoViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if self.customItems.count > 0 && indexPath.section == 3 {
-            let items = self.customItems
-            let model = items[indexPath.item]
-            model.isSelected = !model.isSelected
-            self.formFilled()
-        }
-        self.collectionView.reloadData()//.reloadSections([indexPath.section])
+        
     }
     
 }
@@ -396,7 +390,7 @@ extension DDCAddContractInfoViewController: UIPickerViewDelegate, UIPickerViewDa
                 return "\(self.specs[row].name ?? "") - \(self.specs[row].costPrice ?? 0)"
             }
         case DDCAddContractTextFieldType.rule.rawValue:
-            return self.orderRule[row] as! String
+            return (self.orderRule[row] as! String)
         default:
             return ""
         }
@@ -419,7 +413,7 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == DDCAddContractTextFieldType.money.rawValue {
-            self.model!.contractPrice = textField.text
+            self.model!.contractPrice = Int(textField.text!)!
             self.models[textField.tag].text = textField.text
             self.models[textField.tag].isFill = true
             self.formFilled()
@@ -554,7 +548,11 @@ extension DDCAddContractInfoViewController {
         self.qrCodeReader.delegate = self
         
         self.qrCodeReader.completionBlock = { (result: QRCodeReaderResult?) in
-            if DDCTools.isQualifiedCode(qrCode: (result?.value)!) {
+//            self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].text = "www-ddc-123123"//result?.value
+//            self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].isFill = true
+//            self.model?.code = "www-ddc-123123"//result?.value
+//            self.collectionView.reloadSections([1])
+            if DDCTools.isQualifiedCode(qrCode: result?.value) {
                 self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].text = result?.value
                 self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].isFill = true
                 self.model?.code = result?.value
@@ -592,8 +590,18 @@ extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
         self.formFilled()
     }
     
+    func cellControl(_ control: DDCCheckBoxCellControl, didSelectItemAt indexPath: IndexPath) {
+        if self.customItems.count > 0 && indexPath.section == 3 {
+            let items = self.customItems
+            let model = items[indexPath.item]
+            model.isSelected = !model.isSelected
+            self.formFilled()
+        }
+        self.collectionView.reloadData()
+    }
+    
     func formFilled() {
-        if self.checkBoxFilled && ((self.model?.contractPrice != nil && self.model?.contractPrice != "") || self.model?.specs?.costPrice != nil) { //&& self.model?.code != nil
+        if self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) && self.model?.code != nil {
             self.bottomBar.buttonArray![1].isEnabled = true
             self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
         } else {

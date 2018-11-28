@@ -23,6 +23,7 @@ class DDCContractDetailsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
+            print(tuple.data)
             if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
                 case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 let contractDetail: DDCContractDetailModel = DDCContractDetailModel(JSON: data)!

@@ -10,7 +10,7 @@ import Foundation
 import ObjectMapper
 
 class DDCCustomerModel: Mappable {
-    var userid: Int?
+    var userId: CLong?
     var mobile: String?
     var name: String?
     var age: String?
@@ -39,7 +39,7 @@ class DDCCustomerModel: Mappable {
     // Mappable
     func mapping(map: Map) {
         
-        userid <- map["userid"]
+        userId <- map["userId"]
         mobile <- map["mobile"]
         name <- map["name"]
         email <- map["email"]

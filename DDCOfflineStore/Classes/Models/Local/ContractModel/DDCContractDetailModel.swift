@@ -14,8 +14,8 @@ class DDCContractDetailModel: Mappable {
     var title: String?
     
     var salePrice: Int?
-    var beginEffectiveTime: String?
-    var endEffectiveTime: String?
+    var beginEffectiveTime: CLong?
+    var endEffectiveTime: CLong?
     var validPeriod: String?
     
     var channelName: String?

@@ -58,21 +58,28 @@ class DDCEditClientInfoAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            DDCEditClientInfoAPIManager.getUserContractInfo(model: model, successHandler: { (model) in
-                successHandler(model)
-            }, failHandler: { (error) in
-                successHandler(nil)
-            })
+            
+            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+                case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
+                DDCEditClientInfoAPIManager.getUserContractInfo(dictionary: data, successHandler: { (model) in
+                    successHandler(model)
+                    return
+                }, failHandler: { (error) in
+                    successHandler(nil)
+                    return
+                })
+            }
+            successHandler(nil)
         }) { (error) in
             failHandler(error)
         }
     }
     
-    class func getUserContractInfo(model: DDCContractModel, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+    class func getUserContractInfo(dictionary: Dictionary<String, Any>, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/user/contract_course_info.do")
-        let params: Dictionary<String,Any> = ["userId": model.customer!.userid,
-                                              "name": model.customer!.name!,
-                                              "mobile": model.customer!.mobile!]
+        let params: Dictionary<String,Any> = ["userId": dictionary["userId"] as Any,
+                                              "name": dictionary["name"] as Any,
+                                              "mobile": dictionary["mobile"] as Any]
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{

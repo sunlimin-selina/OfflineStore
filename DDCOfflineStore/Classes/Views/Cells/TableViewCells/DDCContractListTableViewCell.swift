@@ -42,8 +42,8 @@ class DDCContractListTableViewCell: UITableViewCell {
     
     private lazy var contractTypeImage: UIImageView = {
         let _contractTypeImage: UIImageView = UIImageView()
-        _contractTypeImage.image = UIImage.init(named: "Tab_homepage_tiyanke") // Tab_homepage_zhengshike
         _contractTypeImage.contentMode = .scaleAspectFit
+        _contractTypeImage.image = UIImage.init(named: "Tab_homepage_tiyanke")
         return _contractTypeImage
     }()
     
@@ -146,6 +146,10 @@ class DDCContractListTableViewCell: UITableViewCell {
         let contractId: String = model.contractId != nil ? "\(model.title ?? "")-\(model.contractId!)" : "\(model.title ?? "")"
         self.contractNameLabel.text = contractId
         self.contractSNLabel.text = model.code
+        
+        if model.type == 1{
+            self.contractTypeImage.image = UIImage.init(named: "Tab_homepage_zhengshike")
+        }
 
         let status: DDCStatusViewModel = DDCContract.statusPairings[(model.status!.rawValue)]!
         self.subtitleLabel.text = status.title

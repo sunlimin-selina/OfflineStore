@@ -20,7 +20,6 @@
 		D3184D1F218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D1E218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift */; };
 		D3184D2121901767006AAC2D /* DDCCheckBoxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */; };
 		D3184D2421901843006AAC2D /* DDCRadioWithImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2321901843006AAC2D /* DDCRadioWithImageView.swift */; };
-		D3184D2621903606006AAC2D /* DDCCheckBoxCellControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2521903606006AAC2D /* DDCCheckBoxCellControl.swift */; };
 		D3184D28219050BF006AAC2D /* DDCCheckBoxModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D27219050BF006AAC2D /* DDCCheckBoxModel.swift */; };
 		D3276D812188425700D04E9F /* DDCToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3276D802188425700D04E9F /* DDCToolbar.swift */; };
 		D32D2FE821786A0600CA3E42 /* DDCOffLineStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */; };
@@ -69,6 +68,9 @@
 		D3B60801217499C20086387B /* DDCBarBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F4217499C10086387B /* DDCBarBackgroundView.swift */; };
 		D3BBBBF0217710B600FC5E23 /* DDCContractInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */; };
 		D3BBBBF2217711E700FC5E23 /* DDCPayMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BBBBF1217711E700FC5E23 /* DDCPayMethod.swift */; };
+		D3BDD07821AE34770090E6F3 /* DDCCheckBoxCellControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BDD07721AE34770090E6F3 /* DDCCheckBoxCellControl.swift */; };
+		D3BDD07A21AE75E70090E6F3 /* DDCFinishedContractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BDD07921AE75E70090E6F3 /* DDCFinishedContractViewController.swift */; };
+		D3BDD07C21AE8A3C0090E6F3 /* DDCPaymentUpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BDD07B21AE8A3C0090E6F3 /* DDCPaymentUpdateChecker.swift */; };
 		D3BEACBF21ABDDC00006A5A5 /* DDCContractListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BEACBE21ABDDC00006A5A5 /* DDCContractListModel.swift */; };
 		D3CC64FA216F2C7C00383DD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3CC64CE216F2C7C00383DD5 /* Assets.xcassets */; };
 		D3CC64FB216F2C7C00383DD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3CC64CF216F2C7C00383DD5 /* LaunchScreen.storyboard */; };
@@ -149,7 +151,6 @@
 		D3184D1E218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCStoreAndContractTypeAPIManager.swift; sourceTree = "<group>"; };
 		D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxTableViewCell.swift; sourceTree = "<group>"; };
 		D3184D2321901843006AAC2D /* DDCRadioWithImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCRadioWithImageView.swift; sourceTree = "<group>"; };
-		D3184D2521903606006AAC2D /* DDCCheckBoxCellControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxCellControl.swift; sourceTree = "<group>"; };
 		D3184D27219050BF006AAC2D /* DDCCheckBoxModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxModel.swift; sourceTree = "<group>"; };
 		D3276D802188425700D04E9F /* DDCToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCToolbar.swift; sourceTree = "<group>"; };
 		D32D2FE721786A0600CA3E42 /* DDCOffLineStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCOffLineStoreModel.swift; sourceTree = "<group>"; };
@@ -198,6 +199,9 @@
 		D3B607F4217499C10086387B /* DDCBarBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCBarBackgroundView.swift; sourceTree = "<group>"; };
 		D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractInfoModel.swift; sourceTree = "<group>"; };
 		D3BBBBF1217711E700FC5E23 /* DDCPayMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCPayMethod.swift; sourceTree = "<group>"; };
+		D3BDD07721AE34770090E6F3 /* DDCCheckBoxCellControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxCellControl.swift; sourceTree = "<group>"; };
+		D3BDD07921AE75E70090E6F3 /* DDCFinishedContractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCFinishedContractViewController.swift; sourceTree = "<group>"; };
+		D3BDD07B21AE8A3C0090E6F3 /* DDCPaymentUpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCPaymentUpdateChecker.swift; sourceTree = "<group>"; };
 		D3BEACBE21ABDDC00006A5A5 /* DDCContractListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractListModel.swift; sourceTree = "<group>"; };
 		D3CC64CE216F2C7C00383DD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3CC64D0216F2C7C00383DD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -321,6 +325,7 @@
 				D3AE11052181A13100E61E08 /* DDCContractDetailsViewController.swift */,
 				D3AE11062181A13100E61E08 /* EnviromentSwitchViewController.swift */,
 				D3AE11072181A13100E61E08 /* CreateContract */,
+				D3BDD07921AE75E70090E6F3 /* DDCFinishedContractViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -485,6 +490,7 @@
 				D30D93A1219A75C000F641F9 /* DDCContractOptionsAPIManager.swift */,
 				D30D93AD219ADF0900F641F9 /* DDCPaymentOptionsAPIManager.swift */,
 				D379CA4921A6ACA100EEFAD2 /* DDCCreateContractAPIManager.swift */,
+				D3BDD07B21AE8A3C0090E6F3 /* DDCPaymentUpdateChecker.swift */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -530,12 +536,12 @@
 		D3CC64E3216F2C7C00383DD5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D3BDD07721AE34770090E6F3 /* DDCCheckBoxCellControl.swift */,
 				D3DE3088217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift */,
 				D3FDEBA02186DEDD00856581 /* DDCEditClientInfoModelFactory.swift */,
 				D3D2559C219962B2009C72B0 /* DDCAddContractInfoModelFactory.swift */,
 				D3CC64E4216F2C7C00383DD5 /* Local */,
 				D3CC64E6216F2C7C00383DD5 /* Remote */,
-				D3184D2521903606006AAC2D /* DDCCheckBoxCellControl.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -879,6 +885,7 @@
 				D3CC6508216F2C7C00383DD5 /* DDCStore.swift in Sources */,
 				D3CC64FE216F2C7C00383DD5 /* DDCAPIManager.swift in Sources */,
 				D30061EE219EB505007F1EE0 /* DDCPaymentOptionModel.swift in Sources */,
+				D3BDD07C21AE8A3C0090E6F3 /* DDCPaymentUpdateChecker.swift in Sources */,
 				D3CC64FD216F2C7C00383DD5 /* DDCContractListAPIManager.swift in Sources */,
 				D3D2559D219962B2009C72B0 /* DDCAddContractInfoModelFactory.swift in Sources */,
 				D34E287C219D55FD0089D6E4 /* DDCCheckBoxWithTitleCollectionCell.swift in Sources */,
@@ -928,8 +935,10 @@
 				D3E832892179A7D900685FFB /* DDCChannelModel.swift in Sources */,
 				D379CA4821A68D0E00EEFAD2 /* DDCTextFieldButtonCell.swift in Sources */,
 				D3CC6507216F2C7C00383DD5 /* DDCUserDefaults.swift in Sources */,
+				D3BDD07A21AE75E70090E6F3 /* DDCFinishedContractViewController.swift in Sources */,
 				D30D93A8219A975800F641F9 /* DDCCourseAttributeModel.swift in Sources */,
 				D3AE11192181A13100E61E08 /* DDCGroupContractInfoViewController.swift in Sources */,
+				D3BDD07821AE34770090E6F3 /* DDCCheckBoxCellControl.swift in Sources */,
 				D3E73D252182C10700A5073A /* DDCString.swift in Sources */,
 				D3B607FC217499C20086387B /* DDCSubmitButton.swift in Sources */,
 				D399684C21A913BA00A64AB4 /* UIViewController+NavigationProtocol.swift in Sources */,
@@ -946,7 +955,6 @@
 				D3AE11142181A13100E61E08 /* DDCEditClientInfoViewController.swift in Sources */,
 				D3CC6506216F2C7C00383DD5 /* DDCKeyboardStateListener.swift in Sources */,
 				D3FDEB9F2186DC0500856581 /* DDCOffLineCourseModel.swift in Sources */,
-				D3184D2621903606006AAC2D /* DDCCheckBoxCellControl.swift in Sources */,
 				D3CC6504216F2C7C00383DD5 /* DDCContract.swift in Sources */,
 				D3DAA4A72175A911003B0289 /* DDCButton.swift in Sources */,
 				D30D93AA219A9B2500F641F9 /* DDCCheckBoxCollectionViewCell.swift in Sources */,

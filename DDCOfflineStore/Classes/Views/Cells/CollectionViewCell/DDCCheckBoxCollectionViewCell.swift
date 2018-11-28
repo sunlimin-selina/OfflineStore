@@ -16,20 +16,20 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
         _checkBox.isUserInteractionEnabled = false
         return _checkBox
     }()
-    
-    lazy var textField: DDCCircularTextFieldView = {
-        let _textField = DDCCircularTextFieldView()
-        _textField.cornerRadius = 17.0
-        _textField.type = .labelButton
-        _textField.button.setTitle("次", for: .normal)
-        _textField.button.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
-        _textField.button.setTitleColor(DDCColor.fontColor.gray, for: .normal)
-        _textField.button.snp.updateConstraints({ (make) in
-            make.width.equalTo(30.0)
-        })
-        _textField.isHidden = true
-        return _textField
-    }()
+//
+//    lazy var textField: DDCCircularTextFieldView = {
+//        let _textField = DDCCircularTextFieldView()
+//        _textField.cornerRadius = 17.0
+//        _textField.type = .labelButton
+//        _textField.button.setTitle("次", for: .normal)
+//        _textField.button.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
+//        _textField.button.setTitleColor(DDCColor.fontColor.gray, for: .normal)
+//        _textField.button.snp.updateConstraints({ (make) in
+//            make.width.equalTo(30.0)
+//        })
+//        _textField.isHidden = true
+//        return _textField
+//    }()
     
     var buttons: [DDCCheckBox] = Array()
     var buttonCount: Int {
@@ -52,7 +52,6 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         self.setupViewConstraints()
     }
     
@@ -63,7 +62,7 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
     func setupViewConstraints() {
         let kPadding: CGFloat = 5.0
         self.contentView.addSubview(self.checkBox)
-        self.contentView.addSubview(self.textField)
+//        self.contentView.addSubview(self.textField)
         self.contentView.addSubview(self.subContentView)
         self.clipsToBounds = true
         self.checkBox.snp.makeConstraints({ (make) in
@@ -119,25 +118,27 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    override func prepareForReuse() {
-        self.contentView.subviews.last?.removeFromSuperview()
-        self.setupViewConstraints()
-    }
+//    override func prepareForReuse() {
+//        self.contentView.subviews.last?.removeFromSuperview()
+//        self.setupViewConstraints()
+//    }
     
-    func updateConstraints(width: CGFloat) {
-        let kPadding: CGFloat = 5.0
-
-        self.checkBox.snp.remakeConstraints({ (make) in
-            make.width.equalTo(width)
-            make.left.top.equalTo(self.contentView).offset(kPadding)
-            make.height.equalTo(30.0)
-        })
-        
-        self.textField.snp.remakeConstraints({ (make) in
-            make.left.equalTo(self.checkBox.snp_rightMargin)
-            make.width.equalTo(130.0)
-            make.height.equalTo(34.0)
-            make.centerY.equalTo(self)
-        })
-    }
+//    func updateConstraints(width: CGFloat) {
+//        let kPadding: CGFloat = 5.0
+//
+//        self.checkBox.snp.remakeConstraints({ (make) in
+//            make.width.equalTo(width)
+//            make.left.top.equalTo(self.contentView).offset(kPadding)
+//            make.height.equalTo(30.0)
+//        })
+//
+//        self.textField.snp.remakeConstraints({ (make) in
+//            make.left.equalTo(self.checkBox.snp_rightMargin)
+//            make.width.equalTo(130.0)
+//            make.height.equalTo(34.0)
+//            make.centerY.equalTo(self)
+//        })
+//    }
+    
 }
+

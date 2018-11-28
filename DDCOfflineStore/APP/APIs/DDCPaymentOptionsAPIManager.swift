@@ -12,52 +12,6 @@ import ObjectMapper
 
 class DDCPaymentOptionsAPIManager: NSObject {
     
-    class func wechatPayment(contractId: String, price: String, successHandler: @escaping (_ result: DDCOnlinePaymentOptionModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/payment/wxPaySign.do")
-        let params: Dictionary<String, Any>? = ["payMethodId": DDCAppConfig.payment.kWechatPaymentID, "productId": contractId, "totalAmount": price]
-        
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
-            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
-            guard tuple.code == 200 else{
-                failHandler(tuple.message)
-                return
-            }
-            if let data = tuple.data {
-                if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                    let model: DDCOnlinePaymentOptionModel = DDCOnlinePaymentOptionModel(JSON: _data)!
-                    successHandler(model)
-                    return
-                }
-            }
-            successHandler(nil)
-        }) { (error) in
-            failHandler(error)
-        }
-    }
-    
-    class func alipayPayment(contractId: String, price: String, successHandler: @escaping (_ result: DDCOnlinePaymentOptionModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/server/payment/alipaySign.do")
-        let params: Dictionary<String, Any>? = ["payMethodId": DDCAppConfig.payment.kAlipayPaymentID, "productId": contractId, "totalAmount": price]
-        
-        DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
-            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
-            guard tuple.code == 200 else{
-                failHandler(tuple.message)
-                return
-            }
-            if let data = tuple.data {
-                if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                    let model: DDCOnlinePaymentOptionModel = DDCOnlinePaymentOptionModel(JSON: _data["alipay_trade_precreate_response"] as! Dictionary<String, Any>)!
-                    successHandler(model)
-                    return
-                }
-                successHandler(nil)
-            }
-        }) { (error) in
-            failHandler(error)
-        }
-    }
-    
     class func paymentOption(phone: String, successHandler: @escaping(_ result: (online: DDCPaymentOptionModel?, offline: DDCPaymentOptionModel?)?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/pay/style/list.do")
         let params: Dictionary<String, Any>? = ["platform": phone, "appType": ""]
@@ -91,24 +45,41 @@ class DDCPaymentOptionsAPIManager: NSObject {
     
     class func createPaymentOption(model: DDCContractModel?, payChannel: String, payStyle: Int, successHandler: @escaping(_ result: DDCOnlinePaymentOptionModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/pay/order/create_pay.do")
-        let params: Dictionary<String, Any>? = ["amount": 10000, "contractNo": "www-ddc-000", "operateBizType":"COURSE", "operateUserId": 1, "operateUserType": 2, "payChannel": payChannel, "payStyle": payStyle, "sourcePaltform": 1]//model.contractPrice as Any
-        
+        let params: Dictionary<String, Any>? = ["amount": ((model!.specs?.costPrice != nil) ? (model!.specs?.costPrice!)! * 100 : model!.contractPrice! * 100), "contractNo": model?.code as Any, "operateBizType":"COURSE", "operateUserId": model?.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id as Any, "operateUserType": 2, "payChannel": payChannel, "payStyle": payStyle, "sourcePaltform": 1]
+        print(params)
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)
                 return
             }
-            if case let payments as Array<Any> = tuple.data {
-                for data in payments {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let model: DDCOnlinePaymentOptionModel = DDCOnlinePaymentOptionModel(JSON: _data)!
-                        successHandler(model)
-                        return
-                    }
-                }
+            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+                case let _data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
+                let model: DDCOnlinePaymentOptionModel = DDCOnlinePaymentOptionModel(JSON: _data)!
+                successHandler(model)
+                return
             }
             successHandler(nil)
+        }) { (error) in
+            failHandler(error)
+        }
+    }
+    
+    class func updatePaymentState(model: DDCOnlinePaymentOptionModel?, successHandler: @escaping(_ result: DDCPaymentStatus) -> (), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/contract/status/check_tradestatus.do")
+        let params: Dictionary<String, Any>? = ["contractNo": model?.contractNo as Any]
+        print(params)
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
+            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))! {
+//                successHandler(tuple.data[])
+                return
+            }
+//            successHandler(nil)
         }) { (error) in
             failHandler(error)
         }

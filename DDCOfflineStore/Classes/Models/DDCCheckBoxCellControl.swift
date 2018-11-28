@@ -11,6 +11,9 @@ import UIKit
 
 @objc protocol DDCCheckBoxCellControlDelegate {
     @objc optional func cellControl(_ control: DDCCheckBoxCellControl, didFinishEdited count: Int, isFilled: Bool)
+    
+    @objc optional func cellControl(_ control: DDCCheckBoxCellControl, didSelectItemAt indexPath: IndexPath)
+
 }
 
 class DDCCheckBoxCellControl: NSObject {
@@ -21,7 +24,8 @@ class DDCCheckBoxCellControl: NSObject {
     var selectedIndexes: NSMutableArray = NSMutableArray()
     var cell: DDCCheckBoxCollectionViewCell?
     var model: DDCCourseModel?
-    
+    var indexPath: IndexPath?
+
     var hasImage: Bool?
     
     func cellHeight() -> CGFloat {
@@ -42,6 +46,7 @@ class DDCCheckBoxCellControl: NSObject {
     
     func configureCell(model: DDCCourseModel, indexPath: IndexPath) {
         self.model = model
+        self.indexPath = indexPath
         
         if let _attributes = model.attributes,
             (_attributes.count > 0 && model.isSelected) {
@@ -63,13 +68,19 @@ class DDCCheckBoxCellControl: NSObject {
                 view.updateLayoutConstraints(width: DDCString.width(string: subtitle, font: UIFont.systemFont(ofSize: 20.0), height: 40.0) + 45)
             }
         } else {
-            self.cell!.textField.isHidden = !model.isSelected
-            self.cell!.textField.textField.delegate = self
-            self.cell!.textField.textField.text = model.totalCount != 0 ? "\(model.totalCount)" : ""
+            self.cell!.checkBox.isUserInteractionEnabled = true
+            self.cell!.checkBox.textField.textField.delegate = self
+            self.cell!.checkBox.textField.isHidden = false//!model.isSelected
+            self.cell!.checkBox.setHandler { (sender) in
+                self.sectionButtonClicked(sender: sender)
+            }
+//            self.cell!.textField.isHidden = !model.isSelected
+//            self.cell!.textField.textField.delegate = self
+//            self.cell!.textField.textField.text = model.totalCount != 0 ? "\(model.totalCount)" : ""
         }
         let title = model.categoryName ?? model.courseName
         self.cell!.checkBox.button.setTitle(title, for: .normal)
-        self.cell!.updateConstraints(width: DDCString.width(string: title!, font: UIFont.systemFont(ofSize: 20.0), height: 30.0) + 50.0)
+//        self.cell!.updateConstraints(width: DDCString.width(string: title!, font: UIFont.systemFont(ofSize: 20.0), height: 30.0) + 50.0)
         self.cell!.checkBox.button.isSelected = model.isSelected
         self.cell!.subContentView.isHidden = !model.isSelected
     }
@@ -96,6 +107,9 @@ class DDCCheckBoxCellControl: NSObject {
         }
     }
     
+    func sectionButtonClicked(sender: DDCCheckBox) {
+        self.delegate?.cellControl!(self, didSelectItemAt: self.indexPath!)
+    }
 }
 
 extension DDCCheckBoxCellControl: UITextFieldDelegate {
@@ -132,20 +146,24 @@ extension DDCCheckBoxCellControl: UITextFieldDelegate {
     }
     
     func isCompleted() -> Bool {
-        var isfilled: Bool = false
+        var selectedCount: Int = 0
+        var filledCount: Int = 0
+
         if self.model!.isSelected == true {
             if let _attributes = self.model!.attributes {
                 for att in _attributes {
                     if att.isSelected == true {
-                        if att.totalCount <= 0{
-                            isfilled = false
-                        } else {
-                            isfilled = true
-                        }
+                        selectedCount += 1
+                    }
+                    if att.totalCount > 0{
+                        filledCount += 1
                     }
                 }
             }
         }
-        return isfilled
+        if selectedCount != filledCount {
+            return false
+        }
+        return true
     }
 }

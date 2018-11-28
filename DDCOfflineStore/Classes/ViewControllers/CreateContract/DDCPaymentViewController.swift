@@ -11,8 +11,14 @@ import UIKit
 class DDCPaymentViewController: DDCChildContractViewController {
     var payments: [DDCCheckBoxModel] = Array()
     var result: (online: DDCPaymentOptionModel?, offline: DDCPaymentOptionModel?)
+    var onlinePayment: DDCOnlinePaymentOptionModel?
     var pickedSection: Int = 999
-
+    lazy var paymentUpdateChecker: DDCPaymentUpdateChecker = {
+        let paymentUpdateChecker: DDCPaymentUpdateChecker = DDCPaymentUpdateChecker()
+        paymentUpdateChecker.delegate = self
+        return paymentUpdateChecker
+    }()
+    
     lazy var collectionView: UICollectionView! = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         
@@ -31,7 +37,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "提交", style: .highlighted, handler: {
-            //            self.forwardNextPage()
+            self.commitForm()
         }))
         return _bottomBar
     }()
@@ -103,12 +109,18 @@ extension DDCPaymentViewController {
     func createPaymentOption(payment: DDCPaymentItemModel) {
         if let _payment: DDCPaymentItemModel = payment {
             DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: 1, successHandler: { (model) in
-                
+                if let _model = model {
+                    self.onlinePayment = _model
+                    self.collectionView.reloadData()
+                    self.paymentUpdateChecker.startChecking(paymentModel: _model)
+                }
             }) { (error) in
                 
             }
         }
     }
+    
+    
 }
 
 // MARK: Action
@@ -116,6 +128,16 @@ extension DDCPaymentViewController {
     
     func didSelectRadioButton(sender: UIButton) {
         
+    }
+    
+    func commitForm() {
+        weak var weakSelf = self
+        let alertController: UIAlertController = UIAlertController.init(title: "确定客户已完成线下支付吗？", message: nil, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
+            
+        }))
+        alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -129,10 +151,9 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
         if section == 3, self.pickedSection == 3,
             let offlineOptions = self.result.offline?.channels {
             return offlineOptions.count
+        } else if self.pickedSection < 3 && self.onlinePayment != nil {
+            return 1
         }
-//        else if self.pickedSection < 3 && self.result.online?.channels[section] {
-//            return 1
-//        }
         return 0
     }
     
@@ -144,8 +165,9 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self), for: indexPath) as! DDCPaymentQRCodeImageCollectionViewCell
-//            let model: DDCOnlinePaymentOptionModel = self.result.online?.channels![indexPath.item]
-//            cell.configureCell(QRCodeURLString: model.code_url ?? "", price: "2000.0")//self.model?.contractPrice
+            let model: DDCOnlinePaymentOptionModel = self.onlinePayment!
+            let price: String = ((self.model!.specs?.costPrice != nil) ? "\(self.model!.specs?.costPrice! ?? 0)" : "\(self.model!.contractPrice!)")
+            cell.configureCell(QRCodeURLString: model.qr_code ?? "", price: price)
             return cell
         }
     }
@@ -161,6 +183,7 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
                 let model: DDCCheckBoxModel = self.payments[indexPath.section - 1]
                 headerView.radioButton.button.setTitle(model.title, for: .normal)
                 headerView.radioButton.button.isSelected = model.isSelected
+//                if model.title == ""
                 headerView.radioButton.imageView.image = UIImage.init(named: self.images[indexPath.section - 1] as String)
                 headerView.tag = indexPath.section
                 headerView.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(headerSelected(gesture:))))
@@ -248,4 +271,21 @@ extension DDCPaymentViewController {
         }
         self.collectionView.reloadData()
     }
+}
+
+
+extension DDCPaymentViewController: DDCPaymentUpdateCheckerDelegate {
+    func payment(updateChecker: DDCPaymentUpdateChecker, paymentOption: DDCOnlinePaymentOptionModel, status: DDCPaymentStatus) {
+        if (status == .success)
+        {
+//            let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(detailsID: self.model!.id!)
+//            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+        else if (status == .failed && self.view != nil)
+        {
+            self.view.makeDDCToast(message: "支付失败了", image: UIImage.init(named: "addCar_icon_fail")!)
+        }
+    }
+    
+    
 }

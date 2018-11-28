@@ -105,7 +105,7 @@ extension DDCAddContractInfoModelFactory {
                                                     "code":model.code as Any,
                                                     "courseUseType": model.packageModel!.packageType?.rawValue as Any,
                                                     "createUserId": (model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id)as Any,
-                                                    "dealPrice":model.specs?.costPrice ?? model.contractPrice as Any,
+                                                    "dealPrice":((model.specs?.costPrice != nil) ? (model.specs?.costPrice!)! * 100 : model.contractPrice! * 100) as Any,
                                                     "dealShopId":model.currentStore?.id as Any,
                                                     "dealUserId":(model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id) as Any,
                                                     "endEffectiveTime": model.packageModel?.endEffectiveTime as Any,
@@ -122,7 +122,7 @@ extension DDCAddContractInfoModelFactory {
             "sourcePaltform":1,
             "type": (model.contractType?.rawValue)! + 1,//合同类型（1, "个人正式课合同" 2, "个人体验课合同" 3, "团体正式课合同" 4, "团体体验课合同"）
             "upgradeLimit":model.packageModel?.upgradeLimit as Any,//－－进阶规则（0, "不限制" 1, "限制"）
-            "userId":model.customer?.userid as Any,
+            "userId":model.customer?.userId as Any,
             "virtualSkuId":model.specs?.id as Any
         ]
         print(dictionary)

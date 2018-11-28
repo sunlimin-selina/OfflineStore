@@ -14,3 +14,9 @@ enum DDCPayMethod: Int{
     case weixin
     case cash
 }
+
+enum DDCPaymentStatus: Int {
+    case pending
+    case failed
+    case success
+}

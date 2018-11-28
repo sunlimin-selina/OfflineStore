@@ -25,7 +25,7 @@ class DDCContractModel: Mappable {
     
     var contractType: DDCContractType?
     var courseType: DDCCourseType = .regular
-    var contractPrice: String?
+    var contractPrice: Int?
     var createdUsername: String?
     var signedUsername: String?
     var responsibleUsername: String?

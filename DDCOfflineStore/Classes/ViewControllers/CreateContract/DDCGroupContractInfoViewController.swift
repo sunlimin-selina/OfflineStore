@@ -238,7 +238,8 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             return CGSize.init(width: DDCAppConfig.width, height: 20)
         }else if indexPath.section == 2 {
             if indexPath.section == (self.pickedSection + 2) {
-                return CGSize.init(width: DDCAppConfig.width, height: self.customCoursesControls.count > 0 ?self.customCoursesControls[indexPath.item].cellHeight(): 30)
+               return //CGSize.init(width: DDCAppConfig.width, height: 30)
+                CGSize.init(width: DDCAppConfig.width, height: self.customCoursesControls.count > 0 ?self.customCoursesControls[indexPath.item].cellHeight(): 30)
             }
             return CGSize.zero
         } else if indexPath.section == 3 {
@@ -422,8 +423,7 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
         self.currentTextField = textField
         if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
             return false
-        }
-        if textField.tag == DDCAddContractTextFieldType.rule.rawValue {
+        } else if textField.tag == DDCAddContractTextFieldType.rule.rawValue {
             self.pickerView.selectRow(self.orderRule.index(of: textField.text as Any), inComponent: 0, animated: true)
         }
         return true
@@ -431,11 +431,12 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == DDCAddContractTextFieldType.money.rawValue {
-            self.model!.contractPrice = textField.text
+            self.model!.contractPrice = Int(textField.text!)
             self.models[textField.tag].text = textField.text
             self.models[textField.tag].isFill = true
             self.formFilled()
         }
+        
         return true
     }
 }
@@ -622,7 +623,7 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
     }
     
     func formFilled() {
-        if self.checkBoxFilled && ((self.model?.contractPrice != nil && self.model?.contractPrice != "") || self.model?.specs?.costPrice != nil) && self.model?.code != nil{
+        if self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) && self.model?.code != nil{
             self.bottomBar.buttonArray![1].isEnabled = true
             self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
         } else {
@@ -631,3 +632,4 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
         }
     }
 }
+

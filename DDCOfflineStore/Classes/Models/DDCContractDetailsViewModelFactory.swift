@@ -57,19 +57,20 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //邮箱
         let email: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "邮箱", describe: model.lineUserEmail)
         //顾客渠道
-        let channel: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "顾客渠道", describe: model.channelName)// DDCContractDetailsViewModelFactory.channelViewModel(category: )
+        let channel: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "顾客渠道", describe: model.channelName)
         //介绍会员
-        let recommendUser: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "介绍会员", describe: "\(model.introduceName ?? "") \(model.introduceMobile ?? "")")
+        let recommendUser: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "介绍会员", describe: (model.introduceMobile == nil || (model.introduceMobile?.count)! <= 0) ? "无" :  "\(model.introduceName ?? "") \(model.introduceMobile ?? "")" )
         //产品套餐
         let package: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品套餐", describe: model.title)
         //产品规格
         let course: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品规格", describe: model.skuName)
         //生效期限
-        let term: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生效期限", describe:"\(DDCTools.date(from: model.beginEffectiveTime ?? "")) -\(DDCTools.date(from: model.endEffectiveTime ?? ""))")
+        let effectiveTerm = (model.beginEffectiveTime != nil && model.endEffectiveTime != nil) ? "\(DDCTools.date(from: model.beginEffectiveTime!)) -\(DDCTools.date(from: model.endEffectiveTime!))" : ""
+        let term: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生效期限", describe: effectiveTerm)
         //有效时间
-        let effectiveTime: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "有效时间", describe:"")
+        let effectiveTime: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "有效时间", describe: model.validPeriod ?? "")
         //有效门店
-        let store: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "有效门店", describe: model.effectiveShopName) //DDCContractDetailsViewModelFactory.effectiveStoresViewModel(stores: category.stores)
+        let store: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "有效门店", describe: model.effectiveShopName)
         //支付方式
         let payMethod: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付方式", describe: model.payStyle)
         //当前门店
@@ -158,25 +159,6 @@ class DDCContractDetailsViewModelFactory: NSObject {
         return DDCContractDetailsViewModel.init(title: "顾客渠道", describe:"")
     }
     
-    class func effectiveStoresViewModel(stores: [DDCStoreModel]?) -> DDCContractDetailsViewModel {
-        if let _stores = stores {
-            var storeName: String = ""
-            for index in 0...(_stores.count - 1) {
-                let store: DDCStoreModel = _stores[index]
-                if index != 0 ,
-                    index % 3 == 0 {
-                    storeName = storeName + "\(store.title ?? "") \n"
-                } else {
-                    storeName = storeName + "\(store.title ?? ""), "
-                }
-            }
-//            storeName.replacingCharacters(in: NSMakeRange(storeName.count - 2, 2), with: "")
-            return DDCContractDetailsViewModel.init(title: "有效门店", describe: storeName)
-        }
- 
-        return DDCContractDetailsViewModel.init(title: "有效门店", describe: "")
-    }
-    
     class func convertModel(model: DDCContractDetailModel) -> DDCContractModel {
         let customer: DDCCustomerModel = DDCCustomerModel()
         let contractModel = DDCContractModel()
@@ -192,21 +174,6 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //职业
         let occupationArray: NSArray = DDCContract.occupationArray as NSArray
         customer.career = DDCOccupation(rawValue: occupationArray.index(of: model.lineUserCareer as Any))
-        //渠道
-//        if let channels: NSArray = (self.channels! as NSArray) {
-//            let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
-//                if let object = channelModel as? DDCChannelModel{
-//                    return object.name == models[DDCClientTextFieldType.channel.rawValue].text
-//                }
-//                return false
-//            }
-//            if idx != NSNotFound {
-//                model?.customer!.channelCode = "\(self.channels![idx].code!)"
-//            }
-//        }
-
-        //渠道详情
-//        customer.channelDesc = models[DDCClientTextFieldType.channelDetail.rawValue].text ?? ""
         //是否会员介绍
         customer.isReferral = model.introduceMobile != nil ? true : false
         //会员手机号
@@ -217,10 +184,20 @@ class DDCContractDetailsViewModelFactory: NSObject {
         customer.dutyUserName = model.dealUserName
         
         let package: DDCContractPackageModel = DDCContractPackageModel()
-
         package.upgradeLimit = Int(model.upgradeLimit!)
+        package.title = model.title
+        package.startUseTime = model.beginEffectiveTime
+        package.endEffectiveTime = model.endEffectiveTime
+        
         contractModel.customer = customer
         contractModel.packageModel = package
+        
+        contractModel.code = model.code
+        contractModel.contractPrice = model.salePrice
+        contractModel.code = model.code
+        contractModel.currentStore?.title = model.dealShopName
+        contractModel.createdUsername = model.createUserName
+        contractModel.status = model.tradeStatus
 
         return contractModel
     }

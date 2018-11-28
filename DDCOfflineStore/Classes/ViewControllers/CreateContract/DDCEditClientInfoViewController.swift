@@ -220,6 +220,7 @@ extension DDCEditClientInfoViewController {
         }) { (error) in
             DDCTools.hideHUD()
         }
+
     }
     
     func configureCell(cell: DDCTitleTextFieldCell, model: DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
