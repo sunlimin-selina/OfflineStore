@@ -123,22 +123,7 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
 //        self.setupViewConstraints()
 //    }
     
-//    func updateConstraints(width: CGFloat) {
-//        let kPadding: CGFloat = 5.0
-//
-//        self.checkBox.snp.remakeConstraints({ (make) in
-//            make.width.equalTo(width)
-//            make.left.top.equalTo(self.contentView).offset(kPadding)
-//            make.height.equalTo(30.0)
-//        })
-//
-//        self.textField.snp.remakeConstraints({ (make) in
-//            make.left.equalTo(self.checkBox.snp_rightMargin)
-//            make.width.equalTo(130.0)
-//            make.height.equalTo(34.0)
-//            make.centerY.equalTo(self)
-//        })
-//    }
+
     
 }
 

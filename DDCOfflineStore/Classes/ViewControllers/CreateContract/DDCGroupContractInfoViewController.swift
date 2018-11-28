@@ -27,7 +27,6 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
     var contractInfo: [DDCContractDetailsViewModel] = Array()
     var models: [DDCContractInfoViewModel] = Array()
     var currentTextField: UITextField?
-    var items: [DDCCourseModel] = Array()
     var groupItems: (customCourses: [DDCCourseModel]?, sampleCourses: [DDCCourseModel]?)?
     var package: [DDCContractPackageModel] = Array()
     var specs: [DDCContractPackageCategoryModel] = Array()
@@ -237,13 +236,17 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             return CGSize.init(width: DDCAppConfig.width, height: 20)
         }else if indexPath.section == 2 {
             if indexPath.section == (self.pickedSection + 2) {
-               return //CGSize.init(width: DDCAppConfig.width, height: 30)
-                CGSize.init(width: DDCAppConfig.width, height: self.customCoursesControls.count > 0 ?self.customCoursesControls[indexPath.item].cellHeight(): 30)
+                var height: CGFloat = 30
+                let customModel: DDCCourseModel = (self.groupItems?.customCourses![indexPath.item])!
+                if customModel != nil && customModel.attributes != nil{
+                    height = CGFloat((customModel.isSelected ? (customModel.attributes?.count)! + 1: 1 ) * 42)
+                }
+                return CGSize.init(width: DDCAppConfig.width, height: height)
             }
             return CGSize.zero
         } else if indexPath.section == 3 {
             if indexPath.section ==  (self.pickedSection + 2)  {
-                return CGSize.init(width: DDCAppConfig.width, height: 40)
+                return CGSize.init(width: DDCAppConfig.width, height: 45)
             }
             return CGSize.zero
         }
@@ -286,9 +289,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
     
     func collectionViewGroupCell(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell  {
         if indexPath.section == 2 {
-            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
-            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
             let model: DDCCourseModel = (self.groupItems?.customCourses![indexPath.item])!
             let control = DDCCheckBoxCellControl.init(cell: cell)
             control.delegate = self
@@ -305,10 +306,8 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             cell.button.addTarget(self, action: #selector(scanAction(_:)), for: .touchUpInside)
             return cell
         } else if indexPath.section == 3 {
-            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
-            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
-            let model: DDCCourseModel = (self.groupItems?.sampleCourses![indexPath.item])!
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
+            let model: DDCCourseModel = self.items[indexPath.item]//(self.groupItems?.sampleCourses![indexPath.item])!
             let control = DDCCheckBoxCellControl.init(cell: cell)
             control.delegate = self
             control.configureCell(model: model, indexPath: indexPath)
@@ -619,6 +618,16 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
         self.formFilled()
     }
     
+    func cellControl(_ control: DDCCheckBoxCellControl, didSelectItemAt indexPath: IndexPath) {
+        if self.items.count > 0 && indexPath.section == 3 { //self.groupItems?.sampleCourses!
+            let items = self.items
+            let model = items[indexPath.item]
+            model.isSelected = !model.isSelected
+            self.formFilled()
+        }
+        self.collectionView.reloadData()
+    }
+    
     func formFilled() {
         if self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) && self.model?.code != nil{
             self.bottomBar.buttonArray![1].isEnabled = true
@@ -629,4 +638,3 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
         }
     }
 }
-

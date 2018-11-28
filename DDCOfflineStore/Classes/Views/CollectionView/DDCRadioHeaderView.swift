@@ -72,7 +72,8 @@ class DDCRadioHeaderView: UICollectionReusableView {
         if self.titleLabel.isHidden {
             self.radioButton.snp.remakeConstraints({ (make) in
                 make.width.equalTo(self.titleLabel)
-                make.centerX.top.bottom.equalTo(self)
+                make.top.bottom.equalTo(self)
+                make.left.equalTo(self).offset(DDCAppConfig.kLeftMargin)
             })
         } else {
             self.titleLabel.snp.makeConstraints { (make) in

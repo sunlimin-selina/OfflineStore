@@ -36,109 +36,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DDCOfflineStore/Classes/Models/DDCAddContractInfoModelFactory.swift"
-            timestampString = "565094519.755445"
+            timestampString = "565108833.907602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "132"
             endingLineNumber = "132"
             landmarkName = "packData(model:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCAddContractInfoViewController.swift"
-            timestampString = "565094519.755813"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "542"
-            endingLineNumber = "542"
-            landmarkName = "forwardNextPage()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCAddContractInfoViewController.swift"
-            timestampString = "565094519.7562259"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "538"
-            endingLineNumber = "538"
-            landmarkName = "forwardNextPage()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/APP/APIs/DDCContractDetailsAPIManager.swift"
-            timestampString = "565094519.756367"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "cancelContract(model:successHandler:failHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/APP/APIs/DDCContractDetailsAPIManager.swift"
-            timestampString = "565094519.7568541"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "cancelContract(model:successHandler:failHandler:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static DDCOfflineStore.DDCContractDetailsAPIManager.cancelContract(model: DDCOfflineStore.DDCContractDetailModel, successHandler: (Swift.Bool) -&gt; (), failHandler: (Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "DDCOfflineStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCContractDetailsAPIManager.swift"
-                  timestampString = "565094520.168771"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "42"
-                  endingLineNumber = "42"
-                  offsetFromSymbolStart = "1104">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;) -&gt; () in static DDCOfflineStore.DDCContractDetailsAPIManager.cancelContract(model: DDCOfflineStore.DDCContractDetailModel, successHandler: (Swift.Bool) -&gt; (), failHandler: (Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "DDCOfflineStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCContractDetailsAPIManager.swift"
-                  timestampString = "565094520.170637"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "43"
-                  endingLineNumber = "43"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -223,9 +223,12 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
         if indexPath.section == 0 {
             return CGSize.init(width: DDCAppConfig.width, height: 20)
         }  else if self.isPickedCustom && indexPath.section == 3 {
-            return CGSize.init(width: DDCAppConfig.width, height: self.checkBoxControls.count > 0 ?self.checkBoxControls[indexPath.item].cellHeight(): 30)
-        } else if self.model!.courseType == DDCCourseType.sample && indexPath.section == 1 {
-            return CGSize.init(width: DDCAppConfig.width, height: 0.01)
+            var height: CGFloat = 30
+            let customModel = self.customItems[indexPath.item]
+            if customModel != nil && customModel.attributes != nil{
+                height = CGFloat((customModel.isSelected ? (customModel.attributes?.count)! + 1: 1 ) * 42)
+            }
+            return CGSize.init(width: DDCAppConfig.width, height: height)
         }
         return CGSize.init(width: DDCAppConfig.width, height: 100)
     }
@@ -267,14 +270,12 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
     
     func collectionViewRegularCell(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell  {
         if self.isPickedCustom && indexPath.section == 3 {
-            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
-            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
             let model: DDCCourseModel = self.customItems[indexPath.item]
             let control = DDCCheckBoxCellControl.init(cell: cell)
             control.configureCell(model: model, indexPath: indexPath)
             control.delegate = self
-            self.checkBoxControls.insert(control, at: indexPath.item)
+//            self.checkBoxControls.insert(control, at: indexPath.item)
             return cell
         } else if indexPath.section == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTextFieldButtonCell.self), for: indexPath) as! DDCTextFieldButtonCell
