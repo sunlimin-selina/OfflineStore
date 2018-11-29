@@ -63,7 +63,6 @@
 		D3B607FC217499C20086387B /* DDCSubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607EC217499C10086387B /* DDCSubmitButton.swift */; };
 		D3B607FD217499C20086387B /* DDCProgressCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607EE217499C10086387B /* DDCProgressCollectionViewLayout.swift */; };
 		D3B607FE217499C20086387B /* DDCInputFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F0217499C10086387B /* DDCInputFieldView.swift */; };
-		D3B607FF217499C20086387B /* DDCCircularTextFieldWithExtraButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F1217499C10086387B /* DDCCircularTextFieldWithExtraButtonView.swift */; };
 		D3B60800217499C20086387B /* DDCCircularTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F2217499C10086387B /* DDCCircularTextFieldView.swift */; };
 		D3B60801217499C20086387B /* DDCBarBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607F4217499C10086387B /* DDCBarBackgroundView.swift */; };
 		D3BBBBF0217710B600FC5E23 /* DDCContractInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */; };
@@ -194,7 +193,6 @@
 		D3B607EC217499C10086387B /* DDCSubmitButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCSubmitButton.swift; sourceTree = "<group>"; };
 		D3B607EE217499C10086387B /* DDCProgressCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCProgressCollectionViewLayout.swift; sourceTree = "<group>"; };
 		D3B607F0217499C10086387B /* DDCInputFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCInputFieldView.swift; sourceTree = "<group>"; };
-		D3B607F1217499C10086387B /* DDCCircularTextFieldWithExtraButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCCircularTextFieldWithExtraButtonView.swift; sourceTree = "<group>"; };
 		D3B607F2217499C10086387B /* DDCCircularTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCCircularTextFieldView.swift; sourceTree = "<group>"; };
 		D3B607F4217499C10086387B /* DDCBarBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCBarBackgroundView.swift; sourceTree = "<group>"; };
 		D3BBBBEF217710B600FC5E23 /* DDCContractInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractInfoModel.swift; sourceTree = "<group>"; };
@@ -439,7 +437,6 @@
 			isa = PBXGroup;
 			children = (
 				D3B607F0217499C10086387B /* DDCInputFieldView.swift */,
-				D3B607F1217499C10086387B /* DDCCircularTextFieldWithExtraButtonView.swift */,
 				D3B607F2217499C10086387B /* DDCCircularTextFieldView.swift */,
 				D3276D802188425700D04E9F /* DDCToolbar.swift */,
 			);
@@ -967,7 +964,6 @@
 				D3ABC4FC218BFCFE00B1B2A8 /* DDCEditSignatureView.swift in Sources */,
 				D3FDEBA12186DEDD00856581 /* DDCEditClientInfoModelFactory.swift in Sources */,
 				D3184D2421901843006AAC2D /* DDCRadioWithImageView.swift in Sources */,
-				D3B607FF217499C20086387B /* DDCCircularTextFieldWithExtraButtonView.swift in Sources */,
 				D3F6D46221A7FA5C00F57A34 /* DDCContractInfoViewController.swift in Sources */,
 				D3DE3089217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift in Sources */,
 				D3276D812188425700D04E9F /* DDCToolbar.swift in Sources */,

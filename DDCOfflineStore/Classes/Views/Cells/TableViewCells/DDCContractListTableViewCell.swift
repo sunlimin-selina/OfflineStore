@@ -139,6 +139,32 @@ class DDCContractListTableViewCell: UITableViewCell {
         
     }
     
+    func updateSubviewConstraints() {
+        let kMargin: CGFloat = 20.0
+        let kLabelHeight: CGFloat = 25.0
+        
+        self.titleLabel.snp.remakeConstraints({ (make) in
+            make.left.equalTo(self.icon.snp_rightMargin).offset(kMargin)
+            make.right.equalTo(self.subtitleLabel.snp_leftMargin)
+            make.top.equalTo(self.contentView).offset(kMargin)
+            make.height.equalTo(kLabelHeight)
+            make.centerY.equalTo(self.contentView)
+        })
+        
+        self.contractSNLabel.snp.updateConstraints({ (make) in
+            make.height.equalTo(0)
+        })
+        
+        self.contractTypeImage.snp.updateConstraints({ (make) in
+            make.height.equalTo(0)
+        })
+        
+        self.contractNameLabel.snp.updateConstraints({ (make) in
+            make.height.equalTo(0)
+        })
+        
+    }
+    
     func configureCell(model: DDCContractListModel) {
         let title = "\(model.lineUserName ?? "") \(model.mobile ?? "")"
         self.titleLabel.text = title
@@ -147,8 +173,10 @@ class DDCContractListTableViewCell: UITableViewCell {
         self.contractNameLabel.text = contractId
         self.contractSNLabel.text = model.code
         
-        if model.type == 1{
+        if model.type == .personalRegular {
             self.contractTypeImage.image = UIImage.init(named: "Tab_homepage_zhengshike")
+        } else if model.type == .groupRegular || model.type == .groupSample{
+            self.updateSubviewConstraints()
         }
 
         let status: DDCStatusViewModel = DDCContract.statusPairings[(model.status!.rawValue)]!
@@ -157,4 +185,7 @@ class DDCContractListTableViewCell: UITableViewCell {
         self.icon.image = UIImage.init(named: status.imageName!)
     }
     
+    override func prepareForReuse() {
+        self.setupViewConstraints()
+    }
 }

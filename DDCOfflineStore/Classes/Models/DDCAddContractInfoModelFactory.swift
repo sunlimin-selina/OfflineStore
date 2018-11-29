@@ -123,7 +123,7 @@ extension DDCAddContractInfoModelFactory {
             "useInfos": DDCAddContractInfoModelFactory.getUserInfos(model: model),
             "remark":"",
             "sourcePaltform":1,
-            "type": (model.contractType?.rawValue)! + 1,//合同类型（1, "个人正式课合同" 2, "个人体验课合同" 3, "团体正式课合同" 4, "团体体验课合同"）
+            "type": (model.contractType?.rawValue)!,//合同类型（1, "个人正式课合同" 2, "个人体验课合同" 3, "团体正式课合同" 4, "团体体验课合同"）
             "upgradeLimit":model.packageModel?.upgradeLimit as Any,//－－进阶规则（0, "不限制" 1, "限制"）
             "userId":model.customer?.userId as Any,
             "virtualSkuId":model.specs?.id as Any

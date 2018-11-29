@@ -13,7 +13,8 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
     var stores: [DDCCheckBoxModel]?  = Array()
     var selectedStore: DDCCheckBoxModel?
     var selectedType: Int?
-    
+    var canForward: Bool = false
+
     var userInfo: [DDCContractDetailsViewModel] = Array()
     var saleTypes: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "体验课订单", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "普通合同", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "团体合同", isSelected: false)]
     
@@ -74,14 +75,7 @@ extension DDCSelectStoreViewController {
     }
     
     func forwardNextPage() {
-//        self.bottomBar.buttonArray![1].isEnabled = false
-        var canForward: Bool = true
-        
-//        if !canForward {
-//            self.bottomBar.buttonArray![0].isEnabled = true
-//            DDCTools.showHUD(view: self.view)
-//        }
-        
+
         self.model!.currentStore = (self.selectedStore as! DDCStoreModel)
         self.model!.courseType = DDCCourseType(rawValue: self.selectedType!)!
         if self.model!.courseType == .regular {

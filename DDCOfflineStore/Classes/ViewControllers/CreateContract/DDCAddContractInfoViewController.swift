@@ -229,6 +229,8 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
                 height = CGFloat((customModel.isSelected ? (customModel.attributes?.count)! + 1: 1 ) * 42)
             }
             return CGSize.init(width: DDCAppConfig.width, height: height)
+        } else if self.model!.contractType == .personalSample && indexPath.section == 1 {
+            return CGSize.init(width: DDCAppConfig.width, height: 0.01)
         }
         return CGSize.init(width: DDCAppConfig.width, height: 100)
     }
@@ -328,7 +330,6 @@ extension DDCAddContractInfoViewController {
             DDCTools.hideHUD()
             if let models = array {
                 self.customItems = models
-                self.collectionView.reloadData()
             }
         }) { (error) in
             DDCTools.hideHUD()
@@ -449,7 +450,6 @@ extension DDCAddContractInfoViewController {
                 self.models[DDCAddContractTextFieldType.spec.rawValue].text = ""
                 self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = false
                 self.isPickedCustom = false
-
                 if self.pickerView.selectedRow(inComponent: 0) == 1 {
                     self.isPickedCustom = true
                     if self.customItems.count <= 0 {
@@ -468,6 +468,7 @@ extension DDCAddContractInfoViewController {
                     self.cancel()
                     return
                 }
+                self.checkBoxFilled = true
                 let spec: DDCContractPackageCategoryModel = self.specs[self.pickerView.selectedRow(inComponent: 0)]
                 self.model?.specs = spec
                 let endTime = (spec != nil) ? spec.validPeriod : 0
@@ -490,9 +491,9 @@ extension DDCAddContractInfoViewController {
         default:
             return
         }
-        self.formFilled()
-        self.collectionView.reloadData()
         self.resignFirstResponder()
+        self.collectionView.reloadData()
+        self.formFilled()
     }
     
     @objc func cancel() {
@@ -501,7 +502,7 @@ extension DDCAddContractInfoViewController {
     }
    
     func forwardNextPage() {
-//        self.bottomBar.buttonArray![1].isEnabled = false
+        self.bottomBar.buttonArray![1].isEnabled = false
         
         if self.isPickedCustom {
             var customItems: [DDCCourseModel] = Array()

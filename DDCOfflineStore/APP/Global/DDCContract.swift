@@ -9,13 +9,13 @@ import Foundation
 
 enum DDCContractStatus: UInt , Codable{
     case all
-    case effective //生效中     -> 3:生效
-    case ineffective //未生效   -> 2:已经支付未开始预定
     case inComplete //未完成    -> 1:未支付
-    case completed //已结束     -> 4:过期
-    case revoked //已解除       -> 7:解绑
-    case used //已核销          -> 6:核销完
+    case ineffective //未生效   -> 2:已经支付未开始预定
+    case effective //生效中     -> 3:生效
     case cancel //已取消        -> 新增 5:取消
+    case completed //已结束     -> 4:过期
+    case used //已核销          -> 6:核销完
+    case revoked //已解除       -> 7:解绑
 }
 
 enum DDCCustomerType: Int , Codable{
@@ -25,10 +25,10 @@ enum DDCCustomerType: Int , Codable{
 }
 
 enum DDCContractType: UInt , Codable{
-    case personalRegular //个人正式课
-    case personalSample //个人体验课
-    case groupRegular //团体正式课
-    case groupSample //团体体验课
+    case personalRegular = 1 //个人正式课
+    case personalSample = 2 //个人体验课
+    case groupRegular = 3 //团体正式课
+    case groupSample = 4 //团体体验课
 }
 
 enum DDCCourseType: Int , Codable {
@@ -51,15 +51,10 @@ enum DDCRegularCoursePurchaseType {
 }
 
 class DDCContract: NSObject {
-    static var displayStatusArray: Array<String> {
-        get {
-            return ["全部","生效中","未完成","已核销","已结束","已解除"]
-        }
-    }
-    
+
     static var backendStatusArray: Array<String> {
         get {
-            return ["全部","生效中","未生效","未完成","已结束","已解除","已核销"]
+            return ["全部","未完成","未生效","生效中","已结束","已取消","已核销","已解除"]
         }
     }
     

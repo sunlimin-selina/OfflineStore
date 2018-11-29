@@ -97,7 +97,7 @@ extension DDCContractDetailsViewController {
                 if let _response = response {
                     weakSelf!.model = _response
                     weakSelf!.modelArray = DDCContractDetailsViewModelFactory.integrateData(model: _response)
-                    if weakSelf!.model!.tradeStatus == DDCContractStatus.effective {//DDCContractStatus.inComplete
+                    if weakSelf!.model!.tradeStatus == DDCContractStatus.inComplete {
                         weakSelf!.view.addSubview(weakSelf!.bottomBar)
                     }
                 }

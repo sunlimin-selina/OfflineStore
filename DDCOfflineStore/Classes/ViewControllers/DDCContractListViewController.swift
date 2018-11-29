@@ -309,12 +309,12 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
         weak var weakSelf = self
         
         // 弹窗让用户选择筛选
-        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(style: .plain, array: DDCContract.displayStatusArray) { (selected) in
+        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(style: .plain, array: DDCContract.backendStatusArray) { (selected) in
             if let _selected = selected {
                 // 获取status值
                 let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
                 let status: DDCContractStatus = DDCContractStatus(rawValue: UInt(statusArray.index(of: _selected as Any)))!
-                let type: DDCContractType = DDCContractType(rawValue: UInt(statusArray.index(of: _selected as Any)))!
+                let type: DDCContractType = .personalRegular//DDCContractType(rawValue: UInt(statusArray.index(of: _selected as Any)))!
 
                 // 关掉弹窗
                 weakSelf?.dismiss(animated: true, completion: {

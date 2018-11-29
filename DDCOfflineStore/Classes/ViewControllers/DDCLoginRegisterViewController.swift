@@ -26,14 +26,11 @@ class DDCLoginRegisterViewController: UIViewController {
     
     public lazy var inputFieldView: DDCInputFieldView = {
         var _inputFieldView = DDCInputFieldView.init(frame: CGRect.zero)
-        _inputFieldView.firstTextFieldView!.button.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
-        _inputFieldView.firstTextFieldView!.extraButton!.addTarget(self, action: #selector(getVerificationCodeClick(sender:)), for: .touchUpInside)
         _inputFieldView.delegate = self
         _inputFieldView.secondTextFieldView!.textField.delegate = self
         _inputFieldView.firstTextFieldView!.textField.delegate = self
         _inputFieldView.firstTextFieldView!.textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         _inputFieldView.secondTextFieldView!.textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        
         self.firstTextFieldView = _inputFieldView.firstTextFieldView
         return _inputFieldView
     }()
@@ -44,7 +41,7 @@ class DDCLoginRegisterViewController: UIViewController {
     private var userNameValidated: Bool = false
     private var passwordValidated: Bool = false
     private var padding: Int?
-    private var firstTextFieldView: DDCCircularTextFieldWithExtraButtonView?
+    private var firstTextFieldView: DDCCircularTextFieldView?
     private lazy var contentView: UIView = {
         var _contentView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: screen.width, height: screen.height))
         _contentView.backgroundColor = UIColor.white
@@ -192,6 +189,7 @@ extension DDCLoginRegisterViewController {
     func login(username: String, password: String) {
         DDCTools.showHUD(view: self.view)
         self.submitButton.isEnabled = false
+        
         DDCSystemUserLoginAPIManager.login(username: username, password: password, successHandler: { (user) in
             DDCStore.sharedStore().user = user
             DDCTools.hideHUD()
@@ -202,7 +200,10 @@ extension DDCLoginRegisterViewController {
             self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
         }
     }
+    
 }
+
+
 
 // MARK:UITextFieldDelegate
 extension DDCLoginRegisterViewController: UITextFieldDelegate {
@@ -253,12 +254,6 @@ extension DDCLoginRegisterViewController: InputFieldViewDelegate {
     @objc func getVerificationCodeClick(sender: CountButton) {
         self.view.endEditing(true)
 
-        if self.loginState! {
-            self.firstTextFieldView!.button.isEnabled = false
-        } else {
-            self.firstTextFieldView!.extraButton!.isEnabled = false
-        }
-        
         let phoneNumber: String = self.inputFieldView.firstTextFieldView!.textField.text!
         
         if phoneNumber.count > 0 {
@@ -273,11 +268,6 @@ extension DDCLoginRegisterViewController: InputFieldViewDelegate {
         
         if (sender.counting!) {
             return
-        }
-
-        var type: String = "2"
-        if !(self.loginState!) {
-            type = "0"
         }
     }
     
@@ -295,7 +285,6 @@ extension DDCLoginRegisterViewController: InputFieldViewDelegate {
             self.view.makeDDCToast(message: "请输入密码!", image: UIImage.init(named: "addCar_icon_fail")!)
             return
         }
-
         self.login(username: username!, password: password!)
 
     }

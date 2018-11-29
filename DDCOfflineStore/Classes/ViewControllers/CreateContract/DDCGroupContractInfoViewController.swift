@@ -307,7 +307,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             return cell
         } else if indexPath.section == 3 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
-            let model: DDCCourseModel = self.items[indexPath.item]//(self.groupItems?.sampleCourses![indexPath.item])!
+            let model: DDCCourseModel = (self.groupItems?.sampleCourses![indexPath.item])!
             let control = DDCCheckBoxCellControl.init(cell: cell)
             control.delegate = self
             control.configureCell(model: model, indexPath: indexPath)
@@ -619,9 +619,9 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
     }
     
     func cellControl(_ control: DDCCheckBoxCellControl, didSelectItemAt indexPath: IndexPath) {
-        if self.items.count > 0 && indexPath.section == 3 { //self.groupItems?.sampleCourses!
-            let items = self.items
-            let model = items[indexPath.item]
+        if (self.groupItems?.sampleCourses!.count)! > 0 && indexPath.section == 3 {
+            let items = self.groupItems?.sampleCourses
+            let model = items![indexPath.item]
             model.isSelected = !model.isSelected
             self.formFilled()
         }

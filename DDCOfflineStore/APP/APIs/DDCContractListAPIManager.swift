@@ -24,7 +24,6 @@ class DDCContractListAPIManager: NSObject {
                 return
             }
             var array: Array<DDCContractListModel> = Array()
-            
             if case let packages as Array<Any> = tuple.data {
                 for data in packages {
                     if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){

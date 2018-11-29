@@ -41,24 +41,22 @@ class DDCEditClientInfoAPIManager: NSObject {
         let url:String = DDC_Current_Url.appendingFormat("/user/register.do")
         let params: Dictionary<String,Any> = ["mobile": model.customer!.mobile!,
                                                  "name": model.customer!.name!,
-                                                 "sex": 1,
+                                                 "sex": model.customer!.sex?.rawValue as Any,
             "birthday": "\(model.customer!.birthday!)",
             "career": model.customer!.career != nil ? model.customer!.career!.rawValue + 1 : 7,
             "email": model.customer!.email!,
             "channelCode": model.customer!.channelCode ?? "",
             "channelDesc": model.customer!.channelDesc!,
             "isIntroduce": model.customer!.isReferral ? 1 : 0,
-            "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile as Any : "",
-            "introduceName": (model.customer!.introduceName != nil) ? model.customer!.introduceName as Any : "",
+            "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile! : "",
+            "introduceName": (model.customer!.introduceName != nil) ? model.customer!.introduceName! : "",
             "dutyUserId": (model.customer!.dutyUserId != nil) ? model.customer!.dutyUserId as Any : DDCStore.sharedStore().user?.id as Any]
-        
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)
                 return
             }
-            
             if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
                 case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 DDCEditClientInfoAPIManager.getUserContractInfo(dictionary: data, successHandler: { (model) in

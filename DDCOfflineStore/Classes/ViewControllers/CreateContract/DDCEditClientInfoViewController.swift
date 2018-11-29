@@ -161,7 +161,7 @@ extension DDCEditClientInfoViewController {
         self.model!.customer?.isReferral = self.models[DDCClientTextFieldType.memberReferral.rawValue].text == "是" ? true : false
         if (self.model!.customer?.isReferral)! {
             //会员手机号
-            self.model!.customer?.introduceMobile = self.models[DDCClientTextFieldType.introduceMobile.rawValue].text ?? ""
+            self.model!.customer?.introduceMobile = DDCTools.removeWhiteSpace(string: self.models[DDCClientTextFieldType.introduceMobile.rawValue].text ?? "")
             //会员姓名
             self.model!.customer?.introduceName = self.models[DDCClientTextFieldType.introduceName.rawValue].text ?? ""
             //责任销售
@@ -217,6 +217,7 @@ extension DDCEditClientInfoViewController {
             if let _model = model {
                 self.delegate?.nextPage(model: _model)
             }
+            self.view.makeDDCToast(message: "保存用户信息失败", image: UIImage.init(named: "addCar_icon_fail")!)
         }) { (error) in
             DDCTools.hideHUD()
         }
@@ -233,6 +234,7 @@ extension DDCEditClientInfoViewController {
         if indexPath.item == 0 {
             _showHint = true
             cell.textFieldView.type = .labelButton
+            cell.textFieldView.button.isHidden = false
             cell.textFieldView.button.setTitle("获取用户信息", for: .normal)
         } else if (indexPath.item == 1 && model.text!.count > 0) {
             cell.textFieldView.type = .labelButton
@@ -247,9 +249,9 @@ extension DDCEditClientInfoViewController {
         } else if (indexPath.item == 10 && model.title == "介绍会员电话") {
             cell.textFieldView.type = .labelButton
             cell.textFieldView.button.setTitle("会员验证", for: .normal)
+            cell.textFieldView.button.isHidden = false
         } else if (indexPath.item == 4) {
             // 不让用户手动改年龄
-            cell.textFieldView.textField.isUserInteractionEnabled = false
             cell.textFieldView.textField.clearButtonMode = .never
         } else if (indexPath.item == 11 && model.title == "介绍会员姓名") || (indexPath.item == 12) || (indexPath.item == 10 && model.title == "责任销售") {
             cell.textFieldView.textField.isUserInteractionEnabled = false
@@ -339,7 +341,8 @@ extension DDCEditClientInfoViewController {
                 textField.keyboardType = .emailAddress
             }
             break
-        case DDCClientTextFieldType.channelDetail.rawValue:
+        case DDCClientTextFieldType.channelDetail.rawValue ,
+             DDCClientTextFieldType.name.rawValue:
             do {
                 textField.inputView = nil
                 textField.inputAccessoryView = nil
@@ -407,6 +410,7 @@ extension DDCEditClientInfoViewController {
 extension DDCEditClientInfoViewController {
     @objc func getUserInfo(button: CountButton) {
         self.resignFirstResponder()
+        
         if let _textFieldView: DDCCircularTextFieldView = (button.superview as! DDCCircularTextFieldView) {
             let phoneNumber: String = DDCTools.removeWhiteSpace(string: _textFieldView.textField.text!)
             guard DDCTools.isPhoneNumber(number: phoneNumber) else {
@@ -418,8 +422,8 @@ extension DDCEditClientInfoViewController {
             if phoneNumber == self.model?.customer?.mobile {
                 if _textFieldView.textField.tag != 0 {
                     self.view.makeDDCToast(message: "介绍会员不能为当前客户", image: UIImage.init(named: "addCar_icon_fail")!)
+                    return
                 }
-                return
             }
             
             DDCTools.showHUD(view: self.view)
@@ -507,6 +511,16 @@ extension DDCEditClientInfoViewController: UIPickerViewDelegate, UIPickerViewDat
 
 // MARK: Textfield
 extension DDCEditClientInfoViewController: UITextFieldDelegate {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        if textField.tag == DDCClientTextFieldType.introduceMobile.rawValue {
+            self.models[DDCClientTextFieldType.introduceMobile.rawValue].text = ""
+            self.models[DDCClientTextFieldType.introduceMobile.rawValue].isFill = false
+            self.models[DDCClientTextFieldType.introduceName.rawValue].text = ""
+            self.collectionView.reloadData()
+        }
+        return true
+    }
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.currentTextField = textField
         let rawValue: Int = textField.tag
@@ -558,7 +572,7 @@ extension DDCEditClientInfoViewController {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         UIView.animate(withDuration: 0.23) {
-            self.contentView.frame = CGRect.init(x: 0.0, y: -kInputFieldViewHeight, width: screen.width, height: screen.height)
+            self.contentView.frame = CGRect.init(x: 0.0, y: -kInputFieldViewHeight - DDCAppConfig.kBarHeight, width: screen.width, height: screen.height)
         }
         DDCKeyboardStateListener.sharedStore().isVisible = true
     }

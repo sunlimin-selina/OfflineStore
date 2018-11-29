@@ -14,7 +14,9 @@ class DDCEditClientInfoModelFactory: NSObject {
         var array: [DDCContractInfoViewModel] = Array()
         
         //手机号码
-        let phoneNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "手机号码", placeholder: "请输入手机号码", text: model.mobile ?? "", isRequired: true, tips: "创建后无法修改，请谨慎录入")
+        let number: String = model.mobile ?? ""
+        let length: Int = (model.mobile != nil) ? model.mobile!.count : 0
+        let phoneNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "手机号码", placeholder: "请输入手机号码", text: DDCTools.splitPhoneNumber(string: number, length: length) , isRequired: true, tips: "创建后无法修改，请谨慎录入")
         //姓名
         let name: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "姓名", placeholder: "请输入姓名", text: model.name ?? "", isRequired: true, tips: "")
         if model.type == DDCCustomerType.potential {
@@ -66,14 +68,18 @@ class DDCEditClientInfoModelFactory: NSObject {
         if isReferral {
             if newModels.count < 12 {
                 //介绍会员电话
-                let memberPhone: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: "请输入会员电话", text: customer?.introduceMobile ?? "", isRequired: true, tips: "")
+                let number: String = customer?.introduceMobile ?? ""
+                let length: Int = (customer?.introduceMobile != nil) ? (customer?.introduceMobile!.count)! : 0
+                let memberPhone: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: "请输入会员电话", text: DDCTools.splitPhoneNumber(string: number, length: length) , isRequired: true, tips: "")
                 //介绍会员姓名
                 let memberName: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "介绍会员姓名", placeholder: "请输入会员电话后验证", text: customer?.introduceName ?? "", isRequired: false, tips: "")
                 newModels.insert(memberPhone, at: 10)
                 newModels.insert(memberName, at: 11)
                 return newModels
             } else {
-                newModels[10] = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: "请输入会员电话", text: customer?.introduceMobile ?? "", isRequired: true, tips: "")
+                let number: String = customer?.introduceMobile ?? ""
+                let length: Int = (customer?.introduceMobile != nil) ? (customer?.introduceMobile!.count)! : 0
+                newModels[10] = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: "请输入会员电话", text: DDCTools.splitPhoneNumber(string: number, length: length), isRequired: true, tips: "")
                 newModels[11] = DDCContractInfoViewModel.init(title: "介绍会员姓名", placeholder: "请输入会员电话后验证", text: customer?.introduceName ?? "", isRequired: false, tips: "")
                 return newModels
             }

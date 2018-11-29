@@ -21,7 +21,7 @@ class DDCCreateContractAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            successHandler(tuple.data as! String)
+            successHandler((tuple.data as! String))
         }) { (error) in
             failHandler(error)
         }

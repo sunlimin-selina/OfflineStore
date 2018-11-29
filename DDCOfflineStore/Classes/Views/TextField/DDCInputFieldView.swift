@@ -11,19 +11,19 @@ import SnapKit
 
 class DDCInputFieldView: UIView, CountButtonDelegate {
     
-    lazy var firstTextFieldView: DDCCircularTextFieldWithExtraButtonView? = {
-        var _firstTextFieldView = DDCCircularTextFieldWithExtraButtonView()
+    lazy var firstTextFieldView: DDCCircularTextFieldView? = {
+        var _firstTextFieldView = DDCCircularTextFieldView()
         _firstTextFieldView.textField.placeholder = "请输入用户名 "
         _firstTextFieldView.button.delegate = self
-        _firstTextFieldView.extraButton!.delegate = self
         return _firstTextFieldView
     }()
     
     var secondTextFieldView: DDCCircularTextFieldView? = {
-        var _secondTextFieldView = DDCCircularTextFieldView.init(frame: CGRect.zero, type: .imageButton)
+        var _secondTextFieldView = DDCCircularTextFieldView.init()
+        _secondTextFieldView.type = .imageButton
         _secondTextFieldView.textField.placeholder = "请输入密码"
         _secondTextFieldView.textField.isSecureTextEntry = true
-        _secondTextFieldView.button.addTarget(_secondTextFieldView, action: #selector(needSecureText(sender:)), for: .touchUpInside)
+        _secondTextFieldView.button.addTarget(self, action: #selector(needSecureText(sender:)), for: .touchUpInside)
         return _secondTextFieldView
     }()
     

@@ -18,7 +18,7 @@ class DDCContractListModel: Mappable {
     var status: DDCContractStatus?
     var salePrice: Double?
     var createTime: Int?
-    var type: Int?
+    var type: DDCContractType?
 
     required init?(map: Map) {
     }

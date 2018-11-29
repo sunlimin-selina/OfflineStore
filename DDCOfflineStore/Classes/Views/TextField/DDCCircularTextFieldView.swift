@@ -96,11 +96,6 @@ class DDCCircularTextFieldView: UIView {
         self.type = .normal
     }
     
-    convenience init(frame: CGRect , type: CircularTextFieldViewType) {
-        self.init(frame: frame)
-        self.type = type
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

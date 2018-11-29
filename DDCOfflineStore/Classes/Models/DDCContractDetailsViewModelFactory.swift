@@ -64,6 +64,8 @@ class DDCContractDetailsViewModelFactory: NSObject {
         let package: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品套餐", describe: model.title)
         //产品规格
         let course: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "产品规格", describe: model.skuName)
+        //进阶规则
+        let upgradeLimit: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "进阶规则", describe: model.upgradeLimit)
         //生效期限
         let effectiveTerm = (model.beginEffectiveTime != nil && model.endEffectiveTime != nil) ? "\(DDCTools.date(from: model.beginEffectiveTime!)) -\(DDCTools.date(from: model.endEffectiveTime!))" : ""
         let term: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "生效期限", describe: effectiveTerm)
@@ -84,7 +86,7 @@ class DDCContractDetailsViewModelFactory: NSObject {
         let responsibleUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "责任销售", describe: model.dealUserName)
         //业绩归属
         let createdUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "业绩归属", describe: model.realUserName)
-        array = [code, status, name, gender, age, birthday, phoneNumber, career, email, channel, recommendUser, package, course, term, effectiveTime, store, payMethod, contractPrice, currentStore, signedUsername, responsibleUsername, createdUsername]
+        array = [code, status, name, gender, age, birthday, phoneNumber, career, email, channel, recommendUser, package, course, upgradeLimit, term, effectiveTime, store, payMethod, contractPrice, currentStore, signedUsername, responsibleUsername, createdUsername]
         return array
     }
     
