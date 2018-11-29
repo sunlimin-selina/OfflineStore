@@ -97,11 +97,34 @@ extension DDCSelectStoreViewController {
         }
         DDCTools.showHUD(view: self.view)
         DDCStoreAndContractTypeAPIManager.getStoresAndContractTypes(successHandler: { (array) in
-            DDCTools.hideHUD()
-            self.stores = array
-            self.collectionView.reloadData()
+            if let _array = array{
+                self.stores = _array
+                self.getLastStore()
+            }
         }) { (error) in
             DDCTools.hideHUD()
+        }
+    }
+    
+    func getLastStore() {
+        DDCTools.showHUD(view: self.view)
+
+        DDCStoreAndContractTypeAPIManager.getLastStore(successHandler: { (storeId) in
+            DDCTools.hideHUD()
+            if let _storeId: CLong = storeId {
+                for item in self.stores! {
+                    if item.id! == _storeId {
+                        item.isSelected = true
+                        self.selectedStore = item
+                    } else {
+                        item.isSelected = false
+                    }
+                }
+                self.collectionView.reloadData()
+            }
+        }) { (error) in
+            DDCTools.hideHUD()
+
         }
     }
 }

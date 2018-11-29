@@ -12,8 +12,8 @@ enum DDCContractStatus: UInt , Codable{
     case inComplete //未完成    -> 1:未支付
     case ineffective //未生效   -> 2:已经支付未开始预定
     case effective //生效中     -> 3:生效
-    case cancel //已取消        -> 新增 5:取消
     case completed //已结束     -> 4:过期
+    case cancel //已取消        -> 新增 5:取消
     case used //已核销          -> 6:核销完
     case revoked //已解除       -> 7:解绑
 }

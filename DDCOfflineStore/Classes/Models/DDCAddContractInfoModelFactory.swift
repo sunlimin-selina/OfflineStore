@@ -26,7 +26,7 @@ class DDCAddContractInfoModelFactory: NSObject {
         //默认信息
         let defaultInfo: DDCContractInfoViewModel = DDCContractInfoViewModel()
         //合同编号
-        let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: "请扫描合同编号", text: model?.code ?? "", isRequired: true, tips: "")
+        let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: model?.code ?? "请扫描合同编号", text: "", isRequired: true, tips: "")
         //产品规格-正式课
         let specification: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "购买正式课程", text: "", isRequired: true, tips: "")
         //产品规格-体验课
@@ -42,7 +42,7 @@ class DDCAddContractInfoModelFactory: NSObject {
         //默认信息
         let defaultInfo: DDCContractInfoViewModel = DDCContractInfoViewModel()
         //合同编号
-        let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: "请扫描合同编号", text: model?.code ?? "", isRequired: true, tips: "")
+        let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: model?.code ?? "请扫描合同编号", text: "", isRequired: true, tips: "")
         //产品套餐
         let title: String = (type == DDCCourseType.sample) ? "体验课课产品" : "正式课产品套餐"
         let package: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: title, placeholder: "请选择产品套餐", text: model?.packageModel?.name ?? "", isRequired: true, tips: "")
@@ -66,15 +66,19 @@ class DDCAddContractInfoModelFactory: NSObject {
         }
         let orderRule: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "课程进阶规则", placeholder: "请选择课程进阶规则", text: upgradeLimit, isRequired: true,  tips: "")
         //合同金额
-        let money = ((model?.specs?.costPrice) != nil) ? "\(model?.specs?.costPrice ?? 0)" : ""
+        let money = ((model?.specs?.costPrice) != nil) ? "\(model?.specs?.costPrice ?? 0)" : (model?.contractPrice != nil ? "\(model?.contractPrice ?? 0)" : "")
         let costPrice: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: money, isRequired: true, tips: "")
         costPrice.isFill = model?.specs?.costPrice != nil ? true : false
         //生效日期(今日生效)
         let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())
         let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: DDCAddContractInfoModelFactory.getStartDate(datetime: startTime), text: "", isRequired: false, tips: "(今日生效)")
         //有效时间(有效时间≦本月剩余天数+48个月)
-        let validPeriod = (model?.specs != nil) ? "\(model?.specs!.validPeriod ?? 0)月" : ""
-        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: validPeriod.count <= 0 ? "根据课程购买数量自动计算得出" : validPeriod, text: "", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
+        var validPeriod: Int = 0
+        if model?.specs != nil ,
+            let _validPeriod = model?.specs!.validPeriod {
+            validPeriod = _validPeriod <= 48 ? _validPeriod : 48
+        }
+        let effectiveTime: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "有效时间", placeholder: validPeriod == 0 ? "根据课程购买数量自动计算得出" : "\(validPeriod)个月", text: "", isRequired: false, tips: "(有效时间≦本月剩余天数+48个月)")
         //结束日期
         let endDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "结束日期", placeholder: model?.packageModel?.endEffectiveTime != nil ? DDCTools.date(from: (model?.packageModel?.endEffectiveTime)!) : "根据课程购买数量自动计算得出", text: "", isRequired: false, tips: "")
         //有效门店
@@ -137,8 +141,13 @@ extension DDCAddContractInfoModelFactory {
         var array: [Dictionary<String, Any>] = Array()
         if let customs = model.customItems {
             for item in customs {
-                for attribute in item.attributes! {
-                    dictionary = ["categoryId": attribute.categoryId as Any, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": attribute.attributeValueId as Any,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": attribute.totalCount as Any, "useCount": attribute.totalCount as Any]
+                if let _attributes = item.attributes {
+                    for attribute in _attributes {
+                        dictionary = ["categoryId": attribute.categoryId as Any, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": attribute.attributeValueId as Any,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": attribute.totalCount as Any, "useCount": attribute.totalCount as Any]
+                        array.append(dictionary)
+                    }
+                } else {
+                    dictionary = ["categoryId": -1, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": -1,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": item.totalCount as Any, "useCount": item.totalCount as Any]
                     array.append(dictionary)
                 }
             }

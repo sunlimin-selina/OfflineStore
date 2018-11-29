@@ -216,8 +216,9 @@ extension DDCEditClientInfoViewController {
             DDCTools.hideHUD()
             if let _model = model {
                 self.delegate?.nextPage(model: _model)
+            } else {
+                self.view.makeDDCToast(message: "保存用户信息失败", image: UIImage.init(named: "addCar_icon_fail")!)
             }
-            self.view.makeDDCToast(message: "保存用户信息失败", image: UIImage.init(named: "addCar_icon_fail")!)
         }) { (error) in
             DDCTools.hideHUD()
         }

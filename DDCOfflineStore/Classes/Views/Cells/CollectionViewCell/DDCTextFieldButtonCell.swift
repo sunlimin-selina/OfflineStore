@@ -23,6 +23,7 @@ class DDCTextFieldButtonCell: UICollectionViewCell {
         let _button: UIButton = UIButton()
         _button.backgroundColor = DDCColor.mainColor.red
         _button.setTitle("扫一扫", for: .normal)
+        _button.setTitle("重新扫描", for: .selected)
         _button.setTitleColor(UIColor.white, for: .normal)
         _button.layer.cornerRadius = DDCTextFieldButtonCell.kTextFieldViewHeight / 2
         _button.layer.shadowColor = DDCColor.mainColor.red.cgColor

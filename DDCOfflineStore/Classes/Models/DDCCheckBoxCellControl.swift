@@ -18,6 +18,7 @@ import UIKit
 
 class DDCCheckBoxCellControl: NSObject {
     static let kCTag: Int = 200
+    static let kItemTag: Int = 900
 
     var delegate: DDCCheckBoxCellControlDelegate?
     var selectedItems: NSMutableArray = NSMutableArray()
@@ -70,7 +71,6 @@ class DDCCheckBoxCellControl: NSObject {
         } else {
             self.cell!.checkBox.isUserInteractionEnabled = true
             self.cell!.checkBox.textField.textField.delegate = self
-            self.cell!.checkBox.textField.isHidden = false//!model.isSelected
             self.cell!.checkBox.setHandler { (sender) in
                 self.sectionButtonClicked(sender: sender)
             }
@@ -79,7 +79,7 @@ class DDCCheckBoxCellControl: NSObject {
         self.cell!.checkBox.button.setTitle(title, for: .normal)
         self.cell!.checkBox.button.isSelected = model.isSelected
         self.cell!.subContentView.isHidden = !model.isSelected
-        self.cell!.checkBox.textField.isHidden = !model.isSelected
+        self.cell!.checkBox.textField.isHidden = !(model.isSelected && (model.attributes?.count == 0 || model.attributes == nil))
         self.cell!.checkBox.textField.textField.text = model.totalCount != 0 ? "\(model.totalCount)" : ""
         self.cell!.checkBox.updateButtonConstraints(width: DDCString.width(string: title!, font: UIFont.systemFont(ofSize: 20.0), height: 40.0) + 65.0)
     }
@@ -107,7 +107,10 @@ class DDCCheckBoxCellControl: NSObject {
     }
     
     func sectionButtonClicked(sender: DDCCheckBox) {
-        self.delegate?.cellControl!(self, didSelectItemAt: self.indexPath!)
+        let indexPath: IndexPath = IndexPath.init(item: (self.cell?.tag)!, section: (self.indexPath?.section)!)
+        self.delegate?.cellControl!(self, didSelectItemAt: indexPath)
+        let isFilled = self.isCompleted()
+        self.delegate?.cellControl!(self, didFinishEdited: self.model!.totalCount, isFilled: isFilled)
     }
 }
 
@@ -122,6 +125,7 @@ extension DDCCheckBoxCellControl: UITextFieldDelegate {
         if (totalLength > 3) {//字符数量不超过3
             return false
         }
+        
         return true
     }
     
@@ -148,8 +152,8 @@ extension DDCCheckBoxCellControl: UITextFieldDelegate {
         var selectedCount: Int = 0
         var filledCount: Int = 0
 
-        if self.model!.isSelected == true {
-            if let _attributes = self.model!.attributes {
+        if self.model!.isSelected == true { //选中当前套餐
+            if let _attributes = self.model!.attributes { //有子套餐
                 for att in _attributes {
                     if att.isSelected == true {
                         selectedCount += 1
@@ -158,11 +162,20 @@ extension DDCCheckBoxCellControl: UITextFieldDelegate {
                         filledCount += 1
                     }
                 }
+                if selectedCount != filledCount { //如果选中套餐个数和已填写的次数个数不一致
+                    return false
+                }
+                if selectedCount == 0 { //选中主套餐 但没有选子套餐的
+                    return false
+                }
+            } else {//没有子套餐
+                if self.model!.totalCount > 0{
+                    return true
+                }
+                return false
             }
         }
-        if selectedCount != filledCount {
-            return false
-        }
+
         return true
     }
 }

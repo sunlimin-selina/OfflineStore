@@ -223,7 +223,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
         if indexPath.section == 0 {
             return CGSize.init(width: DDCAppConfig.width, height: 20)
         }  else if self.isPickedCustom && indexPath.section == 3 {
-            var height: CGFloat = 30
+            var height: CGFloat = 42
             let customModel = self.customItems[indexPath.item]
             if customModel != nil && customModel.attributes != nil{
                 height = CGFloat((customModel.isSelected ? (customModel.attributes?.count)! + 1: 1 ) * 42)
@@ -264,7 +264,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if section == 3,
-            self.customItems.count > 0{
+            self.isPickedCustom {
             return CGSize.init(width: DDCAppConfig.width, height: 40.0)
         }
         return CGSize.zero
@@ -272,12 +272,14 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
     
     func collectionViewRegularCell(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell  {
         if self.isPickedCustom && indexPath.section == 3 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
+            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
+            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
+            cell.tag = indexPath.item
             let model: DDCCourseModel = self.customItems[indexPath.item]
             let control = DDCCheckBoxCellControl.init(cell: cell)
             control.configureCell(model: model, indexPath: indexPath)
             control.delegate = self
-//            self.checkBoxControls.insert(control, at: indexPath.item)
             return cell
         } else if indexPath.section == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTextFieldButtonCell.self), for: indexPath) as! DDCTextFieldButtonCell
@@ -287,6 +289,9 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             cell.textFieldView.textField.tag = indexPath.section
             cell.textFieldView.textField.delegate = self
             cell.button.addTarget(self, action: #selector(scanAction(_:)), for: .touchUpInside)
+            if self.model!.code != nil {
+                cell.button.isSelected = true
+            }
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell
@@ -330,6 +335,8 @@ extension DDCAddContractInfoViewController {
             DDCTools.hideHUD()
             if let models = array {
                 self.customItems = models
+                self.resignFirstResponder()
+                self.collectionView.reloadData()
             }
         }) { (error) in
             DDCTools.hideHUD()
@@ -422,8 +429,8 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == DDCAddContractTextFieldType.money.rawValue {
             self.model!.contractPrice = Int(textField.text!)!
-            self.models[textField.tag].text = textField.text
-            self.models[textField.tag].isFill = true
+            self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+            self.collectionView.reloadData()
             self.formFilled()
         }
         return true
@@ -442,22 +449,29 @@ extension DDCAddContractInfoViewController {
                     return
                 }
                 self.pickedPackage = self.package[self.pickerView.selectedRow(inComponent: 0)]
-                self.modifySkuPrice = self.pickedPackage!.modifySkuPrice != nil ? self.pickedPackage!.modifySkuPrice! : false
+                self.modifySkuPrice = self.pickedPackage!.modifySkuPrice != nil ? self.pickedPackage!.modifySkuPrice! : false //确定是否价格可选
+                //设置self.model的package对象
                 self.model!.packageModel = self.pickedPackage
                 self.model!.packageModel?.startUseTime = DDCTools.date(from: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime))
                 self.model?.specs = nil //清空规格
-                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+                //models的刷新设置
                 self.models[DDCAddContractTextFieldType.spec.rawValue].text = ""
                 self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = false
-                self.isPickedCustom = false
-                if self.pickerView.selectedRow(inComponent: 0) == 1 {
+                self.models[DDCAddContractTextFieldType.package.rawValue].text = self.pickedPackage?.name
+                self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
+                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+
+                self.isPickedCustom = false  //默认不选择自选套餐
+
+                if self.pickerView.selectedRow(inComponent: 0) == 1 {//选择自选套餐的情况
                     self.isPickedCustom = true
-                    if self.customItems.count <= 0 {
+                    if self.customItems.count <= 0 { //没有加载过自选套餐时
                         self.getCustomCourse()
-                    } else {
+                        return
+                    } else { //已经有自选套餐数据时
+                        self.resignFirstResponder()
                         self.collectionView.reloadData()
                     }
-                    return
                 } else {
                     self.getCourseSpec()
                 }
@@ -503,37 +517,12 @@ extension DDCAddContractInfoViewController {
    
     func forwardNextPage() {
         self.bottomBar.buttonArray![1].isEnabled = false
-        
+
         if self.isPickedCustom {
-            var customItems: [DDCCourseModel] = Array()
-            var totalcount: Int = 0
-            
-            for item in self.customItems {
-                if item.isSelected == true {
-                    var attributes: [DDCCourseAttributeModel] = Array()
-                    if let _attributes = item.attributes {
-                        for att in _attributes {
-                            if att.isSelected == true {
-                                totalcount += att.totalCount
-                                attributes.append(att)
-                            }
-                        }
-                        item.attributes = attributes
-                    }
-                    customItems.append(item)
-                }
-            }
-            if customItems.count > 0 {
-                let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-                var components: DateComponents = DateComponents.init()
-                components.setValue(totalcount, for: .month)
-                let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: self.model?.packageModel?.startUseTime))!
-                self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
-                self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
-                self.model!.customItems = customItems
-            }
+            self.model?.customItems = self.reorganizeCustomData()
         }
-        
+//        self.models[DDCAddContractTextFieldType.money.rawValue].isFill = true//reloaddata的时候将价格刷没了,具体再查,先强行设置
+
         for index in 1...(self.models.count - 1) {
             let model: DDCContractInfoViewModel = self.models[index]
             if self.isCodeFilled , index == 1 {
@@ -562,15 +551,12 @@ extension DDCAddContractInfoViewController {
         self.qrCodeReader.delegate = self
         
         self.qrCodeReader.completionBlock = { (result: QRCodeReaderResult?) in
-//            self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].text = "www-ddc-123123"//result?.value
-//            self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].isFill = true
-//            self.model?.code = "www-ddc-123123"//result?.value
-//            self.collectionView.reloadSections([1])
             if DDCTools.isQualifiedCode(qrCode: result?.value) {
-                self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].text = result?.value
+                self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].placeholder = result?.value
                 self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].isFill = true
                 self.model?.code = result?.value
                 self.collectionView.reloadSections([1])
+                self.formFilled()
             } else {
                 self.view.makeDDCToast(message:"二维码错误", image: UIImage.init(named: "addCar_icon_fail")!)
             }
@@ -600,7 +586,20 @@ extension DDCAddContractInfoViewController: QRCodeReaderViewControllerDelegate {
 
 extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
     func cellControl(_ control: DDCCheckBoxCellControl, didFinishEdited count: Int, isFilled: Bool) {
-        self.checkBoxFilled = isFilled
+        var pickedSpec: Bool = false
+        self.checkBoxFilled = false
+        for idx in 0..<self.customItems.count {
+            let item: DDCCourseModel = self.customItems[idx]
+            if item.isSelected {
+                pickedSpec = true
+            }
+        }
+        if pickedSpec && isFilled {
+            self.checkBoxFilled = true
+        }
+        if self.checkBoxFilled {
+            self.model?.customItems =  self.reorganizeCustomData()
+        }
         self.formFilled()
     }
     
@@ -615,12 +614,50 @@ extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
     }
     
     func formFilled() {
-        if self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) &&  self.isCodeFilled {
+        if  self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) &&  self.isCodeFilled {
             self.bottomBar.buttonArray![1].isEnabled = true
             self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
         } else {
             self.bottomBar.buttonArray![1].isEnabled = false
             self.bottomBar.buttonArray![1].setStyle(style: .forbidden)
         }
+    }
+    
+    func reorganizeCustomData() -> [DDCCourseModel]{
+        var selectedItems: [DDCCourseModel] = Array()
+        var totalcount: Int = 0
+        let customItems: [DDCCourseModel] = self.customItems.map{($0.copy() as! DDCCourseModel) }
+
+        for item in customItems {
+            if item.isSelected == true {
+                var attributes: [DDCCourseAttributeModel] = Array()
+                if let _attributes = item.attributes {//有子产品
+                    for att in _attributes {
+                        if att.isSelected == true {
+                            totalcount += att.totalCount
+                            attributes.append(att)
+                        }
+                    }
+                    item.attributes = attributes
+                } else {
+                    totalcount += item.totalCount
+                }
+                selectedItems.append(item)
+            }
+        }
+        if selectedItems.count > 0 {
+            let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+            var components: DateComponents = DateComponents.init()
+            components.setValue(totalcount, for: .month)
+            let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: self.model?.packageModel?.startUseTime))!
+            self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+            let spec: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel()
+            spec.validPeriod = totalcount
+            self.model!.specs = spec
+            self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+            self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
+            self.collectionView.reloadData()
+        }
+        return selectedItems
     }
 }

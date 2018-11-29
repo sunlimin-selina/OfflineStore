@@ -16,21 +16,7 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
         _checkBox.isUserInteractionEnabled = false
         return _checkBox
     }()
-//
-//    lazy var textField: DDCCircularTextFieldView = {
-//        let _textField = DDCCircularTextFieldView()
-//        _textField.cornerRadius = 17.0
-//        _textField.type = .labelButton
-//        _textField.button.setTitle("次", for: .normal)
-//        _textField.button.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
-//        _textField.button.setTitleColor(DDCColor.fontColor.gray, for: .normal)
-//        _textField.button.snp.updateConstraints({ (make) in
-//            make.width.equalTo(30.0)
-//        })
-//        _textField.isHidden = true
-//        return _textField
-//    }()
-    
+
     var buttons: [DDCCheckBox] = Array()
     var buttonCount: Int {
         get {

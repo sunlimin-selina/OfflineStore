@@ -61,13 +61,10 @@ class DDCEditClientInfoAPIManager: NSObject {
                 case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 DDCEditClientInfoAPIManager.getUserContractInfo(dictionary: data, successHandler: { (model) in
                     successHandler(model)
-                    return
                 }, failHandler: { (error) in
                     successHandler(nil)
-                    return
                 })
             }
-            successHandler(nil)
         }) { (error) in
             failHandler(error)
         }

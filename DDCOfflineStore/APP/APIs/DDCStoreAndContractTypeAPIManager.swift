@@ -39,4 +39,20 @@ class DDCStoreAndContractTypeAPIManager: NSObject {
         }
     }
     
+    class func getLastStore(successHandler: @escaping (_ storeId: CLong?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+        let url:String = DDC_Current_Url.appendingFormat("/shop/relation-shop-id.do")
+        let param: Dictionary<String, Any> = ["dealUserId": DDCStore.sharedStore().user?.id as Any]
+
+        DDCHttpSessionsRequest.callGetRequest(url: url, parameters: param, success: { (response) in
+            let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
+            guard tuple.code == 200 else{
+                failHandler(tuple.message)
+                return
+            }
+            successHandler((tuple.data as! Int))
+        }) { (error) in
+            failHandler(error)
+        }
+    }
+    
 }

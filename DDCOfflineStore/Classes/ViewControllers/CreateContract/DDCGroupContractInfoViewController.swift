@@ -629,7 +629,17 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
     }
     
     func formFilled() {
-        if self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) && self.model?.code != nil{
+        var pickedSpec: Bool = false
+        if let items: [DDCCourseModel] = self.groupItems?.customCourses {
+            for idx in 0..<items.count {
+                let item: DDCCourseModel = items[idx]
+                if item.totalCount > 0 {
+                    pickedSpec = true
+                }
+            }
+        }
+
+        if pickedSpec && self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) && self.model?.code != nil{
             self.bottomBar.buttonArray![1].isEnabled = true
             self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
         } else {
