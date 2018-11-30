@@ -13,5 +13,101 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/Classes/ViewControllers/DDCFinishedContractViewController.swift"
+            timestampString = "565260503.211289"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "init(model:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/APP/APIs/DDCPaymentOptionsAPIManager.swift"
+            timestampString = "565260503.211692"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "createPaymentOption(model:payChannel:payStyle:successHandler:failHandler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;) -&gt; () in static DDCOfflineStore.DDCPaymentOptionsAPIManager.createPaymentOption(model: Swift.Optional&lt;DDCOfflineStore.DDCContractModel&gt;, payChannel: Swift.String, payStyle: Swift.Int, successHandler: (Swift.Optional&lt;DDCOfflineStore.DDCOnlinePaymentOptionModel&gt;) -&gt; (), failHandler: (Swift.String) -&gt; ()) -&gt; ()"
+                  moduleName = "DDCOfflineStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCPaymentOptionsAPIManager.swift"
+                  timestampString = "565260503.700547"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "228">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Any&gt;&gt;) -&gt; () in static DDCOfflineStore.DDCPaymentOptionsAPIManager.createPaymentOption(model: Swift.Optional&lt;DDCOfflineStore.DDCContractModel&gt;, payChannel: Swift.String, payStyle: Swift.Int, successHandler: (Swift.Optional&lt;DDCOfflineStore.DDCOnlinePaymentOptionModel&gt;) -&gt; (), failHandler: (Swift.String) -&gt; ()) -&gt; ()"
+                  moduleName = "DDCOfflineStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/APP/APIs/DDCPaymentOptionsAPIManager.swift"
+                  timestampString = "565260503.704271"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "1244">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/APP/APIs/DDCPaymentOptionsAPIManager.swift"
+            timestampString = "565260503.2120301"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "createPaymentOption(model:payChannel:payStyle:successHandler:failHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCPaymentViewController.swift"
+            timestampString = "565260503.212134"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "collectionView(_:cellForItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

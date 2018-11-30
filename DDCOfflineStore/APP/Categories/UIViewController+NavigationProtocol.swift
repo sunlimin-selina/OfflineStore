@@ -14,12 +14,12 @@ import UIKit
 }
 
 extension UIViewController: DDCNavigationProtocol {
-    
+
     func navigationShouldPopMethod() {
         self.navigationController?.popViewController(animated: true)
     }
 }
-
+//
 //extension UINavigationController {
 //    open override func viewDidLoad() {
 //        super.viewDidLoad()
@@ -41,6 +41,5 @@ extension UINavigationController: UIGestureRecognizerDelegate {
             return true
         }
     }
-
     
 }

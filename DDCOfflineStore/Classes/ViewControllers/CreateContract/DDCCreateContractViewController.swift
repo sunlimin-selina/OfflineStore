@@ -141,7 +141,6 @@ class DDCCreateContractViewController: UIViewController{
         super.viewDidLoad()
         self.setupViewConstraint()
         self.title = "创建新订单"
-        self.navigationController!.interactivePopGestureRecognizer?.delegate = self
     }
     
     init(progress: DDCContractProgress, model: DDCContractModel?) {
@@ -278,15 +277,6 @@ extension DDCCreateContractViewController :UIPageViewControllerDelegate, UIPageV
         if index >= (self.subviewControllers.count) { return nil }
         return self.subviewControllers[index]
     }
-    
 }
 
-extension DDCCreateContractViewController: UIGestureRecognizerDelegate {
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if children.count == 1 {
-            return false
-        }else{
-            return true
-        }
-    }
-}
+

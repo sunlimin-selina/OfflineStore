@@ -18,7 +18,11 @@ class DDCFinishedContractViewController: UIViewController {
             self.gotoContractDetail()
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "完成", style: .highlighted, handler: {
-            self.navigationController?.popViewController(animated: true)
+            for viewController in (self.navigationController?.children)! {
+                if viewController == self.navigationController?.children[0] {
+                    self.navigationController?.popToViewController(viewController, animated: true)
+                }
+            }
         }))
         return _bottomBar
     }()
@@ -47,12 +51,20 @@ class DDCFinishedContractViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "支付结果"
-        DDCDefaultView.sharedView().showDefaultView(view: self.view, title: "合同创建成功", image: UIImage.init(named: "zhifuchenggong_queshengtu")!)
+        self.view.backgroundColor = UIColor.white
+
+        DDCDefaultView.sharedView().showPromptView(view: self.view, title: "合同创建成功", image: UIImage.init(named: "zhifuchenggong_queshengtu")!, topPadding: 350)
+        self.view.addSubview(self.bottomBar)
+        self.setupViewConstraints()
     }
     
     // MARK: Action
     @objc func goBack() {
-        self.navigationController?.popViewController(animated: true)
+        for viewController in (self.navigationController?.children)! {
+            if viewController == self.navigationController?.children[0] {
+                self.navigationController?.popToViewController(viewController, animated: true)
+            }
+        }
     }
     
     func gotoContractDetail() {
@@ -60,6 +72,14 @@ class DDCFinishedContractViewController: UIViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func setupViewConstraints() {
+        self.bottomBar.snp.makeConstraints({ (make) in
+            make.width.equalTo(UIScreen.main.bounds.width)
+            make.height.equalTo(DDCAppConfig.kBarHeight)
+            make.left.right.equalTo(self.view)
+            make.top.equalTo(self.view.snp_bottomMargin).offset(-DDCAppConfig.kBarHeight)
+        })
+    }
 }
 
 

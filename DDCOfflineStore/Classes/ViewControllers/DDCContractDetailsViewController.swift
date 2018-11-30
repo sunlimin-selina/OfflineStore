@@ -81,7 +81,7 @@ class DDCContractDetailsViewController: UIViewController {
     @objc func goBack() {
         self.navigationController?.popViewController(animated: true)
     }
-  
+
 }
 
 // MARK: Private
@@ -154,5 +154,15 @@ extension DDCContractDetailsViewController: UITableViewDataSource , UITableViewD
         let headerView = (tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCContractDetailsHeaderView.self))) as! DDCContractDetailsHeaderView
         headerView.status = self.model?.tradeStatus
         return headerView
+    }
+}
+
+extension DDCContractDetailsViewController: UIGestureRecognizerDelegate {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if children.count == 1 {
+            return false
+        }else{
+            return true
+        }
     }
 }

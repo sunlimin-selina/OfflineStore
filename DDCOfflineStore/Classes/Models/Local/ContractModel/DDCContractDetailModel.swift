@@ -10,10 +10,12 @@ import Foundation
 import ObjectMapper
 
 class DDCContractDetailModel: Mappable {
+    var contractId: CLong?
+    
     var code: String?
     var title: String?
     
-    var salePrice: Int?
+    var salePrice: Double?
     var beginEffectiveTime: CLong?
     var endEffectiveTime: CLong?
     var validPeriod: String?
@@ -52,6 +54,7 @@ class DDCContractDetailModel: Mappable {
         code <- map["code"]
         title <- map["title"]
 
+        contractId <- map["contractId"]
         salePrice <- map["salePrice"]
         beginEffectiveTime <- map["beginEffectiveTime"]
         endEffectiveTime <- map["endEffectiveTime"]

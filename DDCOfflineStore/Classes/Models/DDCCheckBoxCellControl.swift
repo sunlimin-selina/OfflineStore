@@ -126,23 +126,42 @@ extension DDCCheckBoxCellControl: UITextFieldDelegate {
             return false
         }
         
-        return true
+        let text: String = (textField.text! as NSString).replacingCharacters(in: range, with: string) as String
+        //only number
+        if Int(text) == nil ||
+            (text.count == 1 && Int(text) == 0){
+            return false
+        } else {
+            return true
+        }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let _attributes = self.model!.attributes,
             (_attributes.count > 0 && self.model!.isSelected) {
             let item: DDCCourseAttributeModel = (self.model?.attributes![textField.tag - DDCCheckBoxCellControl.kCTag])!
-            item.totalCount = Int(textField.text!)!
-            if item.totalCount > 0 {
-                let isFilled = self.isCompleted()
-                self.delegate?.cellControl!(self, didFinishEdited: item.totalCount, isFilled: isFilled)
+            let text: String = textField.text ?? ""
+            if let totalCount = Int(text) {
+                item.totalCount = totalCount
+                if item.totalCount > 0 {
+                    let isFilled = self.isCompleted()
+                    self.delegate?.cellControl!(self, didFinishEdited: item.totalCount, isFilled: isFilled)
+                }
+            } else {
+                self.model!.totalCount = 0
+                self.delegate?.cellControl!(self, didFinishEdited: self.model!.totalCount, isFilled: false)
             }
         } else {
-            self.model!.totalCount = Int(textField.text!)!
-            if self.model!.totalCount > 0 {
-                let isFilled = self.isCompleted()
-                self.delegate?.cellControl!(self, didFinishEdited: self.model!.totalCount, isFilled: isFilled)
+            let text: String = textField.text ?? ""
+            if let totalCount = Int(text) {
+                self.model!.totalCount = totalCount
+                if self.model!.totalCount > 0 {
+                    let isFilled = self.isCompleted()
+                    self.delegate?.cellControl!(self, didFinishEdited: self.model!.totalCount, isFilled: isFilled)
+                }
+            } else {
+                self.model!.totalCount = 0
+                self.delegate?.cellControl!(self, didFinishEdited: self.model!.totalCount, isFilled: false)
             }
         }
         

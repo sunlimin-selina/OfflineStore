@@ -431,10 +431,13 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == DDCAddContractTextFieldType.money.rawValue {
-            self.model!.contractPrice = Int(textField.text!)!
-            self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
-            self.collectionView.reloadData()
-            self.formFilled()
+            let text: String = textField.text ?? ""
+            if let price = Double(text) {
+                self.model!.contractPrice = price
+                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+                self.collectionView.reloadData()
+                self.formFilled()
+            }
         }
         return true
     }

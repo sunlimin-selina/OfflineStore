@@ -435,12 +435,14 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == DDCAddContractTextFieldType.money.rawValue {
-            self.model!.contractPrice = Int(textField.text!)
-            self.models[textField.tag].text = textField.text
-            self.models[textField.tag].isFill = true
-            self.formFilled()
+            let text: String = textField.text ?? ""
+            if let price = Double(text) {
+                self.model!.contractPrice = price
+                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+                self.collectionView.reloadData()
+                self.formFilled()
+            }
         }
-        
         return true
     }
 }
@@ -455,7 +457,8 @@ extension DDCGroupContractInfoViewController {
         } else {
             self.model?.customItems = self.wrapItems(models: (self.groupItems?.sampleCourses)!)
         }
-        
+        self.models[DDCAddContractTextFieldType.rule.rawValue].isFill = true
+
         for index in 1..<self.models.count {
             let model: DDCContractInfoViewModel = self.models[index]
             if self.model?.code != nil , index == 1 {

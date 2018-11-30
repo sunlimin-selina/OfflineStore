@@ -18,6 +18,12 @@ class DDCPaymentViewController: DDCChildContractViewController {
         paymentUpdateChecker.delegate = self
         return paymentUpdateChecker
     }()
+    var freeOrder: Bool {
+        get {
+            return (self.model!.specs?.costPrice == nil || self.model!.specs?.costPrice == 0) && (self.model!.contractPrice == nil || self.model!.contractPrice == 0)
+        }
+    }
+    
     
     lazy var collectionView: UICollectionView! = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
@@ -35,10 +41,18 @@ class DDCPaymentViewController: DDCChildContractViewController {
     }()
     
     private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: screen.width, height: DDCAppConfig.kBarHeight))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "提交", style: .highlighted, handler: {
-            self.commitForm()
-        }))
+        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 0.0, y: 0, width: screen.width, height: DDCAppConfig.kBarHeight))
+        if self.freeOrder { //0元订单
+            _bottomBar.addButton(button:DDCBarButton.init(title: "完成", style: .highlighted, handler: {
+                let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: self.model!)
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }))
+        } else {
+            _bottomBar.addButton(button:DDCBarButton.init(title: "提交", style: .highlighted, handler: {
+                self.commitForm()
+            }))
+        }
+
         return _bottomBar
     }()
     
@@ -46,9 +60,12 @@ class DDCPaymentViewController: DDCChildContractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if (self.model!.specs?.costPrice == nil || self.model!.specs?.costPrice == 0) && (self.model!.contractPrice == nil || self.model!.contractPrice == 0) { //0元订单
-            DDCDefaultView.sharedView().showDefaultView(view: self.view, title: "该合同无需付款，请点击‘完成’直接提交", image: UIImage.init(named: "chuangjianxindingdan_queshengtu")!)
-        } else {
+        //0元订单
+        if self.freeOrder {
+            DDCDefaultView.sharedView().showPromptView(view: self.view, title: "该合同无需付款，请点击‘完成’直接提交", image: UIImage.init(named: "chuangjianxindingdan_queshengtu")!, topPadding: 350)
+            self.view.addSubview(self.bottomBar)
+            self.setupViewConstraints()
+        } else { //普通订单
             self.view.addSubview(self.collectionView)
             self.view.addSubview(self.bottomBar)
             self.setupViewConstraints()
@@ -63,9 +80,11 @@ class DDCPaymentViewController: DDCChildContractViewController {
 // MARK: Private
 extension DDCPaymentViewController {
     func setupViewConstraints() {
-        self.collectionView.snp.makeConstraints { (make) in
+        if  !self.freeOrder {
+            self.collectionView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(self.view)
             make.bottom.equalTo(self.view).offset(-DDCAppConfig.kBarHeight)
+            }
         }
         
         self.bottomBar.snp.makeConstraints({ (make) in
@@ -74,6 +93,7 @@ extension DDCPaymentViewController {
             make.left.right.equalTo(self.view)
             make.top.equalTo(self.view.snp_bottomMargin).offset(-DDCAppConfig.kBarHeight)
         })
+
     }
     
     func integratePaymentData() -> [DDCCheckBoxModel]{
@@ -171,7 +191,7 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self), for: indexPath) as! DDCPaymentQRCodeImageCollectionViewCell
             let model: DDCOnlinePaymentOptionModel = self.onlinePayment!
-            let price: String = ((self.model!.specs?.costPrice != nil) ? "\(self.model!.specs?.costPrice! ?? 0)" : "\(self.model!.contractPrice!)")
+            let price: String = ((self.model!.specs?.costPrice != nil) ? "\(Double((self.model!.specs?.costPrice!)!) / 100 )" : "\(Double(self.model!.contractPrice!) / 100)")
             cell.configureCell(QRCodeURLString: model.qr_code ?? "", price: price)
             return cell
         }

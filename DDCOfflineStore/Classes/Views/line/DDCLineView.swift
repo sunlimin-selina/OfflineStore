@@ -50,7 +50,6 @@ class DDCLineView: UIView {
         _solidLayer.fillColor = UIColor.clear.cgColor
         _solidLayer.lineWidth = 1
         _solidLayer.lineJoin = CAShapeLayerLineJoin.round
-        
         return _solidLayer
     }()
     
@@ -82,7 +81,7 @@ class DDCLineView: UIView {
     }
     
     func drawLine(style: DDCLineStyle, color: UIColor) {
-        self.setStyle(style: self.style)
+        self.setStyle(style: style)
 
         self.solidLayer.strokeColor = color.cgColor
         self.dotterLayer.strokeColor = color.cgColor
