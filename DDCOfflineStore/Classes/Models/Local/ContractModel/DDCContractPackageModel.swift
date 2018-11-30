@@ -73,7 +73,7 @@ class DDCContractPackageCategoryModel: DDCCheckBoxModel {
 
     var salePrice: Int?
     var activityPrice: Int?
-    var costPrice: Int?
+    var costPrice: Double?
     
     var effectiveCount: Int?
     var haveTimeLimit: Int?

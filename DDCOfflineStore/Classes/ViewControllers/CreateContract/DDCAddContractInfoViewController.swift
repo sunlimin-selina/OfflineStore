@@ -447,6 +447,8 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
 // MARK: Action
 extension DDCAddContractInfoViewController {
     @objc func done() {
+        self.resignFirstResponder()
+
         let section = self.currentTextField?.tag
         switch section {
         case DDCAddContractTextFieldType.package.rawValue:
@@ -511,7 +513,6 @@ extension DDCAddContractInfoViewController {
         default:
             return
         }
-        self.resignFirstResponder()
         self.collectionView.reloadData()
         self.formFilled()
     }

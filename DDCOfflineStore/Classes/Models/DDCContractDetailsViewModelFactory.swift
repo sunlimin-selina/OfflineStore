@@ -78,7 +78,7 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //当前门店
         let currentStore: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "当前门店", describe: model.dealShopName)
         //支付金额
-        let price: String = model.salePrice != nil ? "¥\(Double(model.salePrice!) / 100)" : ""
+        let price: String = model.salePrice != nil ? "¥\(model.salePrice!)" : ""
         let contractPrice: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "支付金额", describe:price)
         //签单员工
         let signedUsername: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "签单员工", describe: model.dealUserName)

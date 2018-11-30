@@ -191,7 +191,7 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self), for: indexPath) as! DDCPaymentQRCodeImageCollectionViewCell
             let model: DDCOnlinePaymentOptionModel = self.onlinePayment!
-            let price: String = ((self.model!.specs?.costPrice != nil) ? "\(Double((self.model!.specs?.costPrice!)!) / 100 )" : "\(Double(self.model!.contractPrice!) / 100)")
+            let price: String = ((self.model!.specs?.costPrice != nil) ? "\(self.model!.specs?.costPrice! )" : "\(self.model!.contractPrice!)")
             cell.configureCell(QRCodeURLString: model.qr_code ?? "", price: price)
             return cell
         }
