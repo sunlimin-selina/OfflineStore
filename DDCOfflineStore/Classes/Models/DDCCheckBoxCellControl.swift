@@ -128,8 +128,8 @@ extension DDCCheckBoxCellControl: UITextFieldDelegate {
         
         let text: String = (textField.text! as NSString).replacingCharacters(in: range, with: string) as String
         //only number
-        if Int(text) == nil ||
-            (text.count == 1 && Int(text) == 0){
+        if (Int(text) == nil && text.count > 0) || //允许删除唯一一个字符
+            (text.count == 1 && Int(text) == 0) {//第一个数字不为零
             return false
         } else {
             return true
