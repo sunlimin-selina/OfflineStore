@@ -64,7 +64,7 @@ class DDCContractListViewController: UIViewController {
     private var orderingUpdate: ((_ newOrdering: String) -> Void)?
     private var page: UInt = 0
     private var status: DDCContractStatus = .all
-    private var type: DDCContractType = .personalRegular
+    private var type: DDCContractType = .none
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

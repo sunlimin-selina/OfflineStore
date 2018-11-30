@@ -16,7 +16,12 @@ enum DDCPayMethod: Int{
 }
 
 enum DDCPaymentStatus: Int {
-    case pending
-    case failed
-    case success
+    case unknown
+    case unpaid
+    case paid
+    case effective
+    case overdue
+    case cancel
+    case used
+    case revoke
 }

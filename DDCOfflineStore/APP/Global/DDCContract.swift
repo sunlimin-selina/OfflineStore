@@ -25,10 +25,11 @@ enum DDCCustomerType: Int , Codable{
 }
 
 enum DDCContractType: UInt , Codable{
-    case personalRegular = 1 //个人正式课
-    case personalSample = 2 //个人体验课
-    case groupRegular = 3 //团体正式课
-    case groupSample = 4 //团体体验课
+    case none
+    case personalRegular //个人正式课
+    case personalSample  //个人体验课
+    case groupRegular  //团体正式课
+    case groupSample  //团体体验课
 }
 
 enum DDCCourseType: Int , Codable {

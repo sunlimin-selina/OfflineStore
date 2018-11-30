@@ -236,7 +236,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             return CGSize.init(width: DDCAppConfig.width, height: 20)
         }else if indexPath.section == 2 {
             if indexPath.section == (self.pickedSection + 2) {
-                var height: CGFloat = 30
+                var height: CGFloat = 45
                 let customModel: DDCCourseModel = (self.groupItems?.customCourses![indexPath.item])!
                 if customModel != nil && customModel.attributes != nil{
                     height = CGFloat((customModel.isSelected ? (customModel.attributes?.count)! + 1: 1 ) * 42)
@@ -289,7 +289,10 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
     
     func collectionViewGroupCell(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell  {
         if indexPath.section == 2 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
+            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
+            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
+            cell.tag = indexPath.item
             let model: DDCCourseModel = (self.groupItems?.customCourses![indexPath.item])!
             let control = DDCCheckBoxCellControl.init(cell: cell)
             control.delegate = self
@@ -306,7 +309,10 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             cell.button.addTarget(self, action: #selector(scanAction(_:)), for: .touchUpInside)
             return cell
         } else if indexPath.section == 3 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
+            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
+            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
+            cell.tag = indexPath.item
             let model: DDCCourseModel = (self.groupItems?.sampleCourses![indexPath.item])!
             let control = DDCCheckBoxCellControl.init(cell: cell)
             control.delegate = self
@@ -442,16 +448,19 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
 // MARK: Action
 extension DDCGroupContractInfoViewController {
     func forwardNextPage() {
-        //        self.bottomBar.buttonArray![1].isEnabled = false
+        self.bottomBar.buttonArray![1].isEnabled = false
         
         if self.model?.contractType == .groupRegular {
-            self.wrapItems(models: (self.groupItems?.customCourses)!)
+           self.model?.customItems = self.wrapItems(models: (self.groupItems?.customCourses)!)
         } else {
-            self.wrapItems(models: (self.groupItems?.sampleCourses)!)
+            self.model?.customItems = self.wrapItems(models: (self.groupItems?.sampleCourses)!)
         }
         
-        for index in 1...(self.models.count - 1) {
+        for index in 1..<self.models.count {
             let model: DDCContractInfoViewModel = self.models[index]
+            if self.model?.code != nil , index == 1 {
+                continue
+            }
             if model.isRequired! ,
                 (!model.isFill! && (model.text?.count)! <= 0) {
                 self.bottomBar.buttonArray![0].isEnabled = true
@@ -463,7 +472,6 @@ extension DDCGroupContractInfoViewController {
         DDCTools.showHUD(view: self.view)
         DDCCreateContractAPIManager.saveContract(model: self.model!, successHandler: { (code) in
             DDCTools.hideHUD()
-            self.model?.code = code
             self.delegate?.nextPage(model: self.model!)
         }) { (error) in
             DDCTools.hideHUD()
@@ -533,6 +541,17 @@ extension DDCGroupContractInfoViewController {
                 course!.isSelected = false
             }
         }
+        self.model!.contractPrice = nil
+        if self.checkBoxFilled {
+            if  let customCourses = self.groupItems?.customCourses ,
+                self.model?.contractType == .groupRegular {
+                self.model?.customItems =  self.wrapItems(models: customCourses)
+            } else if let sampleCourses = self.groupItems?.sampleCourses ,
+                self.model?.contractType == .groupSample {
+                self.model?.customItems =  self.wrapItems(models: sampleCourses)
+            }
+        }
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
         self.collectionView.reloadData()
     }
     
@@ -541,7 +560,7 @@ extension DDCGroupContractInfoViewController {
         
         self.qrCodeReader.completionBlock = { (result: QRCodeReaderResult?) in
             if DDCTools.isQualifiedCode(qrCode: (result?.value)!) {
-                self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].text = result?.value
+                self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].placeholder = result?.value
                 self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].isFill = true
                 self.model?.code = result?.value
                 self.collectionView.reloadSections([1])
@@ -554,46 +573,6 @@ extension DDCGroupContractInfoViewController {
         // Presents the readerVC as modal form sheet
         self.qrCodeReader.modalPresentationStyle = .overFullScreen
         present(self.qrCodeReader, animated: true, completion: nil)
-    }
-    
-    func wrapItems(models: [DDCCourseModel]) {
-        var customItems: [DDCCourseModel] = Array()
-        var totalcount: Int = 0
-        
-        for item in models {
-            if item.isSelected == true {
-                var attributes: [DDCCourseAttributeModel] = Array()
-                if let _attributes = item.attributes {
-                    for att in _attributes {
-                        if att.isSelected == true {
-                            totalcount += att.totalCount
-                            attributes.append(att)
-                        }
-                    }
-                    item.attributes = attributes
-                }
-                customItems.append(item)
-            }
-        }
-        if customItems.count > 0 {
-            let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-            var components: DateComponents = DateComponents.init()
-            components.setValue(totalcount, for: .month)
-            let packageModel: DDCContractPackageModel = DDCContractPackageModel()
-            let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())
-            let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: startTime))!
-            packageModel.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
-            packageModel.startUseTime = startTime
-            packageModel.packageType = .aging
-            packageModel.upgradeLimit = self.upgradeLimit
-            if self.model?.contractType == .groupRegular{
-                packageModel.packageType = .category
-            }
-            self.model?.packageModel = packageModel
-            self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
-            self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
-            self.model!.customItems = customItems
-        }
     }
 }
 
@@ -614,7 +593,38 @@ extension DDCGroupContractInfoViewController: QRCodeReaderViewControllerDelegate
 
 extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
     func cellControl(_ control: DDCCheckBoxCellControl, didFinishEdited count: Int, isFilled: Bool) {
-        self.checkBoxFilled = isFilled
+        var pickedSpec: Bool = false
+        self.checkBoxFilled = false
+        if  let customCourses = self.groupItems?.customCourses ,
+            self.model?.contractType == .groupRegular {
+            for idx in 0..<customCourses.count {
+                let item: DDCCourseModel = customCourses[idx]
+                if item.isSelected {
+                    pickedSpec = true
+                }
+            }
+        } else if let sampleCourses = self.groupItems?.sampleCourses ,
+            self.model?.contractType == .groupSample{
+            for idx in 0..<sampleCourses.count {
+                let item: DDCCourseModel = sampleCourses[idx]
+                if item.isSelected {
+                    pickedSpec = true
+                }
+            }
+        }
+       
+        if pickedSpec && isFilled {
+            self.checkBoxFilled = true
+        }
+        if self.checkBoxFilled {
+            if  let customCourses = self.groupItems?.customCourses ,
+                self.model?.contractType == .groupRegular {
+                self.model?.customItems =  self.wrapItems(models: customCourses)
+            } else if let sampleCourses = self.groupItems?.sampleCourses ,
+                self.model?.contractType == .groupSample {
+                self.model?.customItems =  self.wrapItems(models: sampleCourses)
+            }
+        }
         self.formFilled()
     }
     
@@ -624,27 +634,72 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
             let model = items![indexPath.item]
             model.isSelected = !model.isSelected
             self.formFilled()
+        } else {
+            if (self.groupItems?.customCourses!.count)! > 0 {
+                let items = self.groupItems?.customCourses!
+                let model = items![indexPath.item]
+                model.isSelected = !model.isSelected
+            }
         }
         self.collectionView.reloadData()
     }
     
     func formFilled() {
-        var pickedSpec: Bool = false
-        if let items: [DDCCourseModel] = self.groupItems?.customCourses {
-            for idx in 0..<items.count {
-                let item: DDCCourseModel = items[idx]
-                if item.totalCount > 0 {
-                    pickedSpec = true
-                }
-            }
-        }
-
-        if pickedSpec && self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) && self.model?.code != nil{
+        if self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) && self.model?.code != nil{
             self.bottomBar.buttonArray![1].isEnabled = true
             self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
         } else {
             self.bottomBar.buttonArray![1].isEnabled = false
             self.bottomBar.buttonArray![1].setStyle(style: .forbidden)
         }
+    }
+    
+    func wrapItems(models: [DDCCourseModel]) -> [DDCCourseModel]{
+        var selectedItems: [DDCCourseModel] = Array()
+        var totalcount: Int = 0
+        let customItems: [DDCCourseModel] = models.map{($0.copy() as! DDCCourseModel) }
+
+        for item in customItems {
+            if item.isSelected == true {
+                var attributes: [DDCCourseAttributeModel] = Array()
+                if let _attributes = item.attributes {//有子产品
+                    for att in _attributes {
+                        if att.isSelected == true {
+                            totalcount += att.totalCount
+                            attributes.append(att)
+                        }
+                    }
+                    item.attributes = attributes
+                } else {
+                    totalcount += item.totalCount
+                }
+                selectedItems.append(item)
+            }
+        }
+        if selectedItems.count > 0 {
+            let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+            var components: DateComponents = DateComponents.init()
+            components.setValue(totalcount, for: .month)
+            let packageModel: DDCContractPackageModel = DDCContractPackageModel()
+            let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())
+            let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: startTime))!
+            packageModel.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+            packageModel.startUseTime = startTime
+            packageModel.packageType = .limited
+            packageModel.upgradeLimit = self.upgradeLimit//限制跳过
+            if self.model?.contractType == .groupRegular{
+                packageModel.packageType = .category
+            }
+            self.model?.packageModel = packageModel
+            let spec: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel()
+            spec.validPeriod = totalcount
+            self.model!.specs = spec
+            self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
+            self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
+            self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+            self.collectionView.reloadData()
+
+        }
+        return selectedItems
     }
 }

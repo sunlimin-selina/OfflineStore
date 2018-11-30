@@ -9,12 +9,14 @@
 import Foundation
 import ObjectMapper
 
-class DDCOnlinePaymentOptionModel: Mappable {
+class DDCOnlinePaymentOptionModel: NSObject, Mappable {
     var contractNo: String?
     var out_trade_no: String?
     var qr_code: String?
     var payOrderNo: String?
     
+    override init() {
+    }
     
     required init?(map: Map) {
     }

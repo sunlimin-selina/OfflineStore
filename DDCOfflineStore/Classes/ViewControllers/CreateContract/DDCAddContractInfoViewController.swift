@@ -110,6 +110,11 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         return _bottomBar
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+        self.collectionView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
@@ -117,8 +122,6 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
-        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
-
         self.getPackagesForContract()
         self.getRelationShopOptions()
     }
@@ -521,7 +524,6 @@ extension DDCAddContractInfoViewController {
         if self.isPickedCustom {
             self.model?.customItems = self.reorganizeCustomData()
         }
-//        self.models[DDCAddContractTextFieldType.money.rawValue].isFill = true//reloaddata的时候将价格刷没了,具体再查,先强行设置
 
         for index in 1...(self.models.count - 1) {
             let model: DDCContractInfoViewModel = self.models[index]

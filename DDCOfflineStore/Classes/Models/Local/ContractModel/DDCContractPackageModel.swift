@@ -16,6 +16,7 @@ class DDCContractPackageModel: DDCCheckBoxModel {
         case category // 按分类
         case frequency  // 按次数
         case aging // 按时效
+        case limited // 限制课程
     }
 
     var code: String?

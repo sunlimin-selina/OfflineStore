@@ -23,26 +23,29 @@ class DDCPaymentUpdateChecker: NSObject {
         }
     }
     
-    func checkUpdates(paymentModel: DDCOnlinePaymentOptionModel) {
+    @objc func checkUpdates(paymentModel: DDCOnlinePaymentOptionModel) {
         weak var weakSelf = self
-        DDCPaymentOptionsAPIManager.updatePaymentState(model: paymentModel, successHandler: { (status) in
-            switch (status){
-            case .failed:
-                NSObject.cancelPreviousPerformRequests(withTarget: weakSelf as Any, selector: Selector(("checkUpdates:")), object: paymentModel)
-                break
-            case .success:
-                NSObject.cancelPreviousPerformRequests(withTarget: weakSelf as Any)
-                weakSelf?.delegate?.payment(updateChecker: weakSelf!, paymentOption: paymentModel, status: status)
+        if let contractNo = paymentModel.contractNo {
+            DDCPaymentOptionsAPIManager.updatePaymentState(contractNo: contractNo, successHandler: { (status) in
+                switch (status){
+                case .unpaid:
+                    weakSelf?.perform(#selector(self.checkUpdates(paymentModel:)), with: paymentModel, afterDelay: 5)
+                    break
+                case .paid, .overdue:
+                    NSObject.cancelPreviousPerformRequests(withTarget: weakSelf as Any)
+                    weakSelf?.delegate?.payment(updateChecker: weakSelf!, paymentOption: paymentModel, status: status)
+                    weakSelf?.currentlyCheckingArray.remove(paymentModel)
+                    break
+                default:
+                    NSObject.cancelPreviousPerformRequests(withTarget: weakSelf as Any, selector: #selector(self.checkUpdates(paymentModel:)), object: paymentModel)
+                    break
+                }
+            }) { (error) in
+                weakSelf?.delegate?.payment(updateChecker: weakSelf!, paymentOption: paymentModel, status: .cancel)
                 weakSelf?.currentlyCheckingArray.remove(paymentModel)
-                break
-            default:
-                weakSelf?.perform(Selector(("checkUpdates:")), with: paymentModel, afterDelay: 5)
-                break
             }
-        }) { (error) in
-            weakSelf?.delegate?.payment(updateChecker: weakSelf!, paymentOption: paymentModel, status: .failed)
-            weakSelf?.currentlyCheckingArray.remove(paymentModel)
         }
+       
     }
     
     deinit {

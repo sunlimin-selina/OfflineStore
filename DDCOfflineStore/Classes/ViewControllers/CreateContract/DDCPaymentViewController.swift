@@ -93,31 +93,34 @@ extension DDCPaymentViewController {
 extension DDCPaymentViewController {
     
     func getPaymentOptions() {
-//        guard self.model?.customer?.mobile != nil else {
-//            return
-//        }
+        guard self.model?.customer?.mobile != nil else {
+            return
+        }
         DDCTools.showHUD(view: self.view)
-        DDCPaymentOptionsAPIManager.paymentOption(phone: "15921516376", successHandler: { (tuple) in
+        DDCPaymentOptionsAPIManager.paymentOption(phone: (self.model?.customer?.mobile)!, successHandler: { (tuple) in
             if let _tuple = tuple {
                 self.result = _tuple
                 self.payments = self.integratePaymentData()
+                let contractModel: DDCOnlinePaymentOptionModel = DDCOnlinePaymentOptionModel()
+                contractModel.contractNo = self.model?.code
                 self.collectionView.reloadData()
+                self.paymentUpdateChecker.startChecking(paymentModel: contractModel)
             }
             DDCTools.hideHUD()
         }, failHandler: { (error) in
             DDCTools.hideHUD()
         })
         
-
     }
     
     func createPaymentOption(payment: DDCPaymentItemModel) {
+        DDCTools.showHUD(view: self.view)
         if let _payment: DDCPaymentItemModel = payment {
             DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: 1, successHandler: { (model) in
+                DDCTools.hideHUD()
                 if let _model = model {
                     self.onlinePayment = _model
                     self.collectionView.reloadData()
-                    self.paymentUpdateChecker.startChecking(paymentModel: _model)
                 }
             }) { (error) in
                 
@@ -131,15 +134,12 @@ extension DDCPaymentViewController {
 // MARK: Action
 extension DDCPaymentViewController {
     
-    func didSelectRadioButton(sender: UIButton) {
-        
-    }
-    
     func commitForm() {
         weak var weakSelf = self
         let alertController: UIAlertController = UIAlertController.init(title: "确定客户已完成线下支付吗？", message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
-            
+            let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: self.model!)
+            self.navigationController?.pushViewController(viewController, animated: true)
         }))
         alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
@@ -287,14 +287,17 @@ extension DDCPaymentViewController {
 
 extension DDCPaymentViewController: DDCPaymentUpdateCheckerDelegate {
     func payment(updateChecker: DDCPaymentUpdateChecker, paymentOption: DDCOnlinePaymentOptionModel, status: DDCPaymentStatus) {
-        if (status == .success)
-        {
-//            let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(detailsID: self.model!.id!)
-//            self.navigationController?.pushViewController(viewController, animated: true)
-        }
-        else if (status == .failed && self.view != nil)
-        {
+        switch status {
+        case .paid:
+            let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: self.model!)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        case .overdue:
+            do {
+                self.createPaymentOption(payment: (self.result.online?.channels![self.pickedSection])!)
+            }
+        default:
             self.view.makeDDCToast(message: "支付失败了", image: UIImage.init(named: "addCar_icon_fail")!)
+
         }
     }
     

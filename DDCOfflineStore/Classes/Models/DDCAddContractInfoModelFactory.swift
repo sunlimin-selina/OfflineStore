@@ -29,8 +29,9 @@ class DDCAddContractInfoModelFactory: NSObject {
         let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: model?.code ?? "请扫描合同编号", text: "", isRequired: true, tips: "")
         //产品规格-正式课
         let specification: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "购买正式课程", text: "", isRequired: true, tips: "")
+        specification.isFill = true
         //产品规格-体验课
-        let sample: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "购买体验课程", text: "", isRequired: true, tips: "")
+        let sample: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "购买体验课程", text: "", isRequired: false, tips: "")
 
         array = [defaultInfo, contractNumber, specification, sample]
         return DDCAddContractInfoModelFactory.appendLatterPart(model: model, array: array)

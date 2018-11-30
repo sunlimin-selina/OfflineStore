@@ -65,9 +65,9 @@ class DDCPaymentOptionsAPIManager: NSObject {
         }
     }
     
-    class func updatePaymentState(model: DDCOnlinePaymentOptionModel?, successHandler: @escaping(_ result: DDCPaymentStatus) -> (), failHandler: @escaping (_ error: String) -> ()) {
+    class func updatePaymentState(contractNo: String, successHandler: @escaping(_ result: DDCPaymentStatus) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/contract/status/check_tradestatus.do")
-        let params: Dictionary<String, Any>? = ["contractNo": model?.contractNo as Any]
+        let params: Dictionary<String, Any>? = ["contractNo": contractNo]
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
@@ -75,10 +75,10 @@ class DDCPaymentOptionsAPIManager: NSObject {
                 return
             }
             if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))! {
-//                successHandler(tuple.data[])
+                successHandler(DDCPaymentStatus(rawValue: tuple.data as! Int)!)
                 return
             }
-//            successHandler(nil)
+            successHandler(.cancel)
         }) { (error) in
             failHandler(error)
         }

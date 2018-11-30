@@ -20,6 +20,9 @@ class DDCContractListModel: Mappable {
     var createTime: Int?
     var type: DDCContractType?
 
+    init() {
+    }
+    
     required init?(map: Map) {
     }
     

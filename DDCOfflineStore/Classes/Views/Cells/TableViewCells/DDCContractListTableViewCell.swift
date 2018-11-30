@@ -18,6 +18,7 @@ class DDCStatusViewModel: NSObject {
     }
 }
 class DDCContractListTableViewCell: UITableViewCell {
+    private var model: DDCContractListModel = DDCContractListModel()
     
     private lazy var icon: UIImageView = {
         let icon: UIImageView = UIImageView.init(image: UIImage.init(named: "icon_contractdetails_shengxiaozhong"))
@@ -142,30 +143,37 @@ class DDCContractListTableViewCell: UITableViewCell {
     func updateSubviewConstraints() {
         let kMargin: CGFloat = 20.0
         let kLabelHeight: CGFloat = 25.0
-        
+        var kSublabelHeight: CGFloat = 25.0
+
+        if self.model.type == .groupRegular || self.model.type == .groupSample{
+            kSublabelHeight = 0
+        }
         self.titleLabel.snp.remakeConstraints({ (make) in
             make.left.equalTo(self.icon.snp_rightMargin).offset(kMargin)
             make.right.equalTo(self.subtitleLabel.snp_leftMargin)
             make.top.equalTo(self.contentView).offset(kMargin)
             make.height.equalTo(kLabelHeight)
-            make.centerY.equalTo(self.contentView)
+            if self.model.type == .groupRegular || self.model.type == .groupSample {
+                make.centerY.equalTo(self.contentView)
+            }
         })
         
         self.contractSNLabel.snp.updateConstraints({ (make) in
-            make.height.equalTo(0)
+            make.height.equalTo(kSublabelHeight)
         })
         
         self.contractTypeImage.snp.updateConstraints({ (make) in
-            make.height.equalTo(0)
+            make.height.equalTo(kSublabelHeight - 6)
         })
         
         self.contractNameLabel.snp.updateConstraints({ (make) in
-            make.height.equalTo(0)
+            make.height.equalTo(kSublabelHeight)
         })
         
     }
     
     func configureCell(model: DDCContractListModel) {
+        self.model = model
         let title = "\(model.lineUserName ?? "") \(model.mobile ?? "")"
         self.titleLabel.text = title
         self.datetime.text = DDCTools.date(from: model.createTime!)
@@ -186,6 +194,6 @@ class DDCContractListTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-        self.setupViewConstraints()
+        self.updateSubviewConstraints()
     }
 }
