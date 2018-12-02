@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCPaymentViewController.swift"
-            timestampString = "565263621.681595"
+            timestampString = "565444634.450206"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "310"
-            endingLineNumber = "310"
+            startingLineNumber = "311"
+            endingLineNumber = "311"
             landmarkName = "payment(updateChecker:paymentOption:status:)"
             landmarkType = "7">
          </BreakpointContent>

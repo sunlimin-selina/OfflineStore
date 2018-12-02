@@ -133,21 +133,20 @@ extension DDCPaymentViewController {
         
     }
     
-    func createPaymentOption(payment: DDCPaymentItemModel) {
+    func createPaymentOption(payment: DDCPaymentItemModel?) {
         DDCTools.showHUD(view: self.view)
         if let _payment: DDCPaymentItemModel = payment {
-            DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: 1, successHandler: { (model) in
+            DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: self.pickedSection == 3 ? 2 : 1, successHandler: { (model) in //支付渠道类型（1, "在线支付" 2, "线下支付"）
                 DDCTools.hideHUD()
                 if let _model = model {
                     self.onlinePayment = _model
                     self.collectionView.reloadData()
                 }
             }) { (error) in
-                
+                DDCTools.hideHUD()
             }
         }
     }
-    
     
 }
 
@@ -158,8 +157,8 @@ extension DDCPaymentViewController {
         weak var weakSelf = self
         let alertController: UIAlertController = UIAlertController.init(title: "确定客户已完成线下支付吗？", message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
-            let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: self.model!)
-            self.navigationController?.pushViewController(viewController, animated: true)
+            let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: weakSelf!.model!)
+            weakSelf!.navigationController?.pushViewController(viewController, animated: true)
         }))
         alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
@@ -272,11 +271,13 @@ extension DDCPaymentViewController: UICollectionViewDelegate {
                 item = self.result.offline!.channels![index]
                 if indexPath.item == index {
                     item!.isSelected = true
+                    self.createPaymentOption(payment: (self.result.offline?.channels![index])!)
                 } else {
                     item!.isSelected = false
                 }
             }
         }
+
         self.collectionView.reloadSections([3])
     }
     

@@ -427,8 +427,20 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
         self.currentTextField = textField
         if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue || textField.tag == DDCAddContractTextFieldType.rule.rawValue{
             return false
-        } else if textField.tag == DDCAddContractTextFieldType.rule.rawValue {
-            self.pickerView.selectRow(self.orderRule.index(of: textField.text as Any), inComponent: 0, animated: true)
+        } 
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField.tag == DDCAddContractTextFieldType.money.rawValue {
+            let text: String = (textField.text! as NSString).replacingCharacters(in: range, with: string) as String
+            //only number
+            if (Int(text) == nil && text.count > 0) || //允许删除唯一一个字符
+                (text.count == 1 && Int(text) == 0) {//第一个数字不为零
+                return false
+            } else {
+                return true
+            }
         }
         return true
     }
