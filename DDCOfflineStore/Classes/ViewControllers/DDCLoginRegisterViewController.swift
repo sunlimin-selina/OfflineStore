@@ -100,9 +100,9 @@ class DDCLoginRegisterViewController: UIViewController {
         self.contentView.addSubview(self.versionLabel)
         
         self.setupViewConstraints()
-        #if DEBUG        
+//        #if DEBUG
         self.addSwitchEnvBtn()
-        #endif
+//        #endif
         
     }
 
@@ -330,7 +330,6 @@ extension DDCLoginRegisterViewController {
     }
     
     @objc func envSwitchAction() {
-        
         let env = EnviromentSwitchViewController()
         self.navigationController?.pushViewController(env, animated: true)
         

@@ -52,8 +52,13 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
         self.setupViewConstraints()
         self.getStoresAndContractTypes()
         self.automaticallyAdjustsScrollViewInsets = false
-        self.userInfo = DDCContractDetailsViewModelFactory.integrateUserData(model: self.model!)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.userInfo = DDCContractDetailsViewModelFactory.integrateUserData(model: self.model!)
+        self.collectionView.reloadSections([0])
     }
     
 }

@@ -16,7 +16,7 @@ class DDCContractDetailsViewController: UIViewController {
         static let kMargin: CGFloat = 54.0
     }
     
-    public var detailsID: Int?
+    public var detailsID: String?
     var modelArray: [DDCContractDetailsViewModel]? = Array()
     var model: DDCContractDetailModel?
     
@@ -47,7 +47,7 @@ class DDCContractDetailsViewController: UIViewController {
         return _bottomBar
     }()
     
-    init(detailsID: Int) {
+    init(detailsID: String) {
         super.init(nibName: nil, bundle: nil)
         self.detailsID = detailsID
     }

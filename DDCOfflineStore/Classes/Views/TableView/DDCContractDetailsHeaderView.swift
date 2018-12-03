@@ -17,7 +17,7 @@ class DDCContractDetailsHeaderView: UITableViewHeaderFooterView {
             case .ineffective?:
                 self.imageView.image = UIImage.init(named: "icon_contractdetails_daishengxiao")
             case .inComplete?:
-                self.imageView.image = UIImage.init(named: "icon_contractdetails_weiwancheng")
+                self.imageView.image = UIImage.init(named: "icon_contractdetails_daizhifu")
             case .used?:
                 self.imageView.image = UIImage.init(named: "icon_contractdetails_yixiaohe")
             case .completed?:

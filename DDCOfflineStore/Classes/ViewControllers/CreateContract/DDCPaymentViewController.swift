@@ -20,7 +20,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
     }()
     var freeOrder: Bool {
         get {
-            return (self.model!.specs?.costPrice == nil || self.model!.specs?.costPrice == 0) && (self.model!.contractPrice == nil || self.model!.contractPrice == 0)
+            return (self.model!.contractPrice == nil || self.model!.contractPrice == 0)
         }
     }
     
@@ -48,11 +48,10 @@ class DDCPaymentViewController: DDCChildContractViewController {
                 self.navigationController?.pushViewController(viewController, animated: true)
             }))
         } else {
-            _bottomBar.addButton(button:DDCBarButton.init(title: "提交", style: .highlighted, handler: {
+            _bottomBar.addButton(button:DDCBarButton.init(title: "提交", style: .forbidden, handler: {
                 self.commitForm()
             }))
         }
-
         return _bottomBar
     }()
     
@@ -68,6 +67,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
         } else { //普通订单
             self.view.addSubview(self.collectionView)
             self.view.addSubview(self.bottomBar)
+            self.bottomBar.buttonArray![0].isEnabled = false
             self.setupViewConstraints()
             self.getPaymentOptions()
             self.automaticallyAdjustsScrollViewInsets = false
@@ -162,6 +162,7 @@ extension DDCPaymentViewController {
         }))
         alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+        
     }
 }
 
@@ -190,7 +191,7 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self), for: indexPath) as! DDCPaymentQRCodeImageCollectionViewCell
             let model: DDCOnlinePaymentOptionModel = self.onlinePayment!
-            let price: String = ((self.model!.specs?.costPrice != nil) ? "\(self.model!.specs?.costPrice! )" : "\(self.model!.contractPrice!)")
+            let price: String = ((self.model!.contractPrice! != nil) ? "\(self.model!.contractPrice!)" : "\(self.model!.specs!.costPrice!)")
             cell.configureCell(QRCodeURLString: model.qr_code ?? "", price: price)
             return cell
         }
@@ -270,6 +271,8 @@ extension DDCPaymentViewController: UICollectionViewDelegate {
             for index in 0...((self.result.offline!.channels!.count) - 1) {
                 item = self.result.offline!.channels![index]
                 if indexPath.item == index {
+                    self.bottomBar.buttonArray![0].isEnabled = true
+                    self.bottomBar.buttonArray![0].setStyle(style: .highlighted)
                     item!.isSelected = true
                     self.createPaymentOption(payment: (self.result.offline?.channels![index])!)
                 } else {
@@ -310,6 +313,10 @@ extension DDCPaymentViewController: DDCPaymentUpdateCheckerDelegate {
     func payment(updateChecker: DDCPaymentUpdateChecker, paymentOption: DDCOnlinePaymentOptionModel, status: DDCPaymentStatus) {
         switch status {
         case .paid:
+            if self.pickedSection == 3 {
+                self.view.makeDDCToast(message: "已完成支付", image: UIImage.init(named: "collect_icon_success")!)
+                return
+            }
             let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: self.model!)
             self.navigationController?.pushViewController(viewController, animated: true)
         case .overdue:
@@ -318,7 +325,6 @@ extension DDCPaymentViewController: DDCPaymentUpdateCheckerDelegate {
             }
         default:
             self.view.makeDDCToast(message: "支付失败了", image: UIImage.init(named: "addCar_icon_fail")!)
-
         }
     }
     

@@ -290,12 +290,13 @@ extension DDCEditClientInfoViewController: UICollectionViewDelegate, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let ipad_scale = screen.width / 768
         if indexPath.item == DDCClientTextFieldType.name.rawValue ||
             indexPath.item == DDCClientTextFieldType.birthday.rawValue
         {
-            return CGSize.init(width: 320, height: 90)
+            return CGSize.init(width: 320 * ipad_scale , height: 90)
         } else if  indexPath.item == DDCClientTextFieldType.age.rawValue || indexPath.item == DDCClientTextFieldType.sex.rawValue{
-            return CGSize.init(width: 120, height: 90)
+            return CGSize.init(width: 120  * ipad_scale , height: 90)
         } else {
             return CGSize.init(width: DDCAppConfig.width, height: 90)
         }
@@ -382,8 +383,10 @@ extension DDCEditClientInfoViewController {
             self.models[DDCClientTextFieldType.career.rawValue].isFill = true
             break
         case DDCClientTextFieldType.channel.rawValue:
-            self.models[DDCClientTextFieldType.channel.rawValue].text = self.channels![self.pickerView.selectedRow(inComponent: 0)].name
-            self.models[DDCClientTextFieldType.channel.rawValue].isFill = true
+            if let _channel: DDCChannelModel = self.channels![self.pickerView.selectedRow(inComponent: 0)] {
+                self.models[DDCClientTextFieldType.channel.rawValue].text = _channel.name
+                self.models[DDCClientTextFieldType.channel.rawValue].isFill = true
+            }
             break
         case DDCClientTextFieldType.memberReferral.rawValue:
             do {
@@ -435,7 +438,7 @@ extension DDCEditClientInfoViewController {
                     if _textFieldView.textField.tag == 0 {
                         self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
                         self.model = DDCEditClientInfoModelFactory.update(customer: _model)
-                        self.model?.customer?.type = _model.type
+                        self.model?.customer? = _model
                         self.models = DDCEditClientInfoModelFactory.integrateData(model: self.model!.customer!, channels: self.channels)
                     } else {
                         let customer: DDCCustomerModel = DDCCustomerModel.init()
@@ -446,10 +449,10 @@ extension DDCEditClientInfoViewController {
                 } else {
                     if _textFieldView.textField.tag == 0 {
                         self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
-                        self.models = DDCEditClientInfoModelFactory.integrateData(model: DDCCustomerModel(), channels: self.channels)
                         self.model = DDCEditClientInfoModelFactory.update(customer: DDCCustomerModel())
-                        self.model?.customer?.mobile = phoneNumber
-                        self.model?.customer?.type = DDCCustomerType.new
+                        self.model!.customer!.mobile = phoneNumber
+                        self.model!.customer!.type = DDCCustomerType.new
+                        self.models = DDCEditClientInfoModelFactory.integrateData(model: self.model!.customer!, channels: self.channels)
                     } else {
                         self.view.makeDDCToast(message: "无法找到对应客户，请检查", image: UIImage.init(named: "addCar_icon_fail")!)
                     }
@@ -563,6 +566,9 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
             rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue  {
             self.models[rawValue].text = textField.text
             self.models[rawValue].isFill = true
+        }
+        if textField.tag == DDCClientTextFieldType.introduceMobile.rawValue {
+            
         }
         return true
     }

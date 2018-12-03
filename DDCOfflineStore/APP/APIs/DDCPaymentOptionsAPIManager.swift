@@ -45,7 +45,9 @@ class DDCPaymentOptionsAPIManager: NSObject {
     
     class func createPaymentOption(model: DDCContractModel?, payChannel: String, payStyle: Int, successHandler: @escaping(_ result: DDCOnlinePaymentOptionModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/pay/order/create_pay.do")
-        let params: Dictionary<String, Any>? = ["amount": ((model!.specs?.costPrice != nil) ? (model!.specs?.costPrice!)! * 100 : model!.contractPrice! * 100), "contractNo": model?.code as Any, "operateBizType":"COURSE", "operateUserId": model?.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id as Any, "operateUserType": 2, "payChannel": payChannel, "payStyle": payStyle, "sourcePaltform": 1]
+        let specMoney = (model!.specs?.costPrice != nil ? (model!.specs?.costPrice!)! * 100 : 0)
+        let money = (model!.contractPrice != nil) ? model!.contractPrice! * 100 : specMoney
+        let params: Dictionary<String, Any>? = ["amount": money, "contractNo": model?.code as Any, "operateBizType":"COURSE", "operateUserId": model?.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id as Any, "operateUserType": 2, "payChannel": payChannel, "payStyle": payStyle, "sourcePaltform": 1]
         print(params)
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)

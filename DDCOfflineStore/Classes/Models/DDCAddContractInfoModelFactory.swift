@@ -113,7 +113,7 @@ extension DDCAddContractInfoModelFactory {
                                                     "code":model.code as Any,
                                                     "courseUseType": model.packageModel!.packageType?.rawValue as Any,
                                                     "createUserId": (model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id)as Any,
-                                                    "dealPrice":((model.specs?.costPrice != nil) ? (model.specs?.costPrice!)! * 100 : model.contractPrice! * 100) as Any,
+                                                    "dealPrice": (model.contractPrice != nil) ? Int(model.contractPrice! * 100) : Int((model.specs?.costPrice)! * 100) as Any,
                                                     "dealShopId":model.currentStore?.id as Any,
                                                     "dealUserId":(model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id) as Any,
                                                     "endEffectiveTime": model.packageModel?.endEffectiveTime as Any,

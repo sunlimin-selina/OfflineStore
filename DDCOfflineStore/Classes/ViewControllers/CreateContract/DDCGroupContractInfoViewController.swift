@@ -109,6 +109,11 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
         return _bottomBar
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+        self.collectionView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -431,19 +436,18 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
         return true
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField.tag == DDCAddContractTextFieldType.money.rawValue {
-            let text: String = (textField.text! as NSString).replacingCharacters(in: range, with: string) as String
-            //only number
-            if (Int(text) == nil && text.count > 0) || //允许删除唯一一个字符
-                (text.count == 1 && Int(text) == 0) {//第一个数字不为零
-                return false
-            } else {
-                return true
-            }
-        }
-        return true
-    }
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        if textField.tag == DDCAddContractTextFieldType.money.rawValue {
+//            let text: String = (textField.text! as NSString).replacingCharacters(in: range, with: string) as String
+//            //only number
+//            if (Int(text) == nil && text.count > 0) {//允许删除唯一一个字符
+//                return false
+//            } else {
+//                return true
+//            }
+//        }
+//        return true
+//    }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.tag == DDCAddContractTextFieldType.money.rawValue {

@@ -216,7 +216,7 @@ extension DDCContractListViewController: UITableViewDataSource , UITableViewDele
         guard model.contractId != nil else {
             return
         }
-        let viewController: DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: model.contractId!)
+        let viewController: DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: model.code!)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

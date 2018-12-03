@@ -14,9 +14,9 @@ typealias Package = (packageName: String, packageCategoryName: String, singleSto
 
 class DDCContractDetailsAPIManager: NSObject {
     
-    class func getContractDetails(detailId: Int ,successHandler: @escaping (_ result: DDCContractDetailModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+    class func getContractDetails(detailId: String ,successHandler: @escaping (_ result: DDCContractDetailModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/contract/detail.do")
-        let param: Dictionary = ["contractId": CLong(detailId)]
+        let param: Dictionary = ["contractNo": detailId]
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: param, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{

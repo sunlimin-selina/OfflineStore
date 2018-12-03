@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 class DDCTools: NSObject{
     
@@ -125,4 +126,10 @@ class DDCTools: NSObject{
         }
         return false
     }
+ 
+    class func isRightCamera() -> Bool {
+        let authStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+        return authStatus != .restricted && authStatus != .denied
+    }
+
 }

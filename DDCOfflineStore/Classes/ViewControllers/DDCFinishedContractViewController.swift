@@ -68,7 +68,7 @@ class DDCFinishedContractViewController: UIViewController {
     }
     
     func gotoContractDetail() {
-        let viewController: DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: self.model!.id!)
+        let viewController: DDCContractDetailsViewController = DDCContractDetailsViewController.init(detailsID: self.model!.code!)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     

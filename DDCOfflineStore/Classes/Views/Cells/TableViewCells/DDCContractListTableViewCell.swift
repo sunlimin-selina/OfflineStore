@@ -21,7 +21,7 @@ class DDCContractListTableViewCell: UITableViewCell {
     private var model: DDCContractListModel = DDCContractListModel()
     
     private lazy var icon: UIImageView = {
-        let icon: UIImageView = UIImageView.init(image: UIImage.init(named: "icon_contractdetails_shengxiaozhong"))
+        let icon: UIImageView = UIImageView.init()
         icon.contentMode = .scaleAspectFill
         icon.clipsToBounds = true
         return icon
@@ -180,7 +180,8 @@ class DDCContractListTableViewCell: UITableViewCell {
         let contractId: String = model.contractId != nil ? "\(model.title ?? "")-\(model.contractId!)" : "\(model.title ?? "")"
         self.contractNameLabel.text = contractId
         self.contractSNLabel.text = model.code
-        
+        self.contractTypeImage.image = UIImage.init(named: "Tab_homepage_tiyanke")
+
         if model.type == .personalRegular {
             self.contractTypeImage.image = UIImage.init(named: "Tab_homepage_zhengshike")
         } else if model.type == .groupRegular || model.type == .groupSample{
@@ -194,6 +195,13 @@ class DDCContractListTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
+        self.titleLabel.text = nil
+        self.datetime.text = nil
+        self.contractNameLabel.text = nil
+        self.contractSNLabel.text = nil
+        self.contractTypeImage.image = nil
+        self.subtitleLabel.text = nil
+
         self.updateSubviewConstraints()
     }
 }
