@@ -36,7 +36,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-                  timestampString = "565530060.459481"
+                  timestampString = "565587597.971227"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "485"
@@ -51,7 +51,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-                  timestampString = "565530060.461531"
+                  timestampString = "565587597.973381"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "485"
@@ -84,7 +84,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-                  timestampString = "565530060.467818"
+                  timestampString = "565587597.978404"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "500"
@@ -99,7 +99,7 @@
                   moduleName = "DDCOfflineStore"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-                  timestampString = "565530060.4697829"
+                  timestampString = "565587597.980189"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "500"
@@ -107,6 +107,22 @@
                   offsetFromSymbolStart = "240">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDCOfflineStore/APP/APIs/DDCAPIManager.swift"
+            timestampString = "565585098.008279"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "callRequest(url:method:parameters:success:fail:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

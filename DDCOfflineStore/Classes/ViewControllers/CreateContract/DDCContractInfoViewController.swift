@@ -127,7 +127,7 @@ extension DDCContractInfoViewController {
     
     func getPackagesForContract() {
         DDCTools.showHUD(view: self.view)
-        DDCContractOptionsAPIManager.packagesForContract(storeId: self.model!.currentStore!.id!, successHandler: { (array) in
+        DDCContractOptionsAPIManager.packagesForContract(storeId: self.model!.currentStore!.id!, type: (self.model?.contractType)!, successHandler: { (array) in
             DDCTools.hideHUD()
             if (array?.count)! > 0 {
                 self.package = array!

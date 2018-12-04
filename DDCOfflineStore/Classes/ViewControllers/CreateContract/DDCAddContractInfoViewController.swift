@@ -114,6 +114,8 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
         self.collectionView.reloadData()
+        self.getPackagesForContract()
+        self.getRelationShopOptions()
     }
     
     override func viewDidLoad() {
@@ -123,8 +125,6 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
-        self.getPackagesForContract()
-        self.getRelationShopOptions()
     }
 }
 
@@ -322,7 +322,7 @@ extension DDCAddContractInfoViewController {
     
     func getPackagesForContract() {
         DDCTools.showHUD(view: self.view)
-        DDCContractOptionsAPIManager.packagesForContract(storeId: self.model!.currentStore!.id!, successHandler: { (array) in
+        DDCContractOptionsAPIManager.packagesForContract(storeId: self.model!.currentStore!.id!,type: (self.model?.contractType)!, successHandler: { (array) in
             DDCTools.hideHUD()
             if (array?.count)! > 0 {
                 self.package = array!
@@ -428,7 +428,7 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-
+        self.pickerView.reloadAllComponents()
         self.currentTextField = textField
         if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && self.pickedPackage != nil && !self.isPickedCustom && !self.modifySkuPrice) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
             return false
@@ -452,25 +452,25 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
         return true
     }
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if textField.tag == DDCAddContractTextFieldType.money.rawValue {
-//            let text: String = (textField.text! as NSString).replacingCharacters(in: range, with: string) as String
-//            //only number
-//            if (Int(text) == nil && text.count > 0) {//允许删除唯一一个字符
-//                return false
-//            } else {
-//                return true
-//            }
-//        }
-//        return true
-//    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField.tag == DDCAddContractTextFieldType.money.rawValue {
+            let text: String = (textField.text! as NSString).replacingCharacters(in: range, with: string) as String
+            //only number
+            if (Double(text) == nil && text.count > 0) {//允许删除唯一一个字符
+                return false
+            } else {
+                return true
+            }
+        }
+        return true
+    }
 
 }
 
 // MARK: Action
 extension DDCAddContractInfoViewController {
     @objc func done() {
-        self.resignFirstResponder()
+        self.pickerView.resignFirstResponder()
 
         let section = self.currentTextField?.tag
         switch section {

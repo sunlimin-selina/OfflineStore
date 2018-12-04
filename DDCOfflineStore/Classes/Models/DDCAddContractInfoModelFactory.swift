@@ -67,7 +67,7 @@ class DDCAddContractInfoModelFactory: NSObject {
         }
         let orderRule: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "课程进阶规则", placeholder: (model?.contractType == .groupRegular || model?.contractType == .groupSample) ? "跳过":"请选择课程进阶规则", text: upgradeLimit, isRequired: true,  tips: "")
         //合同金额
-        let money = ((model?.specs?.costPrice) != nil) ? "\(model?.specs?.costPrice ?? 0)" : (model?.contractPrice != nil ? "\(model?.contractPrice ?? 0)" : "")
+        let money = (model?.contractPrice != nil ? "\(model?.contractPrice ?? 0)" : ((model?.specs?.costPrice) != nil) ? "\(model?.specs?.costPrice ?? 0)" : "")
         let costPrice: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: money, isRequired: true, tips: "")
         costPrice.isFill = model?.specs?.costPrice != nil ? true : false
         //生效日期(今日生效)

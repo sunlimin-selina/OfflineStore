@@ -11,9 +11,9 @@ import Alamofire
 import ObjectMapper
 
 class DDCContractOptionsAPIManager: NSObject {
-    class func packagesForContract(storeId: Int, successHandler: @escaping (_ result: [DDCContractPackageModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+    class func packagesForContract(storeId: Int, type: DDCContractType, successHandler: @escaping (_ result: [DDCContractPackageModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/package/list.do")
-        let params = ["addressId": storeId]
+        let params: Dictionary<String, Any> = ["addressId": storeId ,"type": type.rawValue]
         
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
