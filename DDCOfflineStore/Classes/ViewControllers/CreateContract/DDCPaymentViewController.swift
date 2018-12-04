@@ -13,6 +13,8 @@ class DDCPaymentViewController: DDCChildContractViewController {
     var result: (online: DDCPaymentOptionModel?, offline: DDCPaymentOptionModel?)
     var onlinePayment: DDCOnlinePaymentOptionModel?
     var pickedSection: Int = 999
+    var pickedOfflineSection: Int = 999
+
     lazy var paymentUpdateChecker: DDCPaymentUpdateChecker = {
         let paymentUpdateChecker: DDCPaymentUpdateChecker = DDCPaymentUpdateChecker()
         paymentUpdateChecker.delegate = self
@@ -49,7 +51,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
             }))
         } else {
             _bottomBar.addButton(button:DDCBarButton.init(title: "提交", style: .forbidden, handler: {
-                self.commitForm()
+                self.createPaymentOption(payment: (self.result.offline?.channels![self.pickedOfflineSection != 999 ? self.pickedOfflineSection : 0])!)
             }))
         }
         return _bottomBar
@@ -124,7 +126,6 @@ extension DDCPaymentViewController {
                 let contractModel: DDCOnlinePaymentOptionModel = DDCOnlinePaymentOptionModel()
                 contractModel.contractNo = self.model?.code
                 self.collectionView.reloadData()
-                self.paymentUpdateChecker.startChecking(paymentModel: contractModel)
             }
             DDCTools.hideHUD()
         }, failHandler: { (error) in
@@ -138,8 +139,14 @@ extension DDCPaymentViewController {
         if let _payment: DDCPaymentItemModel = payment {
             DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: self.pickedSection == 3 ? 2 : 1, successHandler: { (model) in //支付渠道类型（1, "在线支付" 2, "线下支付"）
                 DDCTools.hideHUD()
+                if self.pickedSection == 3{
+                    self.commitForm()
+                    return
+                }
                 if let _model = model {
                     self.onlinePayment = _model
+                    self.paymentUpdateChecker.cancel()
+                    self.paymentUpdateChecker.checkUpdates(paymentModel: _model)
                     self.collectionView.reloadData()
                 }
             }) { (error) in
@@ -191,7 +198,7 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCPaymentQRCodeImageCollectionViewCell.self), for: indexPath) as! DDCPaymentQRCodeImageCollectionViewCell
             let model: DDCOnlinePaymentOptionModel = self.onlinePayment!
-            let price: String = ((self.model!.contractPrice! != nil) ? "\(self.model!.contractPrice!)" : "\(self.model!.specs!.costPrice!)")
+            let price: String = (self.model!.contractPrice != nil ? "\(self.model!.contractPrice!)" : "\(self.model!.specs!.costPrice!)")
             cell.configureCell(QRCodeURLString: model.qr_code ?? "", price: price)
             return cell
         }
@@ -208,12 +215,13 @@ extension DDCPaymentViewController: UICollectionViewDataSource {
                 let model: DDCCheckBoxModel = self.payments[indexPath.section - 1]
                 headerView.radioButton.button.setTitle(model.title, for: .normal)
                 headerView.radioButton.button.isSelected = model.isSelected
-                
                 var image: UIImage = UIImage.init(named: "icon_pay_offline")!
                 if model.title == "支付宝" {
                     image = UIImage.init(named: "icon_pay_alipay")!
                 } else if model.title == "微信" {
                     image = UIImage.init(named: "icon_pay_wechat")!
+                } else {
+                    headerView.subtitleLabel.text = "(请在确认收到款项后勾选此项)"
                 }
                 headerView.radioButton.imageView.image = image
                 headerView.tag = indexPath.section
@@ -274,7 +282,7 @@ extension DDCPaymentViewController: UICollectionViewDelegate {
                     self.bottomBar.buttonArray![0].isEnabled = true
                     self.bottomBar.buttonArray![0].setStyle(style: .highlighted)
                     item!.isSelected = true
-                    self.createPaymentOption(payment: (self.result.offline?.channels![index])!)
+                    self.pickedOfflineSection = index
                 } else {
                     item!.isSelected = false
                 }
@@ -302,6 +310,8 @@ extension DDCPaymentViewController {
             }
         }
         if self.pickedSection != 3 {
+            self.bottomBar.buttonArray![0].isEnabled = false
+            self.bottomBar.buttonArray![0].setStyle(style: .forbidden)
             self.createPaymentOption(payment: (self.result.online?.channels![index])!)
         }
         self.collectionView.reloadData()
@@ -313,10 +323,6 @@ extension DDCPaymentViewController: DDCPaymentUpdateCheckerDelegate {
     func payment(updateChecker: DDCPaymentUpdateChecker, paymentOption: DDCOnlinePaymentOptionModel, status: DDCPaymentStatus) {
         switch status {
         case .paid:
-            if self.pickedSection == 3 {
-                self.view.makeDDCToast(message: "已完成支付", image: UIImage.init(named: "collect_icon_success")!)
-                return
-            }
             let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: self.model!)
             self.navigationController?.pushViewController(viewController, animated: true)
         case .overdue:

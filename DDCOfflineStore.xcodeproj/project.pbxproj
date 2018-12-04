@@ -92,6 +92,7 @@
 		D3D6718921806F8E0080B22B /* DDCContractDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6718821806F8E0080B22B /* DDCContractDetailsHeaderView.swift */; };
 		D3DAA4A72175A911003B0289 /* DDCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4A62175A911003B0289 /* DDCButton.swift */; };
 		D3DAA4AB2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */; };
+		D3DD1D7821B670E2008E833C /* DDCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DD1D7721B670E2008E833C /* DDCTextField.swift */; };
 		D3DE3089217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DE3088217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift */; };
 		D3E50851219BCF5F00BFFE4D /* DDCRadioHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E50850219BCF5F00BFFE4D /* DDCRadioHeaderView.swift */; };
 		D3E73D252182C10700A5073A /* DDCString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E73D242182C10700A5073A /* DDCString.swift */; };
@@ -223,6 +224,7 @@
 		D3D6718821806F8E0080B22B /* DDCContractDetailsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsHeaderView.swift; sourceTree = "<group>"; };
 		D3DAA4A62175A911003B0289 /* DDCButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCButton.swift; sourceTree = "<group>"; };
 		D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSystemUserLoginAPIManager.swift; sourceTree = "<group>"; };
+		D3DD1D7721B670E2008E833C /* DDCTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCTextField.swift; sourceTree = "<group>"; };
 		D3DE3088217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsViewModelFactory.swift; sourceTree = "<group>"; };
 		D3E50850219BCF5F00BFFE4D /* DDCRadioHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCRadioHeaderView.swift; sourceTree = "<group>"; };
 		D3E73D242182C10700A5073A /* DDCString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCString.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 				D3B607F0217499C10086387B /* DDCInputFieldView.swift */,
 				D3B607F2217499C10086387B /* DDCCircularTextFieldView.swift */,
 				D3276D802188425700D04E9F /* DDCToolbar.swift */,
+				D3DD1D7721B670E2008E833C /* DDCTextField.swift */,
 			);
 			path = TextField;
 			sourceTree = "<group>";
@@ -924,6 +927,7 @@
 				D3E832872179A74200685FFB /* DDCEditClientInfoAPIManager.swift in Sources */,
 				D3CC6501216F2C7C00383DD5 /* DDCColor.swift in Sources */,
 				D3CC6505216F2C7C00383DD5 /* DDCAppConfig.swift in Sources */,
+				D3DD1D7821B670E2008E833C /* DDCTextField.swift in Sources */,
 				D3AE11172181A13100E61E08 /* DDCPaymentViewController.swift in Sources */,
 				D30D93AE219ADF0900F641F9 /* DDCPaymentOptionsAPIManager.swift in Sources */,
 				D3F912C921A3ED5100E6373A /* DDCContractDetailModel.swift in Sources */,

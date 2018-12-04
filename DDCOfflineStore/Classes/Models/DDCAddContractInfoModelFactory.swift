@@ -71,8 +71,8 @@ class DDCAddContractInfoModelFactory: NSObject {
         let costPrice: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同金额", placeholder: "请输入合同金额", text: money, isRequired: true, tips: "")
         costPrice.isFill = model?.specs?.costPrice != nil ? true : false
         //生效日期(今日生效)
-        let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())
-        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: DDCAddContractInfoModelFactory.getStartDate(datetime: startTime), text: "", isRequired: false, tips: "(今日生效)")
+        let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())        
+        let startDate: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "生效日期", placeholder: DDCTools.date(from: startTime), text: "", isRequired: false, tips: "(今日生效)")
         //有效时间(有效时间≦本月剩余天数+48个月)
         var validPeriod: Int = 0
         if model?.specs != nil ,

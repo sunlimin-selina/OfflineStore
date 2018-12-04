@@ -101,13 +101,16 @@ class DDCTools: NSObject{
     
     class func splitPhoneNumber(string: String, length: Int) -> String {
         var noBlankString: String = string.replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
-        // 插入空格
-        if length >= 4,
-            length <= 8 {
-            noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 3))
-        } else if(length > 8) {
-            noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 3))
-            noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 8))
+
+        if noBlankString.count > 0 {
+            // 插入空格
+            if length >= 4,
+                length <= 8 {
+                noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 3))
+            } else if(length > 8) {
+                noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 3))
+                noBlankString.insert(" ", at: noBlankString.index(noBlankString.startIndex, offsetBy: 8))
+            }
         }
         return noBlankString
     }

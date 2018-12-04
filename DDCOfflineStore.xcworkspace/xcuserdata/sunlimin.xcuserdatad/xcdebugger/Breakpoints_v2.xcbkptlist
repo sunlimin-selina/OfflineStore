@@ -16,112 +16,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-            timestampString = "565530060.177253"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "485"
-            endingLineNumber = "485"
-            landmarkName = "pickerView(_:numberOfRowsInComponent:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DDCOfflineStore.DDCEditClientInfoViewController.pickerView(_: __C.UIPickerView, numberOfRowsInComponent: Swift.Int) -&gt; Swift.Int"
-                  moduleName = "DDCOfflineStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-                  timestampString = "565587597.971227"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "485"
-                  endingLineNumber = "485"
-                  offsetFromSymbolStart = "52">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DDCOfflineStore.DDCEditClientInfoViewController.pickerView(_: __C.UIPickerView, numberOfRowsInComponent: Swift.Int) -&gt; Swift.Int"
-                  moduleName = "DDCOfflineStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-                  timestampString = "565587597.973381"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "485"
-                  endingLineNumber = "485"
-                  offsetFromSymbolStart = "228">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-            timestampString = "565530060.177626"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "500"
-            endingLineNumber = "500"
-            landmarkName = "pickerView(_:titleForRow:forComponent:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DDCOfflineStore.DDCEditClientInfoViewController.pickerView(_: __C.UIPickerView, titleForRow: Swift.Int, forComponent: Swift.Int) -&gt; Swift.Optional&lt;Swift.String&gt;"
-                  moduleName = "DDCOfflineStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-                  timestampString = "565587597.978404"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "500"
-                  endingLineNumber = "500"
-                  offsetFromSymbolStart = "60">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DDCOfflineStore.DDCEditClientInfoViewController.pickerView(_: __C.UIPickerView, titleForRow: Swift.Int, forComponent: Swift.Int) -&gt; Swift.Optional&lt;Swift.String&gt;"
-                  moduleName = "DDCOfflineStore"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sunlimin/DDCOfflineStore/DDCOfflineStore/Classes/ViewControllers/CreateContract/DDCEditClientInfoViewController.swift"
-                  timestampString = "565587597.980189"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "500"
-                  endingLineNumber = "500"
-                  offsetFromSymbolStart = "240">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "DDCOfflineStore/APP/APIs/DDCAPIManager.swift"
-            timestampString = "565585098.008279"
+            filePath = "DDCOfflineStore/Classes/Models/DDCAddContractInfoModelFactory.swift"
+            timestampString = "565611530.337235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "callRequest(url:method:parameters:success:fail:)"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "getStartDate(datetime:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

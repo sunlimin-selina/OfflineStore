@@ -251,7 +251,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             return CGSize.zero
         } else if indexPath.section == 3 {
             if indexPath.section ==  (self.pickedSection + 2)  {
-                return CGSize.init(width: DDCAppConfig.width, height: 45)
+                return CGSize.init(width: screen.width, height: 45)
             }
             return CGSize.zero
         }
@@ -431,9 +431,13 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.pickerView.reloadAllComponents()
         self.currentTextField = textField
-        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue || textField.tag == DDCAddContractTextFieldType.rule.rawValue{
+        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue || textField.tag == DDCAddContractTextFieldType.rule.rawValue {
             return false
-        } 
+        }
+        if (textField.tag == DDCAddContractTextFieldType.startDate.rawValue && self.model?.packageModel == nil) {
+            self.view.makeDDCToast(message: "请选择套餐", image: UIImage.init(named: "addCar_icon_fail")!)
+            return false
+        }
         return true
     }
     
@@ -502,35 +506,20 @@ extension DDCGroupContractInfoViewController {
     @objc func done() {
         let section = self.currentTextField?.tag
         switch section {
-//        case DDCAddContractTextFieldType.package.rawValue:
-//            do {
-//                self.models[DDCAddContractTextFieldType.package.rawValue].text = self.package[self.pickerView.selectedRow(inComponent: 0)].name
-//                self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
-//                self.isPickedPackage = true
-//                self.isPickedCustom = false
-////                self.specs = self.package[self.pickerView.selectedRow(inComponent: 0)].skuList!
-//                if self.pickerView.selectedRow(inComponent: 0) == 1 {
-//                    self.isPickedCustom = true
-//                    self.collectionView.reloadData()
-//                    return
-//                }
-//            }
-//        case DDCAddContractTextFieldType.spec.rawValue:
-//            do {
-//                guard self.isPickedPackage else {
-//                    self.cancel()
-//                    return
-//                }
-//                self.models[DDCAddContractTextFieldType.spec.rawValue].text = "\(self.specs[self.pickerView.selectedRow(inComponent: 0)].name ?? "") - \(self.specs[self.pickerView.selectedRow(inComponent: 0)].costPrice ?? 0)"
-//                self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
-//                self.models[DDCAddContractTextFieldType.money.rawValue].text = "\(self.specs[self.pickerView.selectedRow(inComponent: 0)].costPrice ?? 0)"
-//                self.models[DDCAddContractTextFieldType.money.rawValue].isFill = true
-//            }
         case DDCAddContractTextFieldType.startDate.rawValue:
             do {
                 let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")
                 let startDate: Date = self.datePickerView.date
-                self.models[DDCAddContractTextFieldType.startDate.rawValue].text = dateFormatter.string(from: startDate)
+                self.model?.packageModel?.startUseTime = DDCTools.dateToTimeInterval(from: startDate)
+                if self.model?.specs != nil {
+                    let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+                    var components: DateComponents = DateComponents.init()
+                    components.setValue(self.model?.specs?.validPeriod, for: .month)
+                    let maxDate: Date = calendar.date(byAdding: components, to: startDate)!
+                    self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+                    self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+                }
+                self.collectionView.reloadData()
             }
         default:
             return

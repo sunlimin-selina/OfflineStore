@@ -47,10 +47,18 @@ class DDCRadioHeaderView: UICollectionReusableView {
         return _radioButton
     }()
     
+    public lazy var subtitleLabel: UILabel = {
+        let _subtitleLabel: UILabel = UILabel()
+        _subtitleLabel.textColor = DDCColor.mainColor.red
+        _subtitleLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
+        return _subtitleLabel
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(self.titleLabel)
         self.addSubview(self.radioButton)
+        self.addSubview(self.subtitleLabel)
         self.setupViewConstraints()
     }
     
@@ -65,6 +73,10 @@ class DDCRadioHeaderView: UICollectionReusableView {
             make.centerX.top.bottom.equalTo(self)
         })
         
+        self.subtitleLabel.snp.makeConstraints { (make) in
+            make.width.height.centerY.equalTo(self.radioButton)
+            make.left.equalTo(self.radioButton.snp_rightMargin).offset(-220)
+        }
     }
     
     func updateViewConstraints() {
@@ -89,6 +101,10 @@ class DDCRadioHeaderView: UICollectionReusableView {
             })
         }
        
+    }
+    
+    override func prepareForReuse() {
+        self.subtitleLabel.text = ""
     }
 
 }

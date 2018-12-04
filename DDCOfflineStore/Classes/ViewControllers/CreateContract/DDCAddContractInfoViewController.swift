@@ -430,12 +430,16 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.pickerView.reloadAllComponents()
         self.currentTextField = textField
-        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && self.pickedPackage != nil && !self.isPickedCustom && !self.modifySkuPrice) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue{
+        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue ||  (textField.tag == DDCAddContractTextFieldType.money.rawValue && self.pickedPackage != nil && !self.isPickedCustom && !self.modifySkuPrice) || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue {
             return false
         }
-        if textField.tag == DDCAddContractTextFieldType.rule.rawValue {
-            self.pickerView.selectRow(self.orderRule.index(of: textField.text as Any), inComponent: 0, animated: true)
+        if (textField.tag == DDCAddContractTextFieldType.startDate.rawValue && self.pickedPackage == nil) {
+            self.view.makeDDCToast(message: "请选择套餐", image: UIImage.init(named: "addCar_icon_fail")!)
+            return false
         }
+//        if textField.tag == DDCAddContractTextFieldType.rule.rawValue {
+////            self.pickerView.selectRow(self.orderRule.index(of: textField.text as Any), inComponent: 0, animated: true)
+//        }
         return true
     }
     
@@ -536,6 +540,16 @@ extension DDCAddContractInfoViewController {
                 let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")
                 let startDate: Date = self.datePickerView.date
                 self.models[DDCAddContractTextFieldType.startDate.rawValue].text = dateFormatter.string(from: startDate)
+                self.model?.packageModel?.startUseTime = DDCTools.dateToTimeInterval(from: startDate)
+                if self.model?.specs != nil {
+                    let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+                    var components: DateComponents = DateComponents.init()
+                    components.setValue(self.model?.specs?.validPeriod, for: .month)
+                    let maxDate: Date = calendar.date(byAdding: components, to: startDate)!
+                    self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+                    self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+                    self.collectionView.reloadData()
+                }
             }
         default:
             return

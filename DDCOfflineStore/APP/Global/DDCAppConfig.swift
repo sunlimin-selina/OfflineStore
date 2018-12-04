@@ -15,6 +15,8 @@ struct screen {
     static let statusBarHeight: CGFloat = 20.0
     static let tabbarHeight: CGFloat = 49.0
     static let navigationBarHeight: CGFloat = 44.0
+    static let X_Scale: CGFloat = width / 768
+    static let Y_Scale: CGFloat = height / 1024
 }
 
 class DDCAppConfig: NSObject {

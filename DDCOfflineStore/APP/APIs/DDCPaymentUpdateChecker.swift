@@ -48,6 +48,10 @@ class DDCPaymentUpdateChecker: NSObject {
        
     }
     
+    func cancel() {
+        NSObject.cancelPreviousPerformRequests(withTarget: self)
+    }
+    
     deinit {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
     }

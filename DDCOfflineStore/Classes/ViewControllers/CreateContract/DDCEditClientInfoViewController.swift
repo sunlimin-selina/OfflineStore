@@ -290,20 +290,20 @@ extension DDCEditClientInfoViewController: UICollectionViewDelegate, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let ipad_scale = screen.width / 768
         if indexPath.item == DDCClientTextFieldType.name.rawValue ||
             indexPath.item == DDCClientTextFieldType.birthday.rawValue
         {
-            return CGSize.init(width: 320 * ipad_scale , height: 90)
+            return CGSize.init(width: 320 * screen.X_Scale , height: 90)
         } else if  indexPath.item == DDCClientTextFieldType.age.rawValue || indexPath.item == DDCClientTextFieldType.sex.rawValue{
-            return CGSize.init(width: 120  * ipad_scale , height: 90)
+            return CGSize.init(width: 120  * screen.X_Scale , height: 90)
         } else {
             return CGSize.init(width: DDCAppConfig.width, height: 90)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.init(top: 0, left: DDCAppConfig.kLeftMargin, bottom: 0, right: DDCAppConfig.kLeftMargin)
+        let margin: CGFloat = DDCAppConfig.kLeftMargin
+        return UIEdgeInsets.init(top: 0, left: margin, bottom: 0, right: margin)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -548,6 +548,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
             if (totalLength > 13) {//手机号输入长度不超过11个字符 多两个字符为分割号码用的空格
                 return false
             }
+            
             textField.text = DDCTools.splitPhoneNumber(string: textField.text!, length: totalLength)
         } else if textField.tag == DDCClientTextFieldType.channelDetail.rawValue {
             if (totalLength > 20) {//渠道详情不超过20字

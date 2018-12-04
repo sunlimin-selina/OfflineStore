@@ -130,7 +130,6 @@ class DDCHttpSessionsRequest: NSObject {
                 if let data = response.value {
                     let result = data as? Dictionary<String, Any> ?? [:]
                     print(result)
-                    
                     success(result)
                 } else {
                     assertionFailure("request sucess, but response return nil")
