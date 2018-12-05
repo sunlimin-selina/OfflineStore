@@ -296,6 +296,10 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             if self.model!.code != nil {
                 cell.button.isSelected = true
             }
+            cell.isHidden = false
+            if self.model!.contractType == .personalSample {
+                cell.isHidden = true
+            }
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell

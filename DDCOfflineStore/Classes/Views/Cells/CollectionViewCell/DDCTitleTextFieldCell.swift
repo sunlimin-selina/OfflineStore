@@ -37,7 +37,7 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.textFieldView)
         self.setupViewConstraints()
-        self.layer.masksToBounds = true
+//        self.layer.masksToBounds = true
     }
 
     required init?(coder aDecoder: NSCoder) {

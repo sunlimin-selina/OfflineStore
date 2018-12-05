@@ -49,7 +49,7 @@ class DDCAddContractInfoModelFactory: NSObject {
         let package: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: title, placeholder: "请选择产品套餐", text: model?.packageModel?.name ?? "", isRequired: true, tips: "")
         package.isFill = model?.packageModel?.name != nil ? true : false
         //产品规格
-        let spec = ((model?.specs?.name) != nil) ? "\(model?.specs?.name ?? "") - \(model?.specs?.costPrice ?? 0)" : ""
+        let spec = model?.specs?.name ?? ""
         let specification: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "产品规格", placeholder: "请选择产品规格", text: spec, isRequired: true, tips: "")
         specification.isFill = model?.specs?.name != nil ? true : false
         
