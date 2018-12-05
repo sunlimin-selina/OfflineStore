@@ -203,7 +203,12 @@ extension DDCSelectStoreViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.section == 0 {
-            return CGSize.init(width: DDCAppConfig.width, height: 20)
+            var height: CGFloat = 20.0
+            let model = self.userInfo[indexPath.row]
+            if model.describe != nil && (model.describe?.count)! > 0 {
+                height = DDCString.height(string: model.describe ?? "", font: UIFont.systemFont(ofSize: 20.0, weight: .regular), width: DDCAppConfig.width - 200)
+            }
+            return CGSize.init(width: DDCAppConfig.width, height: height)
         }
         return CGSize.init(width: DDCAppConfig.width, height: 40)
     }

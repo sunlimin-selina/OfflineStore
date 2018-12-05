@@ -20,7 +20,7 @@ class DDCContractListViewController: UIViewController {
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "创建新订单", style: .highlighted, handler: {
-            let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .editClientInformation, model: nil)
+            let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .editClientInformation, model: DDCContractModel())
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
         return _bottomBar
@@ -29,6 +29,7 @@ class DDCContractListViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let _tableView: UITableView = UITableView.init(frame: CGRect.zero, style: .plain)
         _tableView.register(DDCContractListTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListTableViewCell.self))
+        _tableView.register(DDCContractListGroupTableViewCell.self, forCellReuseIdentifier: String(describing: DDCContractListGroupTableViewCell.self))
         _tableView.register(DDCOrderingHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: DDCOrderingHeaderView.self))
         _tableView.rowHeight = 112.0
         _tableView.delegate = self
@@ -205,10 +206,19 @@ extension DDCContractListViewController: UITableViewDataSource , UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListTableViewCell.self), for: indexPath)) as! DDCContractListTableViewCell
-        cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.complementaryColor.backgroundColor: UIColor.white
-        cell.configureCell(model: self.contractArray![indexPath.row] as! DDCContractListModel)
-        return cell
+        let model: DDCContractListModel = self.contractArray![indexPath.row] as! DDCContractListModel
+        
+        if model.type == DDCContractType.personalRegular || model.type == DDCContractType.personalSample {
+            let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListTableViewCell.self), for: indexPath)) as! DDCContractListTableViewCell
+            cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.complementaryColor.backgroundColor: UIColor.white
+            cell.configureCell(model: model)
+            return cell
+        } else {
+            let cell = (self.tableView.dequeueReusableCell(withIdentifier: String(describing: DDCContractListGroupTableViewCell.self), for: indexPath)) as! DDCContractListGroupTableViewCell
+            cell.contentView.backgroundColor = (indexPath.row % 2 == 0) ? DDCColor.complementaryColor.backgroundColor: UIColor.white
+            cell.configureCell(model: model)
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

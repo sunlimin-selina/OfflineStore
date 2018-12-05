@@ -23,6 +23,7 @@ class DDCContractDetailsCollectionViewCell: UICollectionViewCell {
         let subtitleLabel: UILabel = UILabel()
         subtitleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
         subtitleLabel.textColor = DDCColor.fontColor.black
+        subtitleLabel.numberOfLines = 0
         return subtitleLabel
     }()
     

@@ -45,7 +45,7 @@ class DDCAddContractInfoModelFactory: NSObject {
         //合同编号
         let contractNumber: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "合同编号", placeholder: model?.code ?? "请扫描合同编号", text: "", isRequired: true, tips: "")
         //产品套餐
-        let title: String = (type == DDCCourseType.sample) ? "体验课课产品" : "正式课产品套餐"
+        let title: String = (type == DDCCourseType.sample) ? "体验课产品" : "正式课产品套餐"
         let package: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: title, placeholder: "请选择产品套餐", text: model?.packageModel?.name ?? "", isRequired: true, tips: "")
         package.isFill = model?.packageModel?.name != nil ? true : false
         //产品规格
@@ -144,11 +144,13 @@ extension DDCAddContractInfoModelFactory {
             for item in customs {
                 if let _attributes = item.attributes {
                     for attribute in _attributes {
-                        dictionary = ["categoryId": attribute.categoryId as Any, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": attribute.attributeValueId as Any,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": attribute.totalCount as Any, "useCount": attribute.totalCount as Any]
+                        let validPeriod = attribute.totalCount //<= 48 ? attribute.totalCount : 48
+                        dictionary = ["categoryId": attribute.categoryId as Any, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": attribute.attributeValueId as Any,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": validPeriod as Any, "useCount": validPeriod as Any]
                         array.append(dictionary)
                     }
                 } else {
-                    dictionary = ["categoryId": -1, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": -1,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": item.totalCount as Any, "useCount": item.totalCount as Any]
+                    let validPeriod = item.totalCount //<= 48 ? item.totalCount : 48
+                    dictionary = ["categoryId": -1, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": -1,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": validPeriod as Any, "useCount": validPeriod as Any]
                     array.append(dictionary)
                 }
             }

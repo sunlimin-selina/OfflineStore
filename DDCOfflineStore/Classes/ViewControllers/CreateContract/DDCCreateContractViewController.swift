@@ -79,7 +79,21 @@ class DDCCreateContractViewController: UIViewController{
     
     var subviewControllers: [DDCChildContractViewController] {
         get {
-            return self.createChildViewControllers(type: .group)
+            var subviewControllers: [DDCChildContractViewController] = Array()
+            weak var weakSelf = self
+            if self.onlyForPayment {
+                weakSelf!.paymentViewController.model = weakSelf!.model
+                subviewControllers.append(weakSelf!.paymentViewController)
+            } else {
+                
+                subviewControllers.append(weakSelf!.customerViewController)
+                subviewControllers.append(weakSelf!.storeViewController)
+                subviewControllers.append(weakSelf!.contractViewController)
+                subviewControllers.append(weakSelf!.paymentViewController)
+                subviewControllers.append(weakSelf!.groupContractViewController)
+                
+            }
+            return subviewControllers
         }
     }
     
@@ -195,28 +209,6 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
         self.pageViewController.setViewControllers([viewController], direction: .reverse, animated: true, completion: nil)
     }
     
-    func createChildViewControllers(type: DDCCourseType) -> [DDCChildContractViewController] {
-        var subviewControllers: [DDCChildContractViewController] = Array()
-        
-        if self.onlyForPayment {
-            self.paymentViewController.model = self.model
-            subviewControllers.append(self.paymentViewController)
-        } else {
-            
-            subviewControllers.append(self.customerViewController)
-            subviewControllers.append(self.storeViewController)
-            subviewControllers.append(self.contractViewController)
-            subviewControllers.append(self.paymentViewController)
-            subviewControllers.append(self.groupContractViewController)
-            
-            if self.model != nil {
-                let viewController: DDCChildContractViewController = self.subviewControllers[Int(self.progress!.rawValue)]
-                viewController.model = self.model
-            }
-        }
-        return subviewControllers
-    }
-    
     func setupViewConstraint() {
         self.view.backgroundColor = UIColor.white
         
@@ -250,7 +242,7 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
     
     @objc func goBack() {
         if self.model != nil {
-            let alertController: UIAlertController = UIAlertController.init(title: "您确定要退出当前创建的新合同吗？", message: nil, preferredStyle: .alert)
+            let alertController: UIAlertController = UIAlertController.init(title: "您确定要退出当前创建的新订单吗？", message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: { (action) in
                 self.navigationController?.popViewController(animated: true)
             }))

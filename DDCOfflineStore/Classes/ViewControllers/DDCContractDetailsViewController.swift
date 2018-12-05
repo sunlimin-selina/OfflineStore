@@ -32,7 +32,7 @@ class DDCContractDetailsViewController: UIViewController {
     
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "取消支付", style: .forbidden, handler: {
+        _bottomBar.addButton(button:DDCBarButton.init(title: "取消订单", style: .forbidden, handler: {
             let alertController: UIAlertController = UIAlertController.init(title: "您确定要取消当前订单吗？", message: nil, preferredStyle: .alert)
             alertController.addAction(UIAlertAction.init(title: "取消订单", style: .default, handler: { (action) in
                 self.cancelContract()

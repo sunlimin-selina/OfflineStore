@@ -51,7 +51,7 @@ class DDCPaymentViewController: DDCChildContractViewController {
             }))
         } else {
             _bottomBar.addButton(button:DDCBarButton.init(title: "提交", style: .forbidden, handler: {
-                self.createPaymentOption(payment: (self.result.offline?.channels![self.pickedOfflineSection != 999 ? self.pickedOfflineSection : 0])!)
+                self.commitForm()
             }))
         }
         return _bottomBar
@@ -109,6 +109,12 @@ extension DDCPaymentViewController {
         array.append(DDCCheckBoxModel.init(id: nil, title: "已完成线下支付", discription: "(请在确认收到款项后勾选此项)", isSelected: false))
         return array
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.paymentUpdateChecker = DDCPaymentUpdateChecker()
+        self.paymentUpdateChecker.cancel()
+    }
+
 }
 
 // MARK: API
@@ -136,18 +142,20 @@ extension DDCPaymentViewController {
     
     func createPaymentOption(payment: DDCPaymentItemModel?) {
         DDCTools.showHUD(view: self.view)
+        weak var weakSelf = self
         if let _payment: DDCPaymentItemModel = payment {
             DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: self.pickedSection == 3 ? 2 : 1, successHandler: { (model) in //支付渠道类型（1, "在线支付" 2, "线下支付"）
                 DDCTools.hideHUD()
                 if self.pickedSection == 3{
-                    self.commitForm()
+                    let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: weakSelf!.model!)
+                    weakSelf!.navigationController?.pushViewController(viewController, animated: true)
                     return
                 }
                 if let _model = model {
-                    self.onlinePayment = _model
-                    self.paymentUpdateChecker.cancel()
-                    self.paymentUpdateChecker.checkUpdates(paymentModel: _model)
-                    self.collectionView.reloadData()
+                    weakSelf!.onlinePayment = _model
+                    weakSelf!.paymentUpdateChecker.cancel()
+                    weakSelf!.paymentUpdateChecker.checkUpdates(paymentModel: _model)
+                    weakSelf!.collectionView.reloadData()
                 }
             }) { (error) in
                 DDCTools.hideHUD()
@@ -161,11 +169,9 @@ extension DDCPaymentViewController {
 extension DDCPaymentViewController {
     
     func commitForm() {
-        weak var weakSelf = self
         let alertController: UIAlertController = UIAlertController.init(title: "确定客户已完成线下支付吗？", message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
-            let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: weakSelf!.model!)
-            weakSelf!.navigationController?.pushViewController(viewController, animated: true)
+            self.createPaymentOption(payment: (self.result.offline?.channels![self.pickedOfflineSection != 999 ? self.pickedOfflineSection : 0])!)
         }))
         alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
@@ -313,6 +319,9 @@ extension DDCPaymentViewController {
             self.bottomBar.buttonArray![0].isEnabled = false
             self.bottomBar.buttonArray![0].setStyle(style: .forbidden)
             self.createPaymentOption(payment: (self.result.online?.channels![index])!)
+        } else if self.pickedOfflineSection != 999 && self.pickedSection == 3{
+            self.bottomBar.buttonArray![0].isEnabled = true
+            self.bottomBar.buttonArray![0].setStyle(style: .highlighted)
         }
         self.collectionView.reloadData()
     }

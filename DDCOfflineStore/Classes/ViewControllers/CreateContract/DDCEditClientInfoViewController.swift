@@ -191,6 +191,8 @@ extension DDCEditClientInfoViewController {
             if index == DDCClientTextFieldType.name.rawValue {
                 guard DDCTools.validateString(string: model.text!) else {
                     self.view.makeDDCToast(message: "姓名格式不对，只支持中英文，不能有多余的空格", image: UIImage.init(named: "addCar_icon_fail")!)
+                    self.bottomBar.buttonArray![0].isEnabled = true
+
                     self.collectionView.reloadData()
                     return
                 }
@@ -200,6 +202,7 @@ extension DDCEditClientInfoViewController {
                 let email = model.text{
                 guard DDCTools.validateEmail(email: email) else {
                     self.view.makeDDCToast(message: "邮箱格式不对，请输入准确的邮箱地址", image: UIImage.init(named: "addCar_icon_fail")!)
+                    self.bottomBar.buttonArray![0].isEnabled = true
                     self.collectionView.reloadData()
                     return
                 }
@@ -219,8 +222,12 @@ extension DDCEditClientInfoViewController {
             } else {
                 self.view.makeDDCToast(message: "保存用户信息失败", image: UIImage.init(named: "addCar_icon_fail")!)
             }
+            self.bottomBar.buttonArray![0].isEnabled = true
+
         }) { (error) in
             DDCTools.hideHUD()
+            self.bottomBar.buttonArray![0].isEnabled = true
+            self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
         }
 
     }
@@ -386,6 +393,7 @@ extension DDCEditClientInfoViewController {
             if let _channel: DDCChannelModel = self.channels![self.pickerView.selectedRow(inComponent: 0)] {
                 self.models[DDCClientTextFieldType.channel.rawValue].text = _channel.name
                 self.models[DDCClientTextFieldType.channel.rawValue].isFill = true
+                self.models[DDCClientTextFieldType.channelDetail.rawValue].isRequired = _channel.descStatus == 1 ? true : false
             }
             break
         case DDCClientTextFieldType.memberReferral.rawValue:
@@ -527,6 +535,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.currentTextField = textField
+        self.pickerView.reloadAllComponents()
         let rawValue: Int = textField.tag
         if (self.model?.customer?.type == DDCCustomerType.potential || self.model?.customer?.type == DDCCustomerType.regular) && (
                 rawValue == DDCClientTextFieldType.age.rawValue ||
@@ -566,7 +575,7 @@ extension DDCEditClientInfoViewController: UITextFieldDelegate {
         rawValue == DDCClientTextFieldType.email.rawValue ||
             rawValue == DDCClientTextFieldType.channelDetail.rawValue || rawValue == DDCClientTextFieldType.introduceMobile.rawValue || rawValue == DDCClientTextFieldType.introduceName.rawValue  {
             self.models[rawValue].text = textField.text
-            self.models[rawValue].isFill = true
+            self.models[rawValue].isFill = (textField.text?.count)! > 0 ? true : false
         }
         if textField.tag == DDCClientTextFieldType.introduceMobile.rawValue {
             

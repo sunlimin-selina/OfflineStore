@@ -27,6 +27,7 @@
 		D34E2882219D81350089D6E4 /* DDCAddContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34E2881219D81350089D6E4 /* DDCAddContractInfoViewController.swift */; };
 		D34F1B0221A268D100DBCCAB /* DDCQRCodeGenerateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34F1B0121A268D100DBCCAB /* DDCQRCodeGenerateManager.swift */; };
 		D34F1B0421A2A5C300DBCCAB /* Ashbbl.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D34F1B0321A2A5C300DBCCAB /* Ashbbl.ttf */; };
+		D3569AC621B7CE24001DBE41 /* DDCContractListGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3569AC521B7CE24001DBE41 /* DDCContractListGroupTableViewCell.swift */; };
 		D3597CFA2178518B00C4A2F2 /* DDCUserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */; };
 		D35D24AA21943CDA0067CF09 /* DDCDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35D24A921943CDA0067CF09 /* DDCDefaultView.swift */; };
 		D379CA4821A68D0E00EEFAD2 /* DDCTextFieldButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D379CA4721A68D0E00EEFAD2 /* DDCTextFieldButtonCell.swift */; };
@@ -158,6 +159,7 @@
 		D34E2881219D81350089D6E4 /* DDCAddContractInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCAddContractInfoViewController.swift; sourceTree = "<group>"; };
 		D34F1B0121A268D100DBCCAB /* DDCQRCodeGenerateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCQRCodeGenerateManager.swift; sourceTree = "<group>"; };
 		D34F1B0321A2A5C300DBCCAB /* Ashbbl.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ashbbl.ttf; sourceTree = "<group>"; };
+		D3569AC521B7CE24001DBE41 /* DDCContractListGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractListGroupTableViewCell.swift; sourceTree = "<group>"; };
 		D3597CF92178518B00C4A2F2 /* DDCUserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCUserStatus.swift; sourceTree = "<group>"; };
 		D35D24A921943CDA0067CF09 /* DDCDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCDefaultView.swift; sourceTree = "<group>"; };
 		D379CA4721A68D0E00EEFAD2 /* DDCTextFieldButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCTextFieldButtonCell.swift; sourceTree = "<group>"; };
@@ -599,6 +601,7 @@
 				D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */,
 				D3E73D2B218302C000A5073A /* DDCContractListTableViewCell.swift */,
 				D3E73D2C218302C000A5073A /* DDCContractDetailsCell.swift */,
+				D3569AC521B7CE24001DBE41 /* DDCContractListGroupTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -891,6 +894,7 @@
 				D34E287C219D55FD0089D6E4 /* DDCCheckBoxWithTitleCollectionCell.swift in Sources */,
 				D3AE11182181A13100E61E08 /* DDCCreateContractViewController.swift in Sources */,
 				D3D2559B2199571B009C72B0 /* DDCContractDetailsCollectionViewCell.swift in Sources */,
+				D3569AC621B7CE24001DBE41 /* DDCContractListGroupTableViewCell.swift in Sources */,
 				D3B607C3217458E80086387B /* DDCContractModel.swift in Sources */,
 				D3B607F9217499C20086387B /* DDCBottomBar.swift in Sources */,
 				D3CC6500216F2C7C00383DD5 /* UIView+DDCToast.swift in Sources */,

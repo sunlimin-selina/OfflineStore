@@ -124,9 +124,9 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //销售类型
         var courseType: String = "新建体验课订单"
         if model?.courseType == .regular {
-            courseType = "新建正式课电子合同"
+            courseType = "新建正式课合同"
         } else if model?.courseType == .group{
-            courseType = "新建团体课电子合同"
+            courseType = "新建团体课合同"
         }
         let contractType: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "销售类型", describe: courseType)
         

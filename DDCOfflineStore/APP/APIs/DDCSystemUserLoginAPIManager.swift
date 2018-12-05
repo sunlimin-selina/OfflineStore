@@ -31,7 +31,7 @@ class DDCSystemUserLoginAPIManager: NSObject {
     }
     
     class func getUserInfo(phoneNumber: String, successHandler: @escaping((_ user: DDCCustomerModel?) -> ()), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/user/mobile/get.do")
+        let url:String = DDC_Current_Url.appendingFormat("/customer/mobile/get.do")
         let params: Dictionary<String, Any>? = ["mobile":phoneNumber]
         
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in

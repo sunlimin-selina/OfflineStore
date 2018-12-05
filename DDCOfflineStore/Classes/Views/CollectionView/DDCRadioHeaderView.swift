@@ -75,7 +75,7 @@ class DDCRadioHeaderView: UICollectionReusableView {
         
         self.subtitleLabel.snp.makeConstraints { (make) in
             make.width.height.centerY.equalTo(self.radioButton)
-            make.left.equalTo(self.radioButton.snp_rightMargin).offset(-220)
+            make.left.equalTo(self.radioButton).offset(280)
         }
     }
     

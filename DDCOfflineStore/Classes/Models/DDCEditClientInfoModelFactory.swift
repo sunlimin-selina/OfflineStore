@@ -44,7 +44,7 @@ class DDCEditClientInfoModelFactory: NSObject {
         let userChannel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text: channel != nil ? channel!.name!: "", isRequired: true, tips: "")
         
         //渠道详情
-        let channelDetail: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道详情", placeholder: "请录入详情", text: model.channelDesc ?? "", isRequired:  channel != nil ? channel!.descStatus!: false, tips: "")
+        let channelDetail: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道详情", placeholder: "请录入详情", text: model.channelDesc ?? "", isRequired: (channel != nil && channel!.descStatus == 1) ? true : false, tips: "")
         //是否会员介绍
         let isMemberReferral: String = (model.type == DDCCustomerType.regular || model.type == DDCCustomerType.potential) ? ((model.introduceMobile != nil && (model.introduceMobile?.count)! > 0) ? "是" : "否") : "否"
         //是否为会员推荐

@@ -408,15 +408,6 @@ extension DDCGroupContractInfoViewController: UIPickerViewDelegate, UIPickerView
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch self.currentTextField?.tag {
-        case DDCAddContractTextFieldType.package.rawValue:
-            return self.package[row].name
-        case DDCAddContractTextFieldType.spec.rawValue:
-            do {
-                guard self.isPickedPackage else {
-                    return "请先选择套餐"
-                }
-                return "\(self.specs[row].name ?? "") - \(self.specs[row].costPrice ?? 0)"
-            }
         case DDCAddContractTextFieldType.rule.rawValue:
             return self.orderRule[row] as! String
         default:
@@ -429,8 +420,8 @@ extension DDCGroupContractInfoViewController: UIPickerViewDelegate, UIPickerView
 // MARK: Textfield
 extension DDCGroupContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        self.pickerView.reloadAllComponents()
         self.currentTextField = textField
+        self.pickerView.reloadAllComponents()
         if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue || textField.tag == DDCAddContractTextFieldType.rule.rawValue {
             return false
         }
@@ -500,6 +491,7 @@ extension DDCGroupContractInfoViewController {
         }) { (error) in
             DDCTools.hideHUD()
             self.bottomBar.buttonArray![1].isEnabled = true
+            self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
         }
     }
     
@@ -688,7 +680,8 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
         if selectedItems.count > 0 {
             let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
             var components: DateComponents = DateComponents.init()
-            components.setValue(totalcount, for: .month)
+            let validPeriod: Int = totalcount <= 48 ? totalcount : 48
+            components.setValue(validPeriod, for: .month)
             let packageModel: DDCContractPackageModel = DDCContractPackageModel()
             let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())
             let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: startTime))!
@@ -701,7 +694,7 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
             }
             self.model?.packageModel = packageModel
             let spec: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel()
-            spec.validPeriod = totalcount
+            spec.validPeriod = validPeriod
             self.model!.specs = spec
             self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
             self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true

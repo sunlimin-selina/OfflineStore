@@ -12,7 +12,7 @@ import ObjectMapper
 
 class DDCEditClientInfoAPIManager: NSObject {
     class func availableChannels(successHandler: @escaping (_ result: [DDCChannelModel]?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/user/channel/list.do")
+        let url:String = DDC_Current_Url.appendingFormat("/customer/channel/list.do")
         
         DDCHttpSessionsRequest.callGetRequest(url: url, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
@@ -38,7 +38,7 @@ class DDCEditClientInfoAPIManager: NSObject {
     }
     
     class func uploadUserInfo(model: DDCContractModel, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/user/register.do")
+        let url:String = DDC_Current_Url.appendingFormat("/customer/register.do")
         let params: Dictionary<String,Any> = ["mobile": model.customer!.mobile!,
                                                  "name": model.customer!.name!,
                                                  "sex": model.customer!.sex?.rawValue as Any,
@@ -51,6 +51,7 @@ class DDCEditClientInfoAPIManager: NSObject {
             "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile! : "",
             "introduceName": (model.customer!.introduceName != nil) ? model.customer!.introduceName! : "",
             "dutyUserId": (model.customer!.dutyUserId != nil) ? model.customer!.dutyUserId as Any : DDCStore.sharedStore().user?.id as Any]
+        print(params)
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
@@ -71,7 +72,7 @@ class DDCEditClientInfoAPIManager: NSObject {
     }
     
     class func getUserContractInfo(dictionary: Dictionary<String, Any>, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
-        let url:String = DDC_Current_Url.appendingFormat("/user/contract_course_info.do")
+        let url:String = DDC_Current_Url.appendingFormat("/customer/contract_course_info.do")
         let params: Dictionary<String,Any> = ["userId": dictionary["userId"] as Any,
                                               "name": dictionary["name"] as Any,
                                               "mobile": dictionary["mobile"] as Any]
