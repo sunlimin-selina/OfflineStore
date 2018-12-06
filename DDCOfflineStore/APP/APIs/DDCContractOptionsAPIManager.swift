@@ -49,7 +49,6 @@ class DDCContractOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            print(tuple.data)
             var array: Array<DDCContractPackageCategoryModel> = Array()
             if case let courses as Array<Any> = tuple.data {
                 for data in courses {

@@ -79,10 +79,13 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
         _collectionView.dataSource = self
         return _collectionView
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.getChannels()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.getChannels()
         self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.contentView)
         self.contentView.addSubview(self.collectionView)
@@ -393,7 +396,8 @@ extension DDCEditClientInfoViewController {
             self.models[DDCClientTextFieldType.career.rawValue].isFill = true
             break
         case DDCClientTextFieldType.channel.rawValue:
-            if let _channel: DDCChannelModel = self.channels![self.pickerView.selectedRow(inComponent: 0)] {
+            if self.channels != nil, (self.channels?.count)! > 0,
+            let _channel: DDCChannelModel = self.channels![self.pickerView.selectedRow(inComponent: 0)] {
                 self.models[DDCClientTextFieldType.channel.rawValue].text = _channel.name
                 self.models[DDCClientTextFieldType.channel.rawValue].isFill = true
                 self.models[DDCClientTextFieldType.channelDetail.rawValue].isRequired = _channel.descStatus == 1 ? true : false
@@ -479,6 +483,7 @@ extension DDCEditClientInfoViewController {
     func getChannels() {
         DDCTools.showHUD(view: self.view)
         DDCEditClientInfoAPIManager.availableChannels(successHandler: { (array) in
+            DDCTools.hideHUD()
             self.channels = array
         }, failHandler: { (error) in
             DDCTools.hideHUD()

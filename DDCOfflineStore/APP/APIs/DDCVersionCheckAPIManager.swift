@@ -19,8 +19,11 @@ class DDCVersionCheckAPIManager : NSObject {
             }            
             if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
                 case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
-                successHandler((data["value"] as! String))
-                return
+                if data["value"] != nil,
+                    case let version = data["value"] as! String {
+                    successHandler(version)
+                    return
+                }
             }
             successHandler(nil)
         }) { (error) in

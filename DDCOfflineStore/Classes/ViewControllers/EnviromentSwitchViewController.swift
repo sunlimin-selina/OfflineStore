@@ -114,7 +114,6 @@ class EnviromentSwitchViewController: UIViewController {
     
     /// 切换环境
     @objc func switchAction() {
-        //print(String(self.segment.selectedSegmentIndex))
         let env = DDCAPIManager.NetworkEnvironment(rawValue: self.segment.selectedSegmentIndex)!
         DDCAPIManager.shared().switchEnv(env: env)
         self.hostString = DDC_Current_Url

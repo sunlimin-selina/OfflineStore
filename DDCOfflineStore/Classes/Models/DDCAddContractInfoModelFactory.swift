@@ -133,7 +133,6 @@ extension DDCAddContractInfoModelFactory {
             "userId":model.customer?.userId as Any,
             "virtualSkuId":model.specs?.id as Any
         ]
-        print(dictionary)
         return dictionary
     }
     
@@ -155,7 +154,6 @@ extension DDCAddContractInfoModelFactory {
                 }
             }
         }
-        print(array)
         return array
     }
     

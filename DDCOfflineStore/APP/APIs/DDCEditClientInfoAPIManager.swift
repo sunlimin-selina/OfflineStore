@@ -51,7 +51,6 @@ class DDCEditClientInfoAPIManager: NSObject {
             "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile! : "",
             "introduceName": (model.customer!.introduceName != nil) ? model.customer!.introduceName! : "",
             "dutyUserId": (model.customer!.dutyUserId != nil) ? model.customer!.dutyUserId as Any : DDCStore.sharedStore().user?.id as Any]
-        print(params)
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{

@@ -153,7 +153,6 @@ extension DDCContractListViewController {
     @objc func reloadPage() {
         if self.user != nil {
             self.contractTableHeaderView.userName.text = self.user!.name
-            print(self.user!.imageUrl!)
             self.contractTableHeaderView.portraitView.image = (self.user!.imageUrl != "") ? UIImage.init(named: self.user!.imageUrl!): UIImage.init(named: "Personal_head")
             
             self.getContractList()
@@ -177,6 +176,7 @@ extension DDCContractListViewController {
             }
             weakSelf?.alertUpdate()
         }))
+
         self.present(alertController, animated: true, completion: nil)
     }
 }
