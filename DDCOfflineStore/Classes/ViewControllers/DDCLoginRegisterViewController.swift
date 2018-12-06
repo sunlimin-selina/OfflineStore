@@ -100,9 +100,9 @@ class DDCLoginRegisterViewController: UIViewController {
         self.contentView.addSubview(self.versionLabel)
         
         self.setupViewConstraints()
-//        #if DEBUG
+        #if DEBUG
         self.addSwitchEnvBtn()
-//        #endif
+        #endif
         
     }
 

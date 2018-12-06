@@ -86,9 +86,14 @@ class DDCEditClientInfoAPIManager: NSObject {
                 case let _data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 let customer: DDCCustomerModel = DDCCustomerModel(JSON: _data)!
                 let contract: DDCContractModel = DDCContractModel(JSON: _data)!
-                customer.dutyUserId = model.customer?.dutyUserId
-                contract.customer = customer
-                successHandler(contract)
+                model.contractUseCount = contract.contractUseCount
+                model.contractAllCount = contract.contractAllCount
+                model.reservationCount = contract.reservationCount
+                model.lastCourseName = contract.lastCourseName
+                model.customer?.userId = customer.userId
+                model.customer?.name = customer.name
+                model.customer?.mobile = customer.mobile
+                successHandler(model)
                 return
             }
             successHandler(nil)
