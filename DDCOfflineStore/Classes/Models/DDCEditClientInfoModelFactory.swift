@@ -41,18 +41,34 @@ class DDCEditClientInfoModelFactory: NSObject {
         
         //渠道
         let channel: DDCChannelModel? = DDCEditClientInfoModelFactory.channelViewModel(model: model, channels: channels)
-        let userChannel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text: channel != nil ? channel!.name!: "", isRequired: true, tips: "")
+        var userChannel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text: channel != nil ? channel!.name!: "", isRequired: true, tips: "")
         
-        //渠道详情
-        let channelDetail: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道详情", placeholder: "请录入详情", text: model.channelDesc ?? "", isRequired: (channel != nil && channel!.descStatus == 1) ? true : false, tips: "")
+        //渠道详情//(channel != nil && channel!.descStatus == 1) ? true : false
+        var channelDetail: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道详情", placeholder: "请录入详情", text: model.channelDesc ?? "", isRequired: false, tips: "")
         //是否会员介绍
         let isMemberReferral: String = (model.type == DDCCustomerType.regular || model.type == DDCCustomerType.potential) ? ((model.introduceMobile != nil && (model.introduceMobile?.count)! > 0) ? "是" : "否") : "否"
         //是否为会员推荐
-        let memberReferral: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "是否会员介绍", placeholder: "请选择", text: isMemberReferral, isRequired: true, tips: "")
+        var memberReferral: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "是否会员介绍", placeholder: "请选择", text: isMemberReferral, isRequired: true, tips: "")
 
         //责任销售
         let dutyUserName: String = (model.dutyUserName != nil ? model.dutyUserName: DDCStore.sharedStore().user?.name)!
-        let sales: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "责任销售", placeholder: "责任销售", text:dutyUserName, isRequired: false, tips: "")
+        var sales: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "责任销售", placeholder: "责任销售", text:dutyUserName, isRequired: false, tips: "")
+        
+        if (model.type == DDCCustomerType.potential || model.type == DDCCustomerType.regular) {
+            //渠道
+            userChannel = DDCContractInfoViewModel.init(title: "渠道", placeholder: channel != nil ? channel!.name! : "请选择渠道", text: "", isRequired: true, tips: "")
+            userChannel.isFill = true
+            //渠道详情//(channel != nil && channel!.descStatus == 1) ? true : false
+            channelDetail = DDCContractInfoViewModel.init(title: "渠道详情", placeholder: (model.channelDesc != nil && (model.channelDesc?.count)! > 0) ? model.channelDesc! : "无", text: "", isRequired: false, tips: "")
+            channelDetail.isFill = true
+
+            //是否为会员推荐
+            memberReferral = DDCContractInfoViewModel.init(title: "是否会员介绍", placeholder: isMemberReferral, text: "", isRequired: true, tips: "")
+            memberReferral.isFill = true
+
+            //责任销售
+            sales = DDCContractInfoViewModel.init(title: "责任销售", placeholder: dutyUserName, text:"", isRequired: false, tips: "")
+        }
         
         array = [phoneNumber, name, gender, birthday, age, email, career, userChannel, channelDetail, memberReferral, sales]
         
@@ -75,12 +91,23 @@ class DDCEditClientInfoModelFactory: NSObject {
                 let memberName: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "介绍会员姓名", placeholder: "请输入会员电话后验证", text: customer?.introduceName ?? "", isRequired: false, tips: "")
                 newModels.insert(memberPhone, at: 10)
                 newModels.insert(memberName, at: 11)
+                if (customer?.type == DDCCustomerType.potential || customer?.type == DDCCustomerType.regular) {
+                    let phoneNumber = DDCTools.splitPhoneNumber(string: number, length: length)
+                    newModels[10] = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: phoneNumber.count > 0 ? phoneNumber : "请输入会员电话", text: "", isRequired: true, tips: "")
+                    newModels[11] = DDCContractInfoViewModel.init(title: "介绍会员姓名", placeholder: customer?.introduceName ?? "请输入会员电话后验证", text: "", isRequired: false, tips: "")
+                }
                 return newModels
             } else {
                 let number: String = customer?.introduceMobile ?? ""
                 let length: Int = (customer?.introduceMobile != nil) ? (customer?.introduceMobile!.count)! : 0
                 newModels[10] = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: "请输入会员电话", text: DDCTools.splitPhoneNumber(string: number, length: length), isRequired: true, tips: "")
                 newModels[11] = DDCContractInfoViewModel.init(title: "介绍会员姓名", placeholder: "请输入会员电话后验证", text: customer?.introduceName ?? "", isRequired: false, tips: "")
+                
+                if (customer?.type == DDCCustomerType.potential || customer?.type == DDCCustomerType.regular) {
+                    let phoneNumber = DDCTools.splitPhoneNumber(string: number, length: length)
+                    newModels[10] = DDCContractInfoViewModel.init(title: "介绍会员电话", placeholder: phoneNumber.count > 0 ? phoneNumber : "请输入会员电话", text: "", isRequired: true, tips: "")
+                    newModels[11] = DDCContractInfoViewModel.init(title: "介绍会员姓名", placeholder: customer?.introduceName ?? "请输入会员电话后验证", text: "", isRequired: false, tips: "")
+                }
                 return newModels
             }
         } else {

@@ -39,18 +39,19 @@ class DDCEditClientInfoAPIManager: NSObject {
     
     class func uploadUserInfo(model: DDCContractModel, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/customer/register.do")
-        let params: Dictionary<String,Any> = ["mobile": model.customer!.mobile!,
-                                                 "name": model.customer!.name!,
+        let params: Dictionary<String,Any> = ["mobile": model.customer!.mobile ?? "",
+                                                 "name": model.customer!.name ?? "",
                                                  "sex": model.customer!.sex?.rawValue as Any,
             "birthday": "\(model.customer!.birthday!)",
-            "career": model.customer!.career != nil ? model.customer!.career!.rawValue + 1 : 7,
-            "email": model.customer!.email!,
+            "career": model.customer!.career != nil ? model.customer!.career!.rawValue : 7,
+            "email": model.customer!.email ?? "",
             "channelCode": model.customer!.channelCode ?? "",
-            "channelDesc": model.customer!.channelDesc!,
+            "channelDesc": model.customer!.channelDesc ?? "",
             "isIntroduce": model.customer!.isReferral ? 1 : 0,
             "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile! : "",
             "introduceName": (model.customer!.introduceName != nil) ? model.customer!.introduceName! : "",
-            "dutyUserId": (model.customer!.dutyUserId != nil) ? model.customer!.dutyUserId as Any : DDCStore.sharedStore().user?.id as Any]
+            "dutyUserId": (model.customer!.dutyUserId != nil && model.customer!.dutyUserId != 0) ? model.customer!.dutyUserId as Any : DDCStore.sharedStore().user?.id as Any]
+        print(params)
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{

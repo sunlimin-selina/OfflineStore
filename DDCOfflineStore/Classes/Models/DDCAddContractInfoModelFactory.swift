@@ -112,13 +112,13 @@ extension DDCAddContractInfoModelFactory {
                                                     "channel": "",
                                                     "code":model.code as Any,
                                                     "courseUseType": model.packageModel!.packageType?.rawValue as Any,
-                                                    "createUserId": (model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id)as Any,
+                                                    "createUserId": (model.customer?.dutyUserId != nil && model.customer?.dutyUserId != 0) ? model.customer?.dutyUserId  as Any : DDCStore.sharedStore().user?.id as Any,
                                                     "dealPrice": (model.contractPrice != nil) ? Int(model.contractPrice! * 100) : Int((model.specs?.costPrice)! * 100) as Any,
                                                     "dealShopId":model.currentStore?.id as Any,
-                                                    "dealUserId":(model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id) as Any,
+                                                    "dealUserId":(model.customer?.dutyUserId != nil && model.customer?.dutyUserId != 0) ? model.customer?.dutyUserId  as Any : DDCStore.sharedStore().user?.id as Any,
                                                     "endEffectiveTime": model.packageModel?.endEffectiveTime as Any,
             "operateBizType":"COURSE",
-            "operateUserId":(model.customer?.dutyUserId ?? DDCStore.sharedStore().user?.id) as Any,
+            "operateUserId":(model.customer?.dutyUserId != nil && model.customer?.dutyUserId != 0) ? model.customer?.dutyUserId  as Any : DDCStore.sharedStore().user?.id as Any,
             "operateUserType":2,
             "packageId":model.packageModel?.id as Any,
             "paltform":1,
@@ -149,7 +149,7 @@ extension DDCAddContractInfoModelFactory {
                     }
                 } else {
                     let validPeriod = item.totalCount //<= 48 ? item.totalCount : 48
-                    dictionary = ["categoryId": -1, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": -1,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": validPeriod as Any, "useCount": validPeriod as Any]
+                    dictionary = ["categoryId": item.courseid as Any, "contractNo": model.code as Any, "courseMasterId": item.courseid as Any, "difficulty": -1,  "validPeriod": model.packageModel?.endEffectiveTime as Any, "totalCount": validPeriod as Any, "useCount": validPeriod as Any]
                     array.append(dictionary)
                 }
             }

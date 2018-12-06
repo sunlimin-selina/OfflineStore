@@ -33,6 +33,7 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     var memberReferral = ["是","否"]
     var showHint: Bool = false
     var isFilled: Bool = false
+    var isRightReferral: Bool = false
 
     private lazy var contentView: UIView = {
         var _contentView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: screen.width, height: screen.height))
@@ -214,12 +215,17 @@ extension DDCEditClientInfoViewController {
                 }
             }
         }
+
+        self.update()
+        if !self.isRightReferral && (self.model?.customer?.isReferral)! && (self.model!.customer!.introduceName == nil || self.model!.customer!.introduceName!.count == 0){
+            self.bottomBar.buttonArray![0].isEnabled = true
+            self.view.makeDDCToast(message: "介绍客户信息有误，请检查", image: UIImage.init(named: "addCar_icon_fail")!)
+            return
+        }
         if !canForward {
             self.bottomBar.buttonArray![0].isEnabled = true
-            DDCTools.showHUD(view: self.view)
         }
         
-        self.update()
         DDCTools.showHUD(view: self.view)
         DDCEditClientInfoAPIManager.uploadUserInfo(model: self.model!, successHandler: { (model) in
             DDCTools.hideHUD()
@@ -459,6 +465,7 @@ extension DDCEditClientInfoViewController {
                         let customer: DDCCustomerModel = DDCCustomerModel.init()
                         customer.introduceMobile = model?.mobile
                         customer.introduceName = model?.name
+                        self.isRightReferral = true
                         self.models = DDCEditClientInfoModelFactory.reloadData(models: self.models, customer: customer, isReferral: true)
                     }
                 } else {
@@ -469,12 +476,20 @@ extension DDCEditClientInfoViewController {
                         self.model!.customer!.type = DDCCustomerType.new
                         self.models = DDCEditClientInfoModelFactory.integrateData(model: self.model!.customer!, channels: self.channels)
                     } else {
+                        if self.model != nil && self.model!.customer != nil {
+                            self.model!.customer!.introduceMobile = nil
+                            self.model!.customer!.introduceName = nil
+                            self.model!.customer!.type = DDCCustomerType.new
+                        }
+                        self.isRightReferral = false
+
                         self.view.makeDDCToast(message: "无法找到对应客户，请检查", image: UIImage.init(named: "addCar_icon_fail")!)
                     }
                 }
                 self.collectionView.reloadData()
             }) { (error) in
                 DDCTools.hideHUD()
+                self.isRightReferral = false
                 self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
             }
         }
