@@ -31,7 +31,7 @@ class DDCPaymentUpdateChecker: NSObject {
                 case .unpaid:
                     weakSelf?.perform(#selector(self.checkUpdates(paymentModel:)), with: paymentModel, afterDelay: 5)
                     break
-                case .paid, .overdue:
+                case .paid, .effective, .overdue:
                     NSObject.cancelPreviousPerformRequests(withTarget: weakSelf as Any)
                     weakSelf?.delegate?.payment(updateChecker: weakSelf!, paymentOption: paymentModel, status: status)
                     weakSelf?.currentlyCheckingArray.remove(paymentModel)

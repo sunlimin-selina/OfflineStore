@@ -14,7 +14,7 @@ class DDCTools: NSObject{
     
     class func isPhoneNumber(number: String?) -> Bool {
         if number != nil {
-            let mobile = "^1[34578]{1}\\d{9}$"
+            let mobile = "^1[345789]{1}\\d{9}$"
             return NSPredicate.init(format: "SELF MATCHES %@", mobile).evaluate(with: number)
         }
         return false

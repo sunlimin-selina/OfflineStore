@@ -80,6 +80,19 @@ class DDCContractListViewController: UIViewController {
         self.page = 0
 
         self.reloadPage()
+        
+        //新增强制更新
+        weak var weakSelf = self
+        DDCVersionCheckAPIManager.checkVersion(successHandler: { (version) in
+            if let _version: String = version {
+                let currentVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+                if _version != currentVersion{
+                    weakSelf?.alertUpdate()
+                }
+            }
+        }) { (error) in
+            
+        }
     }
     
     override func viewDidLoad() {
@@ -147,6 +160,24 @@ extension DDCContractListViewController {
         } else {
             self.login()
         }
+    }
+    
+    func alertUpdate() {
+        weak var weakSelf = self
+        let alertController: UIAlertController = UIAlertController.init(title: "需要更新版本", message: "请更新版本", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "去更新", style: .default, handler: { (action) in
+            let url: URL = URL.init(string: DDCAPIManager.DDC_Update_Url)!
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:],
+                                          completionHandler: {
+                                            (success) in
+                })
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+            weakSelf?.alertUpdate()
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 

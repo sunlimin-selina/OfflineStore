@@ -102,6 +102,7 @@
 		D3E73D2F218302C100A5073A /* DDCContractListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E73D2B218302C000A5073A /* DDCContractListTableViewCell.swift */; };
 		D3E73D30218302C100A5073A /* DDCContractDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E73D2C218302C000A5073A /* DDCContractDetailsCell.swift */; };
 		D3E73D32218302CD00A5073A /* DDCTitleTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E73D31218302CD00A5073A /* DDCTitleTextFieldCell.swift */; };
+		D3E7B74821B8FF400090F8E1 /* DDCVersionCheckAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E7B74721B8FF400090F8E1 /* DDCVersionCheckAPIManager.swift */; };
 		D3E8328521797BBD00685FFB /* DDCContractDetailsAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E8328421797BBD00685FFB /* DDCContractDetailsAPIManager.swift */; };
 		D3E832872179A74200685FFB /* DDCEditClientInfoAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E832862179A74200685FFB /* DDCEditClientInfoAPIManager.swift */; };
 		D3E832892179A7D900685FFB /* DDCChannelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E832882179A7D900685FFB /* DDCChannelModel.swift */; };
@@ -235,6 +236,7 @@
 		D3E73D2B218302C000A5073A /* DDCContractListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractListTableViewCell.swift; sourceTree = "<group>"; };
 		D3E73D2C218302C000A5073A /* DDCContractDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsCell.swift; sourceTree = "<group>"; };
 		D3E73D31218302CD00A5073A /* DDCTitleTextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCTitleTextFieldCell.swift; sourceTree = "<group>"; };
+		D3E7B74721B8FF400090F8E1 /* DDCVersionCheckAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCVersionCheckAPIManager.swift; sourceTree = "<group>"; };
 		D3E8328421797BBD00685FFB /* DDCContractDetailsAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsAPIManager.swift; sourceTree = "<group>"; };
 		D3E832862179A74200685FFB /* DDCEditClientInfoAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCEditClientInfoAPIManager.swift; sourceTree = "<group>"; };
 		D3E832882179A7D900685FFB /* DDCChannelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCChannelModel.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				D30D93AD219ADF0900F641F9 /* DDCPaymentOptionsAPIManager.swift */,
 				D379CA4921A6ACA100EEFAD2 /* DDCCreateContractAPIManager.swift */,
 				D3BDD07B21AE8A3C0090E6F3 /* DDCPaymentUpdateChecker.swift */,
+				D3E7B74721B8FF400090F8E1 /* DDCVersionCheckAPIManager.swift */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -939,6 +942,7 @@
 				D3E8328521797BBD00685FFB /* DDCContractDetailsAPIManager.swift in Sources */,
 				D3E832892179A7D900685FFB /* DDCChannelModel.swift in Sources */,
 				D379CA4821A68D0E00EEFAD2 /* DDCTextFieldButtonCell.swift in Sources */,
+				D3E7B74821B8FF400090F8E1 /* DDCVersionCheckAPIManager.swift in Sources */,
 				D3CC6507216F2C7C00383DD5 /* DDCUserDefaults.swift in Sources */,
 				D3BDD07A21AE75E70090E6F3 /* DDCFinishedContractViewController.swift in Sources */,
 				D30D93A8219A975800F641F9 /* DDCCourseAttributeModel.swift in Sources */,

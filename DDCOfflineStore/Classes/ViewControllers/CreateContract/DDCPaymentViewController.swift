@@ -331,7 +331,7 @@ extension DDCPaymentViewController {
 extension DDCPaymentViewController: DDCPaymentUpdateCheckerDelegate {
     func payment(updateChecker: DDCPaymentUpdateChecker, paymentOption: DDCOnlinePaymentOptionModel, status: DDCPaymentStatus) {
         switch status {
-        case .paid:
+        case .paid , .effective:
             let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: self.model!)
             self.navigationController?.pushViewController(viewController, animated: true)
         case .overdue:

@@ -125,8 +125,8 @@ extension DDCSelectStoreViewController {
                         item.isSelected = false
                     }
                 }
-                self.collectionView.reloadData()
             }
+            self.collectionView.reloadData()
         }) { (error) in
             DDCTools.hideHUD()
 

@@ -49,7 +49,12 @@ class DDCStoreAndContractTypeAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            successHandler((tuple.data as! Int))
+            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+                let data = tuple.data {
+                successHandler((data as! Int))
+                return
+            }
+            successHandler(nil)
         }) { (error) in
             failHandler(error)
         }

@@ -38,6 +38,9 @@ class DDCAPIManager: NSObject {
     private var DDC_Base_Test_Url = "https://offline-course-t.daydaycook.com.cn/daydaycook"
     private var DDC_Base_Dev_Url = "http://192.168.128.184:8089/daydaycook"
 
+    //更新地址
+    static let DDC_Update_Url = "https://fir.im/765f?release_id=5c089b11959d69751b044198"
+
     /// 当前环境
     private(set) var currentNetWork: NetworkEnvironment
     

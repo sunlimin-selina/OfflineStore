@@ -103,13 +103,14 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
         _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
             self.delegate?.previousPage(model: self.model!)
         }))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .forbidden, handler: {
+        _bottomBar.addButton(button:DDCBarButton.init(title: "去付款", style: .forbidden, handler: {
             self.forwardNextPage()
         }))
         return _bottomBar
     }()
     
     override func viewWillAppear(_ animated: Bool) {
+        self.model?.contractPrice = nil
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
         self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
         self.collectionView.reloadData()

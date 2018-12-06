@@ -60,8 +60,8 @@ class DDCEditClientInfoAPIManager: NSObject {
             }
             if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
                 case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
-                DDCEditClientInfoAPIManager.getUserContractInfo(dictionary: data, successHandler: { (model) in
-                    successHandler(model)
+                DDCEditClientInfoAPIManager.getUserContractInfo(model: model, dictionary: data, successHandler: { (contractModel) in
+                    successHandler(contractModel)
                 }, failHandler: { (error) in
                     successHandler(nil)
                 })
@@ -71,7 +71,7 @@ class DDCEditClientInfoAPIManager: NSObject {
         }
     }
     
-    class func getUserContractInfo(dictionary: Dictionary<String, Any>, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
+    class func getUserContractInfo(model: DDCContractModel, dictionary: Dictionary<String, Any>, successHandler: @escaping (_ result: DDCContractModel?) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/customer/contract_course_info.do")
         let params: Dictionary<String,Any> = ["userId": dictionary["userId"] as Any,
                                               "name": dictionary["name"] as Any,
@@ -86,6 +86,7 @@ class DDCEditClientInfoAPIManager: NSObject {
                 case let _data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 let customer: DDCCustomerModel = DDCCustomerModel(JSON: _data)!
                 let contract: DDCContractModel = DDCContractModel(JSON: _data)!
+                customer.dutyUserId = model.customer?.dutyUserId
                 contract.customer = customer
                 successHandler(contract)
                 return

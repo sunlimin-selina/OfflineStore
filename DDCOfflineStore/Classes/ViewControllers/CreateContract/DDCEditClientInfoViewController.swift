@@ -121,9 +121,12 @@ extension DDCEditClientInfoViewController {
     }
     
     func update() {
-        let customer: DDCCustomerModel = DDCCustomerModel()
-        self.model = DDCContractModel()
-        self.model?.customer = customer
+
+        if self.model == nil || self.model?.customer == nil {
+            let customer: DDCCustomerModel = DDCCustomerModel()
+            self.model = DDCContractModel()
+            self.model?.customer = customer
+        }
         self.model!.customer?.mobile = DDCTools.removeWhiteSpace(string: self.models[DDCClientTextFieldType.phone.rawValue].text!)
         self.model!.customer?.name = self.models[DDCClientTextFieldType.name.rawValue].text
         //性别
