@@ -14,7 +14,12 @@ class DDCPaymentViewController: DDCChildContractViewController {
     var onlinePayment: DDCOnlinePaymentOptionModel?
     var pickedSection: Int = 999
     var pickedOfflineSection: Int = 999
-
+    var model: DDCContractModel? {
+        get {
+            return _model
+        }
+    }
+    
     lazy var paymentUpdateChecker: DDCPaymentUpdateChecker = {
         let paymentUpdateChecker: DDCPaymentUpdateChecker = DDCPaymentUpdateChecker()
         paymentUpdateChecker.delegate = self

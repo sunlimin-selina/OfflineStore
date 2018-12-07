@@ -38,7 +38,7 @@ class DDCEditClientInfoAPIManager: NSObject {
                                                  "name": model.customer!.name ?? "",
                                                  "sex": model.customer!.sex?.rawValue as Any,
             "birthday": "\(model.customer!.birthday!)",
-            "career": model.customer!.career != nil ? model.customer!.career!.rawValue : 7,
+            "career": model.customer!.career != nil ? model.customer!.career!.rawValue + 1 : 7,
             "email": model.customer!.email ?? "",
             "channelCode": model.customer!.channelCode ?? "",
             "channelDesc": model.customer!.channelDesc ?? "",
@@ -46,7 +46,6 @@ class DDCEditClientInfoAPIManager: NSObject {
             "introduceMobile": (model.customer!.introduceMobile != nil) ? model.customer!.introduceMobile! : "",
             "introduceName": (model.customer!.introduceName != nil) ? model.customer!.introduceName! : "",
             "dutyUserId": (model.customer!.dutyUserId != nil && model.customer!.dutyUserId != 0) ? model.customer!.dutyUserId as Any : DDCStore.sharedStore().user?.id as Any]
-        print(params)
         DDCHttpSessionsRequest.callPostRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{

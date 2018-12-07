@@ -14,7 +14,11 @@ class DDCSelectStoreViewController: DDCChildContractViewController {
     var selectedStore: DDCCheckBoxModel?
     var selectedType: Int?
     var canForward: Bool = false
-
+    var model: DDCContractModel? {
+        get {
+            return _model
+        }
+    }
     var userInfo: [DDCContractDetailsViewModel] = Array()
     var saleTypes: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "体验课订单", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "普通合同", isSelected: false),DDCCheckBoxModel.init(id: nil, title: "团体合同", isSelected: false)]
     

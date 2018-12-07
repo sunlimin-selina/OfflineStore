@@ -15,7 +15,7 @@ enum DDCGender: Int{
 }
 
 enum DDCOccupation: Int {
-    case employee
+    case employee = 1
     case mother
     case freelancer
     case bizOwner

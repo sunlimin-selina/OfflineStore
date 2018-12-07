@@ -317,9 +317,6 @@ extension DDCContractListViewController {
             if error.count != 0 {
                 self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
             }
-            if (self.page == 0) {
-                //                [self networkReloadView] 
-            }
             if self.contractArray == nil || self.contractArray?.count == 0 {
                 self.tableView.mj_footer.isHidden = true
                 self.tableView.backgroundView = UIView()

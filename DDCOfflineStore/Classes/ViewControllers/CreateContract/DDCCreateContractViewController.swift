@@ -82,7 +82,7 @@ class DDCCreateContractViewController: UIViewController{
             var subviewControllers: [DDCChildContractViewController] = Array()
             weak var weakSelf = self
             if self.onlyForPayment {
-                weakSelf!.paymentViewController.model = weakSelf!.model
+                weakSelf!.paymentViewController._model = weakSelf!.model
                 subviewControllers.append(weakSelf!.paymentViewController)
             } else {
                 
@@ -191,7 +191,7 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
             selectedIndex = 4
         }
         let viewController: DDCChildContractViewController = self.subviewControllers[selectedIndex]
-        viewController.model = model
+        viewController._model = model
         self.pageViewController.setViewControllers([viewController], direction: .forward, animated: true, completion: nil)
     }
     
@@ -205,7 +205,7 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
             selectedIndex = 4
         }
         let viewController: DDCChildContractViewController = self.subviewControllers[selectedIndex]
-        viewController.model = model
+        viewController._model = model
         self.pageViewController.setViewControllers([viewController], direction: .reverse, animated: true, completion: nil)
     }
     

@@ -36,7 +36,12 @@ class DDCContractInfoViewController: DDCChildContractViewController {
     var checkBoxControls: [DDCCheckBoxCellControl] = Array()
     var pickedPackage: DDCContractPackageModel?
     var isPickedCustom: Bool = false
-
+    var model: DDCContractModel? {
+        get {
+            return _model
+        }
+    }
+    
     lazy var qrCodeReader: QRCodeReaderViewController = {
         let builder = QRCodeReaderViewControllerBuilder {
             $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
@@ -76,7 +81,7 @@ class DDCContractInfoViewController: DDCChildContractViewController {
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
         _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
-            self.delegate?.previousPage(model: self.model!)
+            self.delegate?.previousPage(model: self._model!)
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "下一步", style: .forbidden, handler: {
 //            self.forwardNextPage()

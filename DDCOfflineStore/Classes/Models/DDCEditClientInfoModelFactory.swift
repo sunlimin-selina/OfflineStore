@@ -38,7 +38,6 @@ class DDCEditClientInfoModelFactory: NSObject {
         //职业
         let careerText: String = model.career != nil ? DDCContract.occupationArray[((model.career?.rawValue)! > 0) ? (model.career?.rawValue)! - 1 : 6]: ""
         let career: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "职业", placeholder: "请选择职业", text: careerText, isRequired: false, tips: "")
-        
         //渠道
         let channel: DDCChannelModel? = DDCEditClientInfoModelFactory.channelViewModel(model: model, channels: channels)
         var userChannel: DDCContractInfoViewModel = DDCContractInfoViewModel.init(title: "渠道", placeholder: "请选择渠道", text: channel != nil ? channel!.name!: "", isRequired: true, tips: "")
@@ -147,9 +146,4 @@ class DDCEditClientInfoModelFactory: NSObject {
         return nil
     }
     
-    class func update(customer: DDCCustomerModel) -> DDCContractModel {
-        let model: DDCContractModel = DDCContractModel()
-        model.customer = customer
-        return model
-    }
 }

@@ -42,6 +42,11 @@ class DDCAddContractInfoViewController: DDCChildContractViewController {
             return (self.model?.courseType == .sample) ? true : self.model?.code != nil
         }
     }
+    var model: DDCContractModel? {
+        get {
+            return _model
+        }
+    }
 
     lazy var qrCodeReader: QRCodeReaderViewController = {
         let builder = QRCodeReaderViewControllerBuilder {

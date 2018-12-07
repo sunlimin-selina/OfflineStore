@@ -30,7 +30,12 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
     var groupItems: (customCourses: [DDCCourseModel]?, sampleCourses: [DDCCourseModel]?)?
     var package: [DDCContractPackageModel] = Array()
     var specs: [DDCContractPackageCategoryModel] = Array()
-
+    var model: DDCContractModel? {
+        get {
+            return _model
+        }
+    }
+    
     var groupCourses: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "购买正式课程", discription: "", isSelected: false) ,DDCCheckBoxModel.init(id: nil, title: "购买体验课程", discription: "", isSelected: false)]
     var pickedSection: Int = 999
     

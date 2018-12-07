@@ -34,7 +34,20 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     var showHint: Bool = false
     var isFilled: Bool = false
     var isRightReferral: Bool = false
-
+    var model: DDCContractModel? {
+        get {
+            if _model == nil {
+                _model = DDCContractModel.init()
+                let customer: DDCCustomerModel = DDCCustomerModel()
+                _model?.customer = customer
+            }
+            return _model
+        }
+        set {
+            _model = newValue
+        }
+    }
+    
     private lazy var contentView: UIView = {
         var _contentView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: screen.width, height: screen.height))
         _contentView.backgroundColor = UIColor.white
@@ -126,29 +139,13 @@ extension DDCEditClientInfoViewController {
     
     func update() {
 
-        if self.model == nil || self.model?.customer == nil {
-            let customer: DDCCustomerModel = DDCCustomerModel()
-            self.model = DDCContractModel()
-            self.model?.customer = customer
-        }
         self.model!.customer?.mobile = DDCTools.removeWhiteSpace(string: self.models[DDCClientTextFieldType.phone.rawValue].text!)
         self.model!.customer?.name = self.models[DDCClientTextFieldType.name.rawValue].text
-        //性别
-        let genderArray: NSArray = DDCContract.genderArray as NSArray
-        self.model!.customer?.sex = DDCGender(rawValue: genderArray.index(of: self.models[DDCClientTextFieldType.sex.rawValue].text as Any))
-        //生日
-        if let birthdayText: String = self.models[DDCClientTextFieldType.birthday.rawValue].text!,
-            self.models[DDCClientTextFieldType.birthday.rawValue].text!.count > 0{
-            let birthday: Int = DDCTools.date(from: birthdayText)
-            self.model?.customer?.birthday = birthday
-        }
-        //年龄
-        self.model!.customer?.age = self.models[DDCClientTextFieldType.age.rawValue].text
         //邮箱
         self.model!.customer?.email = self.models[DDCClientTextFieldType.email.rawValue].text
         //职业
-        let occupationArray: NSArray = DDCContract.occupationArray as NSArray
-        self.model?.customer?.career = DDCOccupation(rawValue: occupationArray.index(of: self.models[DDCClientTextFieldType.career.rawValue].text as Any))
+//        let occupationArray: NSArray = DDCContract.occupationArray as NSArray
+//        self.model?.customer?.career = DDCOccupation(rawValue: occupationArray.index(of: self.models[DDCClientTextFieldType.career.rawValue].text as Any))
         //渠道
         if let channels: NSArray = (self.channels! as NSArray) {
             let idx: Int = channels.indexOfObject { (channelModel, idx, stop) -> Bool in
@@ -270,6 +267,7 @@ extension DDCEditClientInfoViewController {
             cell.textFieldView.type = .labelButton
             cell.textFieldView.button.setTitle("会员验证", for: .normal)
             cell.textFieldView.button.isHidden = false
+            
         } else if (indexPath.item == 4) {
             // 不让用户手动改年龄
             cell.textFieldView.textField.clearButtonMode = .never
@@ -387,18 +385,24 @@ extension DDCEditClientInfoViewController {
             do {
                 let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")
                 let birthday: Date = self.datePickerView.date
+                self.model?.customer?.birthday = DDCTools.dateToTimeInterval(from: birthday)
                 self.models[DDCClientTextFieldType.birthday.rawValue].text = dateFormatter.string(from: birthday)
                 let components = Calendar.current.dateComponents([.year], from: birthday, to: Date())
+                self.model?.customer?.age = "\(components.year ?? 0)"
                 self.models[DDCClientTextFieldType.age.rawValue].text = "\(components.year ?? 0)岁"
                 self.models[DDCClientTextFieldType.age.rawValue].isFill = true
             }
             break
         case DDCClientTextFieldType.sex.rawValue:
-            self.models[DDCClientTextFieldType.sex.rawValue].text = DDCContract.genderArray[self.pickerView.selectedRow(inComponent: 0)]
+            let sex: String = DDCContract.genderArray[self.pickerView.selectedRow(inComponent: 0)]
+            self.model?.customer?.sex = DDCGender(rawValue: DDCContract.genderArray.index(of: sex)!)
+            self.models[DDCClientTextFieldType.sex.rawValue].text = sex
             self.models[DDCClientTextFieldType.sex.rawValue].isFill = true
             break
         case DDCClientTextFieldType.career.rawValue:
-            self.models[DDCClientTextFieldType.career.rawValue].text = DDCContract.occupationArray[self.pickerView.selectedRow(inComponent: 0)]
+            let career: String = DDCContract.occupationArray[self.pickerView.selectedRow(inComponent: 0)]
+            self.model?.customer?.career = DDCOccupation(rawValue: DDCContract.occupationArray.index(of: career)!)
+            self.models[DDCClientTextFieldType.career.rawValue].text = career
             self.models[DDCClientTextFieldType.career.rawValue].isFill = true
             break
         case DDCClientTextFieldType.channel.rawValue:
@@ -429,6 +433,7 @@ extension DDCEditClientInfoViewController {
         self.collectionView.reloadData()
         self.resignFirstResponder()
     }
+    
 }
 
 // MARK: API
@@ -458,7 +463,6 @@ extension DDCEditClientInfoViewController {
                 if let _model = model { 
                     if _textFieldView.textField.tag == 0 {
                         self.view.makeDDCToast(message: "将自动填充用户信息\n请进行检查及补充", image: UIImage.init(named: "collect_icon_success")!)
-                        self.model = DDCEditClientInfoModelFactory.update(customer: _model)
                         self.model?.customer? = _model
                         self.models = DDCEditClientInfoModelFactory.integrateData(model: self.model!.customer!, channels: self.channels)
                     } else {
@@ -471,7 +475,6 @@ extension DDCEditClientInfoViewController {
                 } else {
                     if _textFieldView.textField.tag == 0 {
                         self.view.makeDDCToast(message: "无法获取用户信息,请填写", image: UIImage.init(named: "addCar_icon_fail")!)
-                        self.model = DDCEditClientInfoModelFactory.update(customer: DDCCustomerModel())
                         self.model!.customer!.mobile = phoneNumber
                         self.model!.customer!.type = DDCCustomerType.new
                         self.models = DDCEditClientInfoModelFactory.integrateData(model: self.model!.customer!, channels: self.channels)
