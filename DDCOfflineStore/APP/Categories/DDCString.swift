@@ -34,4 +34,14 @@ class DDCString: NSObject {
         
         return size.width
     }
+    
+    
+    class func isBlankString(string: String?) -> Bool {
+        if string != nil , !(string!.isKind(of: NSNull.self)),
+            string!.count > 0 {
+            return false
+        }
+        return false
+    }
+
 }

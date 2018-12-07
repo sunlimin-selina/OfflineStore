@@ -135,4 +135,10 @@ class DDCTools: NSObject{
         return authStatus != .restricted && authStatus != .denied
     }
 
+    class func isBlankObject(object: AnyObject?) -> Bool {
+        if object != nil, !(object!.isKind(of: NSNull.self)) {
+            return false
+        }
+        return true
+    }
 }

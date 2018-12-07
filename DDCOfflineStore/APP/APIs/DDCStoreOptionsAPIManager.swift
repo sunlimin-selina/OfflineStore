@@ -21,17 +21,10 @@ class DDCStoreOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            var array: Array<DDCStoreModel> = Array()
-            
-            if tuple.data != nil ,
-                case let stores as Array<Any> = tuple.data {
-                for data in stores {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let storeModel: DDCStoreModel = DDCStoreModel(JSON: _data)!
-                        array.append(storeModel)
-                    }
-                }
-                successHandler(array)
+            if DDCTools.isBlankObject(object: tuple.data) ,
+                case let storesArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let stores:[DDCStoreModel] = Mapper<DDCStoreModel>().mapArray(JSONArray: storesArray)
+                successHandler(stores)
                 return
             }
             successHandler(nil)
@@ -50,17 +43,10 @@ class DDCStoreOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            var array: Array<DDCStoreModel> = Array()
-            
-            if tuple.data != nil ,
-                case let stores as Array<Any> = tuple.data {
-                for data in stores {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let storeModel: DDCStoreModel = DDCStoreModel(JSON: _data)!
-                        array.append(storeModel)
-                    }
-                }
-                successHandler(array)
+            if !DDCTools.isBlankObject(object: tuple.data) ,
+                case let storesArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let stores:[DDCStoreModel] = Mapper<DDCStoreModel>().mapArray(JSONArray: storesArray)
+                successHandler(stores)
                 return
             }
             successHandler(nil)

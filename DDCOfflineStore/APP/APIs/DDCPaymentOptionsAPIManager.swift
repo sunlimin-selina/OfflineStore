@@ -54,7 +54,7 @@ class DDCPaymentOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+            if !DDCTools.isBlankObject(object: tuple.data) ,
                 case let _data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 let model: DDCOnlinePaymentOptionModel = DDCOnlinePaymentOptionModel(JSON: _data)!
                 successHandler(model)
@@ -75,7 +75,7 @@ class DDCPaymentOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))! {
+            if !DDCTools.isBlankObject(object: tuple.data)  {
                 successHandler(DDCPaymentStatus(rawValue: tuple.data as! Int)!)
                 return
             }

@@ -20,15 +20,10 @@ class DDCEditClientInfoAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            var array: [DDCChannelModel] = Array()
-            if case let channels as Array<Any> = tuple.data {
-                for data in channels {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let channelModel: DDCChannelModel = DDCChannelModel(JSON: _data)!
-                        array.append(channelModel)
-                    }
-                }
-                successHandler(array)
+            if !DDCTools.isBlankObject(object: tuple.data) ,
+                case let channelsArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let channels:[DDCChannelModel] = Mapper<DDCChannelModel>().mapArray(JSONArray: channelsArray)
+                successHandler(channels)
                 return
             }
             successHandler(nil)
@@ -58,7 +53,7 @@ class DDCEditClientInfoAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+            if !DDCTools.isBlankObject(object: tuple.data) ,
                 case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 DDCEditClientInfoAPIManager.getUserContractInfo(model: model, dictionary: data, successHandler: { (contractModel) in
                     successHandler(contractModel)

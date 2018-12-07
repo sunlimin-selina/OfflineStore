@@ -24,9 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DDCUserDefaults.setObject(object: idfa as AnyObject, key: DDCStore.Keys.DDC_Device_IDFA_Key)
 //        DDC_Share_UUID = DDCOpenUUID.value()
         
-        // start collecting dates from server
-//        [DDCServerDate sharedInstance]
-        
         //初始化主窗口
         window = UIWindow(frame: UIScreen.main.bounds)
         let navigationController = UINavigationController.init(rootViewController: DDCContractListViewController())

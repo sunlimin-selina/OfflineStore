@@ -185,15 +185,11 @@ extension DDCContractListViewController {
 extension DDCContractListViewController {
     func getData() {
         DDCContractListAPIManager.getContractList(page: 0, status: 0, type: 0, successHandler: { (contractList) in
-            if (contractList.count < 10)
-            {
-                //                self.view.collectionHolderView.collectionView.footerHidden = YES 
-            } else {
+            if (contractList.count >= 10) {
                 self.page += 1
             }
             self.contractArray?.addObjects(from: contractList)
             DDCTools.hideHUD()
-            //            [self.view.collectionHolderView.collectionView footerEndRefreshing] 
             self.tableView.reloadData()
         }) { (error) in
             DDCTools.hideHUD()
@@ -355,7 +351,7 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
                 // 获取status值
                 let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
                 let status: DDCContractStatus = DDCContractStatus(rawValue: UInt(statusArray.index(of: _selected as Any)))!
-                let type: DDCContractType = .personalRegular//DDCContractType(rawValue: UInt(statusArray.index(of: _selected as Any)))!
+                let type: DDCContractType = .none//DDCContractType(rawValue: UInt(statusArray.index(of: _selected as Any)))!
 
                 // 关掉弹窗
                 weakSelf?.dismiss(animated: true, completion: {

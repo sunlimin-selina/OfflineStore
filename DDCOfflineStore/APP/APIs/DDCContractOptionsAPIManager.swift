@@ -21,16 +21,10 @@ class DDCContractOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            var array: Array<DDCContractPackageModel> = Array()
-            
-            if case let packages as Array<Any> = tuple.data {
-                for data in packages {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let model: DDCContractPackageModel = DDCContractPackageModel(JSON: _data)!
-                        array.append(model)
-                    }
-                }
-                successHandler(array)
+            if !DDCTools.isBlankObject(object: tuple.data) ,
+                case let packagesArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let packages:[DDCContractPackageModel] = Mapper<DDCContractPackageModel>().mapArray(JSONArray: packagesArray)
+                successHandler(packages)
                 return
             }
             successHandler(nil)
@@ -49,15 +43,10 @@ class DDCContractOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            var array: Array<DDCContractPackageCategoryModel> = Array()
-            if case let courses as Array<Any> = tuple.data {
-                for data in courses {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let model: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel(JSON: _data)!
-                        array.append(model)
-                    }
-                }
-                successHandler(array)
+            if !DDCTools.isBlankObject(object: tuple.data) ,
+                case let coursesArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let courses:[DDCContractPackageCategoryModel] = Mapper<DDCContractPackageCategoryModel>().mapArray(JSONArray: coursesArray)
+                successHandler(courses)
                 return
             }
             successHandler(nil)
@@ -76,15 +65,10 @@ class DDCContractOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            var array: Array<DDCCourseModel> = Array()
-            if case let courses as Array<Any> = tuple.data {
-                for data in courses {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let model: DDCCourseModel = DDCCourseModel(JSON: _data)!
-                        array.append(model)
-                    }
-                }
-                successHandler(array)
+            if !DDCTools.isBlankObject(object: tuple.data) ,
+                case let coursesArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let courses:[DDCCourseModel] = Mapper<DDCCourseModel>().mapArray(JSONArray: coursesArray)
+                successHandler(courses)
                 return
             }
             successHandler(nil)
@@ -102,15 +86,10 @@ class DDCContractOptionsAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            var array: Array<DDCCourseModel> = Array()
-            if case let courses as Array<Any> = tuple.data {
-                for data in courses {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let model: DDCCourseModel = DDCCourseModel(JSON: _data)!
-                        array.append(model)
-                    }
-                }
-                successHandler(array)
+            if !DDCTools.isBlankObject(object: tuple.data) ,
+                case let coursesArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let courses:[DDCCourseModel] = Mapper<DDCCourseModel>().mapArray(JSONArray: coursesArray)
+                successHandler(courses)
                 return
             }
             successHandler(nil)

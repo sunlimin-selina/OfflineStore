@@ -20,17 +20,11 @@ class DDCStoreAndContractTypeAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            var array: Array<DDCStoreModel> = Array()
             
-            if tuple.data != nil ,
-                case let stores as Array<Any> = tuple.data {
-                for data in stores {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let storeModel: DDCStoreModel = DDCStoreModel(JSON: _data)!
-                        array.append(storeModel)
-                    }
-                }
-                successHandler(array)
+            if !DDCTools.isBlankObject(object: tuple.data) ,
+                case let storeArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let stores:[DDCStoreModel] = Mapper<DDCStoreModel>().mapArray(JSONArray: storeArray)
+                successHandler(stores)
                 return
             }
             successHandler(nil)
@@ -49,7 +43,7 @@ class DDCStoreAndContractTypeAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+            if !DDCTools.isBlankObject(object: tuple.data) ,
                 let data = tuple.data {
                 successHandler((data as! Int))
                 return

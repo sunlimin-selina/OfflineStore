@@ -21,7 +21,8 @@ class DDCSystemUserLoginAPIManager: NSObject {
                 failHandler(tuple.message)
                 return
             }
-            if case let data as Dictionary<String, Any> = tuple.data {
+            if !DDCTools.isBlankObject(object: tuple.data) ,
+                case let data as Dictionary<String, Any> = tuple.data {
                 let user: DDCUserModel = DDCUserModel(JSON: data)!
                 successHandler(user)
             }
@@ -40,7 +41,7 @@ class DDCSystemUserLoginAPIManager: NSObject {
                 failHandler(tuple.message)
                 return 
             }
-            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+            if !DDCTools.isBlankObject(object: tuple.data) ,
                 case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 let user: DDCCustomerModel = DDCCustomerModel(JSON: data)!
                 successHandler(user)

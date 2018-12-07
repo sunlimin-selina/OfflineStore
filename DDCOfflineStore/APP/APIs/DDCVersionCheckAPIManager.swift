@@ -17,7 +17,7 @@ class DDCVersionCheckAPIManager : NSObject {
                 failHandler(tuple.message)
                 return
             }            
-            if tuple.data != nil, !(tuple.data?.isKind(of: NSNull.self))!,
+            if !DDCTools.isBlankObject(object: tuple.data) ,
                 case let data: Dictionary<String, Any> = tuple.data as! Dictionary<String, Any>{
                 if data["value"] != nil,
                     case let version = data["value"] as! String {

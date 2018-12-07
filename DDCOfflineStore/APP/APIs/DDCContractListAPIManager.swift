@@ -16,22 +16,16 @@ class DDCContractListAPIManager: NSObject {
         let uid:String = String(format:"%d",(DDCStore.sharedStore().user?.id)!)
 
         let params: Dictionary<String, Any> = ["createUserId":uid , "currentPage":page ,"status":status , "type": type,  "pageSize": 10]
-        
         DDCHttpSessionsRequest.callGetRequest(url: url, parameters: params, success: { (response) in
             let tuple = DDCHttpSessionsRequest.filterResponseData(response: response)
             guard tuple.code == 200 else{
                 failHandler(tuple.message)
                 return
             }
-            var array: Array<DDCContractListModel> = Array()
-            if case let packages as Array<Any> = tuple.data {
-                for data in packages {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let model: DDCContractListModel = DDCContractListModel(JSON: _data)!
-                        array.append(model)
-                    }
-                }
-                successHandler(array)
+            if !DDCTools.isBlankObject(object: tuple.data),
+                case let packagesArray: [[String : Any]] = tuple.data as! [[String : Any]] {
+                let packages:[DDCContractListModel] = Mapper<DDCContractListModel>().mapArray(JSONArray: packagesArray)
+                successHandler(packages)
                 return
             }
             successHandler([])
@@ -40,20 +34,5 @@ class DDCContractListAPIManager: NSObject {
         }
     }
     
-//    class func parseDictionary(_ dataArray: [Dictionary<String, Any>]?) -> [DDCContractListModel]? {
-//        if let array = dataArray {
-//            var modelArray: Array<DDCContractListModel> = Array()
-//            for dictionary in array {
-//                let user: DDCCustomerModel = DDCCustomerModel(JSON: dictionary)!
-//                let info: DDCContractInfoModel = DDCContractInfoModel(JSON: dictionary)!
-//                let detailModel: DDCContractListModel = DDCContractListModel(JSON: dictionary)!
-//                detailModel.user = user
-//                detailModel.info = info
-//                modelArray.append(detailModel)
-//            }
-//            return modelArray
-//        }
-//        return nil
-//    }
 }
 
