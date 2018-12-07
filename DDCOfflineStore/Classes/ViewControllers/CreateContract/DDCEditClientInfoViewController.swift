@@ -230,7 +230,9 @@ extension DDCEditClientInfoViewController {
             cell.textFieldView.type = .labelButton
             cell.textFieldView.button.setTitle("会员验证", for: .normal)
             cell.textFieldView.button.isHidden = false
-            
+            if (self.model?.customer!.type == DDCCustomerType.potential || self.model?.customer!.type == DDCCustomerType.regular) {
+                cell.textFieldView.button.isHidden = true
+            }
         } else if (indexPath.item == 4) {
             // 不让用户手动改年龄
             cell.textFieldView.textField.clearButtonMode = .never
