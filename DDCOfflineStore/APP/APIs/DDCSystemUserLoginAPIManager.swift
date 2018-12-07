@@ -50,7 +50,6 @@ class DDCSystemUserLoginAPIManager: NSObject {
             successHandler(nil)
         }) { (code) in
             failHandler(code)
-
         } 
     }
 }

@@ -28,7 +28,6 @@ class DDCContractModel: Mappable {
     var contractPrice: Double?
     var createdUsername: String?
     var signedUsername: String?
-    var responsibleUsername: String?
     var relationShops: [DDCStoreModel]?
     
     //当前订单状态
@@ -74,7 +73,6 @@ class DDCContractModel: Mappable {
         
         createdUsername <- map["realCreateUserName"]
         signedUsername <- map["belongCreateUserName"]
-        responsibleUsername <- map["createUser.name"]
         
         contractUseCount <- map["contractUseCount"]
         contractAllCount <- map["contractAllCount"]
