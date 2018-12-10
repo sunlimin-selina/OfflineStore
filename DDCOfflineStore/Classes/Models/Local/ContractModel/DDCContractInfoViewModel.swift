@@ -51,4 +51,12 @@ class DDCContractInfoViewModel: NSObject {
     override init() {
         super.init()
     }
+    
+    func fillInPlaceholder(placeholder: String) -> DDCContractInfoViewModel {
+        self.placeholder = placeholder
+        self.text = ""
+        self.isFill = true
+        return self
+    }
+    
 }
