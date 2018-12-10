@@ -10,39 +10,15 @@ import UIKit
 import AVFoundation
 import QRCodeReader
 
-class DDCGroupContractInfoViewController: DDCChildContractViewController {
-    enum DDCAddContractTextFieldType: Int{
-        case none
-        case contraceNumber
-        case package
-        case spec
-        case rule
-        case money
-        case startDate
-        case endDate
-        case effectiveDate
-        case store
-    }
+class DDCGroupContractInfoViewController: DDCContractInfoViewController {
     
-    var contractInfo: [DDCContractDetailsViewModel] = Array()
-    var models: [DDCContractInfoViewModel] = Array()
-    var currentTextField: UITextField?
     var groupItems: (customCourses: [DDCCourseModel]?, sampleCourses: [DDCCourseModel]?)?
-    var package: [DDCContractPackageModel] = Array()
-    var specs: [DDCContractPackageCategoryModel] = Array()
-    var model: DDCContractModel? {
-        get {
-            return _model
-        }
-    }
-    
     var groupCourses: [DDCCheckBoxModel] = [DDCCheckBoxModel.init(id: nil, title: "购买正式课程", discription: "", isSelected: false) ,DDCCheckBoxModel.init(id: nil, title: "购买体验课程", discription: "", isSelected: false)]
     var pickedSection: Int = 999
     
     var customCoursesControls: [DDCCheckBoxCellControl] = Array()
     
     var isPickedPackage: Bool = false
-    var orderRule: NSArray = ["跳过","遵守"]
     var checkBoxFilled: Bool = false
     var upgradeLimit: Int = 0
 
@@ -51,67 +27,6 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
             $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
         }
         return QRCodeReaderViewController(builder: builder)
-    }()
-    
-    private lazy var datePickerView: UIDatePicker = {
-        let _datePickerView = UIDatePicker.init(frame: CGRect.zero)
-        _datePickerView.datePickerMode = .date
-        //可修改期间范围为前2个月+后4个月
-        var calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-        var components: DateComponents = DateComponents.init()
-        components.setValue(-2, for: .month)
-        var minDate: Date = calendar.date(byAdding: components, to: Date())!
-        components.setValue(4, for: .month)
-        var maxDate: Date = calendar.date(byAdding: components, to: Date())!
-        _datePickerView.minimumDate = minDate
-        _datePickerView.maximumDate = maxDate
-        return _datePickerView
-    }()
-    
-    private lazy var pickerView: UIPickerView = {
-        let _pickerView: UIPickerView = UIPickerView.init(frame: CGRect.zero)
-        _pickerView.delegate = self
-        _pickerView.dataSource = self
-        return _pickerView
-    }()
-    
-    private lazy var toolbar: DDCToolbar = {
-        let _toolbar = DDCToolbar.init(frame: CGRect.init(x: 0, y: 0, width: screen.width, height: 40.0))
-        _toolbar.doneButton.addTarget(self, action: #selector(done), for: .touchUpInside)
-        _toolbar.cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
-        return _toolbar
-    }()
-    
-    lazy var collectionView: UICollectionView! = {
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
-        
-        var _collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
-        _collectionView.showsHorizontalScrollIndicator = false
-        _collectionView.register(DDCContractDetailsCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCContractDetailsCollectionViewCell.self))
-        _collectionView.register(DDCTitleTextFieldCell.self, forCellWithReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
-        _collectionView.register(DDCTextFieldButtonCell.self, forCellWithReuseIdentifier: String(describing: DDCTextFieldButtonCell.self))
-        _collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self))
-        _collectionView.register(DDCCheckBoxWithTitleCollectionCell.self, forCellWithReuseIdentifier: String(describing: DDCCheckBoxWithTitleCollectionCell.self))
-        _collectionView.register(DDCContractHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self))
-        _collectionView.register(DDCSectionHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self))
-        _collectionView.register(DDCRadioHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self))
-        _collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self))
-        
-        _collectionView.backgroundColor = UIColor.white
-        _collectionView.delegate = self
-        _collectionView.dataSource = self
-        return _collectionView
-    }()
-    
-    private lazy var bottomBar: DDCBottomBar = {
-        let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: screen.width, height: DDCAppConfig.kBarHeight))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "上一步", style: .normal, handler: {
-            self.delegate?.previousPage(model: self.model!)
-        }))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "去付款", style: .forbidden, handler: {
-            self.forwardNextPage()
-        }))
-        return _bottomBar
     }()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,10 +38,7 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.white
-        self.view.addSubview(self.collectionView)
-        self.view.addSubview(self.bottomBar)
-        self.setupViewConstraints()
+        self.setupCollectionView()
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
         self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
         self.getGroupCourse()
@@ -136,47 +48,19 @@ class DDCGroupContractInfoViewController: DDCChildContractViewController {
 
 // MARK: Private
 extension DDCGroupContractInfoViewController {
-    func configureInputView(textField: UITextField, indexPath: IndexPath) {
-        switch indexPath.section {
-        case DDCAddContractTextFieldType.package.rawValue,
-             DDCAddContractTextFieldType.spec.rawValue:
-            do {
-                textField.inputAssistantItem.leadingBarButtonGroups = []
-                textField.inputAssistantItem.trailingBarButtonGroups = []
-                textField.inputView = self.pickerView
-                textField.inputAccessoryView = self.toolbar
-            }
-            break
-        case DDCAddContractTextFieldType.startDate.rawValue :
-            do {
-                textField.inputAssistantItem.leadingBarButtonGroups = []
-                textField.inputAssistantItem.trailingBarButtonGroups = []
-                textField.inputView = self.datePickerView
-                textField.inputAccessoryView = self.toolbar
-            }
-            break
-        default:
-            do {
-                textField.inputView = nil
-                textField.inputAccessoryView = nil
-                textField.keyboardType = .default
-            }
-            break
-        }
-    }
-    
-    func setupViewConstraints() {
-        self.collectionView.snp.makeConstraints { (make) in
-            make.top.left.right.equalTo(self.view)
-            make.bottom.equalTo(self.view).offset(-DDCAppConfig.kBarHeight)
-        }
+    func setupCollectionView(){
         
-        self.bottomBar.snp.makeConstraints({ (make) in
-            make.width.equalTo(UIScreen.main.bounds.width)
-            make.height.equalTo(DDCAppConfig.kBarHeight)
-            make.left.right.equalTo(self.view)
-            make.top.equalTo(self.view.snp_bottomMargin).offset(-DDCAppConfig.kBarHeight)
-        })
+        self.collectionView.register(DDCContractDetailsCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCContractDetailsCollectionViewCell.self))
+        self.collectionView.register(DDCTitleTextFieldCell.self, forCellWithReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
+        self.collectionView.register(DDCTextFieldButtonCell.self, forCellWithReuseIdentifier: String(describing: DDCTextFieldButtonCell.self))
+        self.collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self))
+        self.collectionView.register(DDCContractHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: DDCContractHeaderFooterView.self))
+        self.collectionView.register(DDCSectionHeaderFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self))
+        self.collectionView.register(DDCRadioHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCRadioHeaderView.self))
+        self.collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: UICollectionReusableView.self))
+        
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
     }
     
 }
@@ -388,50 +272,15 @@ extension DDCGroupContractInfoViewController {
     }
 }
 
-// MARK: PickerView
-extension DDCGroupContractInfoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch self.currentTextField?.tag {
-        case DDCAddContractTextFieldType.package.rawValue:
-            return self.package.count
-        case DDCAddContractTextFieldType.spec.rawValue:
-            do {
-                guard self.isPickedPackage else {
-                    return 1
-                }
-                return self.specs.count
-            }
-        case DDCAddContractTextFieldType.rule.rawValue:
-            return self.orderRule.count
-        default:
-            return 0
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch self.currentTextField?.tag {
-        case DDCAddContractTextFieldType.rule.rawValue:
-            return self.orderRule[row] as! String
-        default:
-            return ""
-        }
-    }
-    
-}
-
 // MARK: Textfield
 extension DDCGroupContractInfoViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.currentTextField = textField
         self.pickerView.reloadAllComponents()
-        if textField.tag == DDCAddContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCAddContractTextFieldType.endDate.rawValue || textField.tag == DDCAddContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCAddContractTextFieldType.store.rawValue || textField.tag == DDCAddContractTextFieldType.rule.rawValue {
+        if textField.tag == DDCContractTextFieldType.contraceNumber.rawValue || textField.tag == DDCContractTextFieldType.endDate.rawValue || textField.tag == DDCContractTextFieldType.effectiveDate.rawValue || textField.tag == DDCContractTextFieldType.store.rawValue || textField.tag == DDCContractTextFieldType.rule.rawValue {
             return false
         }
-        if (textField.tag == DDCAddContractTextFieldType.startDate.rawValue && self.model?.packageModel == nil) {
+        if (textField.tag == DDCContractTextFieldType.startDate.rawValue && self.model?.packageModel == nil) {
             self.view.makeDDCToast(message: "请选择套餐", image: UIImage.init(named: "addCar_icon_fail")!)
             return false
         }
@@ -439,7 +288,7 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField.tag == DDCAddContractTextFieldType.money.rawValue {
+        if textField.tag == DDCContractTextFieldType.money.rawValue {
             let text: String = (textField.text! as NSString).replacingCharacters(in: range, with: string) as String
             //only number
             if (Double(text) == nil && text.count > 0) {//允许删除唯一一个字符
@@ -452,7 +301,7 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.tag == DDCAddContractTextFieldType.money.rawValue {
+        if textField.tag == DDCContractTextFieldType.money.rawValue {
             let text: String = textField.text ?? ""
             if let price = Double(text) {
                 self.model!.contractPrice = price
@@ -467,7 +316,8 @@ extension DDCGroupContractInfoViewController: UITextFieldDelegate {
 
 // MARK: Action
 extension DDCGroupContractInfoViewController {
-    func forwardNextPage() {
+    override func forwardNextPage() {
+        super.forwardNextPage()
         self.bottomBar.buttonArray![1].isEnabled = false
         
         if self.model?.contractType == .groupRegular {
@@ -475,7 +325,7 @@ extension DDCGroupContractInfoViewController {
         } else {
             self.model?.customItems = self.wrapItems(models: (self.groupItems?.sampleCourses)!)
         }
-        self.models[DDCAddContractTextFieldType.rule.rawValue].isFill = true
+        self.models[DDCContractTextFieldType.rule.rawValue].isFill = true
 
         for index in 1..<self.models.count {
             let model: DDCContractInfoViewModel = self.models[index]
@@ -501,10 +351,10 @@ extension DDCGroupContractInfoViewController {
         }
     }
     
-    @objc func done() {
+    @objc override func done() {
         let section = self.currentTextField?.tag
         switch section {
-        case DDCAddContractTextFieldType.startDate.rawValue:
+        case DDCContractTextFieldType.startDate.rawValue:
             do {
                 let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")
                 let startDate: Date = self.datePickerView.date
@@ -526,7 +376,7 @@ extension DDCGroupContractInfoViewController {
         self.resignFirstResponder()
     }
     
-    @objc func cancel() {
+    @objc override func cancel() {
         self.collectionView.reloadData()
         self.resignFirstResponder()
     }
@@ -567,8 +417,8 @@ extension DDCGroupContractInfoViewController {
         
         self.qrCodeReader.completionBlock = { (result: QRCodeReaderResult?) in
             if DDCTools.isQualifiedCode(qrCode: (result?.value)!) {
-                self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].placeholder = result?.value
-                self.models[DDCAddContractTextFieldType.contraceNumber.rawValue].isFill = true
+                self.models[DDCContractTextFieldType.contraceNumber.rawValue].placeholder = result?.value
+                self.models[DDCContractTextFieldType.contraceNumber.rawValue].isFill = true
                 self.model?.code = result?.value
                 self.collectionView.reloadSections([1])
                 self.formFilled()
@@ -702,8 +552,8 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
             let spec: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel()
             spec.validPeriod = validPeriod
             self.model!.specs = spec
-            self.models[DDCAddContractTextFieldType.spec.rawValue].isFill = true
-            self.models[DDCAddContractTextFieldType.package.rawValue].isFill = true
+            self.models[DDCContractTextFieldType.spec.rawValue].isFill = true
+            self.models[DDCContractTextFieldType.package.rawValue].isFill = true
             self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
             self.collectionView.reloadData()
 
