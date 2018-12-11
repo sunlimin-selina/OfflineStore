@@ -15,9 +15,11 @@ class DDCFinishedContractViewController: UIViewController {
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: screen.width, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "查看合同", style: .normal, handler: {
+            [unowned self] in
             self.gotoContractDetail()
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "完成", style: .highlighted, handler: {
+            [unowned self] in
             for viewController in (self.navigationController?.children)! {
                 if viewController == self.navigationController?.children[0] {
                     self.navigationController?.popToViewController(viewController, animated: true)

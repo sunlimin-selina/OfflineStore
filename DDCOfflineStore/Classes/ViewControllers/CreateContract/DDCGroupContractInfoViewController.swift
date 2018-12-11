@@ -99,9 +99,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             cell.button.addTarget(self, action: #selector(scanAction(_:)), for: .touchUpInside)
             return cell
         }  else if indexPath.section == 2 || indexPath.section == 3 {
-            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
-            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
             cell.tag = indexPath.item
             var model: DDCCourseModel = DDCCourseModel()
             if indexPath.section == 3 {
@@ -158,7 +156,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             if indexPath.section == (self.pickedSection + 2) {
                 var height: CGFloat = 45
                 let customModel: DDCCourseModel = (self.groupItems?.customCourses![indexPath.item])!
-                if customModel != nil && customModel.attributes != nil{
+                if customModel.attributes != nil{
                     height = CGFloat((customModel.isSelected ? (customModel.attributes?.count)! + 1: 1 ) * 42)
                 }
                 return CGSize.init(width: DDCAppConfig.width, height: height)
@@ -235,7 +233,7 @@ extension DDCGroupContractInfoViewController {
     
     func getGroupCourse() {
         DDCTools.showHUD(view: self.view)
-        DDCContractOptionsAPIManager.getGroupCourse(storeId: 4, successHandler: { (tuple) in
+        DDCContractOptionsAPIManager.getGroupCourse(storeId: 4, successHandler: { [unowned self] (tuple) in
             DDCTools.hideHUD()
             self.groupItems = tuple
             self.collectionView.reloadData()
@@ -330,7 +328,6 @@ extension DDCGroupContractInfoViewController {
         switch section {
         case DDCContractTextFieldType.startDate.rawValue:
             do {
-                let dateFormatter: DateFormatter = DateFormatter.init(withFormat: "YYYY/MM/dd", locale: "")
                 let startDate: Date = self.datePickerView.date
                 self.model?.packageModel?.startUseTime = DDCTools.dateToTimeInterval(from: startDate)
                 if self.model?.specs != nil {

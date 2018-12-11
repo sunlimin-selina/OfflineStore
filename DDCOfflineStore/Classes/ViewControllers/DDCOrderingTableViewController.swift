@@ -20,7 +20,6 @@ class DDCOrderingTableViewController: UITableViewController {
         self.tableView.separatorStyle = .singleLine
         self.tableView.separatorInset = UIEdgeInsets.zero
         self.tableView.rowHeight = 50.0
-//        self.popoverPresentationController?.delegate = self
         
         if let popover = self.popoverPresentationController {
             popover.delegate = self

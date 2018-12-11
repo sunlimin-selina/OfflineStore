@@ -103,5 +103,13 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.buttons = []
+        for view in self.subContentView.subviews {
+            view.removeFromSuperview()
+        }
+        self.buttonCount = 0
+    }
 }
 

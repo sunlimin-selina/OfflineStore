@@ -32,7 +32,6 @@ class DDCEditClientInfoViewController: DDCChildContractViewController {
     var currentTextField: UITextField?
     var memberReferral = ["是","否"]
     var showHint: Bool = false
-    var isFilled: Bool = false
     var isRightReferral: Bool = false
     var model: DDCContractModel? {
         get {
@@ -137,23 +136,6 @@ extension DDCEditClientInfoViewController {
         })
     }
     
-    func updateTextFieldValue() {
-        self.model!.customer?.mobile = DDCTools.removeWhiteSpace(string: self.models[DDCClientTextFieldType.phone.rawValue].text!)
-        self.model!.customer?.name = self.models[DDCClientTextFieldType.name.rawValue].text ?? ""
-        //邮箱
-        self.model!.customer?.email = self.models[DDCClientTextFieldType.email.rawValue].text ?? ""
-        //渠道详情
-        self.model!.customer?.channelDesc = self.models[DDCClientTextFieldType.channelDetail.rawValue].text ?? ""
-        //是否会员介绍
-        if (self.model!.customer?.isReferral)! {
-            //会员手机号
-            self.model!.customer?.introduceMobile = DDCTools.removeWhiteSpace(string: self.models[DDCClientTextFieldType.introduceMobile.rawValue].text ?? "")
-            //会员姓名
-            self.model!.customer?.introduceName = self.models[DDCClientTextFieldType.introduceName.rawValue].text ?? ""
-        }
-        
-    }
-    
     func forwardNextPage() {
         self.bottomBar.buttonArray![0].isEnabled = false
         var canForward: Bool = true
@@ -204,13 +186,30 @@ extension DDCEditClientInfoViewController {
         self.uploadUserInfo(model: self.model!)
     }
     
+    func updateTextFieldValue() {
+        self.model!.customer?.mobile = DDCTools.removeWhiteSpace(string: self.models[DDCClientTextFieldType.phone.rawValue].text!)
+        self.model!.customer?.name = self.models[DDCClientTextFieldType.name.rawValue].text ?? ""
+        //邮箱
+        self.model!.customer?.email = self.models[DDCClientTextFieldType.email.rawValue].text ?? ""
+        //渠道详情
+        self.model!.customer?.channelDesc = self.models[DDCClientTextFieldType.channelDetail.rawValue].text ?? ""
+        //是否会员介绍
+        if (self.model!.customer?.isReferral)! {
+            //会员手机号
+            self.model!.customer?.introduceMobile = DDCTools.removeWhiteSpace(string: self.models[DDCClientTextFieldType.introduceMobile.rawValue].text ?? "")
+            //会员姓名
+            self.model!.customer?.introduceName = self.models[DDCClientTextFieldType.introduceName.rawValue].text ?? ""
+        }
+        
+    }
+    
     func configureCell(cell: DDCTitleTextFieldCell, model: DDCContractInfoViewModel, indexPath: IndexPath, showHint: Bool) {
         var _showHint = showHint
-        cell.textFieldView.button.isEnabled = true
         cell.textFieldView.textField.isUserInteractionEnabled = true
         cell.textFieldView.textField.clearButtonMode = .always
         cell.textFieldView.type = .normal
-        
+        cell.textFieldView.button.setTitleColor(DDCColor.mainColor.red, for: .normal)
+
         if indexPath.item == 0 {
             _showHint = true
             cell.textFieldView.type = .labelButton
@@ -237,6 +236,8 @@ extension DDCEditClientInfoViewController {
         } else if (indexPath.item == 11 && model.title == "介绍会员姓名") || (indexPath.item == 12) || (indexPath.item == 10 && model.title == "责任销售") {
             cell.textFieldView.textField.isUserInteractionEnabled = false
             cell.textFieldView.textField.clearButtonMode = .never
+        } else if (self.model?.customer?.type == DDCCustomerType.potential || self.model?.customer?.type == DDCCustomerType.regular) && indexPath.item > 6 {
+            cell.textFieldView.textField.clearButtonMode = .never
         }
   
         cell.titleLabel.configure(title: model.title ?? "", isRequired: model.isRequired!, tips: model.tips!, isShowTips:_showHint)
@@ -259,10 +260,6 @@ extension DDCEditClientInfoViewController: UICollectionViewDelegate, UICollectio
         let model: DDCContractInfoViewModel = self.models[indexPath.item]
         self.configureCell(cell: cell, model: model, indexPath: indexPath, showHint: self.showHint)
         self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
-        if (self.model?.customer?.type == DDCCustomerType.potential || self.model?.customer?.type == DDCCustomerType.regular) && indexPath.item > 6 {
-            cell.textFieldView.textField.clearButtonMode = .never
-            model.isFill = true
-        }
         return cell
     }
     
@@ -463,7 +460,7 @@ extension DDCEditClientInfoViewController {
     
     func getChannels() {
         DDCTools.showHUD(view: self.view)
-        DDCEditClientInfoAPIManager.availableChannels(successHandler: { (array) in
+        DDCEditClientInfoAPIManager.availableChannels(successHandler: { [unowned self] (array) in
             DDCTools.hideHUD()
             self.channels = array
         }, failHandler: { (error) in
@@ -473,7 +470,7 @@ extension DDCEditClientInfoViewController {
     
     func uploadUserInfo(model:DDCContractModel) {
         DDCTools.showHUD(view: self.view)
-        DDCEditClientInfoAPIManager.uploadUserInfo(model: model, successHandler: { (model) in
+        DDCEditClientInfoAPIManager.uploadUserInfo(model: model, successHandler: { [unowned self] (model) in
             DDCTools.hideHUD()
             if let _model = model {
                 self.delegate?.nextPage(model: _model)
@@ -482,7 +479,7 @@ extension DDCEditClientInfoViewController {
             }
             self.bottomBar.buttonArray![0].isEnabled = true
             
-        }) { (error) in
+        }) { [unowned self] (error) in
             DDCTools.hideHUD()
             self.bottomBar.buttonArray![0].isEnabled = true
             self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)

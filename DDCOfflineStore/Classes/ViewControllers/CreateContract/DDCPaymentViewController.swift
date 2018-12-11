@@ -130,7 +130,7 @@ extension DDCPaymentViewController {
             return
         }
         DDCTools.showHUD(view: self.view)
-        DDCPaymentOptionsAPIManager.paymentOption(phone: (self.model?.customer?.mobile)!, successHandler: { (tuple) in
+        DDCPaymentOptionsAPIManager.paymentOption(phone: (self.model?.customer?.mobile)!, successHandler: { [unowned self] (tuple) in
             if let _tuple = tuple {
                 self.result = _tuple
                 self.payments = self.integratePaymentData()
@@ -149,7 +149,7 @@ extension DDCPaymentViewController {
         DDCTools.showHUD(view: self.view)
         weak var weakSelf = self
         if let _payment: DDCPaymentItemModel = payment {
-            DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: self.pickedSection == 3 ? 2 : 1, successHandler: { (model) in //支付渠道类型（1, "在线支付" 2, "线下支付"）
+            DDCPaymentOptionsAPIManager.createPaymentOption(model: self.model, payChannel: _payment.code!, payStyle: self.pickedSection == 3 ? 2 : 1, successHandler: { [unowned self] (model) in //支付渠道类型（1, "在线支付" 2, "线下支付"）
                 DDCTools.hideHUD()
                 if self.pickedSection == 3{
                     let viewController: DDCFinishedContractViewController = DDCFinishedContractViewController.init(model: weakSelf!.model!)
@@ -175,7 +175,7 @@ extension DDCPaymentViewController {
     
     func commitForm() {
         let alertController: UIAlertController = UIAlertController.init(title: "确定客户已完成线下支付吗？", message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction.init(title: "确定", style: .default, handler: { [unowned self] (action) in
             self.createPaymentOption(payment: (self.result.offline?.channels![self.pickedOfflineSection != 999 ? self.pickedOfflineSection : 0])!)
         }))
         alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))

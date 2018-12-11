@@ -104,9 +104,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             }
             return cell
         }  else if self.isPickedCustom && indexPath.section == 3 {
-            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
-            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCheckBoxCollectionViewCell.self), for: indexPath) as! DDCCheckBoxCollectionViewCell
             cell.tag = indexPath.item
             let model: DDCCourseModel = self.customItems[indexPath.item]
             let control = DDCCheckBoxCellControl.init(cell: cell)
@@ -201,7 +199,7 @@ extension DDCAddContractInfoViewController {
     
     func getPackagesForContract() {
         DDCTools.showHUD(view: self.view)
-        DDCContractOptionsAPIManager.packagesForContract(storeId: self.model!.currentStore!.id!,type: (self.model?.contractType)!, successHandler: { (array) in
+        DDCContractOptionsAPIManager.packagesForContract(storeId: self.model!.currentStore!.id!,type: (self.model?.contractType)!, successHandler: { [unowned self] (array) in
             DDCTools.hideHUD()
             if (array?.count)! > 0 {
                 self.package = array!
@@ -214,7 +212,7 @@ extension DDCAddContractInfoViewController {
     
     func getCustomCourse() {
         DDCTools.showHUD(view: self.view)
-        DDCContractOptionsAPIManager.getCustomCourse(storeId: self.model!.currentStore!.id!, successHandler: { (array) in
+        DDCContractOptionsAPIManager.getCustomCourse(storeId: self.model!.currentStore!.id!, successHandler: { [unowned self] (array) in
             DDCTools.hideHUD()
             if let models = array {
                 self.customItems = models
@@ -231,7 +229,7 @@ extension DDCAddContractInfoViewController {
             return
         }
         DDCTools.showHUD(view: self.view)
-        DDCContractOptionsAPIManager.getCourseSpec(packageId: (self.pickedPackage?.id)! , successHandler: { (array) in
+        DDCContractOptionsAPIManager.getCourseSpec(packageId: (self.pickedPackage?.id)! , successHandler: { [unowned self] (array) in
             DDCTools.hideHUD()
             if let models = array {
                 self.specs = models

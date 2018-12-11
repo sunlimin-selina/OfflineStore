@@ -19,7 +19,7 @@ class DDCContractListViewController: UIViewController {
     
     private lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 10.0, y: 10.0, width: 10.0, height: 10.0))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "创建新订单", style: .highlighted, handler: {
+        _bottomBar.addButton(button:DDCBarButton.init(title: "创建新订单", style: .highlighted, handler: { [unowned self] in
             let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(progress: .editClientInformation, model: DDCContractModel())
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
@@ -38,7 +38,7 @@ class DDCContractListViewController: UIViewController {
         _tableView.separatorColor = UIColor.clear
         _tableView.layer.cornerRadius = 5
         //设置上拉加载的footer动画
-        let footer = MJRefreshAutoGifFooter {
+        let footer = MJRefreshAutoGifFooter { [unowned self] in
             self.getContractList()
         }
         footer?.setImages([UIImage.init(named: "load1") as Any,UIImage.init(named: "load2") as Any,UIImage.init(named: "load3") as Any,UIImage.init(named: "load4") as Any,UIImage.init(named: "load5") as Any,UIImage.init(named: "load6") as Any], for: .refreshing)
@@ -82,12 +82,11 @@ class DDCContractListViewController: UIViewController {
         self.reloadPage()
         
         //新增强制更新
-        weak var weakSelf = self
-        DDCVersionCheckAPIManager.checkVersion(successHandler: { (version) in
+        DDCVersionCheckAPIManager.checkVersion(successHandler: { [unowned self] (version) in
             if let _version: String = version {
                 let currentVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
                 if _version != currentVersion{
-                    weakSelf?.alertUpdate()
+                    self.alertUpdate()
                 }
             }
         }) { (error) in
@@ -105,6 +104,7 @@ class DDCContractListViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.barStyle = .default
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
@@ -138,13 +138,12 @@ extension DDCContractListViewController {
     }
     
     @objc func rightNaviBtnPressed() {
-        weak var weakSelf = self
         let alertController: UIAlertController = UIAlertController.init(title: "您确定要登出当前账号吗？", message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: {[unowned self] (action) in
             DDCStore.sharedStore().user = nil
             UserDefaults.standard.removeObject(forKey: "DDCUser")
             UserDefaults.standard.synchronize()
-            weakSelf?.login()
+            self.login()
         }))
         alertController.addAction(UIAlertAction.init(title: "否", style: .default, handler: nil))
         self.present(alertController, animated: true, completion: nil)
@@ -162,9 +161,8 @@ extension DDCContractListViewController {
     }
     
     func alertUpdate() {
-        weak var weakSelf = self
         let alertController: UIAlertController = UIAlertController.init(title: "需要更新版本", message: "请更新版本", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction.init(title: "去更新", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction.init(title: "去更新", style: .default, handler: { [unowned self] (action) in
             let url: URL = URL.init(string: DDCAPIManager.DDC_Update_Url)!
             if #available(iOS 10, *) {
                 UIApplication.shared.open(url, options: [:],
@@ -174,7 +172,7 @@ extension DDCContractListViewController {
             } else {
                 UIApplication.shared.openURL(url)
             }
-            weakSelf?.alertUpdate()
+            self.alertUpdate()
         }))
 
         self.present(alertController, animated: true, completion: nil)
@@ -184,14 +182,14 @@ extension DDCContractListViewController {
 // MARK: API
 extension DDCContractListViewController {
     func getData() {
-        DDCContractListAPIManager.getContractList(page: 0, status: 0, type: 0, successHandler: { (contractList) in
+        DDCContractListAPIManager.getContractList(page: 0, status: 0, type: 0, successHandler: { [unowned self] (contractList) in
             if (contractList.count >= 10) {
                 self.page += 1
             }
             self.contractArray?.addObjects(from: contractList)
             DDCTools.hideHUD()
             self.tableView.reloadData()
-        }) { (error) in
+        }) { [unowned self] (error) in
             DDCTools.hideHUD()
             
             if error.count != 0 {
@@ -201,17 +199,15 @@ extension DDCContractListViewController {
     }
     
     func login() {
-        weak var weakSelf = self
         var blockStatus = status
         
         guard self.user != nil else {
-            DDCLoginRegisterViewController.login(targetController: self) { (success) in
+            DDCLoginRegisterViewController.login(targetController: self) { [unowned self] (success) in
                 if success {
-                    weakSelf?.dismiss(animated: true, completion: {
+                    self.dismiss(animated: true, completion: {
                         blockStatus = .all
                         // 请求后台
-                        weakSelf?.loadContractList(status: blockStatus, type: self.type, completionHandler: { (success) in
-                            //                                weakSelf?.orderingUpdate(DDCContractDetailsModel.displayStatusArray[blockStatus])
+                        self.loadContractList(status: blockStatus, type: self.type, completionHandler: { (success) in
                         })
                     })
                 }
@@ -282,7 +278,7 @@ extension DDCContractListViewController {
         
         DDCDefaultView.sharedView().clear()
 
-        DDCContractListAPIManager.getContractList(page: self.page, status: status.rawValue, type: type.rawValue, successHandler: { (contractList) in
+        DDCContractListAPIManager.getContractList(page: self.page, status: status.rawValue, type: type.rawValue, successHandler: { [unowned self] (contractList) in
             if (status != self.status) {
                 self.contractArray = []
                 self.status = status
@@ -311,7 +307,7 @@ extension DDCContractListViewController {
             if (completionHandler != nil) {
                 completionHandler! (true)
             }
-        }) { (error) in
+        }) { [unowned self] (error) in
             DDCTools.hideHUD()
             self.tableView.mj_footer.endRefreshing()
             if error.count != 0 {
@@ -340,10 +336,9 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
     }
     
     func popOrderingMenu(rect: CGRect, callback: @escaping OrderingUpdateCallback) {
-        weak var weakSelf = self
         
         // 弹窗让用户选择筛选
-        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(style: .plain, array: DDCContract.backendStatusArray) { (selected) in
+        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(style: .plain, array: DDCContract.backendStatusArray) { [unowned self] (selected) in
             if let _selected = selected {
                 // 获取status值
                 let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
@@ -351,8 +346,8 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
                 let type: DDCContractType = .none//DDCContractType(rawValue: UInt(statusArray.index(of: _selected as Any)))!
 
                 // 关掉弹窗
-                weakSelf?.dismiss(animated: true, completion: {
-                    weakSelf?.loadContractList(status: status, type: type, completionHandler: { (success) in
+                self.dismiss(animated: true, completion: {
+                    self.loadContractList(status: status, type: type, completionHandler: { (success) in
                         callback(selected)
                     })
                 })

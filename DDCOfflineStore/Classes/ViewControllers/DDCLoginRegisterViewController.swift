@@ -190,11 +190,11 @@ extension DDCLoginRegisterViewController {
         DDCTools.showHUD(view: self.view)
         self.submitButton.isEnabled = false
         
-        DDCSystemUserLoginAPIManager.login(username: username, password: password, successHandler: { (user) in
+        DDCSystemUserLoginAPIManager.login(username: username, password: password, successHandler: { [unowned self] (user) in
             DDCStore.sharedStore().user = user
             DDCTools.hideHUD()
             self.successHandler!(true)
-        }) { (error) in
+        }) { [unowned self] (error) in
             self.submitButton.isEnabled = true
             DDCTools.hideHUD()
             self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)

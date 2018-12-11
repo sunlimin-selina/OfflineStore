@@ -105,7 +105,7 @@ extension DDCSelectStoreViewController {
             return
         }
         DDCTools.showHUD(view: self.view)
-        DDCStoreAndContractTypeAPIManager.getStoresAndContractTypes(successHandler: { (array) in
+        DDCStoreAndContractTypeAPIManager.getStoresAndContractTypes(successHandler: { [unowned self] (array) in
             if let _array = array{
                 self.stores = _array
                 self.getLastStore()
@@ -118,7 +118,7 @@ extension DDCSelectStoreViewController {
     func getLastStore() {
         DDCTools.showHUD(view: self.view)
 
-        DDCStoreAndContractTypeAPIManager.getLastStore(successHandler: { (storeId) in
+        DDCStoreAndContractTypeAPIManager.getLastStore(successHandler: {[unowned self](storeId) in
             DDCTools.hideHUD()
             if let _storeId: CLong = storeId {
                 for item in self.stores! {

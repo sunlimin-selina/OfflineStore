@@ -243,7 +243,7 @@ extension DDCCreateContractViewController: DDCChildContractViewControllerDelegat
     @objc func goBack() {
         if self.model != nil {
             let alertController: UIAlertController = UIAlertController.init(title: "您确定要退出当前创建的新订单吗？", message: nil, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: { (action) in
+            alertController.addAction(UIAlertAction.init(title: "退出", style: .default, handler: { [unowned self] (action) in
                 self.navigationController?.popViewController(animated: true)
             }))
             alertController.addAction(UIAlertAction.init(title: "否", style: .cancel, handler: nil))

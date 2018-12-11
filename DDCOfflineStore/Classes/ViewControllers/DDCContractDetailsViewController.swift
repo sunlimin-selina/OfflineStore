@@ -34,13 +34,13 @@ class DDCContractDetailsViewController: UIViewController {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: constant.kMargin, y: screen.height - DDCAppConfig.kBarHeight, width: screen.width - constant.kMargin * 2, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "取消订单", style: .forbidden, handler: {
             let alertController: UIAlertController = UIAlertController.init(title: "您确定要取消当前订单吗？", message: nil, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction.init(title: "取消订单", style: .default, handler: { (action) in
+            alertController.addAction(UIAlertAction.init(title: "取消订单", style: .default, handler: { [unowned self] (action) in
                 self.cancelContract()
             }))
             alertController.addAction(UIAlertAction.init(title: "再想想", style: .default, handler: nil))
             self.present(alertController, animated: true, completion: nil)
         }))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "去支付", style: .highlighted, handler: {
+        _bottomBar.addButton(button:DDCBarButton.init(title: "去支付", style: .highlighted, handler:{ [unowned self] in
             let viewController: DDCCreateContractViewController = DDCCreateContractViewController.init(toPaymentView: DDCContractDetailsViewModelFactory.convertModel(model: self.model!))
             self.navigationController?.pushViewController(viewController, animated: true)
         }))
@@ -90,18 +90,17 @@ extension DDCContractDetailsViewController {
     func getData() {
         DDCTools.showHUD(view: self.view)
         
-        weak var weakSelf = self
         if let detailId = self.detailsID {
-            DDCContractDetailsAPIManager.getContractDetails(detailId: detailId, successHandler: { (response) in
+            DDCContractDetailsAPIManager.getContractDetails(detailId: detailId, successHandler: { [unowned self] (response) in
                 DDCTools.hideHUD()
                 if let _response = response {
-                    weakSelf!.model = _response
-                    weakSelf!.modelArray = DDCContractDetailsViewModelFactory.integrateData(model: _response)
-                    if weakSelf!.model!.tradeStatus == DDCContractStatus.inComplete {
-                        weakSelf!.view.addSubview(weakSelf!.bottomBar)
+                    self.model = _response
+                    self.modelArray = DDCContractDetailsViewModelFactory.integrateData(model: _response)
+                    if self.model!.tradeStatus == DDCContractStatus.inComplete {
+                        self.view.addSubview(self.bottomBar)
                     }
                 }
-                weakSelf!.barBackgroundView.tableView.reloadData()
+                self.barBackgroundView.tableView.reloadData()
 
             }, failHandler: { (error) in
                 DDCTools.hideHUD()
@@ -112,9 +111,7 @@ extension DDCContractDetailsViewController {
     
     func cancelContract() {
         DDCTools.showHUD(view: self.view)
-        
-        weak var weakSelf = self
-        DDCContractDetailsAPIManager.cancelContract(model: self.model!, successHandler: { (success) in
+        DDCContractDetailsAPIManager.cancelContract(model: self.model!, successHandler: { [unowned self] (success) in
             if success {
                 self.view.makeDDCToast(message: "订单已取消", image: UIImage.init(named: "addCar_icon_fail")!)
                 self.navigationController?.popViewController(animated: true)
