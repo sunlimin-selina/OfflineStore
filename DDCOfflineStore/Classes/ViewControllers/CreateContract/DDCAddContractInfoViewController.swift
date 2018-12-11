@@ -14,7 +14,6 @@ class DDCAddContractInfoViewController: DDCContractInfoViewController {
 
     var customItems: [DDCCourseModel] = Array()
 
-//    var pickedPackage: DDCContractPackageModel?
     var isPickedCustom: Bool = false
     var checkBoxFilled: Bool = false
     var modifySkuPrice: Bool = false
@@ -24,35 +23,31 @@ class DDCAddContractInfoViewController: DDCContractInfoViewController {
         }
     }
 
-    lazy var qrCodeReader: QRCodeReaderViewController = {
-        let builder = QRCodeReaderViewControllerBuilder {
-            $0.reader = QRCodeReader(metadataObjectTypes: [.qr], captureDevicePosition: .back)
-        }
-        return QRCodeReaderViewController(builder: builder)
-    }()
-
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //刷新列表
         self.model?.packageModel = nil
         self.model?.specs = nil
         self.model?.contractPrice = nil
         self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
         self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
         self.collectionView.reloadData()
+        //请求店铺套餐数据
         self.getPackagesForContract()
+        //请求关联店铺
         self.getRelationShopOptions()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
-        self.contractInfo = DDCContractDetailsViewModelFactory.integrateContractData(model: self.model)
     }
 }
 
 // MARK: Private
 extension DDCAddContractInfoViewController {
     func setupCollectionView(){
-        
+        //注册cell和headerFooterView
         self.collectionView.register(DDCContractDetailsCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: DDCContractDetailsCollectionViewCell.self))
         self.collectionView.register(DDCTitleTextFieldCell.self, forCellWithReuseIdentifier: String(describing: DDCTitleTextFieldCell.self))
         self.collectionView.register(DDCTextFieldButtonCell.self, forCellWithReuseIdentifier: String(describing: DDCTextFieldButtonCell.self))
@@ -92,9 +87,42 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
             cell.subtitleLabel.text = model.describe
             cell.titleLabel.textAlignment = .left
             return cell
+        } else if indexPath.section == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTextFieldButtonCell.self), for: indexPath) as! DDCTextFieldButtonCell
+            let model: DDCContractInfoViewModel = self.models[indexPath.section]
+            cell.configureCell(model: model, indexPath: indexPath, showHint: false)
+            self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
+            cell.textFieldView.textField.tag = indexPath.section
+            cell.textFieldView.textField.delegate = self
+            cell.button.addTarget(self, action: #selector(scanAction(_:)), for: .touchUpInside)
+            if self.model!.code != nil {
+                cell.button.isSelected = true
+            }
+            cell.isHidden = false
+            if self.model!.contractType == .personalSample {
+                cell.isHidden = true
+            }
+            return cell
+        }  else if self.isPickedCustom && indexPath.section == 3 {
+            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
+            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
+            cell.tag = indexPath.item
+            let model: DDCCourseModel = self.customItems[indexPath.item]
+            let control = DDCCheckBoxCellControl.init(cell: cell)
+            control.configureCell(model: model, indexPath: indexPath)
+            control.delegate = self
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell
+            let model: DDCContractInfoViewModel = self.models[indexPath.section]
+            cell.configureCell(model: model, indexPath: indexPath, showHint: false)
+            self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
+            cell.textFieldView.textField.tag = indexPath.section
+            cell.textFieldView.textField.delegate = self
+            return cell
         }
         
-        return self.collectionViewRegularCell(collectionView, cellForItemAt: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -166,43 +194,6 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
         return CGSize.zero
     }
     
-    func collectionViewRegularCell(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell  {
-        if self.isPickedCustom && indexPath.section == 3 {
-            let identifier = "\(String(describing: DDCCheckBoxCollectionViewCell.self))\(indexPath.section)\(indexPath.item)"
-            collectionView.register(DDCCheckBoxCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! DDCCheckBoxCollectionViewCell
-            cell.tag = indexPath.item
-            let model: DDCCourseModel = self.customItems[indexPath.item]
-            let control = DDCCheckBoxCellControl.init(cell: cell)
-            control.configureCell(model: model, indexPath: indexPath)
-            control.delegate = self
-            return cell
-        } else if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTextFieldButtonCell.self), for: indexPath) as! DDCTextFieldButtonCell
-            let model: DDCContractInfoViewModel = self.models[indexPath.section]
-            cell.configureCell(model: model, indexPath: indexPath, showHint: false)
-            self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
-            cell.textFieldView.textField.tag = indexPath.section
-            cell.textFieldView.textField.delegate = self
-            cell.button.addTarget(self, action: #selector(scanAction(_:)), for: .touchUpInside)
-            if self.model!.code != nil {
-                cell.button.isSelected = true
-            }
-            cell.isHidden = false
-            if self.model!.contractType == .personalSample {
-                cell.isHidden = true
-            }
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCTitleTextFieldCell.self), for: indexPath) as! DDCTitleTextFieldCell
-            let model: DDCContractInfoViewModel = self.models[indexPath.section]
-            cell.configureCell(model: model, indexPath: indexPath, showHint: false)
-            self.configureInputView(textField: cell.textFieldView.textField, indexPath: indexPath)
-            cell.textFieldView.textField.tag = indexPath.section
-            cell.textFieldView.textField.delegate = self
-            return cell
-        }
-    }
 }
 
 // MARK: API
@@ -250,15 +241,6 @@ extension DDCAddContractInfoViewController {
         }
     }
     
-    func getRelationShopOptions() {
-        DDCStoreOptionsAPIManager.getRelationShopOptions(currentStoreId: (self.model?.currentStore?.id)!, successHandler: { (stores) in
-            self.model?.relationShops = stores
-            self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
-            self.collectionView.reloadSections([self.models.count - 1])
-        }) { (error) in
-            
-        }
-    }
 }
 
 // MARK: Textfield
@@ -281,9 +263,7 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
             self.view.makeDDCToast(message: "请选择套餐", image: UIImage.init(named: "addCar_icon_fail")!)
             return false
         }
-//        if textField.tag == DDCContractTextFieldType.rule.rawValue {
-////            self.pickerView.selectRow(self.orderRule.index(of: textField.text as Any), inComponent: 0, animated: true)
-//        }
+
         return true
     }
     
@@ -445,59 +425,7 @@ extension DDCAddContractInfoViewController {
             self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
         }
     }
-    
-    @objc func scanAction(_ sender: AnyObject) {
-        self.qrCodeReader.delegate = self
-        
-        guard DDCTools.isRightCamera() else {
-            self.openSystemSettingPhoto()
-            return
-        }
-        
-        self.qrCodeReader.completionBlock = { (result: QRCodeReaderResult?) in
-            if DDCTools.isQualifiedCode(qrCode: result?.value) {
-                self.models[DDCContractTextFieldType.contraceNumber.rawValue].placeholder = result?.value
-                self.models[DDCContractTextFieldType.contraceNumber.rawValue].isFill = true
-                self.model?.code = result?.value
-                self.collectionView.reloadSections([1])
-                self.formFilled()
-            } else {
-                self.view.makeDDCToast(message:"二维码错误", image: UIImage.init(named: "addCar_icon_fail")!)
-            }
-        }
-        
-        // Presents the readerVC as modal form sheet
-        self.qrCodeReader.modalPresentationStyle = .overFullScreen
-        present(self.qrCodeReader, animated: true, completion: nil)
-    }
-    
-    func openSystemSettingPhoto() {
-        
-        let alertController: UIAlertController = UIAlertController.init(title: "未获得权限访问您的照片", message: "请在设置选项中允许'课程管家'访问您的照片", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction.init(title: "去设置", style: .default, handler: { (action) in
-            let url=URL.init(string: UIApplication.openSettingsURLString)
-            if  UIApplication.shared.canOpenURL(url!){
-                UIApplication.shared.openURL(url!)
-            }
-        }))
-        alertController.addAction(UIAlertAction.init(title: "取消", style: .default, handler: nil))
-        self.present(alertController, animated: true, completion: nil)
-    }
-}
 
-// MARK: - QRCodeReaderViewController Delegate
-extension DDCAddContractInfoViewController: QRCodeReaderViewControllerDelegate {
-    func reader(_ reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
-        reader.stopScanning()
-        
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func readerDidCancel(_ reader: QRCodeReaderViewController) {
-        reader.stopScanning()
-        
-        dismiss(animated: true, completion: nil)
-    }
 }
 
 extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
@@ -529,7 +457,8 @@ extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
         self.collectionView.reloadData()
     }
     
-    func formFilled() {
+    override func formFilled() {
+        super.formFilled()
         if  self.checkBoxFilled && (self.model?.contractPrice != nil || self.model?.specs?.costPrice != nil) &&  self.isCodeFilled {
             self.bottomBar.buttonArray![1].isEnabled = true
             self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
