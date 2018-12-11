@@ -119,9 +119,8 @@ class DDCRadioWithImageView: UIControl {
     }
     
     func updateButtonConstraints(width: CGFloat) {
-//        let kPadding: CGFloat = 5.0
         
-        self.button.snp.makeConstraints({ (make) in
+        self.button.snp.remakeConstraints({ (make) in
             make.left.equalTo(self)
             make.right.equalTo(self.textField.snp_leftMargin)
             make.height.equalTo(30.0)

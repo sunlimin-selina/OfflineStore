@@ -48,7 +48,6 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
     func setupViewConstraints() {
         let kPadding: CGFloat = 5.0
         self.contentView.addSubview(self.checkBox)
-//        self.contentView.addSubview(self.textField)
         self.contentView.addSubview(self.subContentView)
         self.clipsToBounds = true
         self.checkBox.snp.makeConstraints({ (make) in
@@ -103,13 +102,6 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
             self.subContentView.addSubview(button)
         }
     }
-    
-//    override func prepareForReuse() {
-//        self.contentView.subviews.last?.removeFromSuperview()
-//        self.setupViewConstraints()
-//    }
-    
-
     
 }
 

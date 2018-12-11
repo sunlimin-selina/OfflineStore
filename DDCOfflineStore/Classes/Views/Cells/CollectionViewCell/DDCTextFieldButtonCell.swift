@@ -54,15 +54,12 @@ class DDCTextFieldButtonCell: UICollectionViewCell {
     
     func setupViewConstraints() {
         
-        let kShadowMargin: CGFloat = 5.0
-        
         self.titleLabel.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.contentView)
-            make.left.equalTo(self.contentView).offset(kShadowMargin)
+            make.top.left.equalTo(self.contentView)
         })
         
         self.textFieldView.snp.makeConstraints({ (make) in
-            make.left.equalTo(self.titleLabel)
+            make.left.equalTo(self.contentView)
             make.right.equalTo(self.button.snp_leftMargin).offset(-20.0)
             make.bottom.equalTo(self.contentView).offset(-10)
             make.height.equalTo(DDCTitleTextFieldCell.kTextFieldViewHeight)

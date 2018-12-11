@@ -19,13 +19,6 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
         return titleLabel
     }()
     
-    public lazy var subtitle: UILabel = {
-        let subtitle: UILabel = UILabel()
-        subtitle.textColor = UIColor.black
-        subtitle.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-        return subtitle
-    }()
-    
     public lazy var textFieldView: DDCCircularTextFieldView = {
         let _textFieldView = DDCCircularTextFieldView.init(frame: CGRect.zero)
         _textFieldView.cornerRadius = DDCTitleTextFieldCell.kTextFieldViewHeight / 2
@@ -37,7 +30,6 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.textFieldView)
         self.setupViewConstraints()
-//        self.layer.masksToBounds = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -45,12 +37,9 @@ class DDCTitleTextFieldCell: UICollectionViewCell {
     }
     
     func setupViewConstraints() {
-
-        let kShadowMargin: CGFloat = 5.0
         
         self.titleLabel.snp.makeConstraints({ (make) in
-            make.top.equalTo(self.contentView)
-            make.left.equalTo(self.contentView).offset(kShadowMargin)
+            make.top.left.equalTo(self.contentView)
         })
         
         self.textFieldView.snp.makeConstraints({ (make) in
