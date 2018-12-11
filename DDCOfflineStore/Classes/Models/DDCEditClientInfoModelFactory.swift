@@ -123,9 +123,8 @@ class DDCEditClientInfoModelFactory: NSObject {
                     }
                     return false
                 }
-                if idx < channels.count,
-                    let channel: DDCChannelModel = (channels[idx] as! DDCChannelModel) {
-                    
+                if idx < channels.count{
+                    let channel: DDCChannelModel = (channels[idx] as! DDCChannelModel) 
                     var string = model.channelDesc
                     if string != nil,
                         (string!.count) > 0 {

@@ -41,7 +41,6 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
     }
     
     func setupViewConstraints() {
-        let kHorizontalMargin: CGFloat = 140.0
         let kPadding: CGFloat = 20.0
 
         self.subContentView.snp.makeConstraints({ (make) in

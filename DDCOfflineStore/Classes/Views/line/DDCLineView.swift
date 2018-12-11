@@ -96,8 +96,6 @@ class DDCLineView: UIView {
             self.layer.addSublayer(self.solidLayer)
         case .none:
             break
-        default:
-            break
         }
     }
 }

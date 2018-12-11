@@ -25,14 +25,14 @@ class DDCPaymentOptionsAPIManager: NSObject {
             }
             if case let payments as Array<Any> = tuple.data {
                 for data in payments {
-                    if let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>){
-                        let model: DDCPaymentOptionModel = DDCPaymentOptionModel(JSON: _data)!
-                        if model.code == "2" {
-                            result.offline = model
-                        } else {
-                            result.online = model
-                        }
+                    let _data: Dictionary<String, Any> = (data as! Dictionary<String, Any>)
+                    let model: DDCPaymentOptionModel = DDCPaymentOptionModel(JSON: _data)!
+                    if model.code == "2" {
+                        result.offline = model
+                    } else {
+                        result.online = model
                     }
+                    
                 }
                 successHandler(result)
                 return

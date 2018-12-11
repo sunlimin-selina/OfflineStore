@@ -145,8 +145,8 @@ class DDCContractDetailsViewModelFactory: NSObject {
                     }
                     return false
                 }
-                if idx < channels.count,
-                    let channel: DDCChannelModel = (channels[idx] as! DDCChannelModel) {
+                if idx < channels.count{
+                    let channel: DDCChannelModel = (channels[idx] as! DDCChannelModel)
                     var string = category.model?.customer?.channelDesc
                     if string != nil,
                         (string!.count) > 0 {
@@ -154,7 +154,7 @@ class DDCContractDetailsViewModelFactory: NSObject {
                     } else {
                         string = channel.name ?? ""
                     }
-                    return DDCContractDetailsViewModel.init(title: "顾客渠道", describe:channel != nil ? string: "")
+                    return DDCContractDetailsViewModel.init(title: "顾客渠道", describe: string)
                 }
             }
         }

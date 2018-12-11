@@ -11,9 +11,9 @@ import AVFoundation
 import QRCodeReader
 
 class DDCAddContractInfoViewController: DDCContractInfoViewController {
-
+    
     var customItems: [DDCCourseModel] = Array()
-
+    
     var isPickedCustom: Bool = false
     var checkBoxFilled: Bool = false
     var modifySkuPrice: Bool = false
@@ -22,7 +22,7 @@ class DDCAddContractInfoViewController: DDCContractInfoViewController {
             return (self.model?.courseType == .sample) ? true : self.model?.code != nil
         }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //刷新列表
@@ -147,7 +147,7 @@ extension DDCAddContractInfoViewController: UICollectionViewDataSource, UICollec
         }  else if self.isPickedCustom && indexPath.section == 3 {
             var height: CGFloat = 42
             let customModel = self.customItems[indexPath.item]
-            if customModel != nil && customModel.attributes != nil{
+            if customModel.attributes != nil{
                 height = CGFloat((customModel.isSelected ? (customModel.attributes?.count)! + 1: 1 ) * 42)
             }
             return CGSize.init(width: DDCAppConfig.width, height: height)
@@ -261,7 +261,7 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
             self.view.makeDDCToast(message: "请选择套餐", image: UIImage.init(named: "addCar_icon_fail")!)
             return false
         }
-
+        
         return true
     }
     
@@ -290,14 +290,14 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
         }
         return true
     }
-
+    
 }
 
 // MARK: Action
 extension DDCAddContractInfoViewController {
     @objc override func done() {
         self.pickerView.resignFirstResponder()
-
+        
         let section = self.currentTextField?.tag
         switch section {
         case DDCContractTextFieldType.package.rawValue:
@@ -305,34 +305,33 @@ extension DDCAddContractInfoViewController {
                 guard self.package.count > 0 else {
                     return
                 }
-                if let _pickedPackage: DDCContractPackageModel = self.package[self.pickerView.selectedRow(inComponent: 0)] {
-                    self.pickedPackage = _pickedPackage
-                    self.modifySkuPrice = self.pickedPackage!.modifySkuPrice != nil ? self.pickedPackage!.modifySkuPrice! : false //确定是否价格可选
-                    //设置self.model的package对象
-                    self.model!.packageModel = self.pickedPackage
-                    self.model!.packageModel?.startUseTime = DDCTools.date(from: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime))
-                    self.model?.specs = nil //清空规格
-                    //models的刷新设置
-                    self.models[DDCContractTextFieldType.spec.rawValue].text = ""
-                    self.models[DDCContractTextFieldType.spec.rawValue].isFill = false
-                    self.models[DDCContractTextFieldType.package.rawValue].text = self.pickedPackage?.name
-                    self.models[DDCContractTextFieldType.package.rawValue].isFill = true
-                    self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
-                    
-                    self.isPickedCustom = false  //默认不选择自选套餐
-                    
-                    if _pickedPackage.customSkuConfig == 1 {//选择自选套餐的情况
-                        self.isPickedCustom = true
-                        if self.customItems.count <= 0 { //没有加载过自选套餐时
-                            self.getCustomCourse()
-                            return
-                        } else { //已经有自选套餐数据时
-                            self.resignFirstResponder()
-                            self.collectionView.reloadData()
-                        }
-                    } else {
-                        self.getCourseSpec()
+                let _pickedPackage: DDCContractPackageModel = self.package[self.pickerView.selectedRow(inComponent: 0)]
+                self.pickedPackage = _pickedPackage
+                self.modifySkuPrice = self.pickedPackage!.modifySkuPrice != nil ? self.pickedPackage!.modifySkuPrice! : false //确定是否价格可选
+                //设置self.model的package对象
+                self.model!.packageModel = self.pickedPackage
+                self.model!.packageModel?.startUseTime = DDCTools.date(from: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime))
+                self.model?.specs = nil //清空规格
+                //models的刷新设置
+                self.models[DDCContractTextFieldType.spec.rawValue].text = ""
+                self.models[DDCContractTextFieldType.spec.rawValue].isFill = false
+                self.models[DDCContractTextFieldType.package.rawValue].text = self.pickedPackage?.name
+                self.models[DDCContractTextFieldType.package.rawValue].isFill = true
+                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+                
+                self.isPickedCustom = false  //默认不选择自选套餐
+                
+                if _pickedPackage.customSkuConfig == 1 {//选择自选套餐的情况
+                    self.isPickedCustom = true
+                    if self.customItems.count <= 0 { //没有加载过自选套餐时
+                        self.getCustomCourse()
+                        return
+                    } else { //已经有自选套餐数据时
+                        self.resignFirstResponder()
+                        self.collectionView.reloadData()
                     }
+                } else {
+                    self.getCourseSpec()
                 }
             }
         case DDCContractTextFieldType.spec.rawValue:
@@ -342,20 +341,18 @@ extension DDCAddContractInfoViewController {
                     return
                 }
                 self.checkBoxFilled = true
-                if let _spec: DDCContractPackageCategoryModel = self.specs[self.pickerView.selectedRow(inComponent: 0)] {
-                    self.model?.specs = _spec
-                    let endTime = (_spec != nil) ? _spec.validPeriod : 0
-                    let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-                    var components: DateComponents = DateComponents.init()
-                    components.setValue(endTime, for: .month)
-                    let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: model?.packageModel?.startUseTime))!
-                    self.model?.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
-                    self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
-                }
-                
+                let _spec: DDCContractPackageCategoryModel = self.specs[self.pickerView.selectedRow(inComponent: 0)]
+                self.model?.specs = _spec
+                let endTime = _spec.validPeriod != nil ? _spec.validPeriod : 0
+                let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+                var components: DateComponents = DateComponents.init()
+                components.setValue(endTime, for: .month)
+                let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: model?.packageModel?.startUseTime))!
+                self.model?.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
             }
         case DDCContractTextFieldType.rule.rawValue:
-            self.models[DDCContractTextFieldType.rule.rawValue].text = self.orderRule[self.pickerView.selectedRow(inComponent: 0)] as! String
+            self.models[DDCContractTextFieldType.rule.rawValue].text = (self.orderRule[self.pickerView.selectedRow(inComponent: 0)] as! String)
             self.models[DDCContractTextFieldType.rule.rawValue].isFill = true
         case DDCContractTextFieldType.startDate.rawValue:
             do {
@@ -384,15 +381,15 @@ extension DDCAddContractInfoViewController {
         self.collectionView.reloadData()
         self.resignFirstResponder()
     }
-   
+    
     override func forwardNextPage() {
         super.forwardNextPage()
         self.bottomBar.buttonArray![1].isEnabled = false
-
+        
         if self.isPickedCustom {
             self.model?.customItems = self.reorganizeCustomData()
         }
-
+        
         for index in 1...(self.models.count - 1) {
             let model: DDCContractInfoViewModel = self.models[index]
             if self.isCodeFilled , index == 1 {
@@ -405,7 +402,7 @@ extension DDCAddContractInfoViewController {
                 return
             }
         }
-
+        
         if (self.model?.contractPrice == nil) {
             self.model?.contractPrice = self.model?.specs?.costPrice ?? 0
         }
@@ -423,7 +420,7 @@ extension DDCAddContractInfoViewController {
             self.view.makeDDCToast(message: error, image: UIImage.init(named: "addCar_icon_fail")!)
         }
     }
-
+    
 }
 
 extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
@@ -470,7 +467,7 @@ extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
         var selectedItems: [DDCCourseModel] = Array()
         var totalcount: Int = 0
         let customItems: [DDCCourseModel] = self.customItems.map{($0.copy() as! DDCCourseModel) }
-
+        
         for item in customItems {
             if item.isSelected == true {
                 var attributes: [DDCCourseAttributeModel] = Array()

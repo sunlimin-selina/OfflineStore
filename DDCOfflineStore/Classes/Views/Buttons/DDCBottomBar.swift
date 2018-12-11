@@ -39,7 +39,7 @@ class DDCBottomBar: UIView {
         
         //只有一个的时候居中
         if self.buttonArray!.count == 1 {
-            let button: DDCBarButton  = self.buttonArray![0] as! DDCBarButton
+            let button: DDCBarButton  = self.buttonArray![0] 
             button.snp.makeConstraints({ (make) in
                 make.width.equalTo(kButtonWidth)
                 make.centerX.centerY.equalTo(self)
@@ -50,7 +50,7 @@ class DDCBottomBar: UIView {
             let count = (self.buttonArray?.count)! - 1
             
             for index in 0...count{
-                let button: DDCBarButton  = self.buttonArray![index] as! DDCBarButton
+                let button: DDCBarButton  = self.buttonArray![index]
                 if index == 0 {
                     button.snp.remakeConstraints({ (make) in
                         make.centerY.equalTo(self)
