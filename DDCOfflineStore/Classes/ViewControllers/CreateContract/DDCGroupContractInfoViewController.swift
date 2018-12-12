@@ -331,11 +331,7 @@ extension DDCGroupContractInfoViewController {
                 let startDate: Date = self.datePickerView.date
                 self.model?.packageModel?.startUseTime = DDCTools.dateToTimeInterval(from: startDate)
                 if self.model?.specs != nil {
-                    let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-                    var components: DateComponents = DateComponents.init()
-                    components.setValue(self.model?.specs?.validPeriod, for: .month)
-                    let maxDate: Date = calendar.date(byAdding: components, to: startDate)!
-                    self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+                    self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: DDCTools.calculateCalendar(startDate: startDate, validPeriod: (self.model?.specs?.validPeriod)!))
                     self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
                 }
                 self.collectionView.reloadData()
@@ -472,14 +468,10 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
             }
         }
         if selectedItems.count > 0 {
-            let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-            var components: DateComponents = DateComponents.init()
-            let validPeriod: Int = totalcount <= 48 ? totalcount : 48
-            components.setValue(validPeriod, for: .month)
             let packageModel: DDCContractPackageModel = DDCContractPackageModel()
+            let validPeriod: Int = totalcount <= 48 ? totalcount : 48
             let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())
-            let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: startTime))!
-            packageModel.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+            packageModel.endEffectiveTime = DDCTools.dateToTimeInterval(from: DDCTools.calculateCalendar(startDate: DDCTools.datetime(from: startTime), validPeriod: validPeriod))
             packageModel.startUseTime = startTime
             packageModel.packageType = .limited
             packageModel.upgradeLimit = self.upgradeLimit//限制跳过

@@ -119,6 +119,14 @@ extension DDCTools {
         let timeStamp: Int = Int(DDCTools.date(from: dateString))
         return timeStamp
     }
+    
+    static func calculateCalendar(startDate: Date, validPeriod: Int) -> Date{
+        let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
+        var components: DateComponents = DateComponents.init()
+        components.setValue(validPeriod, for: .month)
+        let maxDate: Date = calendar.date(byAdding: components, to: startDate)!
+        return maxDate
+    }
 }
 
 //MARK: -HUD

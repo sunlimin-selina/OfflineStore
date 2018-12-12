@@ -295,6 +295,12 @@ extension DDCAddContractInfoViewController: UITextFieldDelegate {
 
 // MARK: Action
 extension DDCAddContractInfoViewController {
+    
+    @objc override func cancel() {
+        self.collectionView.reloadData()
+        self.resignFirstResponder()
+    }
+    
     @objc override func done() {
         self.pickerView.resignFirstResponder()
         
@@ -305,34 +311,7 @@ extension DDCAddContractInfoViewController {
                 guard self.package.count > 0 else {
                     return
                 }
-                let _pickedPackage: DDCContractPackageModel = self.package[self.pickerView.selectedRow(inComponent: 0)]
-                self.pickedPackage = _pickedPackage
-                self.modifySkuPrice = self.pickedPackage!.modifySkuPrice != nil ? self.pickedPackage!.modifySkuPrice! : false //确定是否价格可选
-                //设置self.model的package对象
-                self.model!.packageModel = self.pickedPackage
-                self.model!.packageModel?.startUseTime = DDCTools.date(from: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime))
-                self.model?.specs = nil //清空规格
-                //models的刷新设置
-                self.models[DDCContractTextFieldType.spec.rawValue].text = ""
-                self.models[DDCContractTextFieldType.spec.rawValue].isFill = false
-                self.models[DDCContractTextFieldType.package.rawValue].text = self.pickedPackage?.name
-                self.models[DDCContractTextFieldType.package.rawValue].isFill = true
-                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
-                
-                self.isPickedCustom = false  //默认不选择自选套餐
-                
-                if _pickedPackage.customSkuConfig == 1 {//选择自选套餐的情况
-                    self.isPickedCustom = true
-                    if self.customItems.count <= 0 { //没有加载过自选套餐时
-                        self.getCustomCourse()
-                        return
-                    } else { //已经有自选套餐数据时
-                        self.resignFirstResponder()
-                        self.collectionView.reloadData()
-                    }
-                } else {
-                    self.getCourseSpec()
-                }
+                self.choosePackage(package: self.package[self.pickerView.selectedRow(inComponent: 0)])
             }
         case DDCContractTextFieldType.spec.rawValue:
             do {
@@ -341,15 +320,7 @@ extension DDCAddContractInfoViewController {
                     return
                 }
                 self.checkBoxFilled = true
-                let _spec: DDCContractPackageCategoryModel = self.specs[self.pickerView.selectedRow(inComponent: 0)]
-                self.model?.specs = _spec
-                let endTime = _spec.validPeriod != nil ? _spec.validPeriod : 0
-                let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-                var components: DateComponents = DateComponents.init()
-                components.setValue(endTime, for: .month)
-                let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: model?.packageModel?.startUseTime))!
-                self.model?.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
-                self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+                self.chooseSpec(spec: self.specs[self.pickerView.selectedRow(inComponent: 0)])
             }
         case DDCContractTextFieldType.rule.rawValue:
             self.models[DDCContractTextFieldType.rule.rawValue].text = (self.orderRule[self.pickerView.selectedRow(inComponent: 0)] as! String)
@@ -361,11 +332,7 @@ extension DDCAddContractInfoViewController {
                 self.models[DDCContractTextFieldType.startDate.rawValue].text = dateFormatter.string(from: startDate)
                 self.model?.packageModel?.startUseTime = DDCTools.dateToTimeInterval(from: startDate)
                 if self.model?.specs != nil {
-                    let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-                    var components: DateComponents = DateComponents.init()
-                    components.setValue(self.model?.specs?.validPeriod, for: .month)
-                    let maxDate: Date = calendar.date(byAdding: components, to: startDate)!
-                    self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+                    self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: DDCTools.calculateCalendar(startDate: startDate, validPeriod: (self.model?.specs?.validPeriod)!))
                     self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
                     self.collectionView.reloadData()
                 }
@@ -377,9 +344,37 @@ extension DDCAddContractInfoViewController {
         self.formFilled()
     }
     
-    @objc override func cancel() {
-        self.collectionView.reloadData()
-        self.resignFirstResponder()
+    func choosePackage(package: DDCContractPackageModel) {
+        self.pickedPackage = package
+        self.modifySkuPrice = self.pickedPackage!.modifySkuPrice != nil ? self.pickedPackage!.modifySkuPrice! : false //确定是否价格可选
+        //设置self.model的package对象
+        self.model!.packageModel = self.pickedPackage
+        self.model!.packageModel?.startUseTime = DDCTools.date(from: DDCAddContractInfoModelFactory.getStartDate(datetime: model?.packageModel?.startUseTime))
+        self.model?.specs = nil //清空规格
+        //models的刷新设置
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
+        self.isPickedCustom = false  //默认不选择自选套餐
+        
+        if package.customSkuConfig == 1 {//选择自选套餐的情况
+            self.isPickedCustom = true
+            if self.customItems.count <= 0 { //没有加载过自选套餐时
+                self.getCustomCourse()
+                return
+            } else { //已经有自选套餐数据时
+                self.resignFirstResponder()
+                self.collectionView.reloadData()
+                return
+            }
+        } else {
+            self.getCourseSpec()//获取规格数据
+        }
+    }
+
+    func chooseSpec(spec: DDCContractPackageCategoryModel) {
+        self.model?.specs = spec
+        //计算结束日期和有效期
+        self.model?.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: DDCTools.calculateCalendar(startDate: DDCTools.datetime(from: model?.packageModel?.startUseTime), validPeriod: (spec.validPeriod)!))
+        self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
     }
     
     override func forwardNextPage() {
@@ -486,12 +481,8 @@ extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
             }
         }
         if selectedItems.count > 0 {
-            let calendar: Calendar = Calendar.init(identifier: Calendar.Identifier.gregorian)
-            var components: DateComponents = DateComponents.init()
             let validPeriod: Int = totalcount <= 48 ? totalcount : 48
-            components.setValue(validPeriod, for: .month)
-            let maxDate: Date = calendar.date(byAdding: components, to: DDCTools.datetime(from: self.model?.packageModel?.startUseTime))!
-            self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: maxDate)
+            self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: DDCTools.calculateCalendar(startDate: DDCTools.datetime(from: self.model?.packageModel?.startUseTime), validPeriod: validPeriod))
             let spec: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel()
             spec.validPeriod = validPeriod
             self.model!.specs = spec
