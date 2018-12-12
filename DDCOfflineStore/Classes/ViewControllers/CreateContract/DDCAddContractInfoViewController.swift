@@ -301,9 +301,7 @@ extension DDCAddContractInfoViewController {
         self.resignFirstResponder()
     }
     
-    @objc override func done() {
-        self.pickerView.resignFirstResponder()
-        
+    @objc override func done() {        
         let section = self.currentTextField?.tag
         switch section {
         case DDCContractTextFieldType.package.rawValue:
@@ -462,7 +460,7 @@ extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
         var selectedItems: [DDCCourseModel] = Array()
         var totalcount: Int = 0
         let customItems: [DDCCourseModel] = self.customItems.map{($0.copy() as! DDCCourseModel) }
-        
+        //打包自选套餐数据
         for item in customItems {
             if item.isSelected == true {
                 var attributes: [DDCCourseAttributeModel] = Array()
@@ -481,11 +479,14 @@ extension DDCAddContractInfoViewController: DDCCheckBoxCellControlDelegate {
             }
         }
         if selectedItems.count > 0 {
+            //计算结束时间和有效期
             let validPeriod: Int = totalcount <= 48 ? totalcount : 48
             self.model!.packageModel!.endEffectiveTime = DDCTools.dateToTimeInterval(from: DDCTools.calculateCalendar(startDate: DDCTools.datetime(from: self.model?.packageModel?.startUseTime), validPeriod: validPeriod))
+            //设置规格
             let spec: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel()
             spec.validPeriod = validPeriod
             self.model!.specs = spec
+            //刷新列表
             self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
             self.models[DDCContractTextFieldType.spec.rawValue].isFill = true
             self.collectionView.reloadData()
