@@ -137,11 +137,18 @@ extension DDCEditClientInfoViewController {
     }
     
     func forwardNextPage() {
+        //禁止下一步按钮的重复点击
         self.bottomBar.buttonArray![0].isEnabled = false
-        var canForward: Bool = true
-        
+        //检查填写信息是否正确
+        self.verifyInformationIsCorrect()
+        //更新textfield填写的信息到model
+        self.updateTextFieldValue()
+        //注册用户信息
+        self.uploadUserInfo(model: self.model!)
+    }
+    
+    func verifyInformationIsCorrect () {
         for index in 0...(self.models.count - 1) {
-            canForward = false
             let model: DDCContractInfoViewModel = self.models[index]
             if model.isRequired! ,
                 (!model.isFill! && (model.text?.count)! <= 0) {
@@ -170,20 +177,12 @@ extension DDCEditClientInfoViewController {
                 }
             }
         }
-        
+        //介绍客户信息是否正确
         if !self.isRightReferral && (self.model?.customer?.isReferral)! && (self.model!.customer!.introduceName == nil || self.model!.customer!.introduceName!.count == 0) {
             self.bottomBar.buttonArray![0].isEnabled = true
             self.view.makeDDCToast(message: "介绍客户信息有误，请检查", image: UIImage.init(named: "addCar_icon_fail")!)
             return
         }
-        self.updateTextFieldValue()
-        
-        if !canForward {
-            self.bottomBar.buttonArray![0].isEnabled = true
-        }
-        
-        //注册用户信息
-        self.uploadUserInfo(model: self.model!)
     }
     
     func updateTextFieldValue() {

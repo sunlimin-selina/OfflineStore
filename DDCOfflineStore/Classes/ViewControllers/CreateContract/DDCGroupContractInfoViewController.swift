@@ -72,11 +72,7 @@ extension DDCGroupContractInfoViewController: UICollectionViewDataSource, UIColl
             if self.groupItems == nil {
                 return 0
             }
-            if section == 3 {
-                return (self.groupItems?.sampleCourses!.count)!
-            } else {
-                return (self.groupItems?.customCourses!.count)!
-            }
+            return section == 3 ? (self.groupItems?.sampleCourses!.count)! : (self.groupItems?.customCourses!.count)!
         }
         return 1
     }
@@ -291,14 +287,15 @@ extension DDCGroupContractInfoViewController {
     override func forwardNextPage() {
         super.forwardNextPage()
         self.bottomBar.buttonArray![1].isEnabled = false
-        
+        //加载model信息
         if self.model?.contractType == .groupRegular {
            self.model?.customItems = self.wrapItems(models: (self.groupItems?.customCourses)!)
         } else {
             self.model?.customItems = self.wrapItems(models: (self.groupItems?.sampleCourses)!)
         }
         self.models[DDCContractTextFieldType.rule.rawValue].isFill = true
-
+        
+        //检测信息填写是否完整
         for index in 1..<self.models.count {
             let model: DDCContractInfoViewModel = self.models[index]
             if self.model?.code != nil , index == 1 {
@@ -311,7 +308,7 @@ extension DDCGroupContractInfoViewController {
                 return
             }
         }
-        
+        //保存合同
         DDCTools.showHUD(view: self.view)
         DDCCreateContractAPIManager.saveContract(model: self.model!, successHandler: { (code) in
             DDCTools.hideHUD()
@@ -340,7 +337,6 @@ extension DDCGroupContractInfoViewController {
             return
         }
         self.collectionView.reloadData()
-        self.resignFirstResponder()
     }
     
     @objc override func cancel() {
@@ -449,7 +445,7 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
         var selectedItems: [DDCCourseModel] = Array()
         var totalcount: Int = 0
         let customItems: [DDCCourseModel] = models.map{($0.copy() as! DDCCourseModel) }
-
+        //打包自选套餐数据
         for item in customItems {
             if item.isSelected == true {
                 var attributes: [DDCCourseAttributeModel] = Array()
@@ -468,6 +464,7 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
             }
         }
         if selectedItems.count > 0 {
+            //计算时间和有效期
             let packageModel: DDCContractPackageModel = DDCContractPackageModel()
             let validPeriod: Int = totalcount <= 48 ? totalcount : 48
             let startTime: CLong = model?.packageModel?.startUseTime != nil ? (model?.packageModel?.startUseTime)! : DDCTools.dateToTimeInterval(from: Date())
@@ -479,14 +476,15 @@ extension DDCGroupContractInfoViewController: DDCCheckBoxCellControlDelegate {
                 packageModel.packageType = .category
             }
             self.model?.packageModel = packageModel
+            //设置规格
             let spec: DDCContractPackageCategoryModel = DDCContractPackageCategoryModel()
             spec.validPeriod = validPeriod
             self.model!.specs = spec
+            //刷新列表
             self.models[DDCContractTextFieldType.spec.rawValue].isFill = true
             self.models[DDCContractTextFieldType.package.rawValue].isFill = true
             self.models = DDCAddContractInfoModelFactory.integrateData(model: self.model, type:self.model!.courseType)
             self.collectionView.reloadData()
-
         }
         return selectedItems
     }
