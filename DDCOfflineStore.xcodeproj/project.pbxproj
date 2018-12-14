@@ -49,6 +49,7 @@
 		D3AE11182181A13100E61E08 /* DDCCreateContractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AE110C2181A13100E61E08 /* DDCCreateContractViewController.swift */; };
 		D3AE11192181A13100E61E08 /* DDCGroupContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AE110D2181A13100E61E08 /* DDCGroupContractInfoViewController.swift */; };
 		D3AE111D2181AB8200E61E08 /* DDCLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AE111C2181AB8200E61E08 /* DDCLineView.swift */; };
+		D3B5920A21C390C5003C753D /* DDCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B5920921C390C5003C753D /* DDCCollectionViewCell.swift */; };
 		D3B607C3217458E80086387B /* DDCContractModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607C2217458E80086387B /* DDCContractModel.swift */; };
 		D3B607C521745A3A0086387B /* DDCContractTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607C421745A3A0086387B /* DDCContractTypeModel.swift */; };
 		D3B607C721745A440086387B /* DDCStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B607C621745A440086387B /* DDCStoreModel.swift */; };
@@ -182,6 +183,7 @@
 		D3AE110C2181A13100E61E08 /* DDCCreateContractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCCreateContractViewController.swift; sourceTree = "<group>"; };
 		D3AE110D2181A13100E61E08 /* DDCGroupContractInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCGroupContractInfoViewController.swift; sourceTree = "<group>"; };
 		D3AE111C2181AB8200E61E08 /* DDCLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCLineView.swift; sourceTree = "<group>"; };
+		D3B5920921C390C5003C753D /* DDCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCollectionViewCell.swift; sourceTree = "<group>"; };
 		D3B607C2217458E80086387B /* DDCContractModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DDCContractModel.swift; sourceTree = "<group>"; };
 		D3B607C421745A3A0086387B /* DDCContractTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractTypeModel.swift; sourceTree = "<group>"; };
 		D3B607C621745A440086387B /* DDCStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCStoreModel.swift; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 				D3D2559A2199571B009C72B0 /* DDCContractDetailsCollectionViewCell.swift */,
 				D30D93A9219A9B2500F641F9 /* DDCCheckBoxCollectionViewCell.swift */,
 				D34E287B219D55FD0089D6E4 /* DDCCheckBoxWithTitleCollectionCell.swift */,
+				D3B5920921C390C5003C753D /* DDCCollectionViewCell.swift */,
 			);
 			path = CollectionViewCell;
 			sourceTree = "<group>";
@@ -948,6 +951,7 @@
 				D30D93A8219A975800F641F9 /* DDCCourseAttributeModel.swift in Sources */,
 				D3AE11192181A13100E61E08 /* DDCGroupContractInfoViewController.swift in Sources */,
 				D3BDD07821AE34770090E6F3 /* DDCCheckBoxCellControl.swift in Sources */,
+				D3B5920A21C390C5003C753D /* DDCCollectionViewCell.swift in Sources */,
 				D3E73D252182C10700A5073A /* DDCString.swift in Sources */,
 				D3B607FC217499C20086387B /* DDCSubmitButton.swift in Sources */,
 				D399684C21A913BA00A64AB4 /* UIViewController+NavigationProtocol.swift in Sources */,

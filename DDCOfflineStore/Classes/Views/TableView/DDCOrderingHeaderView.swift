@@ -53,11 +53,10 @@ class DDCOrderingHeaderView: UITableViewHeaderFooterView {
     @objc func buttonPressed(_ sender:UIButton) {
         sender.isSelected = true
         
-        weak var weakSelf = self
-        self.delegate?.headerView(self, callback: { (orderingType) in
+        self.delegate?.headerView(self, callback: { [unowned self] (orderingType) in
             sender.isSelected = false
             if let _orderingType = orderingType {
-                weakSelf!.orderingButton.setTitle(_orderingType, for: .normal)
+                self.orderingButton.setTitle(_orderingType, for: .normal)
             }
         })
     }

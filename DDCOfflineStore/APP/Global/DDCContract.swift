@@ -52,7 +52,12 @@ enum DDCRegularCoursePurchaseType {
 }
 
 class DDCContract: NSObject {
-
+    static var courseStatusArray: Array<String> {
+        get {
+            return ["全部","正式课","体验课","团体课"]
+        }
+    }
+    
     static var backendStatusArray: Array<String> {
         get {
             return ["全部","未支付","未生效","生效中","已结束","已取消","已核销","已解除"]

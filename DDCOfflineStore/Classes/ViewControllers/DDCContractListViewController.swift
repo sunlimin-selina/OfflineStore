@@ -329,16 +329,16 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
 
     func headerView(_ headerView: DDCOrderingHeaderView, callback: @escaping (String?) -> Void) {
         var popRect: CGRect = self.tableView .convert(headerView.frame, to: self.view)
-        popRect.origin.x = screen.width - 120
-        popRect.size.width = 100
-
+        popRect.origin.x = 0
+        popRect.size.width = screen.width
+        
         self.popOrderingMenu(rect: popRect, callback: callback)
     }
     
     func popOrderingMenu(rect: CGRect, callback: @escaping OrderingUpdateCallback) {
         
         // 弹窗让用户选择筛选
-        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(style: .plain, array: DDCContract.backendStatusArray) { [unowned self] (selected) in
+        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(array: DDCContract.backendStatusArray, rect: rect) { [unowned self] (selected) in
             if let _selected = selected {
                 // 获取status值
                 let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
@@ -355,11 +355,15 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
             
         }
         
-        if let popover = viewController.popoverPresentationController {
-            popover.sourceView = self.view
-            popover.sourceRect = rect
-            popover.permittedArrowDirections = .up
-        }
+        
+//        if let popover = viewController.popoverPresentationController {
+//            popover.sourceView = self.tableView
+//            popover.sourceRect = rect
+//            popover.permittedArrowDirections = []
+//            popover.backgroundColor = UIColor.white
+//        }
+        viewController.view.superview?.backgroundColor = UIColor.clear
+        viewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         self.present(viewController, animated: true, completion: nil)
     }
 }
