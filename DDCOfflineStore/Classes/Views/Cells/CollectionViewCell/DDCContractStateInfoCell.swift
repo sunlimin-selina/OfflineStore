@@ -27,16 +27,13 @@ class DDCContractStateInfoCell: UICollectionViewCell {
         return _dot
     }()
     
-    private lazy var titleButton: DDCButton = {
-        let _titleButton: DDCButton = DDCButton.init(type: .custom)
+    private lazy var titleButton: UIButton = {
+        let _titleButton: UIButton = UIButton.init(type: .custom)
         _titleButton.titleLabel!.numberOfLines = 0
         _titleButton.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .regular)
         _titleButton.setTitleColor(DDCColor.mainColor.red, for: .normal)
         _titleButton.setTitleColor(DDCColor.mainColor.red, for: .selected)
         _titleButton.setTitleColor(DDCColor.fontColor.gray, for: .disabled)
-        _titleButton.setFont(UIFont.systemFont(ofSize: 16.0, weight: .regular), for: .normal)
-        _titleButton.setFont(UIFont.systemFont(ofSize: 16.0, weight: .regular), for: .selected)
-        _titleButton.setFont(UIFont.systemFont(ofSize: 16.0, weight: .light), for: .disabled)
 
         return _titleButton
     }()

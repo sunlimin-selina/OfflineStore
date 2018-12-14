@@ -60,7 +60,7 @@ class DDCCreateContractViewController: UIViewController{
         didSet {
             let interval: UInt = progress!.rawValue - DDCContractProgress.editClientInformation.rawValue
             
-            for index in 0...(self.categorys.count - 1) {
+            for index in 0..<self.categorys.count {
                 let model: DDCContractStateInfoViewModel = self.categorys[index]
                 
                 if index < interval {
@@ -103,7 +103,7 @@ class DDCCreateContractViewController: UIViewController{
         var _categorys = Array<Any>()
         var interval: UInt = self.progress!.rawValue - DDCContractProgress.editClientInformation.rawValue
         
-        for index in 0...(titles.count - 1){
+        for index in 0..<titles.count{
             var model: DDCContractStateInfoViewModel = DDCContractStateInfoViewModel()
             model.title = titles[index]
             

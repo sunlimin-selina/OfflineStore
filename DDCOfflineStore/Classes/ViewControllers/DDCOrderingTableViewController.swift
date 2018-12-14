@@ -12,10 +12,28 @@ typealias SelectedBlock = (String?)->Void
 class DDCOrderingTableViewController: UIViewController {
     static let kFliterLeftMargin: CGFloat = 44.0
 
-    var optionalArray: Array<Any>? = Array()
     var block: SelectedBlock?
     var rect: CGRect?
 
+    var courseStatusModels: [DDCCheckBoxModel] = {
+        var models: [DDCCheckBoxModel] = Array()
+        for item in DDCContract.courseStatusArray {
+            let model: DDCCheckBoxModel = DDCCheckBoxModel.init(id: nil, title: item, isSelected: false)
+            models.append(model)
+        }
+        return models
+    }()
+    
+    lazy var optionalArray: [DDCCheckBoxModel] = {
+        var _optionalArray: [DDCCheckBoxModel] = Array()
+        for item in DDCContract.backendStatusArray {
+            let model: DDCCheckBoxModel = DDCCheckBoxModel.init(id: nil, title: item, isSelected: false)
+            _optionalArray.append(model)
+        }
+        return _optionalArray
+    }()
+
+    
     lazy var collectionView: UICollectionView! = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
         layout.itemSize = CGSize.init(width: 120, height: 45)
@@ -23,7 +41,7 @@ class DDCOrderingTableViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets.init(top: 20, left: margin, bottom: 10, right: margin)
         layout.minimumLineSpacing = 20
         layout.headerReferenceSize = CGSize.init(width: screen.width, height: 40)
-        layout.footerReferenceSize = CGSize.init(width: screen.width, height: 10)
+        layout.footerReferenceSize = CGSize.init(width: screen.width, height: 0.01)
 
         var _collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
         _collectionView.showsHorizontalScrollIndicator = false
@@ -43,7 +61,10 @@ class DDCOrderingTableViewController: UIViewController {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 0.0, y: 0.0, width: screen.width, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "重置", style: .normal, handler: {
         }))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "确认", style: .forbidden, handler: {
+        _bottomBar.addButton(button:DDCBarButton.init(title: "确认", style: .highlighted, handler: {
+            if let block = self.block {
+                block((self.optionalArray[0] as! String))
+            }
         }))
         _bottomBar.layer.borderColor = UIColor.clear.cgColor
         return _bottomBar
@@ -60,13 +81,10 @@ class DDCOrderingTableViewController: UIViewController {
         self.setupViewConstraints()
     }
     
-    init(array: Array<Any>?, rect: CGRect, block:@escaping SelectedBlock) {
+    init(rect: CGRect, block:@escaping SelectedBlock) {
         super.init(nibName: nil, bundle: nil)
-
-        self.optionalArray = array
         self.block = block
         self.rect = rect
-
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,15 +110,7 @@ class DDCOrderingTableViewController: UIViewController {
     }
 }
 
-// MARK: PopoverDelegate
-extension DDCOrderingTableViewController: UIPopoverPresentationControllerDelegate{
-    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        if let block = self.block {
-            block(nil)
-        }
-    }
-}
-
+// MARK: UICollectionViewDelegate
 extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
@@ -108,37 +118,60 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return DDCContract.courseStatusArray.count
+            return self.courseStatusModels.count
         }
-        return self.optionalArray!.count
+        return self.optionalArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCollectionViewCell.self), for: indexPath) as! DDCCollectionViewCell
-        
+        let model: DDCCheckBoxModel?
         if indexPath.section == 0 {
-            cell.titleLabel.text = (DDCContract.courseStatusArray[indexPath.item])
+            model = self.courseStatusModels[indexPath.item]
         } else {
-            cell.titleLabel.text = (self.optionalArray![indexPath.item] as! String)
+            model = self.optionalArray[indexPath.item]
         }
+        cell.labelButton.setTitle(model!.title, for: .normal)
+        cell.labelButton.isSelected = model!.isSelected
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: DDCSectionHeaderFooterView.self), for: indexPath) as! DDCSectionHeaderFooterView
-        view.titleLabel.text = indexPath.section == 0 ? "订单类型" : "订单状态"
-        view.titleLabel.font = UIFont.systemFont(ofSize: 22, weight: .medium)
-        view.titleLabel.textColor = DDCColor.fontColor.black
-        view.titleLabel.snp.updateConstraints { (make) in
-            make.width.equalTo(screen.width - DDCOrderingTableViewController.kFliterLeftMargin * 2)
+        
+        if kind == UICollectionView.elementKindSectionHeader {
+            view.titleLabel.text = indexPath.section == 0 ? "订单类型" : "订单状态"
+            view.titleLabel.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+            view.titleLabel.textColor = DDCColor.fontColor.black
+            view.titleLabel.snp.updateConstraints { (make) in
+                make.width.equalTo(screen.width - DDCOrderingTableViewController.kFliterLeftMargin * 2)
+            }
         }
         return view
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let block = self.block {
-            block((self.optionalArray![indexPath.item] as! String))
+        var item: DDCCheckBoxModel?
+
+        if indexPath.section == 0 {
+            for idx in 0..<self.courseStatusModels.count {
+                item = self.courseStatusModels[idx]
+                if indexPath.item == idx {
+                    item!.isSelected = true
+                } else {
+                    item!.isSelected = false
+                }
+            }
+        } else {
+            for idx in 0..<self.optionalArray.count {
+                item = self.optionalArray[idx]
+                if indexPath.item == idx {
+                    item!.isSelected = true
+                } else {
+                    item!.isSelected = false
+                }
+            }
         }
+        self.collectionView.reloadSections([indexPath.section])
     }
 }

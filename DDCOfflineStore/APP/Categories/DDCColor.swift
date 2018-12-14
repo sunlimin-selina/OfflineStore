@@ -10,9 +10,9 @@ import UIKit
 
 class DDCColor: UIColor {
     struct mainColor {
-        static let orange: UIColor = colorWithHex(RGB: 0xFF5D31)//主色调
+        static let orange: UIColor = colorWithHex(RGB: 0xFF5D31)
         static let black: UIColor = colorWithHex(RGB: 0x2F2F2F)
-        static let red: UIColor = colorWithHex(RGB: 0xFF5269)
+        static let red: UIColor = colorWithHex(RGB: 0xFF5269)//主色调
     }
 
     struct fontColor {
@@ -25,7 +25,8 @@ class DDCColor: UIColor {
     struct complementaryColor {
         static let borderColor: UIColor = colorWithHex(RGB: 0xC4C4C4) //边框色
         static let separatorColor: UIColor = colorWithHex(RGB: 0xEEEEEE) //分割线
-        static let backgroundColor: UIColor = colorWithHex(RGB: 0xF8F8F8)
+        static let backgroundColor: UIColor = colorWithHex(RGB: 0xF8F8F8)//浅灰背景色
+        static let lightRed: UIColor = colorWithHex(RGB: 0xFFF6F7)//浅红色
     }
     
     class func colorWithRGBA(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat = 1) -> UIColor {

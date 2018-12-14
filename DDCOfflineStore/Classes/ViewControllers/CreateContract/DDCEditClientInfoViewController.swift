@@ -148,7 +148,7 @@ extension DDCEditClientInfoViewController {
     }
     
     func verifyInformationIsCorrect () {
-        for index in 0...(self.models.count - 1) {
+        for index in 0..<self.models.count {
             let model: DDCContractInfoViewModel = self.models[index]
             if model.isRequired! ,
                 (!model.isFill! && (model.text?.count)! <= 0) {

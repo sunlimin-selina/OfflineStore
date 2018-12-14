@@ -54,7 +54,7 @@ class DDCProgressCollectionViewLayout: UICollectionViewFlowLayout {
 
         let numberOfItem: Int = (self.collectionView?.numberOfItems(inSection: 0))!
         
-        for index in 0...(numberOfItem - 1) {
+        for index in 0..<numberOfItem {
             var frame: CGRect?
             if (index % 2 == 0) // stage
             {

@@ -71,7 +71,7 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
         
         let moduleHeight: Int = 40
 
-        for idx in 0...(self.buttons.count - 1) {
+        for idx in 0..<self.buttons.count {
             let topMargin: CGFloat = CGFloat(5 * idx + moduleHeight * idx)
             let button: DDCCheckBox = self.buttons[idx]
             button.snp.makeConstraints({ (make) in
@@ -85,14 +85,14 @@ class DDCCheckBoxCollectionViewCell: UICollectionViewCell {
     
     func updateButtons(count: Int) {
         if self.buttons.count > 0 {
-            for idx in 0...(self.buttons.count - 1) {
+            for idx in 0..<self.buttons.count {
                 let button: DDCCheckBox = self.buttons[idx]
                 button.removeFromSuperview()
             }
             self.buttons.removeAll()
         }
         
-        for _ in 0...(count - 1) {
+        for _ in 0..<count {
             let button: DDCCheckBox = DDCCheckBox.init(frame: CGRect.zero)
             button.isUserInteractionEnabled = true
             self.buttons.append(button)

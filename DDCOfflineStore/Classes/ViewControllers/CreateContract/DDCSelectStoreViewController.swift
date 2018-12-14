@@ -253,7 +253,7 @@ extension DDCSelectStoreViewController: UICollectionViewDelegate {
 
         if indexPath.section == 1 {
             var store: DDCCheckBoxModel?
-            for index in 0...((self.stores?.count)! - 1) {
+            for index in 0..<(self.stores?.count)! {
                 store = self.stores![index]
                 if indexPath.row == index {
                     store!.isSelected = true
@@ -264,7 +264,7 @@ extension DDCSelectStoreViewController: UICollectionViewDelegate {
             }
         } else if indexPath.section == 2 {
             var type: DDCCheckBoxModel?
-            for index in 0...(self.saleTypes.count - 1) {
+            for index in 0..<self.saleTypes.count {
                 type = self.saleTypes[index]
                 if indexPath.row == index {
                     type!.isSelected = true

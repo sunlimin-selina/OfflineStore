@@ -51,7 +51,7 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
         
         let moduleHeight: Int = 40
         
-        for idx in 0...(self.buttons.count - 1) {
+        for idx in 0..<self.buttons.count {
             let topMargin: CGFloat = CGFloat(5 * idx + moduleHeight * idx)
             let button: DDCRadioWithImageView = self.buttons[idx]
             button.snp.makeConstraints({ (make) in
@@ -65,14 +65,14 @@ class DDCCheckBoxTableViewCell: UITableViewCell {
     
     func updateButtons(count: Int) {
         if self.buttons.count > 0 {
-            for idx in 0...(self.buttons.count - 1) {
+            for idx in 0..<self.buttons.count {
                 let button: DDCRadioWithImageView = self.buttons[idx]
                 button.removeFromSuperview()
             }
             self.buttons.removeAll()
         }
         
-        for _ in 0...(count - 1) {
+        for _ in 0..<count {
             let button: DDCRadioWithImageView = DDCRadioWithImageView.init(frame: CGRect.zero)
             self.buttons.append(button)
         }

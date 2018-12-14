@@ -287,7 +287,7 @@ extension DDCPaymentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 3 {
             var item: DDCCheckBoxModel?
-            for index in 0...((self.result.offline!.channels!.count) - 1) {
+            for index in 0..<self.result.offline!.channels!.count {
                 item = self.result.offline!.channels![index]
                 if indexPath.item == index {
                     self.bottomBar.buttonArray![0].isEnabled = true
@@ -312,7 +312,7 @@ extension DDCPaymentViewController {
         var offlineOptions: DDCCheckBoxModel?
         let index = (gesture.view?.tag)! - 1
         self.pickedSection = (gesture.view?.tag)!
-        for idx in 0...(self.payments.count - 1) {
+        for idx in 0..<self.payments.count {
             offlineOptions = self.payments[idx]
             if index == idx {
                 offlineOptions!.isSelected = true

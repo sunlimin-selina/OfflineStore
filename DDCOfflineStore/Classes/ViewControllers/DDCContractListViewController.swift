@@ -338,7 +338,7 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
     func popOrderingMenu(rect: CGRect, callback: @escaping OrderingUpdateCallback) {
         
         // 弹窗让用户选择筛选
-        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(array: DDCContract.backendStatusArray, rect: rect) { [unowned self] (selected) in
+        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(rect: rect) { [unowned self] (selected) in
             if let _selected = selected {
                 // 获取status值
                 let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
@@ -355,13 +355,6 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
             
         }
         
-        
-//        if let popover = viewController.popoverPresentationController {
-//            popover.sourceView = self.tableView
-//            popover.sourceRect = rect
-//            popover.permittedArrowDirections = []
-//            popover.backgroundColor = UIColor.white
-//        }
         viewController.view.superview?.backgroundColor = UIColor.clear
         viewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         self.present(viewController, animated: true, completion: nil)

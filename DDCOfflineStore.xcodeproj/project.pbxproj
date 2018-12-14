@@ -92,7 +92,7 @@
 		D3D2559D219962B2009C72B0 /* DDCAddContractInfoModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2559C219962B2009C72B0 /* DDCAddContractInfoModelFactory.swift */; };
 		D3D2559F21996BD7009C72B0 /* DDCContractHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2559E21996BD7009C72B0 /* DDCContractHeaderFooterView.swift */; };
 		D3D6718921806F8E0080B22B /* DDCContractDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6718821806F8E0080B22B /* DDCContractDetailsHeaderView.swift */; };
-		D3DAA4A72175A911003B0289 /* DDCButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4A62175A911003B0289 /* DDCButton.swift */; };
+		D3DAA4A72175A911003B0289 /* UIButton+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4A62175A911003B0289 /* UIButton+BackgroundColor.swift */; };
 		D3DAA4AB2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */; };
 		D3DD1D7821B670E2008E833C /* DDCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DD1D7721B670E2008E833C /* DDCTextField.swift */; };
 		D3DE3089217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DE3088217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift */; };
@@ -227,7 +227,7 @@
 		D3D2559C219962B2009C72B0 /* DDCAddContractInfoModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCAddContractInfoModelFactory.swift; sourceTree = "<group>"; };
 		D3D2559E21996BD7009C72B0 /* DDCContractHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractHeaderFooterView.swift; sourceTree = "<group>"; };
 		D3D6718821806F8E0080B22B /* DDCContractDetailsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsHeaderView.swift; sourceTree = "<group>"; };
-		D3DAA4A62175A911003B0289 /* DDCButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCButton.swift; sourceTree = "<group>"; };
+		D3DAA4A62175A911003B0289 /* UIButton+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+BackgroundColor.swift"; sourceTree = "<group>"; };
 		D3DAA4AA2175CC46003B0289 /* DDCSystemUserLoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCSystemUserLoginAPIManager.swift; sourceTree = "<group>"; };
 		D3DD1D7721B670E2008E833C /* DDCTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCTextField.swift; sourceTree = "<group>"; };
 		D3DE3088217EE8D2003D5B15 /* DDCContractDetailsViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCContractDetailsViewModelFactory.swift; sourceTree = "<group>"; };
@@ -424,7 +424,6 @@
 				D3B607EA217499C10086387B /* DDCBarButton.swift */,
 				D3B607EB217499C10086387B /* DDCCountButton.swift */,
 				D3B607EC217499C10086387B /* DDCSubmitButton.swift */,
-				D3DAA4A62175A911003B0289 /* DDCButton.swift */,
 				D30D93AB219AB93A00F641F9 /* DDCCheckBox.swift */,
 			);
 			path = Buttons;
@@ -505,6 +504,7 @@
 		D3CC64D7216F2C7C00383DD5 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				D3DAA4A62175A911003B0289 /* UIButton+BackgroundColor.swift */,
 				D3CC64D8216F2C7C00383DD5 /* UIView+DDCToast.swift */,
 				D3CC64D9216F2C7C00383DD5 /* DDCColor.swift */,
 				D3E73D242182C10700A5073A /* DDCString.swift */,
@@ -969,7 +969,7 @@
 				D3CC6506216F2C7C00383DD5 /* DDCKeyboardStateListener.swift in Sources */,
 				D3FDEB9F2186DC0500856581 /* DDCOffLineCourseModel.swift in Sources */,
 				D3CC6504216F2C7C00383DD5 /* DDCContract.swift in Sources */,
-				D3DAA4A72175A911003B0289 /* DDCButton.swift in Sources */,
+				D3DAA4A72175A911003B0289 /* UIButton+BackgroundColor.swift in Sources */,
 				D30D93AA219A9B2500F641F9 /* DDCCheckBoxCollectionViewCell.swift in Sources */,
 				D3B607FE217499C20086387B /* DDCInputFieldView.swift in Sources */,
 				D3B607CF21745A6D0086387B /* DDCCustomerModel.swift in Sources */,

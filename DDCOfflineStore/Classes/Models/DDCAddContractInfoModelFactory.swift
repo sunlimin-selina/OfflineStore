@@ -92,7 +92,7 @@ class DDCAddContractInfoModelFactory: NSObject {
     class func getRelationShop(array: [DDCStoreModel]?) -> String {
         var relationShop: String = ""
         if let shops = array {
-            for idx in 0...(shops.count - 1) {
+            for idx in 0..<shops.count {
                 let item = shops[idx]
                 relationShop = relationShop + item.shopName!
                 if idx != shops.count - 1 {

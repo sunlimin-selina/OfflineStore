@@ -11,20 +11,22 @@ import SnapKit
 
 class DDCCollectionViewCell: UICollectionViewCell {
     
-    public lazy var titleLabel: UILabel = {
-        let titleLabel: UILabel = UILabel()
-        titleLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
-        titleLabel.textColor = DDCColor.fontColor.gray
-        titleLabel.textAlignment = .center
-
-        return titleLabel
+    public lazy var labelButton: UIButton = {
+        let _labelButton: UIButton = UIButton()
+        _labelButton.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
+        _labelButton.titleLabel?.textAlignment = .center
+        _labelButton.isUserInteractionEnabled = false
+        _labelButton.setTitleColor(DDCColor.fontColor.gray, for: .normal)
+        _labelButton.setTitleColor(DDCColor.mainColor.red, for: .selected)
+        _labelButton.setBackgroundColor(DDCColor.complementaryColor.backgroundColor, for: .normal)
+        _labelButton.setBackgroundColor(DDCColor.complementaryColor.lightRed, for: .selected)
+        _labelButton.layer.cornerRadius = 20.0
+        return _labelButton
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.contentView.layer.cornerRadius = 20.0
-        self.contentView.backgroundColor = DDCColor.complementaryColor.backgroundColor
-        self.contentView.addSubview(self.titleLabel)
+        self.contentView.addSubview(self.labelButton)
         self.setupViewConstraints()
         self.clipsToBounds = true
     }
@@ -34,9 +36,9 @@ class DDCCollectionViewCell: UICollectionViewCell {
     }
     
     func setupViewConstraints() {
-        self.titleLabel.snp.makeConstraints({ (make) in
+        self.labelButton.snp.makeConstraints({ (make) in
             make.edges.equalTo(self.contentView)
         })
-
     }
+    
 }

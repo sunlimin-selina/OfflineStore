@@ -353,7 +353,7 @@ extension DDCGroupContractInfoViewController {
         } else {
             self.model?.contractType = .groupSample
         }
-        for idx in 0...(self.groupCourses.count - 1) {
+        for idx in 0..<self.groupCourses.count {
             course = self.groupCourses[idx]
             if index == idx {
                 course!.isSelected = true

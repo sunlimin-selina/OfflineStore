@@ -52,7 +52,7 @@ class DDCCheckBoxCellControl: NSObject {
         if let _attributes = model.attributes,
             (_attributes.count > 0 && model.isSelected) {
             self.cell!.buttonCount = _attributes.count
-            for index in 0...(self.cell!.buttons.count - 1) {
+            for index in 0..<self.cell!.buttons.count {
                 let view: DDCCheckBox = self.cell!.buttons[index]
                 view.button.isEnabled = true
                 view.button.tag = index + DDCCheckBoxCellControl.kCTag

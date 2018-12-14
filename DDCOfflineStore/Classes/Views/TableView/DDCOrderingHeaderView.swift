@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 typealias OrderingUpdateCallback = (String?)->Void
-
+//DDCContractStatus? ,DDCContractType
 class DDCOrderingHeaderView: UITableViewHeaderFooterView {
 
     var delegate: DDCOrderingHeaderViewDelegate?

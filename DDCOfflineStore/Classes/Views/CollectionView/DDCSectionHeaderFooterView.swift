@@ -32,4 +32,8 @@ class DDCSectionHeaderFooterView: UICollectionReusableView {
             make.centerX.top.bottom.equalTo(self)
         }
     }
+    
+    override func prepareForReuse() {
+        self.titleLabel.text = ""
+    }
 }
