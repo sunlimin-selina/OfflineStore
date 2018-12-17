@@ -31,7 +31,11 @@ class DDCOrderingTableViewController: UIViewController {
         }
         return _optionalArray
     }()
-
+    
+    lazy var backgroundView: UIView = {
+        let _view: UIView = UIView()
+        return _view
+    }()
     
     lazy var collectionView: UICollectionView! = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout.init()
@@ -74,15 +78,13 @@ class DDCOrderingTableViewController: UIViewController {
         return _bottomBar
     }()
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(self.backgroundView)
         self.view.addSubview(self.collectionView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
+        self.addGesture()
     }
     
     init(rect: CGRect, block:@escaping OrderingUpdateCallback) {
@@ -95,9 +97,18 @@ class DDCOrderingTableViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func addGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapBackground))
+        self.backgroundView.addGestureRecognizer(tapGesture)
+    }
+    
     private func setupViewConstraints() {
         let topMargin: CGFloat = (self.rect?.origin.y)! + (self.rect?.size.height)!
         let height: CGFloat = 394
+        
+        self.backgroundView.snp.makeConstraints { (make) in
+            make.edges.equalTo(self.view)
+        }
         
         self.collectionView.snp.makeConstraints { (make) in
             make.top.equalTo(topMargin)
@@ -127,6 +138,16 @@ class DDCOrderingTableViewController: UIViewController {
             }
         }
         return 0
+    }
+}
+
+
+// MARK: Action
+extension DDCOrderingTableViewController {
+    @objc func tapBackground() {
+        if let block = self.block {
+            block(nil, nil)
+        }
     }
 }
 

@@ -25,7 +25,7 @@ enum DDCCustomerType: Int , Codable{
 }
 
 enum DDCContractType: Int , Codable{
-    case none
+    case all
     case personalRegular //个人正式课
     case personalSample  //个人体验课
     case groupRegular  //团体正式课
