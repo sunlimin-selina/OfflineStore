@@ -37,7 +37,7 @@ class DDCContractDetailsViewModelFactory: NSObject {
         //订单编号
         let code: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "订单编号", describe: model.code)
         //订单状态
-        let modelStatus: UInt = model.tradeStatus!.rawValue
+        let modelStatus: Int = model.tradeStatus!.rawValue
         let statusModel: DDCStatusViewModel = DDCContract.statusPairings[modelStatus]!
         let status: DDCContractDetailsViewModel = DDCContractDetailsViewModel.init(title: "订单状态", describe: ((model.tradeStatus != .all) ? statusModel.title: ""), color: statusModel.color)
         //姓名

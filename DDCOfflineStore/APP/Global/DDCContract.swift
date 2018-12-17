@@ -7,7 +7,7 @@
 //
 import Foundation
 
-enum DDCContractStatus: UInt , Codable{
+enum DDCContractStatus: Int , Codable{
     case all
     case inComplete //未完成    -> 1:未支付
     case ineffective //未生效   -> 2:已经支付未开始预定
@@ -24,7 +24,7 @@ enum DDCCustomerType: Int , Codable{
     case potential //潜在客户
 }
 
-enum DDCContractType: UInt , Codable{
+enum DDCContractType: Int , Codable{
     case none
     case personalRegular //个人正式课
     case personalSample  //个人体验课
@@ -82,7 +82,7 @@ class DDCContract: NSObject {
         }
     }
 
-    static var statusPairings: Dictionary<UInt, DDCStatusViewModel> {
+    static var statusPairings: Dictionary<Int, DDCStatusViewModel> {
         get {
             return [DDCContractStatus.ineffective.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xF7B761), title: "待生效", imageName: "icon_contractdetails_daishengxiao"),DDCContractStatus.used.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xC4C4C4), title: "已核销", imageName: "icon_contractdetails_yihexiao"),DDCContractStatus.inComplete.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xFF7F55), title: "未支付", imageName: "icon_contractdetails_daizhifu"),DDCContractStatus.effective.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x3AC09F), title: "生效中", imageName: "icon_contractdetails_shengxiaozhong"),DDCContractStatus.completed.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0x474747), title: "已结束", imageName: "icon_contractdetails_yijieshu"),DDCContractStatus.revoked.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xC4C4C4), title: "已解除", imageName: "icon_contractdetails_yijiechu"),DDCContractStatus.cancel.rawValue: DDCStatusViewModel.init(color: DDCColor.colorWithHex(RGB: 0xC4C4C4), title: "已取消", imageName: "icon_contractdetails_yiquxiao")]
         }

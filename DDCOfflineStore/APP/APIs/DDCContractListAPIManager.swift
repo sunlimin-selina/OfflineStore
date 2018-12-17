@@ -11,7 +11,7 @@ import Alamofire
 import ObjectMapper
 
 class DDCContractListAPIManager: NSObject {
-    class func getContractList(page: UInt,status:UInt, type:UInt ,successHandler: @escaping (_ result: [DDCContractListModel]) -> (), failHandler: @escaping (_ error: String) -> ()) {
+    class func getContractList(page: UInt,status:Int, type:Int ,successHandler: @escaping (_ result: [DDCContractListModel]) -> (), failHandler: @escaping (_ error: String) -> ()) {
         let url:String = DDC_Current_Url.appendingFormat("/contract/list.do")
         let uid:String = String(format:"%d",(DDCStore.sharedStore().user?.id)!)
 

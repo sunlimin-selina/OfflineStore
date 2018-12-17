@@ -326,8 +326,7 @@ extension DDCContractListViewController {
 }
 
 extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
-
-    func headerView(_ headerView: DDCOrderingHeaderView, callback: @escaping (String?) -> Void) {
+    func headerView(_ headerView: DDCOrderingHeaderView, callback: @escaping OrderingUpdateCallback) {
         var popRect: CGRect = self.tableView .convert(headerView.frame, to: self.view)
         popRect.origin.x = 0
         popRect.size.width = screen.width
@@ -338,22 +337,14 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
     func popOrderingMenu(rect: CGRect, callback: @escaping OrderingUpdateCallback) {
         
         // 弹窗让用户选择筛选
-        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(rect: rect) { [unowned self] (selected) in
-            if let _selected = selected {
-                // 获取status值
-                let statusArray: NSArray = DDCContract.backendStatusArray as NSArray
-                let status: DDCContractStatus = DDCContractStatus(rawValue: UInt(statusArray.index(of: _selected as Any)))!
-                let type: DDCContractType = .none//DDCContractType(rawValue: UInt(statusArray.index(of: _selected as Any)))!
-
+        let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(rect: rect, block: { [unowned self] (status, type) in
                 // 关掉弹窗
                 self.dismiss(animated: true, completion: {
                     self.loadContractList(status: status, type: type, completionHandler: { (success) in
-                        callback(selected)
+                        callback(status,type)
                     })
                 })
-            }
-            
-        }
+        })
         
         viewController.view.superview?.backgroundColor = UIColor.clear
         viewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext

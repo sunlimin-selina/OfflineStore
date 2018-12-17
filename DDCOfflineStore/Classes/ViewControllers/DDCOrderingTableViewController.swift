@@ -7,15 +7,14 @@
 //
 
 import UIKit
-typealias SelectedBlock = (String?)->Void
 
 class DDCOrderingTableViewController: UIViewController {
     static let kFliterLeftMargin: CGFloat = 44.0
 
-    var block: SelectedBlock?
+    var block: OrderingUpdateCallback?
     var rect: CGRect?
 
-    var courseStatusModels: [DDCCheckBoxModel] = {
+    var courseTypeModels: [DDCCheckBoxModel] = {
         var models: [DDCCheckBoxModel] = Array()
         for item in DDCContract.courseStatusArray {
             let model: DDCCheckBoxModel = DDCCheckBoxModel.init(id: nil, title: item, isSelected: false)
@@ -24,7 +23,7 @@ class DDCOrderingTableViewController: UIViewController {
         return models
     }()
     
-    lazy var courseTypeModels: [DDCCheckBoxModel] = {
+    lazy var courseStatusModels: [DDCCheckBoxModel] = {
         var _optionalArray: [DDCCheckBoxModel] = Array()
         for item in DDCContract.backendStatusArray {
             let model: DDCCheckBoxModel = DDCCheckBoxModel.init(id: nil, title: item, isSelected: false)
@@ -60,13 +59,15 @@ class DDCOrderingTableViewController: UIViewController {
     lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 0.0, y: 0.0, width: screen.width, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "重置", style: .normal, handler: {
-            self.resetModel(model: self.courseStatusModels)
             self.resetModel(model: self.courseTypeModels)
+            self.resetModel(model: self.courseStatusModels)
             self.collectionView.reloadSections([0,1])
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "确认", style: .highlighted, handler: {
             if let block = self.block {
-                block((self.courseTypeModels[0] as! String))
+                let status: DDCContractStatus = DDCContractStatus(rawValue: self.getSelectedIndex(model: self.courseStatusModels))!
+                let type: DDCContractType = DDCContractType(rawValue: self.getSelectedIndex(model: self.courseTypeModels))!
+                block(status, type)
             }
         }))
         _bottomBar.layer.borderColor = UIColor.clear.cgColor
@@ -84,7 +85,7 @@ class DDCOrderingTableViewController: UIViewController {
         self.setupViewConstraints()
     }
     
-    init(rect: CGRect, block:@escaping SelectedBlock) {
+    init(rect: CGRect, block:@escaping OrderingUpdateCallback) {
         super.init(nibName: nil, bundle: nil)
         self.block = block
         self.rect = rect
@@ -117,6 +118,16 @@ class DDCOrderingTableViewController: UIViewController {
             item.isSelected = false
         }
     }
+    
+    func getSelectedIndex(model: [DDCCheckBoxModel]) -> Int {
+        for idx in 0..<model.count {
+            let item = model[idx]
+            if item.isSelected {
+                return idx
+            }
+        }
+        return 0
+    }
 }
 
 // MARK: UICollectionViewDelegate
@@ -127,18 +138,18 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return self.courseStatusModels.count
+            return self.courseTypeModels.count
         }
-        return self.courseTypeModels.count
+        return self.courseStatusModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: DDCCollectionViewCell.self), for: indexPath) as! DDCCollectionViewCell
         let model: DDCCheckBoxModel?
         if indexPath.section == 0 {
-            model = self.courseStatusModels[indexPath.item]
-        } else {
             model = self.courseTypeModels[indexPath.item]
+        } else {
+            model = self.courseStatusModels[indexPath.item]
         }
         cell.labelButton.setTitle(model!.title, for: .normal)
         cell.labelButton.isSelected = model!.isSelected
@@ -163,8 +174,8 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
         var item: DDCCheckBoxModel?
 
         if indexPath.section == 0 {
-            for idx in 0..<self.courseStatusModels.count {
-                item = self.courseStatusModels[idx]
+            for idx in 0..<self.courseTypeModels.count {
+                item = self.courseTypeModels[idx]
                 if indexPath.item == idx {
                     item!.isSelected = true
                 } else {
@@ -172,8 +183,8 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
                 }
             }
         } else {
-            for idx in 0..<self.courseTypeModels.count {
-                item = self.courseTypeModels[idx]
+            for idx in 0..<self.courseStatusModels.count {
+                item = self.courseStatusModels[idx]
                 if indexPath.item == idx {
                     item!.isSelected = true
                 } else {

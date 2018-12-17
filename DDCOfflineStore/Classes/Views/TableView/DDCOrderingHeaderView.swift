@@ -9,8 +9,8 @@
 import UIKit
 import SnapKit
 
-typealias OrderingUpdateCallback = (String?)->Void
-//DDCContractStatus? ,DDCContractType
+typealias OrderingUpdateCallback = (DDCContractStatus, DDCContractType)->Void
+
 class DDCOrderingHeaderView: UITableViewHeaderFooterView {
 
     var delegate: DDCOrderingHeaderViewDelegate?
@@ -53,11 +53,9 @@ class DDCOrderingHeaderView: UITableViewHeaderFooterView {
     @objc func buttonPressed(_ sender:UIButton) {
         sender.isSelected = true
         
-        self.delegate?.headerView(self, callback: { [unowned self] (orderingType) in
+        self.delegate?.headerView(self, callback: { [unowned self] (orderingStatus, orderingType) in
             sender.isSelected = false
-            if let _orderingType = orderingType {
-                self.orderingButton.setTitle(_orderingType, for: .normal)
-            }
+            self.orderingButton.setTitle(DDCContract.backendStatusArray[(orderingStatus.rawValue)], for: .normal)
         })
     }
     
