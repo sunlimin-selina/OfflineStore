@@ -24,7 +24,7 @@ class DDCOrderingTableViewController: UIViewController {
         return models
     }()
     
-    lazy var optionalArray: [DDCCheckBoxModel] = {
+    lazy var courseTypeModels: [DDCCheckBoxModel] = {
         var _optionalArray: [DDCCheckBoxModel] = Array()
         for item in DDCContract.backendStatusArray {
             let model: DDCCheckBoxModel = DDCCheckBoxModel.init(id: nil, title: item, isSelected: false)
@@ -60,10 +60,13 @@ class DDCOrderingTableViewController: UIViewController {
     lazy var bottomBar: DDCBottomBar = {
         let _bottomBar: DDCBottomBar = DDCBottomBar.init(frame: CGRect.init(x: 0.0, y: 0.0, width: screen.width, height: DDCAppConfig.kBarHeight))
         _bottomBar.addButton(button:DDCBarButton.init(title: "重置", style: .normal, handler: {
+            self.resetModel(model: self.courseStatusModels)
+            self.resetModel(model: self.courseTypeModels)
+            self.collectionView.reloadSections([0,1])
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "确认", style: .highlighted, handler: {
             if let block = self.block {
-                block((self.optionalArray[0] as! String))
+                block((self.courseTypeModels[0] as! String))
             }
         }))
         _bottomBar.layer.borderColor = UIColor.clear.cgColor
@@ -108,6 +111,12 @@ class DDCOrderingTableViewController: UIViewController {
         })
         
     }
+    
+    func resetModel(model: [DDCCheckBoxModel]) {
+        for item in model {
+            item.isSelected = false
+        }
+    }
 }
 
 // MARK: UICollectionViewDelegate
@@ -120,7 +129,7 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
         if section == 0 {
             return self.courseStatusModels.count
         }
-        return self.optionalArray.count
+        return self.courseTypeModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -129,7 +138,7 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
         if indexPath.section == 0 {
             model = self.courseStatusModels[indexPath.item]
         } else {
-            model = self.optionalArray[indexPath.item]
+            model = self.courseTypeModels[indexPath.item]
         }
         cell.labelButton.setTitle(model!.title, for: .normal)
         cell.labelButton.isSelected = model!.isSelected
@@ -163,8 +172,8 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
                 }
             }
         } else {
-            for idx in 0..<self.optionalArray.count {
-                item = self.optionalArray[idx]
+            for idx in 0..<self.courseTypeModels.count {
+                item = self.courseTypeModels[idx]
                 if indexPath.item == idx {
                     item!.isSelected = true
                 } else {
