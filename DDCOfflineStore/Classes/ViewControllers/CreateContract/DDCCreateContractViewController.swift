@@ -49,12 +49,20 @@ class DDCCreateContractViewController: UIViewController{
         return _contractViewController
     }()
     
+    lazy var confirmOrderViewController: DDCConfirmOrderViewController = {
+        let _confirmOrderViewController: DDCConfirmOrderViewController = DDCConfirmOrderViewController()
+        _confirmOrderViewController.index = 3
+        _confirmOrderViewController.delegate = self
+        return _confirmOrderViewController
+    }()
+    
     lazy var paymentViewController: DDCPaymentViewController = {
         let _paymentViewController: DDCPaymentViewController = DDCPaymentViewController()
-        _paymentViewController.index = 3
+        _paymentViewController.index = 4
         _paymentViewController.delegate = self
         return _paymentViewController
     }()
+    
     
     var progress: DDCContractProgress? {
         didSet {
@@ -86,11 +94,12 @@ class DDCCreateContractViewController: UIViewController{
                 subviewControllers.append(weakSelf!.paymentViewController)
             } else {
                 
-                subviewControllers.append(weakSelf!.customerViewController)
-                subviewControllers.append(weakSelf!.storeViewController)
-                subviewControllers.append(weakSelf!.contractViewController)
-                subviewControllers.append(weakSelf!.paymentViewController)
-                subviewControllers.append(weakSelf!.groupContractViewController)
+//                subviewControllers.append(weakSelf!.customerViewController)
+//                subviewControllers.append(weakSelf!.storeViewController)
+//                subviewControllers.append(weakSelf!.contractViewController)
+                subviewControllers.append(weakSelf!.confirmOrderViewController)
+//                subviewControllers.append(weakSelf!.paymentViewController)
+//                subviewControllers.append(weakSelf!.groupContractViewController)
                 
             }
             return subviewControllers
@@ -98,7 +107,7 @@ class DDCCreateContractViewController: UIViewController{
     }
     
     lazy var categorys: Array<DDCContractStateInfoViewModel> = {
-        var titles: Array = ["客户信息", "门店及类型", "订单信息", "创建成功"]
+        var titles: Array = ["客户信息", "门店及类型", "订单信息", "订单确认", "创建成功"]
         
         var _categorys = Array<Any>()
         var interval: UInt = self.progress!.rawValue - DDCContractProgress.editClientInformation.rawValue

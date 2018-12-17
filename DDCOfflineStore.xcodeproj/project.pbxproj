@@ -17,6 +17,7 @@
 		D30D93AA219A9B2500F641F9 /* DDCCheckBoxCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30D93A9219A9B2500F641F9 /* DDCCheckBoxCollectionViewCell.swift */; };
 		D30D93AC219AB93A00F641F9 /* DDCCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30D93AB219AB93A00F641F9 /* DDCCheckBox.swift */; };
 		D30D93AE219ADF0900F641F9 /* DDCPaymentOptionsAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30D93AD219ADF0900F641F9 /* DDCPaymentOptionsAPIManager.swift */; };
+		D310A6EB21C76D9D00FE6B93 /* DDCConfirmOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D310A6EA21C76D9D00FE6B93 /* DDCConfirmOrderViewController.swift */; };
 		D3184D1F218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D1E218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift */; };
 		D3184D2121901767006AAC2D /* DDCCheckBoxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */; };
 		D3184D2421901843006AAC2D /* DDCRadioWithImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3184D2321901843006AAC2D /* DDCRadioWithImageView.swift */; };
@@ -151,6 +152,7 @@
 		D30D93A9219A9B2500F641F9 /* DDCCheckBoxCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxCollectionViewCell.swift; sourceTree = "<group>"; };
 		D30D93AB219AB93A00F641F9 /* DDCCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBox.swift; sourceTree = "<group>"; };
 		D30D93AD219ADF0900F641F9 /* DDCPaymentOptionsAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCPaymentOptionsAPIManager.swift; sourceTree = "<group>"; };
+		D310A6EA21C76D9D00FE6B93 /* DDCConfirmOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCConfirmOrderViewController.swift; sourceTree = "<group>"; };
 		D3184D1E218D64CD006AAC2D /* DDCStoreAndContractTypeAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCStoreAndContractTypeAPIManager.swift; sourceTree = "<group>"; };
 		D3184D2021901767006AAC2D /* DDCCheckBoxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCCheckBoxTableViewCell.swift; sourceTree = "<group>"; };
 		D3184D2321901843006AAC2D /* DDCRadioWithImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDCRadioWithImageView.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				D34E2881219D81350089D6E4 /* DDCAddContractInfoViewController.swift */,
 				D3AE110D2181A13100E61E08 /* DDCGroupContractInfoViewController.swift */,
 				D3F6D46121A7FA5C00F57A34 /* DDCContractInfoViewController.swift */,
+				D310A6EA21C76D9D00FE6B93 /* DDCConfirmOrderViewController.swift */,
 				D3AE110B2181A13100E61E08 /* DDCPaymentViewController.swift */,
 			);
 			path = CreateContract;
@@ -907,6 +910,7 @@
 				D32D2FE821786A0600CA3E42 /* DDCOffLineStoreModel.swift in Sources */,
 				D3AE11132181A13100E61E08 /* EnviromentSwitchViewController.swift in Sources */,
 				D3BBBBF0217710B600FC5E23 /* DDCContractInfoModel.swift in Sources */,
+				D310A6EB21C76D9D00FE6B93 /* DDCConfirmOrderViewController.swift in Sources */,
 				D30061F0219ED420007F1EE0 /* DDCPaymentQRCodeImageCollectionViewCell.swift in Sources */,
 				D3E73D2D218302C100A5073A /* DDCContractStateLineCollectionViewCell.swift in Sources */,
 				D3B607F5217499C20086387B /* DDCLoadingView.swift in Sources */,
