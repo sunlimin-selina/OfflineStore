@@ -64,8 +64,8 @@ class DDCContractListViewController: UIViewController {
     private var contractArray: NSMutableArray? = NSMutableArray()
     private var orderingUpdate: ((_ newOrdering: String) -> Void)?
     private var page: UInt = 0
-    private var status: DDCContractStatus = .all
-    private var type: DDCContractType = .none
+    private var status: DDCContractStatus?
+    private var type: DDCContractType?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -96,6 +96,8 @@ class DDCContractListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.status = .all
+        self.type = .all
         self.view.addSubview(self.contractTableHeaderView)
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.bottomBar)
@@ -143,6 +145,8 @@ extension DDCContractListViewController {
             DDCStore.sharedStore().user = nil
             UserDefaults.standard.removeObject(forKey: "DDCUser")
             UserDefaults.standard.synchronize()
+            DDCOrderingTableViewController.courseType = nil
+            DDCOrderingTableViewController.courseStatus = nil
             self.login()
         }))
         alertController.addAction(UIAlertAction.init(title: "否", style: .default, handler: nil))
@@ -199,20 +203,10 @@ extension DDCContractListViewController {
     }
     
     func login() {
-        var blockStatus = status
-        
-        guard self.user != nil else {
-            DDCLoginRegisterViewController.login(targetController: self) { [unowned self] (success) in
-                if success {
-                    self.dismiss(animated: true, completion: {
-                        blockStatus = .all
-                        // 请求后台
-                        self.loadContractList(status: blockStatus, type: self.type, completionHandler: { (success) in
-                        })
-                    })
-                }
-            }
-            return
+        self.status = .all
+        self.type = .all
+        if self.user == nil {
+            DDCLoginRegisterViewController.login(targetController: self)
         }
     }
 }
@@ -267,7 +261,7 @@ extension DDCContractListViewController: UITableViewDataSource , UITableViewDele
 // MARK: API
 extension DDCContractListViewController {
     @objc func getContractList() {
-        self.loadContractList(status: self.status, type: self.type, completionHandler: nil)
+        self.loadContractList(status: self.status!, type: self.type!, completionHandler: nil)
     }
     
     func loadContractList(status: DDCContractStatus, type:DDCContractType, completionHandler:((_ success: Bool) -> Void)?) {
@@ -340,15 +334,16 @@ extension DDCContractListViewController :DDCOrderingHeaderViewDelegate {
         let viewController: DDCOrderingTableViewController = DDCOrderingTableViewController.init(rect: rect, block: { [unowned self] (status, type) in
                 // 关掉弹窗
                 self.dismiss(animated: true, completion: {
-                    self.loadContractList(status: status, type: type, completionHandler: { (success) in
-                        callback(status,type)
-                    })
+                    callback(status,type)
+                    if let _status = status, let _type = type {
+                        self.loadContractList(status: _status, type: _type, completionHandler: nil)
+                    }
                 })
         })
         
         viewController.view.superview?.backgroundColor = UIColor.clear
         viewController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-        self.present(viewController, animated: true, completion: nil)
+        self.present(viewController, animated: false, completion: nil)
     }
 }
 

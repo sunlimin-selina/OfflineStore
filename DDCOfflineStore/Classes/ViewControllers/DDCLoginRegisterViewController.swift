@@ -35,7 +35,7 @@ class DDCLoginRegisterViewController: UIViewController {
         return _inputFieldView
     }()
     
-    public var successHandler: ((_ success: Bool) -> Void)?
+//    public var successHandler: ((_ success: Bool) -> Void)?
     
     private var loginState: Bool?
     private var userNameValidated: Bool = false
@@ -106,9 +106,8 @@ class DDCLoginRegisterViewController: UIViewController {
         
     }
 
-    class func login(targetController: UIViewController, successHandler:@escaping ((_ success: Bool) -> Void)){
+    class func login(targetController: UIViewController){
         let loginViewController: DDCLoginRegisterViewController = DDCLoginRegisterViewController()
-        loginViewController.successHandler = successHandler
         
         let loginNavigationController: UINavigationController = UINavigationController.init(rootViewController: loginViewController)
         loginNavigationController.modalPresentationStyle = .fullScreen
@@ -193,7 +192,7 @@ extension DDCLoginRegisterViewController {
         DDCSystemUserLoginAPIManager.login(username: username, password: password, successHandler: { [unowned self] (user) in
             DDCStore.sharedStore().user = user
             DDCTools.hideHUD()
-            self.successHandler!(true)
+            self.dismiss(animated: true, completion: nil)
         }) { [unowned self] (error) in
             self.submitButton.isEnabled = true
             DDCTools.hideHUD()

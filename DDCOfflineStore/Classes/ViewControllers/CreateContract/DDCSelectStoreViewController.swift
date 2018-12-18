@@ -84,7 +84,6 @@ extension DDCSelectStoreViewController {
     }
     
     func forwardNextPage() {
-
         self.model!.currentStore = (self.selectedStore as! DDCStoreModel)
         self.model!.courseType = DDCCourseType(rawValue: self.selectedType!)!
         if self.model!.courseType == .regular {

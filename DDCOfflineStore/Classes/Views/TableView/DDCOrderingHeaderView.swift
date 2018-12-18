@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-typealias OrderingUpdateCallback = (DDCContractStatus, DDCContractType)->Void
+typealias OrderingUpdateCallback = (DDCContractStatus?, DDCContractType?)->Void
 
 class DDCOrderingHeaderView: UITableViewHeaderFooterView {
 
@@ -55,7 +55,11 @@ class DDCOrderingHeaderView: UITableViewHeaderFooterView {
         
         self.delegate?.headerView(self, callback: { [unowned self] (orderingStatus, orderingType) in
             sender.isSelected = false
-            self.orderingButton.setTitle(DDCContract.backendStatusArray[(orderingStatus.rawValue)], for: .normal)
+            if orderingStatus != nil {
+                self.orderingButton.setTitleColor(DDCColor.mainColor.red, for: .normal)
+            } else {
+                self.orderingButton.setTitleColor(DDCColor.fontColor.black, for: .normal)
+            }
         })
     }
     
