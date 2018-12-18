@@ -27,6 +27,7 @@ class DDCOrderingHeaderView: UITableViewHeaderFooterView {
         var _orderingButton = UIButton.init(type: .custom)
         _orderingButton.setTitleColor(UIColor.black, for: .normal)
         _orderingButton.titleLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .medium)
+        _orderingButton.setTitle("筛选", for: .normal)
         _orderingButton.setImage(UIImage.init(named: "arrowIconDown"), for: .normal)
         _orderingButton.setImage(UIImage.init(named: "arrowIconUp"), for: .selected)
         _orderingButton.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
@@ -54,8 +55,10 @@ class DDCOrderingHeaderView: UITableViewHeaderFooterView {
         
         self.delegate?.headerView(self, callback: { [unowned self] (orderingStatus, orderingType) in
             sender.isSelected = false
-            if let orderingStatus = orderingStatus {
-                self.orderingButton.setTitle(DDCContract.backendStatusArray[(orderingStatus.rawValue)], for: .normal)
+            if orderingStatus != nil {
+                self.orderingButton.setTitleColor(DDCColor.mainColor.red, for: .normal)
+            } else {
+                self.orderingButton.setTitleColor(DDCColor.fontColor.black, for: .normal)
             }
         })
     }

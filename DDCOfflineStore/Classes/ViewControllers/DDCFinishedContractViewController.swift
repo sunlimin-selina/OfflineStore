@@ -20,6 +20,8 @@ class DDCFinishedContractViewController: UIViewController {
         }))
         _bottomBar.addButton(button:DDCBarButton.init(title: "完成", style: .highlighted, handler: {
             [unowned self] in
+            DDCOrderingTableViewController.courseType = nil
+            DDCOrderingTableViewController.courseStatus = nil
             for viewController in (self.navigationController?.children)! {
                 if viewController == self.navigationController?.children[0] {
                     self.navigationController?.popToViewController(viewController, animated: true)

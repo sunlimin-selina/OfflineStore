@@ -16,7 +16,7 @@ class DDCCollectionViewCell: UICollectionViewCell {
         _labelButton.titleLabel?.font = UIFont.systemFont(ofSize: 20.0, weight: .regular)
         _labelButton.titleLabel?.textAlignment = .center
         _labelButton.isUserInteractionEnabled = false
-        _labelButton.setTitleColor(DDCColor.fontColor.gray, for: .normal)
+        _labelButton.setTitleColor(DDCColor.fontColor.black, for: .normal)
         _labelButton.setTitleColor(DDCColor.mainColor.red, for: .selected)
         _labelButton.setBackgroundColor(DDCColor.complementaryColor.backgroundColor, for: .normal)
         _labelButton.setBackgroundColor(DDCColor.complementaryColor.lightRed, for: .selected)

@@ -145,6 +145,8 @@ extension DDCContractListViewController {
             DDCStore.sharedStore().user = nil
             UserDefaults.standard.removeObject(forKey: "DDCUser")
             UserDefaults.standard.synchronize()
+            DDCOrderingTableViewController.courseType = nil
+            DDCOrderingTableViewController.courseStatus = nil
             self.login()
         }))
         alertController.addAction(UIAlertAction.init(title: "否", style: .default, handler: nil))
@@ -251,7 +253,6 @@ extension DDCContractListViewController: UITableViewDataSource , UITableViewDele
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = (self.tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: DDCOrderingHeaderView.self))) as! DDCOrderingHeaderView
-        headerView.orderingButton.setTitle(DDCContract.backendStatusArray[(self.status!.rawValue)], for: .normal)
         headerView.delegate = self
         return headerView
     }

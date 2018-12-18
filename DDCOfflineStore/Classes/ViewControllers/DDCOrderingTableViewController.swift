@@ -10,6 +10,8 @@ import UIKit
 
 class DDCOrderingTableViewController: UIViewController {
     static let kFliterLeftMargin: CGFloat = 44.0
+    static var courseType: DDCContractType?
+    static var courseStatus: DDCContractStatus?
 
     var block: OrderingUpdateCallback?
     var rect: CGRect?
@@ -34,6 +36,13 @@ class DDCOrderingTableViewController: UIViewController {
     
     lazy var backgroundView: UIView = {
         let _view: UIView = UIView()
+        return _view
+    }()
+    
+    lazy var contentView: UIView = {
+        let _view: UIView = UIView()
+        _view.backgroundColor = DDCColor.colorWithHex(RGB: 0x000000, alpha: 0.6)
+        _view.isUserInteractionEnabled = false
         return _view
     }()
     
@@ -67,13 +76,14 @@ class DDCOrderingTableViewController: UIViewController {
             self.resetModel(model: self.courseStatusModels)
             self.collectionView.reloadSections([0,1])
         }))
-        _bottomBar.addButton(button:DDCBarButton.init(title: "确认", style: .highlighted, handler: {
+        _bottomBar.addButton(button:DDCBarButton.init(title: "确认", style: .forbidden, handler: {
             if let block = self.block {
-                let status: DDCContractStatus = DDCContractStatus(rawValue: self.getSelectedIndex(model: self.courseStatusModels))!
-                let type: DDCContractType = DDCContractType(rawValue: self.getSelectedIndex(model: self.courseTypeModels))!
+                let status: DDCContractStatus = DDCOrderingTableViewController.courseStatus!
+                let type: DDCContractType = DDCOrderingTableViewController.courseType!
                 block(status, type)
             }
         }))
+        _bottomBar.buttonArray![1].isEnabled = false
         _bottomBar.layer.borderColor = UIColor.clear.cgColor
         return _bottomBar
     }()
@@ -81,10 +91,13 @@ class DDCOrderingTableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(self.backgroundView)
+        self.view.addSubview(self.contentView)
+        
         self.view.addSubview(self.collectionView)
         self.view.addSubview(self.bottomBar)
         self.setupViewConstraints()
         self.addGesture()
+        self.selectedModel()
     }
     
     init(rect: CGRect, block:@escaping OrderingUpdateCallback) {
@@ -110,9 +123,13 @@ class DDCOrderingTableViewController: UIViewController {
             make.edges.equalTo(self.view)
         }
         
-        self.collectionView.snp.makeConstraints { (make) in
+        self.contentView.snp.makeConstraints { (make) in
             make.top.equalTo(topMargin)
-            make.left.right.equalTo(self.view)
+            make.left.right.height.equalTo(self.view)
+        }
+        
+        self.collectionView.snp.makeConstraints { (make) in
+            make.top.left.right.equalTo(self.contentView)
             make.height.equalTo(height)
         }
         
@@ -130,17 +147,20 @@ class DDCOrderingTableViewController: UIViewController {
         }
     }
     
-    func getSelectedIndex(model: [DDCCheckBoxModel]) -> Int {
-        for idx in 0..<model.count {
-            let item = model[idx]
-            if item.isSelected {
-                return idx
-            }
+    func selectedModel() {
+        if let courseType = DDCOrderingTableViewController.courseType ,
+            let courseStatus = DDCOrderingTableViewController.courseStatus {
+            //设置被选择的typemodel
+            let typeItem: DDCCheckBoxModel = self.courseTypeModels[courseType.rawValue]
+            typeItem.isSelected = true
+            //设置被选择的statusmodel
+            let statusItem: DDCCheckBoxModel = self.courseStatusModels[courseStatus.rawValue]
+            statusItem.isSelected = true
+            self.collectionView.reloadData()
         }
-        return 0
     }
+ 
 }
-
 
 // MARK: Action
 extension DDCOrderingTableViewController {
@@ -198,6 +218,7 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
             for idx in 0..<self.courseTypeModels.count {
                 item = self.courseTypeModels[idx]
                 if indexPath.item == idx {
+                    DDCOrderingTableViewController.courseType = DDCContractType(rawValue: idx)!
                     item!.isSelected = true
                 } else {
                     item!.isSelected = false
@@ -207,11 +228,17 @@ extension DDCOrderingTableViewController: UICollectionViewDelegate, UICollection
             for idx in 0..<self.courseStatusModels.count {
                 item = self.courseStatusModels[idx]
                 if indexPath.item == idx {
+                    DDCOrderingTableViewController.courseStatus = DDCContractStatus(rawValue: idx)!
                     item!.isSelected = true
                 } else {
                     item!.isSelected = false
                 }
             }
+        }
+        if DDCOrderingTableViewController.courseType != nil ,
+           DDCOrderingTableViewController.courseStatus != nil {
+            self.bottomBar.buttonArray![1].isEnabled = true
+            self.bottomBar.buttonArray![1].setStyle(style: .highlighted)
         }
         self.collectionView.reloadSections([indexPath.section])
     }
