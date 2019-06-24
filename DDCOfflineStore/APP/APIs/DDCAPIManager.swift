@@ -35,7 +35,7 @@ class DDCAPIManager: NSObject {
     // 登录服务
     private var DDC_Base_Url = "https://offcourse.daydaycook.com.cn/daydaycook"
     private var DDC_Base_Staging_Url = "https://offline-course-s.daydaycook.com.cn/daydaycook"
-    private var DDC_Base_Test_Url = "https://offline-course-t.daydaycook.com.cn/daydaycook"
+    private var DDC_Base_Test_Url = "https://offline-course-t1.daydaycook.com.cn/daydaycook"
     private var DDC_Base_Dev_Url = "http://192.168.129.90:8080/daydaycook"
 
     //更新地址
